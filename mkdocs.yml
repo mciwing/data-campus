@@ -2,7 +2,7 @@ site_name: Data Campus
 # site_url:
 theme:
   name: material
-  logo: assets/icon.png
+  logo: assets/logo1.png
   favicon: assets/icon.png
   palette:
     - scheme: slate
@@ -35,10 +35,16 @@ nav:
 
   - Excel:
     - Home: excel/index.md
-  - Datammbase:
+  - Database:
     - Home: database/index.md
   - Data:
     - Home: data/index.md
 
 extra_css:
   - stylesheets/colors.css
+
+markdown_extensions:
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
