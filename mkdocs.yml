@@ -1,0 +1,4 @@
+site_name: Data Campus
+# site_url:
+theme:
+  name: material
