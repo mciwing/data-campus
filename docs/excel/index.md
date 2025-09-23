@@ -5,3 +5,16 @@
 </div>
 
 Welcome to the `Excel Course`! :waving_hand:
+
+
+- Basics
+- Datenaufbereitung
+- Daten Auswerten mit Funktionen
+- Visualisierung
+- Arbeitsmappen finalisieren
+- Tabellen & Pivot-Tabellen
+- Excel Power
+    - Power Query
+    - Power Pivot
+    - Power BI
+- Macros
