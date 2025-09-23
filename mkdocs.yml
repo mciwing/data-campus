@@ -37,14 +37,28 @@ nav:
     - Home: excel/index.md
   - Database:
     - Home: database/index.md
+    - Introduction: database/introduction.md
+    - Wordings: database/wordings.md
+    - SQL Basics: database/sqlbasics.md
+    - CRUD: database/crud.md
+    - Joins: database/joins.md
+    - Aggregations: database/aggregations.md
+    - Integrity: database/integrity.md
+    - Normalization: database/normalization.md
+    - Project: database/project.md
   - Data:
     - Home: data/index.md
 
 extra_css:
   - stylesheets/colors.css
+  - stylesheets/extra.css
 
 markdown_extensions:
   - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
