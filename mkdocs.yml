@@ -37,15 +37,7 @@ nav:
     - Home: excel/index.md
   - Database:
     - Home: database/index.md
-    - Introduction: database/introduction.md
-    - Wordings: database/wordings.md
-    - SQL Basics: database/sqlbasics.md
-    - CRUD: database/crud.md
-    - Joins: database/joins.md
-    - Aggregations: database/aggregations.md
-    - Integrity: database/integrity.md
-    - Normalization: database/normalization.md
-    - Project: database/project.md
+    - DBMS: database/dbms.md
   - Data:
     - Home: data/index.md
 
@@ -58,7 +50,11 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - admonition
   - pymdownx.details
   - pymdownx.superfences
