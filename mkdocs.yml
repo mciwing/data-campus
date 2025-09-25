@@ -37,7 +37,9 @@ nav:
     - Home: excel/index.md
   - Database:
     - Home: database/index.md
+    - Grundlagen: database/grundlagen.md
     - DBMS: database/dbms.md
+
   - Data:
     - Home: data/index.md
 
@@ -58,3 +60,9 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js

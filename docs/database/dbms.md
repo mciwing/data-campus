@@ -47,8 +47,8 @@ Die Daten die wir dabei erfassen sind Reize der Umgebung welche unter anderem el
     | Augen        | 10.000.000        | 40                  |
     | Ohren        | 100.000           | 30                  |
     | Haut         | 1.000.000         | 5                   |
-    | Geschmack    | 1.000             | 1 (?)               |
-    | Geruch       | 100.000           | 1 (?)               |
+    | Geschmack    | 1.000             | 1                   |
+    | Geruch       | 100.000           | 1                   |
     | **Gesamt**   | **11.201.000**    | **77**              |
   
     An einem Tag mit 16 Stunden Helligkeit ergibt sich eine Datenmenge von ~72 GB alleine durch das menschliche Auge. Bewusst wahrgenommen werden allerdings nur ~288 kB.
@@ -87,7 +87,7 @@ Die nächste Abstraktionsstufe sind **Datentypen**, die festlegen, ob ein Binär
 - Kommazahlen werden nach IEEE 754 gespeichert, mit 4 Byte (single/float) oder 8 Byte (double).
 
 ???+ question "Aufgabe Datentypen"
-    1. Übersetzen Sie nachfolgende UTF-8 Binärdarstellung in lesbaren Text
+    1. Übersetzen Sie nachfolgende UTF-8 Binärdarstellung in lesbaren Text. Eine Internet-Recherche nach einem geeigneten Tool kann helfen.
     
         ```
         01011100 01110101 00110000 00110000 00110100 00111001 01011100
@@ -100,6 +100,7 @@ Die nächste Abstraktionsstufe sind **Datentypen**, die festlegen, ob ein Binär
         01110101 00110000 00110000 00110100 00110011 01011100 01110101 
         00110000 00110000 00110100 00111001
         ```
+    2. Recherchiere nach den Begriffen 'signed' und 'unsigned' Integer. Was ist der Unterschied? Kann die Zahl 3 000 000 000 in einer signed Integer Variable gespeichert werden?
 
 Analog zu Texten, die aus Buchstaben Wörter zusammensetzen, stellen Datentypen die Bausteine für komplexere Strukturen dar.
 
