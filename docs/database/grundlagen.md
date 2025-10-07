@@ -19,7 +19,7 @@ Das ägyptische Zahlensystem beispielsweise ist ein additives Zehnersystem, bei 
     Die Basis **10** verwendet die Ziffern `0–9`. Das Zeichen „3“ repräsentiert den Wert 3 und wird mit entsprechenden Vielfachen von 10 multipliziert - Abhängig von der Position in der Zahl.
 
 <div style="text-align: center;">
-    <img src="https://i.programmerhumor.io/2023/05/programmerhumor-io-programming-memes-3e4ebbbe0686a47.jpg" alt="Programmerhumor" style="width:200px; margin-bottom: 1em;">
+    <img src="https://i.programmerhumor.io/2023/05/programmerhumor-io-programming-memes-3e4ebbbe0686a47.jpg" alt="Programmerhumor" style="width:50%; margin-bottom: 1em;">
     <figcaption>Quelle: <a href="https://i.programmerhumor.io/2023/05/programmerhumor-io-programming-memes-3e4ebbbe0686a47.jpg">Programmerhumor.io</a></figcaption>
 </div>
 
@@ -60,27 +60,6 @@ Die Basis wird oft tiefgestellt oder durch Symbole gekennzeichnet: `O` für Okta
     Beispiel: 
     $213₁₀ = 2 \cdot \underbrace{10^2}_{100} + 1 \cdot \underbrace{10^1}_{10} + 3 \cdot \underbrace{10^0}_{1}$
 
-
-In der Informatik hat sich das **Binärsystem** (Basis 2) durchgesetzt, weil es perfekt zu den physikalischen Eigenschaften elektronischer Systeme passt. Gründe dafür sind:  
-
-- **Einfache physikalische Realisierung**: Elektronische Bauteile (Transistoren) kennen zuverlässig nur zwei stabile Zustände: leitend (1) oder nicht leitend (0). Auch andere Trägersysteme wie Magnetisierung, Licht, Spannung lassen sich leicht auf an/aus abbilden.
-- **Hohe Störsicherheit**:  Mit nur zwei Zuständen (0 oder 1) sind Signale weniger fehleranfällig. Schon kleine Abweichungen lassen sich durch Schwellwerte tolerieren, ohne dass der Informationsgehalt verloren geht.  
-- **Einfache elektronische Verarbeitung**: Logikgatter wie AND, OR, NOT lassen sich direkt auf das Binärsystem abbilden. Dadurch ist die Umsetzung von Rechenoperationen in Hardware effizient und robust.
-
-
-Nachdem wir aber bei der Suche nach Katzenvideos nicht
-
-```
-01001011 01100001 01110100 01111010 01100101
-```
-
-sondern *Katze* und *42* anstelle von ```101010``` eingeben möchten, ist es notwendig zwischen verschiedenen Systemen umzuwandeln. 
-
-<div style="text-align: center;">
-    <img src="https://scontent-vie1-1.xx.fbcdn.net/v/t1.6435-9/55865313_988577484684592_6104659935197396992_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=9eae26&_nc_ohc=Lt5-xLLfXaYQ7kNvwGH3LzG&_nc_oc=AdlAv0bfVDi0lVrCYjeTIouqiFcnCL30-vir5NNcl9LWQlbuprAkc7mo2AAWb8fxtzY&_nc_zt=23&_nc_ht=scontent-vie1-1.xx&_nc_gid=RcaSf1a6zM2CiFQ4QJqrVQ&oh=00_AfZE8loVqEOqKpd7xecm81V3dv9NMWCki93jSULL2XlVkg&oe=68FCC855" alt="Katze">
-    <figcaption>Quelle: <a href="https://scontent-vie1-1.xx.fbcdn.net/v/t1.6435-9/55865313_988577484684592_6104659935197396992_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=9eae26&_nc_ohc=Lt5-xLLfXaYQ7kNvwGH3LzG&_nc_oc=AdlAv0bfVDi0lVrCYjeTIouqiFcnCL30-vir5NNcl9LWQlbuprAkc7mo2AAWb8fxtzY&_nc_zt=23&_nc_ht=scontent-vie1-1.xx&_nc_gid=RcaSf1a6zM2CiFQ4QJqrVQ&oh=00_AfZE8loVqEOqKpd7xecm81V3dv9NMWCki93jSULL2XlVkg&oe=68FCC855">Facebook</a></figcaption>
-</div>
-
 ---
 
 ### Basisumwandlung
@@ -88,7 +67,8 @@ sondern *Katze* und *42* anstelle von ```101010``` eingeben möchten, ist es not
 Prinzipiell ist es möglich, jede Zahl in ein anderes Zahlensystem umzuwandeln. Dafür stehen uns verschiedene Verfahren zur Verfügung. Meist verwendet man das Dezimalsystem als Zwischenzahlensystem. 
 
 
-#### Umwandlung in das Dezimalsystem (b → 10)
+**Umwandlung in das Dezimalsystem (b → 10)**
+
 Das Umrechnen in das Dezimalsystem ist besonders einfach. Jede Ziffer wird mit ihrer Stellenwertigkeit multipliziert und anschließend aufsummiert.  
 
 ???+ example "Beispiel: Umwandlung in das Dezimalsystem"
@@ -99,12 +79,10 @@ Das Umrechnen in das Dezimalsystem ist besonders einfach. Jede Ziffer wird mit i
 
     $$CAFE_{16} = 12 \cdot 16^3 + 10 \cdot 16^2 + 15 \cdot 16^1 + 14 \cdot 16^0 = 51966_{10}$$  
 
-xxxxxxxx
-xxxxxx
-xxxxxxxx
 
 
-#### Umwandlung vom Dezimalsystem in ein Beliebiges Zahlensystem (10 → b)
+**Umwandlung vom Dezimalsystem in ein Beliebiges Zahlensystem (10 → b)**
+
 Die Ausgangszahl wird wiederholt durch die Zielbasis geteilt bis der Quotient 0 ist. Die Reste ergeben die Ziffern der neuen Darstellung von rechts nach links.  
 
 ???+ example "Beispiele: Umwandlung vom Dezimalsystem in ein Beliebiges Zahlensystem"  
@@ -143,6 +121,9 @@ Die Ausgangszahl wird wiederholt durch die Zielbasis geteilt bis der Quotient 0 
 
 ---
 
+
+
+
 ### Festkommaarithmetik
 
 Nicht nur ganze Zahlen, auch rationale Zahlen können in verschiedenen Basen dargestellt werden. Dabei wird zwischen **Vorkomma- und Nachkommateil** unterschieden:
@@ -160,7 +141,7 @@ Nicht nur ganze Zahlen, auch rationale Zahlen können in verschiedenen Basen dar
 
     $$10,625₁₀ = \underbrace{1 \cdot 10^1 + 0 \cdot 10^0}_{Vorkomma} + \underbrace{6 \cdot 10^{-1} + 2 \cdot 10^{-2} + 5 \cdot 10^{-3}}_{Nachkomma}$$  
 
-Die Konvertierung zwischen verschiedenen Based in der Festkommaarithmetik ist ebenfalls möglich, wird aber hier nicht weiter behandelt. Eine Beschreibung findet sich beispielsweise [hier](https://www.elektronik-kompendium.de/sites/dig/1807241.htm).
+Die Konvertierung zwischen verschiedenen Basen in der Festkommaarithmetik ist ebenfalls möglich, wird aber hier nicht weiter behandelt. Eine Beschreibung findet sich beispielsweise [hier](https://www.elektronik-kompendium.de/sites/dig/1807241.htm).
 
 ---
 
@@ -230,77 +211,70 @@ Vorteile:
 👉 In der Praxis nutzen **alle modernen Prozessoren das Zweierkomplement**, da es die Rechenlogik deutlich vereinfacht.
 
 
+
+xxxxx
+xxxxx
+xxxxx
 xxxxx
 
 
+### Binärsystem
+In der Informatik hat sich das **Binärsystem** (Basis 2) durchgesetzt, weil es perfekt zu den physikalischen Eigenschaften elektronischer Systeme passt. Gründe dafür sind:  
 
-Auch negative Zahlen können in alternativen Zahlensystemen abgebildet werden.
+- **Einfache physikalische Realisierung**: Elektronische Bauteile (Transistoren) kennen zuverlässig nur zwei stabile Zustände: leitend (1) oder nicht leitend (0). Auch andere Trägersysteme wie Magnetisierung, Licht, Spannung lassen sich leicht auf an/aus abbilden.
+- **Hohe Störsicherheit**:  Mit nur zwei Zuständen (0 oder 1) sind Signale weniger fehleranfällig. Schon kleine Abweichungen lassen sich durch Schwellwerte tolerieren, ohne dass der Informationsgehalt verloren geht.  
+- **Einfache elektronische Verarbeitung**: Logikgatter wie AND, OR, NOT lassen sich direkt auf das Binärsystem abbilden. Dadurch ist die Umsetzung von Rechenoperationen in Hardware effizient und robust.
 
-## Zahlensysteme und Informatik
+???+ defi "Bit"
+    Ein **Bit** (==B== inary Dig ==it==) ist die kleinste Informationseinheit in der Informatik und representiert eine Stelle einer Binärzahl. Ein Bit kann zwei Zustände annehmen: `0` oder `1`. Die Interpretation der Zustände kann abhängig vom jeweiligen Kontext auch variieren. Beispiele sind Lich an/aus, Wahr/Falsch, Hochspannung/Niederspannung.
 
-In der Informatik hat sich das **Binärsystem** (Basis 2) durchgesetzt. Gründe dafür sind:  
+    
+Nachdem wir nun wissen, dass ein Bit zwei verschiedene Zustände annehmen kann, können demnach `n` bit $2^n$ verschiedene Zustände darstellen.
 
-- Stellen lassen sich durch einfache physikalische Signale darstellen (Strom an/aus, Licht an/aus).  
-- Sehr geringe Fehleranfälligkeit im Vergleich zu analogen Systemen.  
-- Logische Verknüpfungen sind mit einfachen Schaltungen (Logikgattern) realisierbar.  
+- 1 Bit: $2^1 = 2$ Zustände
+    - [0, 1]
+- 2 Bit: $2^2 = 4$ Zustände
+    - [00, 01, 10, 11]
+- 3 Bit: $2^3 = 8$ Zustände
+    - [000, 001, 010, 011, 100, 101, 110, 111]
 
-Weitere Zahlensysteme spielen ergänzend eine Rolle:  
+Diese Reihe lässt sich beliebig fortsetzen: 
 
-- **Binärsystem (Basis 2):** Computer arbeiten intern ausschließlich mit 0 und 1.  
-- **Oktalsystem (Basis 8):** Gruppiert je 3 Bits, z. B.  
-```
+2 - 4 - 8 - 16 - 32 - 64 - 128 - 256 - 512 - 1024 - 2048 - 4096 ...
 
-110111000010₂ = 6702₈
-
-```
-Wegen heutiger Bitbreiten (8, 16, 32, 64) ist es aber von geringer Bedeutung.  
-- **Hexadezimalsystem (Basis 16):** Gruppiert je 4 Bits, daher sehr praktisch:  
-```
-
-110111000010₂ = DC2₁₆
-
-```
-
----
+Dem ein oder anderen werden dabei bestimmte Zahlen bekannt vorkommen. Sei es beim Blick auf den Speicherplatz eures neuen Smartphones,beim Kauf einer neuen Festplatte oder bei der Auflösung eures neuen Monitors. Nun wisst ihr auch, woher diese Zahlen kommen.
 
 
-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-## Zahlensysteme
+Da ein einzelnes Bit sehr wenig Information bereitstellt, werden mehrere Bits meist zu einer Gruppe zusammengefasst. Dabei hat sich heutzutage die Größe von 8 Bit als praktisch erwiesen. Diese Gruppe wird auch als **Byte** bezeichnet. Computer können heutzutage nicht jedes einzelne Bit separat adressieren oder lesen/schreiben - sie arbeiten blockweise. Bytes sind dabei also die kleinste adressierbare Einheit.
 
-Computer arbeiten ausschließlich mit **Binärzahlen** (0 und 1).  
-Für uns Menschen ist jedoch das **Dezimalsystem** (Basis 10) gewohnter.  
-In der Informatik nutzen wir zusätzlich oft das **Hexadezimalsystem** (Basis 16), weil es Binärwerte kompakter darstellt.
+???+ tip "Warum 8 Bit?"
+    Früher hatten verschiedene Systeme Bytes mit 6, 7 oder 9 Bits, aber 8 Bits hat sich als praktisch erwiesen und dementsprechend als Standard etabliert. Damit passt es ich schön in das binäre System ein (16 Bit = 2 Byte, 32 Bit = 4 Byte,...). Weiters reichen die 265 Zustände aus, um z.B. alle Zeichen einer Tastatur (ASCII) abzubilden. Beispielsweise der Buchstabe 'A' (ASCII-Code 65) wird als `0100 0001` (Dezimal: 65) dargestellt.
 
-???+ defi "Zahlensystem"
-    Ein Zahlensystem ist durch eine **Basis** \(b\) definiert.  
-    Jede Zahl besteht aus einer Ziffernfolge:
-    \[
-    (d_n d_{n-1} \dots d_1 d_0)_{(b)} = \sum_{i=0}^n d_i \cdot b^i
-    \]
-    mit \(d_i\) als Ziffern (0 bis \(b-1\)).
 
-### Beispiele
+<div style="text-align: center;">
+    <img src="https://i.programmerhumor.io/2023/05/programmerhumor-io-programming-memes-ea8bd859d8c97cb.png" alt="Byte" style="width:70%;">
+    <figcaption>Quelle: <a href="https://i.programmerhumor.io/2023/05/programmerhumor-io-programming-memes-ea8bd859d8c97cb.png">Programmerhumor.io</a></figcaption>
+</div>
 
-- Dezimal (Basis 10): \( (347)_{10} = 3 \cdot 10^2 + 4 \cdot 10^1 + 7 \cdot 10^0 \)  
-- Binär (Basis 2): \( (1011)_{2} = 1 \cdot 2^3 + 0 \cdot 2^2 + 1 \cdot 2^1 + 1 \cdot 2^0 = 11_{10} \)  
-- Hexadezimal (Basis 16): \( (1A)_{16} = 1 \cdot 16^1 + 10 \cdot 16^0 = 26_{10} \)  
 
-???+ tip
-    Ein **Nibble** = 4 Bit = 1 Hexadezimalstelle.  
-    Damit lassen sich Binärzahlen sehr einfach in Hex umwandeln.
 
-### Übung
 
-Wandle folgende Zahlen um:
+xxxxxxxx
+xxxxxx
+xxxxxxxx
 
-1. \((1101)_2 = ?_{10}\)  
-2. \((45)_{10} = ?_{2}\)  
-3. \((101011)_2 = ?_{16}\)
-
----
 
 ## Speicherung von Daten
+
+
+
+???+ info "Binärsystem"
+    In unserer heutigen Zeit sind nicht nur Nummern, sondern jegliche digitale Information als binäre Information gespeichert. 
+
+    <div style="text-align: center;">
+    <img src="https://cns1.rc.fas.harvard.edu/wp-content/uploads/2016/09/CDDVDBluRay.png" alt="CDDVDBluRay" style="width:100%; margin-bottom: 1em;">
+    <figcaption>Quelle: <a href="https://cns1.rc.fas.harvard.edu/wp-content/uploads/2016/09/CDDVDBluRay.png">Harvard University</a></figcaption>
+    </div>
 
 Alle Daten (Zahlen, Texte, Bilder, Programme) werden letztlich als **Folge von Bits** gespeichert.  
 Die Speicherung unterscheidet sich je nach **Medium**.
