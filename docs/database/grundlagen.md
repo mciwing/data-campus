@@ -153,70 +153,103 @@ Bisher haben wir nur positive ganze Zahlen betrachtet. Um auch negative Zahlen d
 
 #### Vorzeichen-Betrag-Darstellung
 - Das höchstwertige Bit (MSB = Most Significant Bit) dient als **Vorzeichenbit**:  
-  - `0` → Zahl ist positiv  
-  - `1` → Zahl ist negativ  
+    - `0` → Zahl ist positiv  
+    - `1` → Zahl ist negativ  
 - Die restlichen Bits geben den Betrag an.  
 
-**Beispiel (4 Bit):**  
-- `0101` = +5  
-- `1101` = −5  
+???+ example "Vorzeichen-Betrag Darstellung"
 
-⚠️ Problem: Es gibt zwei Darstellungen für die Null (`0000` und `1000`). Außerdem sind Rechenoperationen (Addition/Subtraktion) aufwendig.  
+    Die Zahl $5$ wird im binären Zahlensystem wiefolgt dargestellt
+
+    $$ 101 $$
+ 
+    Wenn wir nun $\pm 5$ mit Vorzeichen und Betrag darstellen wollen müssten wir ein zusätzliches Bit mit dem entsprechenden Vorzeichen voranstellen: 
+
+    $$ \underbrace{0}_{+} 101 \rightarrow +5$$  
+
+    $$ \underbrace{1}_{-} 101 \rightarrow -5$$  
+
+Diese Darstellung ist durchaus einfach nachzuvollziehen hat allerdings den Nachteil, dass es zwei Darstellungen für Null gibt: `0000` und `1000`. Weiters sind Rechenoperationen - wie beispielsweise Addition und Subtraktion - aufwändiger als bei anderen Darstellungen. 
 
 ---
 
 #### Einerkomplement-Darstellung
 - Positive Zahlen wie gewohnt.  
-- Negative Zahlen entstehen durch **Bitweise Invertierung** (alle 0 → 1 und 1 → 0).  
+- Negative Zahlen entstehen durch **Bitweise Invertierung** (alle 0 → 1 und 1 → 0).
+- Auch hier gibt es ein **Vorzeichenbit** (zeigt an, ob invertiert wurde oder nicht)
 
-**Beispiel (4 Bit):**  
-- +5 = `0101`  
-- −5 = Invertierung → `1010`  
+???+ example "Einerkomplement Darstellung"
 
-Eigenschaften:  
-- Einfach zu bilden.  
-- Aber: Auch hier gibt es **zwei Darstellungen der Null** (`0000` und `1111`).  
-- Addition erfordert Übertrag-Korrekturen.  
+    Bleiben wir bei unserem Beispiel von zuvor. Wir möchten die Zahlen $\pm 5$ nun in Einerkomplement Darstellung realisieren:
+
+    Die Darstellung der positiven Zahl bleibt gleich (inklusive Vorzeichenbit)
+ 
+    $$ \underbrace{0}_{+} 101 \rightarrow +5$$  
+
+    Für die negative Darstellung wird die positive Zahl negiert/invertiert.
+
+
+    $$ 0101 \rightarrow 1010$$  
+
+Vorteil der Einerkomplement Darstellung ist, dass durch die negierte Darstellung der negativen Zahlen (Invertierung), eine Subtraktion einfach durch eine Addition der Negativen zahl realisiert werden kann. Sprich: $3-4 = 3+(-4)$. Aber, wie auch bei der Vorzeichen-Betrag Darstellung gibt es auch hier zwei Darstellungen der Null: `0000` und `1111`. Weiters wird bei der Addition eine Übertrag-Korrektur benötigt. Dies können wir mit der Zweierkomplement-Darstellung lösen.
+
+<div style="text-align: center;">
+    <img src="https://i.programmerhumor.io/2023/10/programmerhumor-io-programming-memes-2570089582bf52b.jpg" alt="Programmerhumor" style="width:50%; margin-bottom: 1em;">
+    <figcaption>Quelle: <a href="https://i.programmerhumor.io/2023/10/programmerhumor-io-programming-memes-2570089582bf52b.jpg">Programmerhumor.io</a></figcaption>
+</div>
+
+
 
 ---
 
 #### Zweierkomplement-Darstellung
-Das heute in Computern gebräuchlichste Verfahren.  
 
-Bildung:  
-1. Zahl im Einerkomplement darstellen (alle Bits invertieren).  
-2. Anschließend **1 addieren**.  
+Die Zweierkomplement-Darstellung ist das heute in Computern gebräuchlichste Verfahren zum Umgang mit negativen zahlen. Die Bildung des Zweierkomplements baut dabei auf dem Einserkomplement auf:
 
-**Beispiel (4 Bit):**  
-- +5 = `0101`  
-- Einerkomplement von 5 = `1010`  
-- +1 = `1011` → also −5  
+- Positive Zahlen wie gewohnt
+- Negative Zahlen:
+    1. Zahl im Einerkomplement darstellen (alle Bits invertieren).  
+    2. Anschließend **1 addieren**.  
 
-Vorteile:  
-- **Nur eine Null** (`0000`).  
+
+???+ example "Zweierkomplement Darstellung" 
+    Nun wollen wir die Zahlen $\pm 5$ im Zweierkomplement darstellen. Wie bleibt die positive Darstellung wie gehabt (inklusive Vorzeichenbit):
+
+    $$ \underbrace{0}_{+} 101 \rightarrow +5$$  
+
+    Für die negative Darstellung bilden wir zuerst das Einerkomplement
+    
+    $$ 0101 \rightarrow 1010$$
+
+    und addieren anschließend $1$ 
+
+    $$ 
+    \begin{array}{cr}
+         & 1010 \\
+         + & 0001 \\ \hline
+         & 1011
+    \end{array}
+    $$
+
+     
+
+Das Zwierkomplement bietet mehrere Vorteile:   
+- Es gibt nun nur **eine Darstellung der Null** (`0000`).  
 - Addition und Subtraktion funktionieren ohne Sonderregeln.  
-- Wertebereich bei n Bit:  
-  - Von −2^(n−1) bis +2^(n−1) − 1  
-  - z. B. bei 8 Bit: −128 bis +127  
+
+
 
 ---
 
-#### Übersicht (4 Bit Beispiel)
+**Gegenüberstellung der verschiedenen Darstellungen**
 
 | Zahl | Vorzeichen-Betrag | Einerkomplement | Zweierkomplement |
 |------|-------------------|-----------------|------------------|
 | +5   | 0101              | 0101            | 0101             |
 | −5   | 1101              | 1010            | 1011             |
 
-👉 In der Praxis nutzen **alle modernen Prozessoren das Zweierkomplement**, da es die Rechenlogik deutlich vereinfacht.
-
-
-
-xxxxx
-xxxxx
-xxxxx
-xxxxx
-
+???+ question "Negative Zahlen"
+    Stellen Sie die Zahl $-7$ in allen drei verschiedenen Darstellungsarten dar.
 
 ### Binärsystem
 In der Informatik hat sich das **Binärsystem** (Basis 2) durchgesetzt, weil es perfekt zu den physikalischen Eigenschaften elektronischer Systeme passt. Gründe dafür sind:  
@@ -248,7 +281,7 @@ Dem ein oder anderen werden dabei bestimmte Zahlen bekannt vorkommen. Sei es bei
 Da ein einzelnes Bit sehr wenig Information bereitstellt, werden mehrere Bits meist zu einer Gruppe zusammengefasst. Dabei hat sich heutzutage die Größe von 8 Bit als praktisch erwiesen. Diese Gruppe wird auch als **Byte** bezeichnet. Computer können heutzutage nicht jedes einzelne Bit separat adressieren oder lesen/schreiben - sie arbeiten blockweise. Bytes sind dabei also die kleinste adressierbare Einheit.
 
 ???+ tip "Warum 8 Bit?"
-    Früher hatten verschiedene Systeme Bytes mit 6, 7 oder 9 Bits, aber 8 Bits hat sich als praktisch erwiesen und dementsprechend als Standard etabliert. Damit passt es ich schön in das binäre System ein (16 Bit = 2 Byte, 32 Bit = 4 Byte,...). Weiters reichen die 265 Zustände aus, um z.B. alle Zeichen einer Tastatur (ASCII) abzubilden. Beispielsweise der Buchstabe 'A' (ASCII-Code 65) wird als `0100 0001` (Dezimal: 65) dargestellt.
+    Früher hatten verschiedene Systeme Bytes mit 6, 7 oder 9 Bits, aber 8 Bits hat sich als praktisch erwiesen und dementsprechend als Standard etabliert. Damit passt es ich schön in das binäre System ein (16 Bit = 2 Byte, 32 Bit = 4 Byte,...). Weiters reichten die 265 Zustände aus, um z.B. alle Zeichen einer Tastatur abzubilden.
 
 
 <div style="text-align: center;">
@@ -256,31 +289,171 @@ Da ein einzelnes Bit sehr wenig Information bereitstellt, werden mehrere Bits me
     <figcaption>Quelle: <a href="https://i.programmerhumor.io/2023/05/programmerhumor-io-programming-memes-ea8bd859d8c97cb.png">Programmerhumor.io</a></figcaption>
 </div>
 
+## Wie werden Daten gespeichert?
+
+In unserer heutigen Zeit sind nicht nur Nummern, sondern jegliche digitale Information als binäre Information gespeichert. 
+
+<div style="text-align: center;">
+<img src="https://cns1.rc.fas.harvard.edu/wp-content/uploads/2016/09/CDDVDBluRay.png" alt="CDDVDBluRay" style="width:100%; margin-bottom: 1em;">
+<figcaption>Quelle: <a href="https://cns1.rc.fas.harvard.edu/wp-content/uploads/2016/09/CDDVDBluRay.png">Harvard University</a></figcaption>
+</div>
+
+Alle Daten (Zahlen, Texte, Bilder, Programme) werden letztlich als **Folge von Bits** gespeichert. Wir wollen uns zwei Beispiele etwas näher anschauen:
+
+### Bilder
+
+
+Stellen wir uns vor, wir haben mehrere Lampen in einem Array angeordnet und können jede Lampe unabhängig voneinander ansteuern. Es gibt zwei mögliche Zustände: Lampe ein oder aus. Wenn die Lampe aus ist, ist dieser Bereich schwarz, wenn die lampe leuchtet, ist dieser Bereich weiß. Genau so können wir uns auch ein Schwarz-Weiß Bild vorstellen. Jede Lampe representiert einen Pixel und wird durch ein Bit (1/0) beschrieben. 
+<div style="text-align: center">
+    <img src="/assets/database/grundlagen/img_1c_min2.png" style="width: 20%;">
+</div>
+
+???+ example "Minimalbeispiel"
+
+    <div style="text-align: center">
+        <img src="/assets/database/grundlagen/img_1c.png" style="width: 50%;">
+    </div>
+
+    ??? code "Python Code"
+        ```python
+        import cv2
+        import matplotlib.pyplot as plt
+        import numpy as np
+        # read svg image
+        img = cv2.imread("logo.svg", cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        # only use one channel (blue)
+        img1c = img[:, :, 2]
+
+        # everything < 128 = 0, everything >= 128 = 255
+        img1c = np.where(img1c < 128, 0, 255)
+
+        #show image
+        plt.imshow(img1c, cmap="gray")
+        # hide axis
+        plt.axis("off")
+        # show image
+        plt.show()
+        ```
+
+Neben Schwarz/Weiß Bildern ist das Vorgehen bei farbigen Bildern analog. Um mehrere Farben darzustellen müssen wir nun mehr wissen als 'Lampe an/aus'. Wir brauchen nun mehrere farbige Lampen und müssen diese getrennt ansteuern können. Sehr häufig werden dabei die Farben RGB (Rot Grün Blau) verwendet. Auch andere Farbräume wie CYMK finden ihren Einsaz (z.b. im Druckwesen bevorzugt). 
+
+Dies bedeutet nun, dass jeder Pixel aus 3 Bit Informationen besteht: 1 Bit jeweils für Rot, Grün und Blau. Damit sind in Summe $2^3 = 8$ verschiedene Farben möglich. 
+
+<div style="text-align: center">
+    <img src="/assets/database/grundlagen/img_3c_gesamt.png" style="width: 80%;">
+
+</div>
+
+???+ example "Minimalbeispiel"
+
+    <div style="text-align: center">
+        <img src="/assets/database/grundlagen/img_3c.png" style="width: 50%;">
+    </div>
+
+    ??? code "Python Code"
+        ```python
+        import cv2
+        import matplotlib.pyplot as plt
+        import numpy as np
+        # read svg image
+        img = cv2.imread("logo.svg", cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        
+        # everything < 128 = 0, everything >= 128 = 255
+        img3c = np.where(img < 128, 0, 255)
+
+        #show image as rgb
+        plt.imshow(img3c)
+        # hide axis
+        plt.axis("off")
+        # show image
+        plt.show()
+        ```
+
+Da unsere Welt sehr farbenfroh ist, und wir uns nicht mit acht verschiedenen Farben begnügen wollen, können wir anstelle von einem Bit pro Farbe, mehrere Bits verwenden. Beispielsweise bei '24 Bit RGB' werden pro Farbe 8 Bit (also ein Byte) verwendet. Es können somit pro Farbe $2^8 = 256$ verschiedene Stufein eingestellt werden und ergebn in Summe damit 16.7 Million verschiedene Farben.  
+
+<div style="text-align: center">
+    <img src="/assets/database/grundlagen/img_24c_gesamt.png" style="width: 80%;">
+</div>
+
+???+ example "Minimalbeispiel"
+
+    <div style="text-align: center">
+        <img src="/assets/database/grundlagen/img_24c.png" style="width: 50%;">
+    </div>
+
+    ??? code "Python Code"
+        ```python
+        import cv2
+        import matplotlib.pyplot as plt
+        import numpy as np
+        # read svg image
+        img = cv2.imread("logo.svg", cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        
+        # everything < 128 = 0, everything >= 128 = 255
+        img3c = np.where(img < 128, 0, 255)
+
+        #show image as rgb
+        plt.imshow(img3c)
+        # hide axis
+        plt.axis("off")
+        # show image
+        plt.show()
+        ```
+
+???+ tip "Hexadezimaldarstellung" 
+    Die Darstellung der 8 Bit pro Farbe erfolgt sehr häufig als Hexadezimal. Dabei können die 256 Farben mit zwei Stellen im Hexadezimal abgebildet werden. Dabei wird häufig das #-Zeichen vorangestellt.  
+
+    - Dezimal: 244|155|0 entspricht in HEX #f49b00
+    - Dezimal: 0|73|131 entpsricht im HEX #004983
+
+---
+
+### Text
+Nachdem wir uns die Speicherung von Bildern angesehen haben, wollen wir nun einen Blick auf Texte werfen. Auch hier - wie bereits erwähnt - werden die Inhalte in Binärer Darstellung als Abfolge von Bytes gespeichert. Das Vorgehen kann dabei in folgenden Schritte beschrieben werden: 
+
+1. **Zeichen**: Als Zeichen werden in weiterer Folge sowohl diverse Schriftzeichen (lateinisch, kyrillisch,...) als auch Symbole und Emojis verstanden. Diese wollen wir nun mit einem Computer speichern und verarbeiten können
+2. **Codepoint**: Damit wir mit Zeichen umgehen können, wird jedem Zeichen eine eindeutige Nummer zugeordnet. Dabei gibt es für die Zuordnung verschiedenste Systeme wobei sich heute  *Unicode* durchgesetzt hat. Darin enthalten sind 161 Schriften sowie Symbole und Emojis. 
+3. **Encoding**: Nun müssen wir noch die zuvor bestimmten Nummern als Bytes speichern. Dabei gibt es wieder verschiedenste Systeme, wobei sich UTF-8 in den meisten Fällen durchgesetzt hat. UTF-8 vergibt variabel zwischen 1 und 4 Bytes pro Zeichen, je nachdem wieviel benötigt wird. 
+
+???+ example "Unicode & UTF-8 Encoding"
+
+    - `A` $\xrightarrow{\text{Codepoint}}$ `U+0041` $\xrightarrow{\text{Encoding}}$ `41`
+    - `€` $\xrightarrow{\text{Codepoint}}$ `U+20AC` $\xrightarrow{\text{Encoding}}$ `E2` `82` `AC`
+    - `🙂` $\xrightarrow{\text{Codepoint}}$ `U+1F642` $\xrightarrow{\text{Encoding}}$ `F0` `9F` `99` `82`
+
+    ??? code "Python Code"
+        ```python
+        s = "€" # Mix aus ASCII, Latin-1, Symbol und Emoji
+
+        # Codepoints (Unicode)
+        for ch in s:
+            print(f"{ch} -> U+{ord(ch):04X}")
+
+        # Gleiche Zeichen in verschiedenen Encodings
+        encodings = ["ascii", "latin-1", "utf-8", "utf-16-le", "utf-32-le"]
+        for enc in encodings:
+            try:
+                b = s.encode(enc)
+                print(f"{enc:10s} -> {len(b):2d} Bytes ->", b.hex(" "))
+            except UnicodeEncodeError as e:
+                print(f"{enc:10s} -> NICHT darstellbar:", e)
+            
+        ```
 
 
 
 xxxxxxxx
+xxxxxxxxx
 xxxxxx
-xxxxxxxx
-
 
 ## Speicherung von Daten
 
 
-
-???+ info "Binärsystem"
-    In unserer heutigen Zeit sind nicht nur Nummern, sondern jegliche digitale Information als binäre Information gespeichert. 
-
-    <div style="text-align: center;">
-    <img src="https://cns1.rc.fas.harvard.edu/wp-content/uploads/2016/09/CDDVDBluRay.png" alt="CDDVDBluRay" style="width:100%; margin-bottom: 1em;">
-    <figcaption>Quelle: <a href="https://cns1.rc.fas.harvard.edu/wp-content/uploads/2016/09/CDDVDBluRay.png">Harvard University</a></figcaption>
-    </div>
-
-Alle Daten (Zahlen, Texte, Bilder, Programme) werden letztlich als **Folge von Bits** gespeichert.  
 Die Speicherung unterscheidet sich je nach **Medium**.
 
-BILD ALS BINÄRWERT
-https://lospec.com/palette-list/3-bit-rgb
 ### Festplatte (HDD)
 
 - Mechanisches Prinzip: magnetische Beschichtung auf rotierender Scheibe  
@@ -296,7 +469,7 @@ https://lospec.com/palette-list/3-bit-rgb
 ### Solid State Drive (SSD)
 
 - Elektronische Speicherung in **Flash-Speicherzellen**  
-- Jede Zelle speichert Ladungszustände in einem Floating-Gate-Transistor  
+- Jede Zelle speichert Ladungszustände in einem Floating-Gate-Transistor   
 - **0 oder 1**: Ladung vorhanden oder nicht  
 - Keine Mechanik → **sehr schnelle Zugriffe**  
 - Mehrere Bits pro Zelle möglich (SLC, MLC, TLC, QLC)  
