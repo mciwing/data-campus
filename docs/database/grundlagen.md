@@ -1,4 +1,4 @@
-# Grundlagen von Daten und Speicherung
+# Grundlagen Daten(speicherung)
 
 ## Zahlensysteme
 
@@ -251,7 +251,7 @@ Das Zwierkomplement bietet mehrere Vorteile:
 ???+ question "Negative Zahlen"
     Stellen Sie die Zahl $-7$ in allen drei verschiedenen Darstellungsarten dar.
 
-### Binärsystem
+## Binärsystem
 In der Informatik hat sich das **Binärsystem** (Basis 2) durchgesetzt, weil es perfekt zu den physikalischen Eigenschaften elektronischer Systeme passt. Gründe dafür sind:  
 
 - **Einfache physikalische Realisierung**: Elektronische Bauteile (Transistoren) kennen zuverlässig nur zwei stabile Zustände: leitend (1) oder nicht leitend (0). Auch andere Trägersysteme wie Magnetisierung, Licht, Spannung lassen sich leicht auf an/aus abbilden.
@@ -444,68 +444,50 @@ Nachdem wir uns die Speicherung von Bildern angesehen haben, wollen wir nun eine
         ```
 
 
-
-xxxxxxxx
-xxxxxxxxx
-xxxxxx
-
 ## Speicherung von Daten
 
+Nachdem wir nun wissen, dass jeglichen Daten am Computer in Abfolgen von Nullen und Einsen gespeichert werden, können wir uns nun anschauen, wie diese Daten gespeichert werden. 
+Typischerweise werden zur längerfristigen Speicherung sogenannte Massenspeicher verwendet. Dabei unterscheidet man grob in die zwei Kategorien HDD un SSD. Wie diese zwei Typen Daten speichern wird am besten in diesem Video erklärt: 
 
-Die Speicherung unterscheidet sich je nach **Medium**.
-
-### Festplatte (HDD)
-
-- Mechanisches Prinzip: magnetische Beschichtung auf rotierender Scheibe  
-- Lese-/Schreibkopf magnetisiert winzige Bereiche → **0 oder 1**  
-- Datenzugriff:  
-  - **sequentiell** schnell (z. B. Lesen großer Dateien)  
-  - **zufällig** langsamer (wegen Kopfbewegung)  
-
-???+ info
-    Typische Datenraten: 100–200 MB/s  
-    Zugriffszeit: ~10 ms (wegen mechanischer Bewegung)
-
-### Solid State Drive (SSD)
-
-- Elektronische Speicherung in **Flash-Speicherzellen**  
-- Jede Zelle speichert Ladungszustände in einem Floating-Gate-Transistor   
-- **0 oder 1**: Ladung vorhanden oder nicht  
-- Keine Mechanik → **sehr schnelle Zugriffe**  
-- Mehrere Bits pro Zelle möglich (SLC, MLC, TLC, QLC)  
-
-???+ tip
-    Typische Datenraten: 500 MB/s (SATA-SSD) bis mehrere GB/s (NVMe-SSD)  
-    Zugriffszeit: ~0,1 ms  
+<div style="text-align: center;">
+        <iframe 
+            width="840" height="473" 
+            src="https://www.youtube.com/embed/JTNWaFbJPw0?si=J-_Vf2QYhR4tg9tF&amp;start=10"
+            title="YouTube video player" frameborder="5" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
+            gyroscope; picture-in-picture;" 
+            referrerpolicy="strict-origin-when-cross-origin"
+        >
+        </iframe>
+    </div>
 
 ### Vergleich HDD vs. SSD
+Als Abschluss für dieses Kapitel gibt es noch einen kleinen Vergleich von HDD zu SSD. Dieser bildet die allgemeinen Eigenschaften ab - die genaue Charakteristik variiert natürlich von Marke, Qualität, genauem Aufbau,... ab. 
+
 
 | Merkmal         | HDD                           | SSD                          |
 |-----------------|-------------------------------|------------------------------|
 | Technik         | Magnetische Scheiben, Köpfe   | Elektronische Flash-Zellen   |
 | Geschwindigkeit | Mittel, v.a. bei Random-IO    | Sehr hoch                    |
-| Haltbarkeit     | Mechanisch anfällig           | Begrenzte Schreibzyklen      |
+| Haltbarkeit     | Mechanisch anfällig (stoßempfindlich)           | Begrenzte Schreibzyklen      |
 | Kosten          | Günstiger pro TB              | Teurer pro TB                |
 | Einsatz         | Archivierung, große Datenmengen | Betriebssystem, Programme, Datenbanken |
+| Typische Schnittstellen | SATA, SAS                    | SATA, **NVMe/PCIe**                        |
 
 ---
 
 ## Recap
 
 - **Zahlensysteme:**  
-  Computer speichern alles in Binär (0 und 1).  
-  Dezimal und Hexadezimal dienen uns als praktische Darstellungsformen.  
+    - Computer speichern alles in Binär (0 und 1).  
+    - Dezimal und Hexadezimal dienen uns als praktische Darstellungsformen.  
 
 - **Speicherung:**  
-  - HDD: Magnetisch, langsamer, aber günstig und mit großer Kapazität  
-  - SSD: Elektronisch, schnell, aber teurer und begrenzte Lebensdauer  
+    - HDD: Magnetisch, langsamer, aber günstig und mit großer Kapazität  
+    - SSD: Elektronisch, schnell, aber teurer und begrenzte Lebensdauer  
 
-???+ question "Quiz: Speicherung"
-    Welche Aussage ist korrekt?
 
-    - [ ] Eine HDD speichert Daten ausschließlich mit elektrischen Ladungen.  
-    - [x] Eine SSD speichert Bits in Flash-Zellen ohne bewegliche Teile.  
-    - [ ] Hexadezimalzahlen sind ein eigenes Speichermedium.  
-am ende
-
-https://i.programmerhumor.io/2021/07/programmerhumor-io-python-memes-backend-memes-9b216513a3c4b09.jpg
+<div style="text-align: center;">
+    <img src="https://i.programmerhumor.io/2023/03/programmerhumor-io-programming-memes-3f12ffe4bfb84dc.jpg" alt="Programmerhumor" style="width:50%; margin-bottom: 1em;">
+    <figcaption>Quelle: <a href="https://i.programmerhumor.io/2023/03/programmerhumor-io-programming-memes-3f12ffe4bfb84dc.jpg">Programmerhumor.io</a></figcaption>
+</div>
