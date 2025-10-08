@@ -42,6 +42,10 @@ nav:
 
   - Data:
     - Home: data/index.md
+    - Einführung: data/einfuehrung.md
+    - Datenerfassung: data/datenerfassung.md
+    - Zahlensysteme: data/zahlensysteme.md
+    - Speicherung: data/speicherung.md
 
 extra_css:
   - stylesheets/colors.css
