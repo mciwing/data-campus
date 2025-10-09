@@ -1,5 +1,13 @@
 # Datenerfassung
 
+Im vorherigen Kapitel haben wir uns mit **Daten auf semantischer Ebene** beschäftigt – mit ihrer **Bedeutung, Struktur und Klassifikation**. Wir haben gelernt, was Daten sind, wie sie sich von Information und Wissen unterscheiden, und welche verschiedenen Arten von Daten es gibt (qualitativ, quantitativ, nominal, ordinal, ...).
+
+Doch wie entstehen Daten überhaupt? Woher kommen die **23,5°C**, die wir als Temperaturmesswert ablesen? Wie wird aus einem **physikalischen Reiz** (Licht, Schall, Druck) eine **digitale Information**, mit der ein Computer arbeiten kann?
+
+In diesem Kapitel wechseln wir die Perspektive und betrachten den **technischen Prozess der Datenerfassung** – die erste Stufe im Lebenszyklus von Daten. Wir schauen uns an, wie **biologische Systeme** (der Mensch) und **technische Systeme** (Sensoren, Computer) Daten erfassen – und werden dabei erstaunliche Parallelen entdecken.
+
+---
+
 ## Wie erfassen wir Menschen Daten?
 
 Ein wichtiges Merkmal aller Lebewesen ist es, **Daten aus der Umwelt zu erfassen**, sie als **Information zu verarbeiten** und daraus **Aktionen abzuleiten**.
@@ -191,7 +199,7 @@ Alle Daten werden **fusioniert** und von **neuronalen Netzen** analysiert, um En
 ---
 
 
-## Vergleich Mensc 👱🏼 ↔ Maschine 🤖
+## Vergleich Mensch 👱🏼 ↔ Maschine 🤖
 
 <div style="text-align:center; max-width:760px; margin:16px auto;">
 <table role="table" aria-label="Vergleich Mensch Maschine"
@@ -246,3 +254,18 @@ Alle Daten werden **fusioniert** und von **neuronalen Netzen** analysiert, um En
     5. Wo findet **A/D-Wandlung** statt?
 
     Erstelle ein **Flussdiagramm** der Messkette analog zu den obigen Beispielen.
+
+---
+
+## Zusammenfassung 📌
+
+- **Datenerfassung** ist ein fundamentaler Prozess, der sowohl bei biologischen als auch bei technischen Systemen stattfindet: **Daten aufnehmen – verarbeiten – reagieren**.
+- Die **Messkette** ist das technische Pendant zur biologischen Datenerfassung und besteht aus: Sensor, Verstärker, A/D Wandler, Steuereinheit, D/A Wandler und Aktor.
+- **Mensch und Maschine** funktionieren nach vergleichbaren Prinzipien: Sinnesorgane ↔ Sensoren, Nervensystem ↔ Signalverarbeitung, Gehirn ↔ Rechner, Muskeln ↔ Aktoren.
+- Die **Qualität der Datenerfassung** bestimmt die Qualität der nachfolgenden Verarbeitung und Analyse – „Garbage in, Garbage out".
+- Verschiedene **Sensortechnologien** ermöglichen die Erfassung unterschiedlicher physikalischer Größen: Temperatur, Druck, Licht, Schall, Beschleunigung, chemische Zusammensetzung.
+- **Sensorfusion** kombiniert Daten aus mehreren Sensoren, um ein vollständigeres und zuverlässigeres Bild der Realität zu erhalten (z.B. autonome Fahrzeuge).
+
+---
+
+Im nächsten Kapitel schauen wir uns an, wie diese erfassten Daten **verarbeitet** werden – in welcher Form Computer intern mit Daten arbeiten und warum das **Binärsystem** die Basis aller digitalen Verarbeitung ist.

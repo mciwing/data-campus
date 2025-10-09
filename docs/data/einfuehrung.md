@@ -355,7 +355,23 @@ Die Verhältnisskala ist das höhchste Skalenniveau in der Statistik und erlaubt
     - Temperatur in °C
     - Entfernung in Metern
 
+---
 
+## Von der Theorie zur Praxis
+
+Bislang haben wir Daten auf **semantischer Ebene** betrachtet – ihre **Bedeutung, Struktur und Klassifikation**. Wir wissen jetzt, was Daten sind, wie sie sich unterscheiden lassen und welche Rolle sie in der digitalen Welt spielen.
+
+Doch eine zentrale Frage haben wir noch nicht beantwortet: **Wie entstehen Daten überhaupt?**
+
+Wenn wir von **„Temperatur: 23,5°C"** oder **„Geschwindigkeit: 87 km/h"** sprechen, dann wirkt das selbstverständlich – aber wie wird aus einem **physikalischen Phänomen** (Wärme, Bewegung) eine **messbare Zahl**, mit der ein Computer arbeiten kann?
+
+Diese Frage führt uns zur nächsten Ebene: der **technischen Umsetzung**. In den folgenden Kapiteln schauen wir uns an:
+
+1. **Datenerfassung** – Wie werden Daten aus der physikalischen Welt gewonnen? (Sensoren, Messgeräte, A/D-Wandler)
+2. **Datenverarbeitung** – Wie arbeiten Computer intern mit Daten? (Binärsystem, Zahlensysteme)
+3. **Datenspeicherung** – Wie werden Daten dauerhaft gesichert? (RAM, SSD, HDD, Datenbanken)
+
+Diese drei Schritte bilden den **Lebenszyklus von Daten** – von der Erfassung über die Verarbeitung bis zur Speicherung und späteren Analyse.
 
 ---
 
@@ -373,4 +389,4 @@ Die Verhältnisskala ist das höhchste Skalenniveau in der Statistik und erlaubt
 
 ---
 
-Nachdem wir nun wissen, was Daten sind und welche Arten es gibt möchten wir nun eine Stufe tiefer gehen. Bislang haben wir die Daten auf sematischer Ebene - also deren Inhalt und Bedeutung - betrachtet. Im nächsten Schritt gehen wir nun auf die technische Ebene und wollen betrachten, wie wir Daten erfassen können, wie diese von Computern verarbeitet und letztendlich gespeichert werden können. 
+Im nächsten Kapitel beginnen wir mit der **Datenerfassung** und werden dabei eine faszinierende Parallele entdecken: Die Art, wie **Computer Daten erfassen**, ähnelt verblüffend der Art, wie **wir Menschen unsere Umwelt wahrnehmen** – durch Sensoren, Signalverarbeitung und intelligente Filterung.
