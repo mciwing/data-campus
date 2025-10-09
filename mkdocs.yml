@@ -33,19 +33,22 @@ theme:
 nav:
   - Home: index.md
 
-  - Excel:
-    - Home: excel/index.md
-  - Database:
-    - Home: database/index.md
-    - Grundlagen: database/grundlagen.md
-    - DBMS: database/dbms.md
-
   - Data:
     - Home: data/index.md
     - Einführung: data/einfuehrung.md
     - Datenerfassung: data/datenerfassung.md
     - Zahlensysteme: data/zahlensysteme.md
     - Speicherung: data/speicherung.md
+
+  - Excel:
+    - Home: excel/index.md
+    
+  - Database:
+    - Home: database/index.md
+    - Grundlagen: database/grundlagen.md
+    - DBMS: database/dbms.md
+
+
 
 extra_css:
   - stylesheets/colors.css
