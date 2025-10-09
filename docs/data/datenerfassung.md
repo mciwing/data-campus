@@ -125,96 +125,107 @@ flowchart LR
 
 ---
 
-### Sensor
-
-Der **Sensor** ist das "Sinnesorgan" einer Maschine.
+- Der **Sensor** ist das "Sinnesorgan" einer Maschine.
 Er ist die **Schnittstelle zwischen physikalischer Welt und digitalem System**.
-Er wandelt eine physikalische Größe (z. B. Temperatur, Druck, Licht) in ein elektrisches Signal um.
-
-> Beispiel:
-> Ein PT100-Temperatursensor misst nicht direkt die Temperatur,
-> sondern deren Einfluss auf den elektrischen Widerstand.
-
-Da Sensorsignale oft **sehr klein oder nichtlinear** sind, müssen sie im nächsten Schritt **verstärkt** werden.
-
----
-
-### Verstärker
-
-Ein **Verstärker** erhöht die Leistung des Sensorsignals und kann gleichzeitig **Nichtlinearitäten ausgleichen**.
-Er sorgt also dafür, dass das Signal robust und auswertbar wird.
-
-> Herausforderung:
-> Verstärker benötigen eine eigene Stromversorgung, verursachen zusätzliche Kosten und müssen kalibriert werden.
-> **Transmitter** kombinieren häufig Sensor und Verstärker und liefern ein normiertes Signal (z. B. 4–20 mA).
-
----
-
-### Analog-Digital-Wandler (A/D-Wandler)
-
-Unsere reale Welt ist **analog**, aber Computer verarbeiten **digitale Daten**.
+Er wandelt eine physikalische Größe (z. B. Temperatur, Druck, Licht) in ein elektrisches Signal um. Da Sensorsignale oft **sehr klein oder nichtlinear** sind, müssen sie im nächsten Schritt **verstärkt** werden.
+- Ein **Verstärker** erhöht die Leistung des Sensorsignals und kann gleichzeitig **Nichtlinearitäten ausgleichen**. Er sorgt also dafür, dass das Signal robust und auswertbar wird.
+- Unsere reale Welt ist **analog**, aber Computer verarbeiten **digitale Daten**.
 Daher wird ein **A/D-Wandler (ADC)** benötigt, der analoge Signale in digitale Werte umwandelt.
-
-> Wichtig: Jede Digitalisierung ist mit **Informationsverlust** verbunden.
-> Entscheidend sind die Parameter:
->
-> * **Auflösung** (z. B. 12 Bit, 16 Bit)
-> * **Abtastrate** (z. B. 1 kHz, 1 MS/s)
-> * **Leistungsaufnahme**
-
----
-
-### Digitale Eingänge
-
-Manche Systeme benötigen keinen A/D-Wandler, weil die Daten bereits **digital** vorliegen.
-Das gilt z. B. für Daten aus einer **Datenbank** (Kundenverhalten, Umsätze) oder für **digitale Sensoren** (z. B. Inkrementalgeber, I²C-Sensoren).
-
----
-
-### Elektronische Steuereinheit (ECU)
-
-In der Steuereinheit findet die **Datenverarbeitung** statt – hier kommen Methoden der **Data Science**, **Regelungstechnik** oder **Signalverarbeitung** zum Einsatz.
+> 📘 **Merke**: Manche Systeme benötigen keinen A/D-Wandler, weil die Daten bereits **digital** vorliegen. Das gilt z. B. für Daten aus einer **Datenbank** (Kundenverhalten, Umsätze) oder für **digitale Sensoren** (z. B. Inkrementalgeber, I²C-Sensoren).
+- In der Steuereinheit findet die **Datenverarbeitung** statt – hier kommen Methoden der **Data Science**, **Regelungstechnik** oder **Signalverarbeitung** zum Einsatz.
 Das kann ein **Computer**, ein **Mikrocontroller**, ein **FPGA** oder sogar ein neuronales Netzwerk sein.
-
----
-
-### Digital-Analog-Wandler (D/A-Wandler)
-
-Wenn das System mit der analogen Welt interagieren soll (z. B. Anzeige, Motor, Lautsprecher), muss das digitale Signal wieder in ein **analoges Signal** umgewandelt werden.
-Dazu dient der **D/A-Wandler (DAC)**.
-
----
-
-### Aktor
-
-Der **Aktor** setzt elektrische Signale und Energie in physikalische Bewegung oder Zustandsänderung um.
+- Wenn das System mit der analogen Welt interagieren soll (z. B. Anzeige, Motor, Lautsprecher), muss das digitale Signal wieder in ein **analoges Signal** umgewandelt werden. Dazu dient der **D/A-Wandler (DAC)**.
+- Der **Aktor** setzt elektrische Signale und Energie in physikalische Bewegung oder Zustandsänderung um.
 Er ist also das Gegenstück zum Sensor.
 Beispiele sind **Motoren, LEDs, Heizungen oder Roboterarme**.
 
 ---
 
-> **📘 Zusammenfassung der Messkette**
->
-> | Stufe       | Aufgabe                                   | Beispiel             |
-> | ----------- | ----------------------------------------- | -------------------- |
-> | Sensor      | Physikalische Größe → Elektrisches Signal | PT100, Mikrofon      |
-> | Verstärker  | Signalverstärkung, Linearität             | Operationsverstärker |
-> | A/D-Wandler | Analog → Digital                          | ADC, Mikrocontroller |
-> | Steuerung   | Verarbeitung & Analyse                    | Computer, FPGA       |
-> | D/A-Wandler | Digital → Analog                          | DAC, PWM-Ausgang     |
-> | Aktor       | Elektrisches Signal → Bewegung            | Motor, Ventil        |
+## Beispiel aus der Praxis
+
+
+Ein **selbstfahrendes Auto** nutzt eine Vielzahl von Sensoren, um seine Umgebung zu erfassen:
+
+```mermaid
+flowchart TB
+    subgraph Sensoren
+        A1[Kamera #40;optisch#41;]:::teal
+        A2[Lidar #40;Laser#41;]:::teal
+        A3[Radar #40;Funkwellen#41;]:::teal
+        A4[Ultraschall]:::teal
+        A5[GPS]:::teal
+        A6[IMU #40;Beschleunigung#41;]:::teal
+    end
+
+    subgraph Verarbeitung
+        B[Sensorfusion]:::peach
+        C[KI-Algorithmen]:::peach
+        D[Entscheidungssystem]:::peach
+    end
+
+    subgraph Aktoren
+        E1[Lenkung]:::teal
+        E2[Gas/Bremse]:::teal
+        E3[Beleuchtung]:::teal
+    end
+
+    A1 & A2 & A3 & A4 & A5 & A6 --> B
+    B --> C
+    C --> D
+    D --> E1 & E2 & E3
+
+    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
+    classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
+```
+
+**Sensoren und ihre Rolle:**
+
+- **Kamera**: Erkennung von Fahrbahnmarkierungen, Verkehrsschildern, Fußgängern
+- **Lidar**: 3D-Abstandsmessung zur Umgebung (Punktwolke)
+- **Radar**: Geschwindigkeit und Entfernung anderer Fahrzeuge
+- **Ultraschall**: Nahbereichserkennung (Einparken)
+- **GPS + IMU**: Position und Bewegung des Fahrzeugs
+
+Alle Daten werden **fusioniert** und von **neuronalen Netzen** analysiert, um Entscheidungen wie „Bremsen", „Ausweichen" oder „Beschleunigen" zu treffen.
 
 ---
 
-## Vergleich Mensch ↔ Maschine
 
-| Biologisches System            | Technisches System                  |
-| ------------------------------ | ----------------------------------- |
-| Sinnesorgane (Auge, Ohr, Haut) | Sensoren                            |
-| Nervensystem                   | Signalverarbeitung, Mikrocontroller |
-| Gehirn                         | Rechner / Control Unit              |
-| Muskeln                        | Aktoren                             |
-| Wahrnehmung                    | Datenauswertung                     |
+## Vergleich Mensc 👱🏼 ↔ Maschine 🤖
+
+<div style="text-align:center; max-width:760px; margin:16px auto;">
+<table role="table" aria-label="Vergleich Mensch Maschine"
+        style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Biologisches System</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Technisches System</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;">Sinnesorgane (Auge, Ohr, Haut)</td>
+        <td style="text-align:left; padding:10px 14px;">Sensoren</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;">Nervensystem</td>
+        <td style="text-align:left; padding:10px 14px;">Signalverarbeitung, Kabel</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;">Gehirn</td>
+        <td style="text-align:left; padding:10px 14px;">Rechner / Control Unit</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;">Muskeln</td>
+        <td style="text-align:left; padding:10px 14px;">Aktoren</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;">Wahrnehmung</td>
+        <td style="text-align:left; padding:10px 14px;">Datenauswertung</td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
 ---
 
@@ -225,14 +236,13 @@ Beispiele sind **Motoren, LEDs, Heizungen oder Roboterarme**.
 
 ---
 
-### 🧩 Aufgaben
+???+ question "Praxisaufgabe: Eigene Messkette analysieren"
+    **Aufgabe**: Wähle ein technisches Gerät aus deinem Alltag (z.B. Smartphone, Fitness-Tracker, Kaffeemaschine, Spielkonsole) und analysiere:
 
-1. Beschreibe die Schritte der menschlichen Datenerfassung anhand deiner Sinne.
-   Welche Daten werden aufgenommen, welche bewusst verarbeitet?
+    1. Welche **Sensoren** sind verbaut?
+    2. Welche **physikalischen Größen** werden gemessen?
+    3. Wie werden die Daten **verarbeitet**?
+    4. Welche **Aktionen** werden ausgelöst?
+    5. Wo findet **A/D-Wandlung** statt?
 
-2. Zeichne die **technische Messkette** für ein Beispiel deiner Wahl
-   (z. B. Wetterstation, Smartwatch, autonomes Auto).
-
-3. Erkläre, an welcher Stelle der Messkette die größten Informationsverluste auftreten können.
-
----
+    Erstelle ein **Flussdiagramm** der Messkette analog zu den obigen Beispielen.
