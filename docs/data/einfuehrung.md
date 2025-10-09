@@ -52,7 +52,7 @@ Denn reale Daten sind selten „sauber“:
 * Finanzdaten enthalten **Ausreißer oder extreme Werte**, die Analysen verzerren können.
 
 Ein gutes Verständnis der Daten ist deshalb die Grundlage jeder erfolgreichen **Datenvorverarbeitung** – also der Phase, in der Daten aufbereitet, bereinigt und in ein nutzbares Format gebracht werden.
-Nur wer seine Daten kennt, kann sie richtig **interpretieren** und **nutzen**.
+Nur wer seine Daten kennt, kann sie richtig **interpretieren** und **nutzen**. In weiterer Folge betrachten wir unterschiedliche Möglichkeiten, Daten zu klassifizieren und charakterisieren. 
 
 ### Klassische Daten vs. Big Data
 
@@ -79,11 +79,9 @@ Big Data wird oft durch die **3 V** beschrieben:
 Diese Vielfalt bringt Chancen, aber auch neue Herausforderungen. Während klassische Datenbanken gut geeignet sind, strukturierte Informationen zu speichern, müssen Big-Data-Systeme **unstrukturierte Daten** verarbeiten, **Verknüpfungen herstellen** und **Muster erkennen** - oft mithilfe von künstlicher Intelligenz.
 
 
-
-
-> **Praxisbeispiel:**
-> Ein Online-Shop speichert seine Bestellungen (klassische Daten) in einer Datenbank.
-> Zusätzlich analysiert er Social-Media-Beiträge, Wetterdaten und Standortinformationen (Big Data), um vorherzusagen, welche Produkte morgen besonders gefragt sein werden.
+???+ example "Beispiel: Klassische & Big Data"
+    Ein Online-Shop speichert seine Bestellungen (**klassische Daten**) in einer Datenbank.
+    Zusätzlich analysiert er Social-Media-Beiträge, Wetterdaten und Standortinformationen (**Big Data**), um vorherzusagen, welche Produkte morgen besonders gefragt sein werden.
 
 Damit verschiebt sich der Fokus: Weg vom reinen Speichern - hin zum **Verstehen und Nutzen** der Daten.
 
@@ -103,7 +101,7 @@ Damit verschiebt sich der Fokus: Weg vom reinen Speichern - hin zum **Verstehen 
 
 ### Datenarten
 
-Um Daten sinnvoll zu verwalten, ist es hilfreich, ihre **Form** und **Herkunft** zu verstehen. Denn je nach Art benötigen sie unterschiedliche Speicher- und Analyseverfahren.
+Ein weiteres Unterscheidungsmerkmal ist die Datenart. Um Daten sinnvoll zu verwalten, ist es hilfreich, ihre **Form** und **Herkunft** zu verstehen. Denn je nach Art benötigen sie unterschiedliche Speicher- und Analyseverfahren.
 
 | Datenart                | Beschreibung                                    | Beispiele                                 |
 | ----------------------- | ----------------------------------------------- | ----------------------------------------- |
@@ -114,81 +112,87 @@ Um Daten sinnvoll zu verwalten, ist es hilfreich, ihre **Form** und **Herkunft**
 | **Textdaten**           | Unstrukturierte Sprache oder Schrift            | E-Mails, Chatverläufe, Tweets             |
 | **Sensordaten**         | Physikalische Messwerte                         | Temperatur, Luftfeuchtigkeit, Bewegung    |
 
-In der Praxis treten oft **Mischformen** auf:
-Ein modernes Auto erzeugt Bilddaten (Kameras), Sensordaten (Radar, Lidar) und Textdaten (Fehlerprotokolle) – gleichzeitig und in Echtzeit.
+???+ example "Beispiel: Mischform"
 
-Dieser technologische Mix zeigt, dass der Begriff 'Daten' weit über Tabellen hinausgeht: **Alles, was sich digital erfassen und speichern lässt, sind Daten.**
+    **In der Praxis** treten oft **Mischformen** auf:
+
+    Ein modernes Auto erzeugt Bilddaten (Kameras), Sensordaten (Radar, Lidar) und Textdaten (Fehlerprotokolle) – gleichzeitig und in Echtzeit.
+
+Dieser technologische Mix zeigt, dass der Begriff "Daten" weit über Tabellen hinausgeht: **Alles, was sich digital erfassen und speichern lässt, sind Daten.**
 
 ---
 
 
 ### Qualitative vs. Quantitative Daten
 
-Daten unterscheiden sich nicht nur im Inhalt, sondern auch in der **Art der Darstellung**.
+Daten unterscheiden sich nicht nur im Inhalt, sondern auch in der Art der Darstellung.
 
-Qualitative (kategorische) Daten beschreiben **Eigenschaften oder Zustände** – sie geben an, **welcher Kategorie** etwas angehört.
-Sie lassen sich **nicht berechnen oder messen**.
+**Qualitative (kategorische) Daten**
 
-> Beispiele:
->
-> * Geschlecht (m/w/d)
-> * Augenfarbe (blau, braun, grün)
-> * Nationalität (AT, DE, IT)
+Eine Variable wird als qualitativ (kategorial) bezeichnet, wenn jede Beobachtung eindeutig einer bestimmten Kategorie zugeordnet werden kann.
+Qualitative Variablen drücken unterschiedliche Eigenschaften oder Merkmale aus, ohne eine Größe oder ein Ausmaß anzugeben.
 
----
+???+ example "Beispiel: Qualitative Daten"
+    - Geschlecht (m/w/d)
+    - Augenfarbe (blau, braun, grün)
+    - Nationalität (AT, DE, IT)
 
-Dem gegenüber messen Quantitative (numerische) Daten eine **Größe** oder **Menge**.
-Sie können **gerechnet** werden und sind oft Grundlage für statistische Analysen.
+**Quantitative (numerische) Daten**
 
-Man unterscheidet:
+Dem gegenüber wird eine Variable als quantitativ (numerisch) bezeichnet, wenn sie das Ausmaß oder die Größe einer Eigenschaft misst.
+Quantitative Variablen können in zwei Typen unterteilt werden:
 
-* **Diskrete Variablen**: Endlich viele Werte (z. B. Anzahl der Kinder = 0, 1, 2, 3 …)
-* **Stetige Variablen**: Unendlich viele Werte im Intervall (z. B. Gewicht = 65,3 kg)
-
----
+- **Diskrete Variablen**: Die Variable kann nur eine endliche oder abzählbare Anzahl von Werten annehmen.
+- **Kontinuierliche Variablen**: Die Variable kann jeden Wert innerhalb eines bestimmten Intervalls annehmen.
 
 ???+ example "Beispiel: Qualitativ vs. Quantitativ"
-- **Qualitativ:** Religion, Geschlecht, Wohnort
-- **Quantitativ – diskret:** Anzahl der Bestellungen, Stückzahl
-- **Quantitativ – stetig:** Umsatz in €, Temperatur, Körpergröße
+    - **Qualitativ:** Religion, Geschlecht, Wohnort
+    - **Quantitativ – diskret:** Anzahl der Bestellungen, Stückzahl
+    - **Quantitativ – stetig:** Umsatz in €, Temperatur, Körpergröße
 
----
 
-> **💡 Mini-Übung:**
-> Nenne zu jedem der folgenden Begriffe, ob er qualitativ oder quantitativ ist:
-> „Postleitzahl“, „Körpergröße“, „Note“, „Blutgruppe“.
-> *(Tipp: Nicht alle Zahlen sind automatisch quantitativ!)*
+
+
+> **☝️ Hinweis:**
+
+> Nicht alle Zahlen sind automatisch quantitativ! Nur weil etwas mit Zahlen dargestellt wird, heißt das nicht automatisch, dass es eine numerische (messbare) Eigenschaft beschreibt.
+
+> **Beispiel**: Eine Trikotnummer im Sport (z. B. Spieler Nummer 10) ist keine messbare Zahl.Die "10" steht hier nur als Bezeichner für eine Person, nicht für eine messbare Eigenschaft wie Länge, Gewicht oder Alter.
+
+
+
+> **📘 Merke:**
+
+> Eine Zahl ist nur dann quantitativ, wenn sie ein Messwert ist – also ein Ausmaß einer Eigenschaft ausdrückt (z. B. Gewicht, Preis, Alter). Wenn sie dagegen nur zur Unterscheidung oder Kennzeichnung dient, ist sie qualitativ.
+
+
+???+ question "Qualitative und Quantiative Daten"
+    Nenne zu jedem der folgenden Begriffe, ob er qualitativ oder quantitativ ist:
+
+    - Postleitzahl
+    - Körpergröße
+    - Note
+    - Blutgruppe
 
 ---
 
 
 ### Attributtypen
 
-Nachdem wir qualitative und quantitative Daten unterschieden haben, betrachten wir nun **feinere Abstufungen**, sogenannte **Skalenniveaus**.
-Diese bestimmen, **welche mathematischen Operationen** erlaubt sind – z. B. ob man Mittelwerte bilden darf oder nur vergleichen kann.
+Nachdem wir qualitative und quantitative Daten unterschieden haben, betrachten wir nun feinere Abstufungen, sogenannte **Skalenniveaus**.
+Diese bestimmen, **welche mathematischen Operationen** erlaubt sind - z. B. ob man Mittelwerte bilden darf oder nur vergleichen kann.
 
 
 Um Daten zu strukturieren, werden sie in **Attribute** zerlegt - also Merkmale, die ein Objekt oder Ereignis beschreiben.
-Beispiel: Für das Objekt *Student* könnten die Attribute **Name**, **Matrikelnummer**, **Studiengang** und **Geburtsdatum** definiert werden.
 
-Nicht jedes Attribut ist gleichartig. In der Statistik und Datenanalyse unterscheidet man verschiedene **Skalenniveaus**:
+???+ example "Beispiel: Attribute"
+    Für das Objekt *Student* könnten die Attribute **Name**, **Matrikelnummer**, **Studiengang** und **Geburtsdatum** definiert werden.
 
-| Typ                    | Beschreibung                       | Beispiele                                                     |
-| ---------------------- | ---------------------------------- | ------------------------------------------------------------- |
-| **Nominal**            | Kategorien ohne Reihenfolge        | Geschlecht, Studienrichtung, Farbe                            |
-| **Ordinal**            | Geordnete Kategorien               | Schulnoten, Kundenzufriedenheit („hoch“, „mittel“, „niedrig“) |
-| **Intervallskaliert**  | Gleiche Abstände, kein Nullpunkt   | Temperatur in °C, Jahreszahlen                                |
-| **Verhältnisskaliert** | Abstände mit natürlichem Nullpunkt | Alter, Gewicht, Umsatz                                        |
-| **Zeitlich**           | Zeitpunkte oder Zeiträume          | Kaufdatum, Dauer, Uhrzeit                                     |
+Nicht jedes Attribut ist gleichartig. In der Statistik und Datenanalyse unterscheidet man verschiedene **Skalenniveaus**: kategorial (nominal oder ordinal) und metrisch/numerisch (intervallskaliert oder verhältnisskaliert).
 
 Die richtige Zuordnung ist entscheidend, da sie bestimmt, **welche Analysen zulässig sind**:
-Mit Nominaldaten kann man zählen, mit Ordinaldaten sortieren und mit Verhältnisskalen rechnen. Wer also Daten richtig verstehen will, muss wissen, welchen Typ sie haben.
+Mit Nominaldaten kann man zählen, mit Ordinaldaten sortieren und mit Verhältnisskalen rechnen. Wer also Daten richtig verstehen will, muss wissen, welches Skalenniveo sie haben.
 
----
-
-> **🔍 Mini-Aufgabe:**
-> Nimm eine Tabelle (z. B. eine Excel-Datei) deiner Wahl und bestimme den Datentyp von fünf Spalten.
-> Überlege: Welche Spalten lassen sich sortieren? Bei welchen darf man Mittelwerte bilden?
 ---
 
 #### Nominale Attribute
@@ -196,140 +200,177 @@ Mit Nominaldaten kann man zählen, mit Ordinaldaten sortieren und mit Verhältni
 Nominale Attribute sind **Kategorien ohne natürliche Reihenfolge**.
 Sie bestehen aus Namen, Symbolen oder Codes, die Gruppen kennzeichnen.
 
-```py
-cars = ['BMW', 'Audi', 'VW', 'Skoda', 'Tesla', 'Audi']
-```
+???+ example "Beispiel: Nominal"
+    - Automarken: BMW, Audi, VW, Skoda, Tesla
+    - Haarfarbe: blond, braun, schwarz
+    - Beruf: Lehrer, Arzt, Programmierer
 
-Man kann prüfen, ob zwei Werte **gleich** oder **ungleich** sind, aber nicht, ob einer „größer“ ist.
+Anhand dieser Beispiele erkennt man, dass es möglich ist zu überprüfen, ob zwei Werte **gleich** oder **ungleich** sind, aber nicht, ob einer größer ist. 
 
-> Beispiel:
->
-> * Haarfarbe: blond, braun, schwarz
-> * Beruf: Lehrer, Arzt, Programmierer
+> **☝️ Hinweis:**
 
-Nominale Attribute können auch als **Zahlen codiert** werden – diese Zahlen haben aber **keine rechnerische Bedeutung**:
+> Nominale Attribute können auch als **Zahlen codiert** werden – diese Zahlen haben aber keine rechnerische Bedeutung.
 
-```py
-cars_num = [1, 2, 3, 4, 5, 2]
-```
+> **Beispiel** Automarken:
+> Wir könnten für jede Automarke eine eindeutige Nummer vergeben und unsere Daten damit codieren. Dann wäre beispielsweise BMW = 1, Audi = 2, VW = 3 usw. Mathematisch könnte ich nun sagen dass 2 (Audi) größer ist als 1 (BMW). Da die inhaltliche Bedeutung der Daten aber nicht verändert wurde, ist diese Aussage weiterhin nicht sinnvoll.  
 
-Ein Mittelwert dieser Zahlen wäre sinnlos – der **häufigste Wert (Modus)** dagegen ist sinnvoll.
+Dies bedeutet nun in weiterer Folge, dass die Berechnung des arithmetischen Mittelwerts oder des Medians entweder nicht möglich oder nicht sinnvoll ist. Einzig die Berechnung des **Modus (häufigster Wert)** führt zu einer matematisch und logisch sinnvollen Aussage.
 
-```py
-import statistics
-statistics.mode(cars)
-# Ausgabe: Audi
-```
 
----
+Ein Sonderfall von nominalen Attributen sind **Binäre Attribute** welche nur **zwei Kategorien** besitzen.
+Diese Kategorien werden häufig durch die Zahlen `0` und `1*` dargestellt, wobei `0` das Fehlen und `1` das vorhandensein des Merkmals kennzeichnet. Diese binäre Klassifikation wird in der Datenanalyse häufig verwendet, um einfache Variablen darzustellen.
 
-> **Sonderfall:**
-> **Binäre Attribute** haben nur zwei Zustände, etwa:
->
-> * Raucher: Ja = 1, Nein = 0
-> * Test positiv = 1, negativ = 0
+???+ example "Beispiel: Nominal-Binär"
+    - Raucher: Ja = 1, Nein = 0
+    - Test positiv = 1, negativ = 0
+
 
 ---
 
 #### Ordinale Attribute
 
-Ordinale Attribute haben eine **natürliche Reihenfolge**, aber die **Abstände zwischen den Stufen** sind nicht messbar.
+Auf der nächsten Stufe der Skalenniveaus befinden sich Ordinale Attribute. Diese haben eine **natürliche Reihenfolge**, aber die **Abstände zwischen den Stufen** sind nicht messbar.
 
-```py
-drinks = ['klein', 'klein', 'mittel', 'mittel', 'groß']
-```
+???+ example "Beispiel: Ordinal"
+    - Getränkegrößen (klein, mittel groß)
+    - Zufriedenheitsbewertungen (hoch, mittel, niedrig)
+    - T-Shirt-Größen (S, M, L, XL)
 
-Hier ist *groß > mittel > klein*, aber man weiß nicht, **wie viel** größer.
+Bei den gezeigten Beispielen erkennt man, dass eine Aussage wie "etwas ist größer/schneller/besser als" zulässig ist, wenngleich man aber nicht weiß, **wie viel** größer. Dies bedeutet, dass **Vergleiche** ("besser als", "kleiner als") erlaubt sind,
+aber keine Differenz- oder Durchschnittsberechnungen. 
 
-> Beispiele:
->
-> * Schulnoten (1 < 2 < 3 < 4 < 5)
-> * Zufriedenheitsbewertungen (hoch, mittel, niedrig)
-> * T-Shirt-Größen (S, M, L, XL)
-
-Erlaubt sind also **Vergleiche** („besser als“, „kleiner als“),
-aber **keine Differenz- oder Durchschnittsberechnungen**.
+Daher ist es möglich und sinnvoll, den **Median** und den **Modus** zu berechnen.
+Der (arithmetische) Mittelwert hingegen ist nicht sinnvoll.
 
 ---
 
 #### Intervallskalierte Attribute
 
-Intervallskalierte Attribute besitzen **gleiche Abstände** zwischen den Werten,
-aber **keinen echten Nullpunkt** (der Nullpunkt ist willkürlich).
+Intervallskalierte Attribute können auf einer Skala mit gleich großen Einheiten gemessen werden, wodurch konstante und vergleichbare Abstände zwischen den Werten möglich sind. Diese Attribute besitzen eine **natürliche Reihenfolge** und können **positive, null oder negative Werte** annehmen.
 
-> Beispiele:
->
-> * Temperatur in °C (0 °C ist nicht „keine Temperatur“)
-> * Kalenderjahre (das Jahr 0 ist willkürlich gewählt)
+Das bedeutet, dass eine Rangordnung der Werte sowohl möglich als auch sinnvoll ist und ein klares Gefühl von Zunahme oder Abnahme entlang der Skala vermittelt. Einzig der Nullpunkt ist willkürlich gewählt. 
 
-Differenzen sind sinnvoll, Verhältnisse („doppelt so warm“) nicht.
+???+ example "Beispiel: Intervallskaliert"
+    - Temperatur in °C (0°C ist nicht „keine Temperatur“)
+    - Kalenderjahre (das Jahr 0 ist willkürlich gewählt)
+
+
+Wie bei der Ordinalskala kann man auch bei der Intervallskala feststellen, ob zwei Werte gleich sind und ob ein Wert höher ist als eine andere.
+Zusätzlich lässt sich der **Unterschied** zwischen Werten sinnvoll interpretieren.
+
+Da jedoch der Nullpunkt willkürlich festgelegt ist (z. B. 0°C = Gefrierpunkt von Wasser), können Verhältnisse (Quotienten) nicht sinnvoll interpretiert werden.
+So ist es z. B. nicht korrekt zu sagen, dass 20°C "doppelt so warm" ist wie 10°C.
+
+Sowohl für intervallskalierte Attribute als auch für die nachfolgenden verhältnisskalierten Attribute können sowohl **Modus**, **Median** als auch das **arithmetische Mittel** berechnet und sinnvoll interpretiert werden. 
 
 ---
 
 #### Verhältnisskalierte Attribute
 
-Hier gibt es einen **natürlichen Nullpunkt** – das Fehlen der Eigenschaft.
-Damit sind **Verhältnisse** (z. B. doppelt so viel) sinnvoll interpretierbar.
+Verhältnisskalierte Attribute besitzen einen **natürlichen Nullpunkt**, der das **vollständige Fehlen** des Merkmals anzeigt.
+Diese Eigenschaft ermöglicht es, einen Wert als ein Vielfaches eines anderen sinnvoll zu interpretieren.
 
-> Beispiele:
->
-> * Temperatur in Kelvin
-> * Alter, Einkommen, Gewicht, Entfernung
+Dadurch erlauben verhältnisskalierte Daten eine große Bandbreite mathematischer Operationen, einschließlich aussagekräftiger Vergleiche sowohl von Unterschieden als auch von Verhältnissen zwischen den Werten.
 
-Diese Skala erlaubt **alle mathematischen Operationen**: Mittelwert, Median, Varianz, Verhältnisvergleiche usw.
+???+ example "Beispiel: Verhältnisskaliert"
+    - Temperatur in Kelvin
+    - Alter, Einkommen, Gewicht, Entfernung
+
+
+Die Verhältnisskala ist das höhchste Skalenniveau in der Statistik und erlaubt **alle mathematischen Operationen**: Mittelwert, Median, Varianz, Verhältnisvergleiche usw.
 
 ---
+
+<div style="text-align: center; max-width:760px; margin:16px auto;">
+  <table role="table" aria-label="Skalenniveaus" 
+         style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden;">
+    <thead>
+      <tr style="background:#009485 ; color:#fff; padding:12px 14px;font-weight:700">
+        <th style="text-align:left; ; letter-spacing:.2px;">Skalenniveaus</th>
+        <th style="text-align:left;   ">&nbsp;</th>
+        <th style="text-align:center; ">=, ≠</th>
+        <th style="text-align:center; ">&gt;, &lt;</th>
+        <th style="text-align:center; ">+, −</th>
+        <th style="text-align:center; ">×, ÷</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- kategorial -->
+      <tr>
+        <td rowspan="2" style="background:#00948566; padding:12px 14px; vertical-align:middle; font-weight:600; border-right:1px solid #cfd8e3;">
+          kategorial
+        </td>
+        <td style="background:#00948522; padding:12px 14px; border-right:1px solid #e5e7eb;">nominal</td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#dc2626; font-size:18px;">✗</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#dc2626; font-size:18px;">✗</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#dc2626; font-size:18px;">✗</span></td>
+      </tr>
+      <tr>
+        <td style="background:#00948522; padding:12px 14px; border-right:1px solid #e5e7eb;">ordinal</td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#dc2626; font-size:18px;">✗</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#dc2626; font-size:18px;">✗</span></td>
+      </tr>
+
+      <!-- metrisch -->
+      <tr>
+        <td rowspan="2" style="background:#00948566; padding:12px 14px; vertical-align:middle; font-weight:600; border-right:1px solid #cfd8e3;">
+          metrisch
+        </td>
+        <td style="background:#00948522; padding:12px 14px; border-right:1px solid #e5e7eb;">Intervall</td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#dc2626; font-size:18px;">✗</span></td>
+      </tr>
+      <tr>
+        <td style="background:#00948522; padding:12px 14px; border-right:1px solid #e5e7eb;">Verhältnis</td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+        <td style="text-align:center; padding:10px 12px;"><span style="color:#16a34a; font-size:18px;">✓</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="font-size:12px; color:#6b7280; margin-top:8px;">
+    Legende: ✓ zulässig · ✗ nicht zulässig
+  </div>
+</div>
 
 > **📘 Merke:**
 > Je höher das Skalenniveau, desto mehr Rechenoperationen sind erlaubt.
 > Nominal → Ordinal → Intervall → Verhältnis
 
----
-
 ???+ question "Übungsaufgabe: Attributtypen bestimmen"
-Bestimme für die folgenden Attribute den Skalenniveau-Typ und begründe deine Entscheidung:
-- Alter
-- Beruf
-- Schulnote
-- Temperatur in °C
-- Entfernung in Metern
 
----
+    Bestimme für die folgenden Attribute den Skalenniveau-Typ und begründe deine Entscheidung:
+
+    - Alter
+    - Beruf
+    - Schulnote
+    - Temperatur in °C
+    - Entfernung in Metern
 
 
-
-## Übergang: Von Daten zur Struktur
-
-Wir haben nun gesehen, dass Daten viele Formen annehmen können - von Zahlen in Tabellen bis zu Videos aus der Kamera.
-Doch egal, wie unterschiedlich sie sind: Wenn wir sie effizient speichern, durchsuchen und kombinieren wollen, brauchen wir eine **Struktur**.
-
-Hier kommen **Datenmodelle und Datenbanksysteme** ins Spiel. Sie bilden die Brücke zwischen den rohen Daten und ihrer sinnvollen Nutzung in Anwendungen.
-Im nächsten Kapitel wirst du lernen, **wie Daten organisiert, modelliert und in Datenbanken verwaltet werden**, damit aus ihnen Wissen entstehen kann.
-
----
-
-> **Merke:**
-> Daten sind der Anfang - nicht das Ziel.
-> Erst durch Struktur, Bedeutung und Anwendung werden sie wertvoll.
 
 ---
 
 ## Zusammenfassung 📌
 
-* Daten sind Rohinformationen, die erst durch Kontext zu Information und Wissen werden.
-* Big Data erweitert klassische Daten um neue Dimensionen: Menge, Geschwindigkeit und Vielfalt.
-* Es gibt viele Arten von Daten – von Tabellen bis zu Videos.
-* Attribute beschreiben Objekte; ihr Typ entscheidet, welche Analysen sinnvoll sind.
+* Daten sind **Rohinformationen**, die erst durch Kontext zu Information und Wissen werden.
+* Big Data erweitert klassische Daten um neue Dimensionen: **Menge**, Geschwindigkeit und Vielfalt.
+* Es gibt viele Arten von Daten - von Tabellen bis zu Videos.
+* **Attribute** beschreiben Objekte; ihr Typ entscheidet, welche Analysen sinnvoll sind.
 * Daten allein sind wertlos – entscheidend ist ihre **Struktur und Nutzung**.
 * **Daten zu verstehen** ist der erste Schritt jeder Analyse.
-* Wir unterscheiden zwischen **Datensatz**, **Objekt** und **Attribut**.
 * Attribute können **qualitativ** oder **quantitativ** sein.
 * Je nach Skalenniveau (nominal, ordinal, intervall-, verhältnisskaliert) sind unterschiedliche **Operationen erlaubt**.
 * Der korrekte Umgang mit Attributtypen verhindert **Fehlinterpretationen** in Analysen.
 
 ---
 
-> **💭 Reflexionsfrage zum Abschluss:**
-> Wenn du morgen ein eigenes Unternehmen gründest – welche Daten würdest du sammeln, und wie würdest du daraus Wissen gewinnen?
-
----
+Nachdem wir nun wissen, was Daten sind und welche Arten es gibt möchten wir nun eine Stufe tiefer gehen. Bislang haben wir die Daten auf sematischer Ebene - also deren Inhalt und Bedeutung - betrachtet. Im nächsten Schritt gehen wir nun auf die technische Ebene und wollen betrachten, wie wir Daten erfassen können, wie diese von Computern verarbeitet und letztendlich gespeichert werden können. 
