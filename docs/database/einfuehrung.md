@@ -1,6 +1,6 @@
 # Einführung in Datenbanken
 
-In den vorherigen Kapiteln haben wir uns mit **Datenerfassung, -verarbeitung und -speicherung** beschäftigt. Wir haben gesehen, wie Daten von Sensoren erfasst, in binärer Form verarbeitet und auf verschiedenen Speichermedien wie RAM, SSD oder HDD gesichert werden.
+In den vorherigen Kapiteln haben wir uns mit **[Datenerfassung, -verarbeitung und -speicherung](../data/index.md)** beschäftigt. Wir haben gesehen, wie Daten von Sensoren erfasst, in binärer Form verarbeitet und auf verschiedenen Speichermedien wie RAM, SSD oder HDD gesichert werden.
 
 Doch was passiert, wenn wir **große Datenmengen strukturiert organisieren, effizient durchsuchen und gleichzeitig von mehreren Anwendungen nutzen** möchten? Hier stoßen einfache Dateisysteme schnell an ihre Grenzen.
 
@@ -10,22 +10,22 @@ Die Lösung: **Datenbanken** - spezialisierte Systeme zur strukturierten Verwalt
 
 ## Warum Datenbanken?
 
-Stellen wir uns vor, eine Universität verwaltet ihre Studierendendaten in einer **einfachen Excel-Tabelle** oder einer **CSV-Datei**:
+Stellen wir uns vor, ein Produktionsbetrieb verwaltet seine Maschinendaten und Wartungsprotokolle in einer **einfachen Excel-Tabelle** oder einer **CSV-Datei**:
 
 ```csv
-Matrikelnummer,Name,Studiengang,Semester
-12345,Anna Müller,Informatik,3
-12346,Max Schmidt,BWL,2
-12347,Lisa Weber,Informatik,5
+Maschinen-ID,Name,Standort,Anschaffungsjahr,Letzte_Wartung
+M001,CNC-Fräse Alpha,Halle A,2019,2024-08-15
+M002,Drehbank Beta,Halle A,2021,2024-09-03
+M003,Schweißroboter Gamma,Halle B,2020,2024-07-22
 ```
 
 Das funktioniert am Anfang gut, aber sobald die Daten wachsen oder mehrere Personen gleichzeitig darauf zugreifen möchten, treten Probleme auf:
 
-- **Keine Zugriffskontrolle** - Jeder kann alle Daten sehen und ändern
-- **Datenverlust bei gleichzeitigem Schreiben** - Wenn zwei Personen gleichzeitig speichern, können Daten verloren gehen
-- **Inkonsistente Daten** - Es gibt keine Regeln, die verhindern, dass ungültige Daten eingegeben werden (z.B. Semester = -5)
-- **Schwierige Abfragen** - Komplexe Fragen wie "Welche Informatik-Studierenden sind im 3. Semester?" sind umständlich
-- **Keine Beziehungen** - Verbindungen zwischen Datensätzen (z.B. Studierende ↔ Kurse) lassen sich kaum abbilden
+- **Keine Zugriffskontrolle** - Jeder kann alle Daten sehen und ändern (auch sensible Kostendaten)
+- **Datenverlust bei gleichzeitigem Schreiben** - Wenn Wartungstechniker und Schichtleiter gleichzeitig Daten aktualisieren, können Informationen verloren gehen
+- **Inkonsistente Daten** - Es gibt keine Regeln, die verhindern, dass ungültige Daten eingegeben werden (z.B. Anschaffungsjahr = 2050)
+- **Schwierige Abfragen** - Komplexe Fragen wie "Welche Maschinen in Halle A benötigen in den nächsten 30 Tagen eine Wartung?" sind umständlich
+- **Keine Beziehungen** - Verbindungen zwischen Datensätzen (z.B. Maschinen ↔ Wartungsprotokolle ↔ Ersatzteile) lassen sich kaum abbilden
 
 **Datenbanken lösen genau diese Probleme!**
 
@@ -38,19 +38,19 @@ Bevor wir tiefer einsteigen, klären wir zunächst die grundlegenden Begriffe:
 ???+ defi "Datenbank"
     Eine **Datenbank** ist eine **organisierte Sammlung von strukturierten Daten**, die elektronisch auf einem Computersystem gespeichert sind. Sie enthält die eigentlichen Informationen - die Inhalte.
 
-    **Beispiele:**
+    **Beispiele aus dem industriellen Umfeld:**
 
-    - Eine Sammlung von Studierendendaten (Namen, Matrikelnummern, Studiengänge)
-    - Alle Produktinformationen eines Online-Shops
-    - Patientenakten in einem Krankenhaus
-    - Buchbestände einer Bibliothek
+    - Maschinendaten und Wartungsprotokolle in einer Produktionshalle
+    - Lagerbestandsdaten und Materialfluss in einem Logistikzentrum
+    - Produktionsdaten und Qualitätskennzahlen (OEE, Ausschuss, Durchlaufzeiten)
+    - Lieferanten- und Bestelldaten im Einkauf
 
 Man kann sich eine Datenbank wie eine **digitale Ablage** vorstellen: Die Daten sind in einer bestimmten Struktur organisiert (z. B. in Tabellen, Dokumenten oder Graphen), damit sie effizient gespeichert, gefunden und verarbeitet werden können.
 
 **Wichtig:** Eine Datenbank ist **nicht dasselbe** wie eine einfache Datei (z. B. Excel, CSV). Sie ist speziell für die Verwaltung großer, komplexer Datenmengen konzipiert und bietet Funktionen wie:
 
 - **Strukturierte Organisation** - Daten sind logisch geordnet (z. B. in Tabellen mit Spalten und Zeilen)
-- **Beziehungen** - Verknüpfungen zwischen verschiedenen Datensätzen (z. B. Studierende ↔ Kurse)
+- **Beziehungen** - Verknüpfungen zwischen verschiedenen Datensätzen (z. B. Maschinen ↔ Wartungsprotokolle ↔ Ersatzteile)
 - **Persistenz** - Daten bleiben dauerhaft erhalten, auch nach dem Neustart des Systems
 
 ---
@@ -65,9 +65,9 @@ Die Begriffe **Datenbank** und **Datenbankmanagementsystem** werden oft synonym 
 ```mermaid
 flowchart TB
     A[Benutzer / Anwendungen]:::peach --> B[DBMS<br/>PostgreSQL, MySQL, MongoDB]:::teal
-    B --> C[Datenbank 1<br/>uni_db]:::peach
-    B --> D[Datenbank 2<br/>shop_db]:::peach
-    B --> E[Datenbank 3<br/>bibliothek_db]:::peach
+    B --> C[Datenbank 1<br/>produktions_db]:::peach
+    B --> D[Datenbank 2<br/>lager_db]:::peach
+    B --> E[Datenbank 3<br/>qualitaet_db]:::peach
 
     classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
     classDef teal fill:#009485aa,stroke:#333,stroke-width:2px;
@@ -93,13 +93,13 @@ flowchart TB
     </tr>
     <tr>
         <td style="background:#00948511; text-align:left; padding:10px 14px;"><strong>Beispiel</strong></td>
-        <td style="text-align:left; padding:10px 14px;"><code>uni_db</code>, <code>shop_db</code></td>
+        <td style="text-align:left; padding:10px 14px;"><code>produktions_db</code>, <code>lager_db</code></td>
         <td style="text-align:left; padding:10px 14px;">PostgreSQL, MySQL, MongoDB</td>
     </tr>
     <tr>
         <td style="background:#00948511; text-align:left; padding:10px 14px;"><strong>Analogie</strong></td>
-        <td style="text-align:left; padding:10px 14px;">Die Bücher in einer Bibliothek</td>
-        <td style="text-align:left; padding:10px 14px;">Das Bibliothekssystem (Katalog, Ausleihe, Verwaltung)</td>
+        <td style="text-align:left; padding:10px 14px;">Die Teile im Lager</td>
+        <td style="text-align:left; padding:10px 14px;">Das Lagerverwaltungssystem (ERP, Bestandsführung, Nachverfolgung)</td>
     </tr>
     <tr>
         <td style="background:#00948511; text-align:left; padding:10px 14px;"><strong>Funktion</strong></td>
@@ -126,14 +126,14 @@ Ein DBMS bietet eine Vielzahl von Funktionen, die weit über einfache Dateispeic
 
 Das DBMS ist die **Vermittlungsschicht** zwischen Anwendungen und den eigentlichen Daten. Es sorgt dafür, dass alle Zugriffe koordiniert, sicher und effizient ablaufen.
 
-???+ example "Beispiel: Universitätsdatenbank"
+???+ example "Beispiel: Produktionsdatenbank"
 
-    - **Die Datenbank** (z.B. `uni_db`) enthält alle Studierendendaten, Kursinformationen, Noten etc.
+    - **Die Datenbank** (z.B. `produktions_db`) enthält alle Maschinendaten, Wartungsprotokolle, Produktionsaufträge etc.
     - **Das DBMS** (z.B. PostgreSQL) verwaltet diese Datenbank:
-        - Stellt sicher, dass keine ungültigen Matrikelnummern eingegeben werden
-        - Erlaubt dem Sekretariat, Studierendendaten zu ändern
-        - Ermöglicht Studierenden, ihre Noten abzurufen (aber nicht zu ändern!)
-        - Sorgt dafür, dass bei 1000 gleichzeitigen Anfragen keine Daten verloren gehen
+        - Stellt sicher, dass keine ungültigen Maschinen-IDs oder unmögliche Wartungsdaten eingegeben werden
+        - Erlaubt der Instandhaltung, Wartungsprotokolle zu aktualisieren
+        - Ermöglicht dem Schichtleiter, Produktionsdaten abzurufen (aber keine Wartungskosten einzusehen!)
+        - Sorgt dafür, dass bei gleichzeitigen Zugriffen von MES, ERP und Wartungs-Apps keine Daten verloren gehen
 
 ---
 
@@ -242,7 +242,7 @@ Jetzt erstellen wir unsere erste eigene Datenbank!
 
 1. **Rechtsklick** auf "Datenbanken" in der linken Seitenleiste
 2. Wähle **"Neue Datenbank erstellen"**
-3. Name: `uni_db`
+3. Name: `produktions_db`
 4. Klicke auf **"OK"**
 
 ### Mit SQL (optional)
@@ -250,7 +250,7 @@ Jetzt erstellen wir unsere erste eigene Datenbank!
 Alternativ kannst du die Datenbank auch mit einem **SQL-Befehl** erstellen. Öffne dazu ein neues **SQL-Editor-Fenster** in DBeaver und führe aus:
 
 ```sql
-CREATE DATABASE uni_db;
+CREATE DATABASE produktions_db;
 ```
 
 ???+ defi "Was ist SQL?"
