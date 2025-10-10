@@ -45,9 +45,18 @@ nav:
     
   - Database:
     - Home: database/index.md
-    - Grundlagen: database/grundlagen.md
-    - DBMS: database/dbms.md
-
+    - Einführung: database/einfuehrung.md
+    - Relational: database/relational.md
+    - Abfragen: database/abfragen.md
+    - Manipulieren: database/manipulieren.md
+    - Modellierung: database/modellierung.md
+    - Join: database/join.md
+    - Fortgeschritten: database/fortgeschritten.md
+    - Integrität: database/integritaet.md
+    - Indizes: database/indizes.md
+    - Transaktionen: database/transaktionen.md
+    - Projekt: database/projekt.md
+    - Ausblick: database/ausblick.md
 
 
 extra_css:
@@ -73,6 +82,9 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.tilde
   - md_in_html
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
