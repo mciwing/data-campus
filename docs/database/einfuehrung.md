@@ -4,7 +4,7 @@ In den vorherigen Kapiteln haben wir uns mit **Datenerfassung, -verarbeitung und
 
 Doch was passiert, wenn wir **große Datenmengen strukturiert organisieren, effizient durchsuchen und gleichzeitig von mehreren Anwendungen nutzen** möchten? Hier stoßen einfache Dateisysteme schnell an ihre Grenzen.
 
-Die Lösung: **Datenbanken** – spezialisierte Systeme zur strukturierten Verwaltung von Daten.
+Die Lösung: **Datenbanken** - spezialisierte Systeme zur strukturierten Verwaltung von Daten.
 
 ---
 
@@ -21,11 +21,11 @@ Matrikelnummer,Name,Studiengang,Semester
 
 Das funktioniert am Anfang gut, aber sobald die Daten wachsen oder mehrere Personen gleichzeitig darauf zugreifen möchten, treten Probleme auf:
 
-- **Keine Zugriffskontrolle** – Jeder kann alle Daten sehen und ändern
-- **Datenverlust bei gleichzeitigem Schreiben** – Wenn zwei Personen gleichzeitig speichern, können Daten verloren gehen
-- **Inkonsistente Daten** – Es gibt keine Regeln, die verhindern, dass ungültige Daten eingegeben werden (z.B. Semester = -5)
-- **Schwierige Abfragen** – Komplexe Fragen wie "Welche Informatik-Studierenden sind im 3. Semester?" sind umständlich
-- **Keine Beziehungen** – Verbindungen zwischen Datensätzen (z.B. Studierende ↔ Kurse) lassen sich kaum abbilden
+- **Keine Zugriffskontrolle** - Jeder kann alle Daten sehen und ändern
+- **Datenverlust bei gleichzeitigem Schreiben** - Wenn zwei Personen gleichzeitig speichern, können Daten verloren gehen
+- **Inkonsistente Daten** - Es gibt keine Regeln, die verhindern, dass ungültige Daten eingegeben werden (z.B. Semester = -5)
+- **Schwierige Abfragen** - Komplexe Fragen wie "Welche Informatik-Studierenden sind im 3. Semester?" sind umständlich
+- **Keine Beziehungen** - Verbindungen zwischen Datensätzen (z.B. Studierende ↔ Kurse) lassen sich kaum abbilden
 
 **Datenbanken lösen genau diese Probleme!**
 
@@ -35,8 +35,8 @@ Das funktioniert am Anfang gut, aber sobald die Daten wachsen oder mehrere Perso
 
 Bevor wir tiefer einsteigen, klären wir zunächst die grundlegenden Begriffe:
 
-???+ defi "Datenbank (Database)"
-    Eine **Datenbank** ist eine **organisierte Sammlung von strukturierten Daten**, die elektronisch auf einem Computersystem gespeichert sind. Sie enthält die eigentlichen Informationen – die Inhalte.
+???+ defi "Datenbank"
+    Eine **Datenbank** ist eine **organisierte Sammlung von strukturierten Daten**, die elektronisch auf einem Computersystem gespeichert sind. Sie enthält die eigentlichen Informationen - die Inhalte.
 
     **Beispiele:**
 
@@ -49,9 +49,9 @@ Man kann sich eine Datenbank wie eine **digitale Ablage** vorstellen: Die Daten 
 
 **Wichtig:** Eine Datenbank ist **nicht dasselbe** wie eine einfache Datei (z. B. Excel, CSV). Sie ist speziell für die Verwaltung großer, komplexer Datenmengen konzipiert und bietet Funktionen wie:
 
-- **Strukturierte Organisation** – Daten sind logisch geordnet (z. B. in Tabellen mit Spalten und Zeilen)
-- **Beziehungen** – Verknüpfungen zwischen verschiedenen Datensätzen (z. B. Studierende ↔ Kurse)
-- **Persistenz** – Daten bleiben dauerhaft erhalten, auch nach dem Neustart des Systems
+- **Strukturierte Organisation** - Daten sind logisch geordnet (z. B. in Tabellen mit Spalten und Zeilen)
+- **Beziehungen** - Verknüpfungen zwischen verschiedenen Datensätzen (z. B. Studierende ↔ Kurse)
+- **Persistenz** - Daten bleiben dauerhaft erhalten, auch nach dem Neustart des Systems
 
 ---
 
@@ -114,14 +114,14 @@ flowchart TB
 
 Ein DBMS bietet eine Vielzahl von Funktionen, die weit über einfache Dateispeicherung hinausgehen:
 
-- **Datenverwaltung** – Strukturiertes Speichern in Tabellen, Dokumenten oder Graphen
-- **Zugriffskontrolle** – Wer darf welche Daten sehen oder ändern?
-- **Konsistenzsicherung** – Nur gültige Daten werden gespeichert (z. B. keine negativen Semester)
-- **Mehrbenutzerzugriff** – Mehrere Benutzer können gleichzeitig arbeiten, ohne sich gegenseitig zu stören
-- **Transaktionsverwaltung** – Änderungen werden atomar durchgeführt (alles oder nichts)
-- **Abfragesprache** – SQL ermöglicht flexible und mächtige Datenabfragen
-- **Datensicherheit** – Backups, Wiederherstellung bei Fehlern
-- **Performance-Optimierung** – Indizes und Caching für schnelle Abfragen
+- **Datenverwaltung** - Strukturiertes Speichern in Tabellen, Dokumenten oder Graphen
+- **Zugriffskontrolle** - Wer darf welche Daten sehen oder ändern?
+- **Konsistenzsicherung** - Nur gültige Daten werden gespeichert (z. B. keine negativen Semester)
+- **Mehrbenutzerzugriff** - Mehrere Benutzer können gleichzeitig arbeiten, ohne sich gegenseitig zu stören
+- **Transaktionsverwaltung** - Änderungen werden atomar durchgeführt (alles oder nichts)
+- **Abfragesprache** - SQL ermöglicht flexible und mächtige Datenabfragen
+- **Datensicherheit** - Backups, Wiederherstellung bei Fehlern
+- **Performance-Optimierung** - Indizes und Caching für schnelle Abfragen
 
 
 Das DBMS ist die **Vermittlungsschicht** zwischen Anwendungen und den eigentlichen Daten. Es sorgt dafür, dass alle Zugriffe koordiniert, sicher und effizient ablaufen.
@@ -137,20 +137,20 @@ Das DBMS ist die **Vermittlungsschicht** zwischen Anwendungen und den eigentlich
 
 ---
 
-## PostgreSQL – Unser Werkzeug
+## PostgreSQL - Unser Werkzeug
 
 In diesem Kurs verwenden wir **PostgreSQL**, eines der leistungsfähigsten und beliebtesten **relationalen Datenbankmanagementsysteme (RDBMS)** (was dies bedeutet, erfahren wir in einem späteren Kapitel).
 
 ???+ adv "Vorteile von PostgreSQL"
 
-    - **Open Source & kostenlos** – Kann von jedem frei verwendet werden
-    - **Plattformunabhängig** – Läuft auf Windows, macOS und Linux
-    - **Hohe Datenintegrität** – Strenge Einhaltung von SQL-Standards
-    - **Leistungsstark** – Auch für große Datenmengen geeignet
-    - **Weit verbreitet** – Wird in der Industrie häufig eingesetzt
+    - **Open Source & kostenlos** - Kann von jedem frei verwendet werden
+    - **Plattformunabhängig** - Läuft auf Windows, macOS und Linux
+    - **Hohe Datenintegrität** - Strenge Einhaltung von SQL-Standards
+    - **Leistungsstark** - Auch für große Datenmengen geeignet
+    - **Weit verbreitet** - Wird in der Industrie häufig eingesetzt
 
 
-PostgreSQL speichert Daten in **Tabellen** – ähnlich wie Excel, aber mit viel mehr Funktionen und Sicherheit.
+PostgreSQL speichert Daten in **Tabellen** - ähnlich wie Excel, aber mit viel mehr Funktionen und Sicherheit.
 
 ---
 
@@ -192,7 +192,7 @@ Bevor wir mit Datenbanken arbeiten können, müssen wir PostgreSQL und ein **Cli
 
 ### Schritt 2: Client-Tool installieren
 
-Um mit PostgreSQL zu arbeiten, benötigen wir ein **Client-Tool**. Wir empfehlen **DBeaver Community Edition** – ein kostenloser, plattformunabhängiger Datenbank-Client.
+Um mit PostgreSQL zu arbeiten, benötigen wir ein **Client-Tool**. Wir empfehlen **DBeaver Community Edition** - ein kostenloser, plattformunabhängiger Datenbank-Client.
 
 **DBeaver installieren**
 
@@ -254,7 +254,7 @@ CREATE DATABASE uni_db;
 ```
 
 ???+ defi "Was ist SQL?"
-    **SQL (Structured Query Language)** ist die Sprache, mit der wir mit Datenbanken kommunizieren. Alle Befehle – vom Erstellen einer Tabelle bis zur Abfrage von Daten – werden in SQL geschrieben.
+    **SQL (Structured Query Language)** ist die Sprache, mit der wir mit Datenbanken kommunizieren. Alle Befehle - vom Erstellen einer Tabelle bis zur Abfrage von Daten - werden in SQL geschrieben.
 
 ---
 
@@ -288,4 +288,4 @@ PostgreSQL 16.1 on x86_64-apple-darwin, compiled by ...
 
 ---
 
-Im nächsten Kapitel lernen wir das **relationale Modell** kennen – wie Daten in Tabellen organisiert werden und welche Datentypen PostgreSQL bietet. Wir werden unsere erste Tabelle erstellen und Daten einfügen!
+Im nächsten Kapitel lernen wir das **relationale Modell** kennen - wie Daten in Tabellen organisiert werden und welche Datentypen PostgreSQL bietet. Wir werden unsere erste Tabelle erstellen und Daten einfügen!
