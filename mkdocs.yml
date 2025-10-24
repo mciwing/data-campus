@@ -40,9 +40,6 @@ nav:
     - Datenverarbeitung: data/zahlensysteme.md
     - Speicherung: data/speicherung.md
 
-  - Excel:
-    - Home: excel/index.md
-    
   - Database:
     - Home: database/index.md
     - Einführung: database/einfuehrung.md
@@ -58,10 +55,13 @@ nav:
     - Projekt: database/projekt.md
     - Ausblick: database/ausblick.md
 
+  - Excel:
+    - Home: excel/index.md
 
 extra_css:
   - stylesheets/colors.css
   - stylesheets/extra.css
+  - stylesheets/slideshow.css
 
 markdown_extensions:
   - attr_list
@@ -88,3 +88,9 @@ markdown_extensions:
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/slideshow.js
+
+plugins:
+  - glightbox:
+      auto_caption: true
+      caption_position: bottom

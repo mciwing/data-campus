@@ -1,0 +1,114 @@
+/* Inline Image Slideshow/Carousel */
+.image-slideshow {
+    position: relative;
+    max-width: 800px;
+    margin: 2rem auto;
+    background: var(--md-code-bg-color);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.slideshow-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.slideshow-slide {
+    display: none;
+    width: 100%;
+}
+
+.slideshow-slide.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.slideshow-slide img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.slide-caption {
+    text-align: center;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--md-default-fg-color--light);
+    font-style: italic;
+}
+
+/* Navigation Buttons */
+.slideshow-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 1rem;
+}
+
+.slideshow-btn {
+    background: var(--md-primary-fg-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.slideshow-btn:hover {
+    background: var(--md-accent-fg-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.slideshow-btn:disabled {
+    background: var(--md-default-fg-color--lightest);
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.5;
+}
+
+.slideshow-counter {
+    text-align: center;
+    font-weight: 500;
+    color: var(--md-default-fg-color);
+    font-size: 0.9rem;
+}
+
+/* Keyboard hint */
+.keyboard-hint {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--md-default-fg-color--light);
+    margin-top: 0.5rem;
+    opacity: 0.7;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .image-slideshow {
+        margin: 1rem 0;
+    }
+
+    .slideshow-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}

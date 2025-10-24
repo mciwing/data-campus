@@ -668,7 +668,7 @@ Für die **dauerhafte Speicherung** großer Datenmengen nutzen wir **Massenspeic
     <tr>
         <td style="background:#00948511; text-align:left; padding:10px 14px;">Typische Schnittstellen</td>
         <td style="text-align:left; padding:10px 14px;">SATA, SAS</td>
-        <td style="text-align:left; padding:10px 14px;">SATA, <strong>NVMe/PCIe</strong></td>
+        <td style="text-align:left; padding:10px 14px;">SATA, NVMe/PCIe</td>
     </tr>
     </tbody>
 </table>

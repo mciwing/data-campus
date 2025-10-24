@@ -154,43 +154,88 @@ PostgreSQL speichert Daten in **Tabellen** - ähnlich wie Excel, aber mit viel m
 
 ---
 
-## Installation & Setup
+### Installation & Setup
 
 Bevor wir mit Datenbanken arbeiten können, müssen wir PostgreSQL und ein **Client-Tool** installieren.
 
-### Schritt 1: PostgreSQL installieren
+#### Schritt 1: PostgreSQL installieren
 
 
 
 === ":fontawesome-brands-windows: Windows"
 
-    1. Lade den Installer von [postgresql.org/download/windows](https://www.postgresql.org/download/windows/) herunter
+    1. Lade den Installer von [postgresql.org/download/windows](https://www.postgresql.org/download/windows/) herunter (beim Erstellen der Unterlagen Version 18)
     2. Führe die Installation aus (alle Standardeinstellungen sind OK)
     3. **Wichtig:** Notiere dir das Passwort für den Benutzer `postgres`!
     4. Port: `5432` (Standard)
 
+    **Installationsschritte:**
+
+    <div class="image-slideshow" markdown="1">
+        <div class="slideshow-container">
+            <div class="slideshow-slide active" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;">
+                <div class="slide-caption">==ACHTUNG: Passwort merken==</div>
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall7.png" alt="Port auswählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall8.png" alt="Sprache auswählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall9.png" alt="Zusammenfassung & Installation starten" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/wininstall10.png" alt="Installation läuft" style="width: 70%; display: inline-block;">
+            </div>
+        </div>
+        <div class="slideshow-nav">
+            <button class="slideshow-btn slideshow-prev">← Zurück</button>
+            <div class="slideshow-counter">Schritt 1 von 2</div>
+            <button class="slideshow-btn slideshow-next">Weiter →</button>
+        </div>
+        <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+    </div>
+    **Installation kontrollieren:**
+
+    1. Suche in der Windows Suchleiste nach **psql**. Es öffnet sich ein Shell Fenster.
+    2. Hier müssen wir mehrere Informationen eingeben. Dabei können alle Standardeinstellungen übernommen werden (einfach Enter klicken). Lediglich bei *Password* müssen wir unser in der Installation gewähltes Passwort eingeben. 
+    3. Anschließend geben wir folgenden Befehl ein
+    ```sql
+    SELECT version();
+    ```
+    4. Als Ergebnis sollte die installierte Version wie nachfolgend angeführt werden.
+
+    <div style="text-align: center;">
+        <img src="/assets/database/einfuehrung/sql_verify.png" alt="Hieratische Zahlen" style="width: 70%; display: inline-block;">
+    </div>
 
 === ":fontawesome-brands-apple: macOS"
     
     
-    **Option 1: Mit Homebrew (empfohlen)**
-
-    ```bash
-    brew install postgresql@16
-    brew services start postgresql@16
-    ```
-
-    **Option 2: Mit Postgres.app**
-
-    1. Lade [Postgres.app](https://postgresapp.com/) herunter
-    2. Ziehe die App in den Programme-Ordner
-    3. Starte Postgres.app
+    XXXX FOLGT XXXX
 
 
 
 ---
 
-### Schritt 2: Client-Tool installieren
+#### Schritt 2: Client-Tool installieren
 
 Um mit PostgreSQL zu arbeiten, benötigen wir ein **Client-Tool**. Wir empfehlen **DBeaver Community Edition** - ein kostenloser, plattformunabhängiger Datenbank-Client.
 
@@ -205,7 +250,7 @@ Um mit PostgreSQL zu arbeiten, benötigen wir ein **Client-Tool**. Wir empfehlen
 
 ---
 
-### Schritt 3: Erste Verbindung herstellen
+#### Schritt 3: Erste Verbindung herstellen
 
 Jetzt verbinden wir DBeaver mit unserer PostgreSQL-Datenbank.
 
