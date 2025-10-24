@@ -13,23 +13,23 @@ JOINs sind das Herzstück relationaler Datenbanken. Sie erlauben es uns, Daten a
 Erinnern wir uns an unser Beispiel aus Kapitel 5:
 
 ```
-Tabelle: angestellte              Tabelle: abteilungen
- angestellte_id │ name  │ abt_id   abteilung_id │ name      │ standort
-────────────────┼───────┼────────  ──────────────┼───────────┼──────────
-              1 │ Anna  │      1               1 │ IT        │ Wien
-              2 │ Max   │      2               2 │ HR        │ Graz
-              3 │ Lisa  │      1               3 │ Marketing │ Linz
+Tabelle: maschinen                      Tabelle: techniker
+ maschinen_id │ name      │ tech_id     techniker_id │ name           │ abteilung
+──────────────┼───────────┼────────    ──────────────┼────────────────┼──────────
+            1 │ CNC Alpha │       1                1 │ Thomas Müller  │ Wartung
+            2 │ Drehbank  │       2                2 │ Sandra Schmidt │ Fertigung
+            3 │ Roboter   │       1                3 │ Klaus Weber    │ Instandh.
 ```
 
-**Frage:** Wie zeigen wir die Angestellten **mit** ihren Abteilungsnamen an?
+**Frage:** Wie zeigen wir die Maschinen **mit** ihren zuständigen Technikern an?
 
 ```
 Gewünschtes Ergebnis:
- name │ abteilung │ standort 
-──────┼───────────┼──────────
- Anna │ IT        │ Wien
- Max  │ HR        │ Graz
- Lisa │ IT        │ Wien
+ maschine  │ techniker      │ abteilung
+───────────┼────────────────┼───────────
+ CNC Alpha │ Thomas Müller  │ Wartung
+ Drehbank  │ Sandra Schmidt │ Fertigung
+ Roboter   │ Thomas Müller  │ Wartung
 ```
 
 Dafür brauchen wir einen **JOIN**!
@@ -80,61 +80,61 @@ Als Venn-Diagramm:
 
 ---
 
-## Beispiel: Angestellte und Abteilungen
+## Beispiel: Maschinen und Techniker
 
 ### Vorbereitung: Tabellen erstellen
 
 ```sql
-CREATE TABLE abteilungen (
-    abteilung_id SERIAL PRIMARY KEY,
+CREATE TABLE techniker (
+    techniker_id SERIAL PRIMARY KEY,
     name VARCHAR(100),
-    standort VARCHAR(100)
+    abteilung VARCHAR(50)
 );
 
-CREATE TABLE angestellte (
-    angestellte_id SERIAL PRIMARY KEY,
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY,
     name VARCHAR(100),
-    abteilung_id INTEGER,
-    gehalt NUMERIC(10, 2),
-    FOREIGN KEY (abteilung_id) REFERENCES abteilungen(abteilung_id)
+    techniker_id INTEGER,
+    anschaffungsjahr INTEGER,
+    FOREIGN KEY (techniker_id) REFERENCES techniker(techniker_id)
 );
 
-INSERT INTO abteilungen (name, standort)
-VALUES 
-    ('IT', 'Wien'),
-    ('HR', 'Graz'),
-    ('Marketing', 'Linz');
+INSERT INTO techniker (name, abteilung)
+VALUES
+    ('Thomas Müller', 'Wartung'),
+    ('Sandra Schmidt', 'Fertigung'),
+    ('Klaus Weber', 'Instandhaltung');
 
-INSERT INTO angestellte (name, abteilung_id, gehalt)
-VALUES 
-    ('Anna Müller', 1, 4500),
-    ('Max Schmidt', 2, 3800),
-    ('Lisa Weber', 1, 4200),
-    ('Tom Bauer', NULL, 3500);  -- Kein Abteilung!
+INSERT INTO maschinen (name, techniker_id, anschaffungsjahr)
+VALUES
+    ('CNC-Fräse Alpha', 1, 2019),
+    ('Drehbank Beta', 2, 2021),
+    ('Schweißroboter Gamma', 1, 2020),
+    ('Stanzmaschine Delta', NULL, 2018);  -- Kein zuständiger Techniker!
 ```
 
 ### INNER JOIN ausführen
 
 ```sql
-SELECT 
-    angestellte.name AS mitarbeiter,
-    abteilungen.name AS abteilung,
-    abteilungen.standort
-FROM angestellte
-INNER JOIN abteilungen ON angestellte.abteilung_id = abteilungen.abteilung_id;
+SELECT
+    maschinen.name AS maschine,
+    techniker.name AS techniker,
+    techniker.abteilung
+FROM maschinen
+INNER JOIN techniker ON maschinen.techniker_id = techniker.techniker_id;
 ```
 
 **Ergebnis:**
 
 ```
- mitarbeiter  │ abteilung │ standort 
-──────────────┼───────────┼──────────
- Anna Müller  │ IT        │ Wien
- Max Schmidt  │ HR        │ Graz
- Lisa Weber   │ IT        │ Wien
+ maschine             │ techniker      │ abteilung
+──────────────────────┼────────────────┼───────────
+ CNC-Fräse Alpha      │ Thomas Müller  │ Wartung
+ Drehbank Beta        │ Sandra Schmidt │ Fertigung
+ Schweißroboter Gamma │ Thomas Müller  │ Wartung
 ```
 
-❗ **Tom Bauer fehlt!** Warum? Er hat keine Abteilung (`abteilung_id = NULL`), also keine Übereinstimmung.
+❗ **Stanzmaschine Delta fehlt!** Warum? Sie hat keinen zuständigen Techniker (`techniker_id = NULL`), also keine Übereinstimmung.
 
 <div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
 <strong>📘 Wichtig:</strong><br>
@@ -148,28 +148,28 @@ INNER JOIN zeigt nur Datensätze, die in <strong>beiden</strong> Tabellen verkn�
 Bei JOINs schreiben wir oft lange Tabellennamen. **Aliasse** (Abkürzungen) machen das übersichtlicher:
 
 ```sql
-SELECT 
-    a.name AS mitarbeiter,
-    ab.name AS abteilung,
-    ab.standort,
-    a.gehalt
-FROM angestellte AS a
-INNER JOIN abteilungen AS ab ON a.abteilung_id = ab.abteilung_id;
+SELECT
+    m.name AS maschine,
+    t.name AS techniker,
+    t.abteilung,
+    m.anschaffungsjahr
+FROM maschinen AS m
+INNER JOIN techniker AS t ON m.techniker_id = t.techniker_id;
 ```
 
 oder noch kürzer (ohne `AS`):
 
 ```sql
-SELECT 
-    a.name AS mitarbeiter,
-    ab.name AS abteilung
-FROM angestellte a
-INNER JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id;
+SELECT
+    m.name AS maschine,
+    t.name AS techniker
+FROM maschinen m
+INNER JOIN techniker t ON m.techniker_id = t.techniker_id;
 ```
 
 <div style="background:#00948511; border-left:4px solid #009485; padding:12px 16px; margin:16px 0;">
 <strong>💡 Best Practice:</strong><br>
-Verwende immer kurze, aussagekräftige Aliasse (z.B. <code>a</code>, <code>ab</code>) bei JOINs – das macht die Abfrage viel lesbarer!
+Verwende immer kurze, aussagekräftige Aliasse (z.B. <code>m</code>, <code>t</code>) bei JOINs – das macht die Abfrage viel lesbarer!
 </div>
 
 ---
@@ -199,26 +199,26 @@ Der **LEFT JOIN** (auch **LEFT OUTER JOIN**) gibt **alle Datensätze der linken 
 ### Beispiel
 
 ```sql
-SELECT 
-    a.name AS mitarbeiter,
-    ab.name AS abteilung,
-    ab.standort
-FROM angestellte a
-LEFT JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id;
+SELECT
+    m.name AS maschine,
+    t.name AS techniker,
+    t.abteilung
+FROM maschinen m
+LEFT JOIN techniker t ON m.techniker_id = t.techniker_id;
 ```
 
 **Ergebnis:**
 
 ```
- mitarbeiter  │ abteilung │ standort 
-──────────────┼───────────┼──────────
- Anna Müller  │ IT        │ Wien
- Max Schmidt  │ HR        │ Graz
- Lisa Weber   │ IT        │ Wien
- Tom Bauer    │ NULL      │ NULL
+ maschine             │ techniker      │ abteilung
+──────────────────────┼────────────────┼───────────
+ CNC-Fräse Alpha      │ Thomas Müller  │ Wartung
+ Drehbank Beta        │ Sandra Schmidt │ Fertigung
+ Schweißroboter Gamma │ Thomas Müller  │ Wartung
+ Stanzmaschine Delta  │ NULL           │ NULL
 ```
 
-✅ **Tom Bauer ist jetzt dabei!** Wo keine Abteilung existiert, steht `NULL`.
+✅ **Stanzmaschine Delta ist jetzt dabei!** Wo kein Techniker zuständig ist, steht `NULL`.
 
 ---
 
@@ -229,25 +229,25 @@ Der **RIGHT JOIN** (auch **RIGHT OUTER JOIN**) ist das Spiegelbild des LEFT JOIN
 ### Beispiel
 
 ```sql
-SELECT 
-    a.name AS mitarbeiter,
-    ab.name AS abteilung
-FROM angestellte a
-RIGHT JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id;
+SELECT
+    m.name AS maschine,
+    t.name AS techniker
+FROM maschinen m
+RIGHT JOIN techniker t ON m.techniker_id = t.techniker_id;
 ```
 
 **Ergebnis:**
 
 ```
- mitarbeiter  │ abteilung 
-──────────────┼───────────
- Anna Müller  │ IT
- Lisa Weber   │ IT
- Max Schmidt  │ HR
- NULL         │ Marketing
+ maschine             │ techniker
+──────────────────────┼────────────────
+ CNC-Fräse Alpha      │ Thomas Müller
+ Schweißroboter Gamma │ Thomas Müller
+ Drehbank Beta        │ Sandra Schmidt
+ NULL                 │ Klaus Weber
 ```
 
-✅ **Marketing ist dabei**, obwohl niemand dort arbeitet!
+✅ **Klaus Weber ist dabei**, obwohl keine Maschine ihm zugeordnet ist!
 
 <div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
 <strong>📘 Praxis-Tipp:</strong><br>
@@ -300,45 +300,45 @@ RIGHT JOIN wird selten verwendet. Man kann jeden RIGHT JOIN als LEFT JOIN umschr
 
 Man kann mehr als zwei Tabellen in einer Abfrage joinen!
 
-### Beispiel: Studierende, Belegungen, Kurse
+### Beispiel: Maschinen, Ersatzteil-Zuordnungen, Ersatzteile
 
 Erinnern wir uns an die n:m-Beziehung aus Kapitel 5:
 
 ```sql
--- Welche Studierenden belegen welche Kurse mit welcher Note?
-SELECT 
-    s.vorname,
-    s.nachname,
-    k.kursname,
-    kb.note
-FROM studierende s
-INNER JOIN kurs_belegungen kb ON s.matrikel_nr = kb.matrikel_nr
-INNER JOIN kurse k ON kb.kurs_id = k.kurs_id
-ORDER BY s.nachname, k.kursname;
+-- Welche Maschinen benötigen welche Ersatzteile in welcher Menge?
+SELECT
+    m.name AS maschine,
+    e.teilname,
+    me.menge,
+    e.preis
+FROM maschinen m
+INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+ORDER BY m.name, e.teilname;
 ```
 
 **Ergebnis:**
 
 ```
- vorname │ nachname │ kursname       │ note 
-─────────┼──────────┼────────────────┼──────
- Anna    │ Müller   │ Algorithmen    │  2.0
- Anna    │ Müller   │ Datenbanken    │  1.3
- Max     │ Schmidt  │ Datenbanken    │  1.7
- Max     │ Schmidt  │ Webentwicklung │  2.3
- Lisa    │ Weber    │ Algorithmen    │  1.0
- Lisa    │ Weber    │ Webentwicklung │  1.7
+ maschine             │ teilname         │ menge │ preis
+──────────────────────┼──────────────────┼───────┼─────────
+ CNC-Fräse Alpha      │ Kühlmittelpumpe  │     2 │  380.50
+ CNC-Fräse Alpha      │ Spindelmotor     │     1 │ 1250.00
+ Drehbank Beta        │ Kühlmittelpumpe  │     1 │  380.50
+ Drehbank Beta        │ Spindelmotor     │     1 │ 1250.00
+ Schweißroboter Gamma │ Kühlmittelpumpe  │     1 │  380.50
+ Schweißroboter Gamma │ Schweißdrahtsp.  │     5 │   45.90
 ```
 
 **Ablauf:**
 
-1. `studierende` mit `kurs_belegungen` joinen (über `matrikel_nr`)
-2. Ergebnis mit `kurse` joinen (über `kurs_id`)
+1. `maschinen` mit `maschinen_ersatzteile` joinen (über `maschinen_id`)
+2. Ergebnis mit `ersatzteile` joinen (über `teil_id`)
 
 ```mermaid
 graph LR
-    A[studierende]:::teal --> B[kurs_belegungen]:::peach
-    B --> C[kurse]:::teal
+    A[maschinen]:::teal --> B[maschinen_ersatzteile]:::peach
+    B --> C[ersatzteile]:::teal
 
     classDef peach fill:#FFB482aa,stroke:#333,stroke-width:2px;
     classDef teal fill:#009485aa,stroke:#333,stroke-width:2px;
@@ -353,8 +353,8 @@ graph LR
 Die **ON-Klausel** definiert, **wie** Tabellen verknüpft werden:
 
 ```sql
-FROM angestellte a
-INNER JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id
+FROM maschinen m
+INNER JOIN techniker t ON m.techniker_id = t.techniker_id
 ```
 
 ### WHERE - Filter nach dem Join
@@ -362,10 +362,10 @@ INNER JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id
 Die **WHERE-Klausel** filtert das **Ergebnis nach** dem Join:
 
 ```sql
-SELECT a.name, ab.name AS abteilung
-FROM angestellte a
-INNER JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id
-WHERE ab.standort = 'Wien';
+SELECT m.name, t.name AS techniker
+FROM maschinen m
+INNER JOIN techniker t ON m.techniker_id = t.techniker_id
+WHERE t.abteilung = 'Wartung';
 ```
 
 **Unterschied bei INNER JOIN:** Fast keiner! Bei INNER JOIN könnten wir die Bedingung auch in ON schreiben.
@@ -374,18 +374,18 @@ WHERE ab.standort = 'Wien';
 
 ```sql
 -- Variante 1: Bedingung in ON
-SELECT a.name, ab.name
-FROM angestellte a
-LEFT JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id 
-    AND ab.standort = 'Wien';
--- Ergebnis: Alle Angestellten, Abteilung nur wenn in Wien
+SELECT m.name, t.name
+FROM maschinen m
+LEFT JOIN techniker t ON m.techniker_id = t.techniker_id
+    AND t.abteilung = 'Wartung';
+-- Ergebnis: Alle Maschinen, Techniker nur wenn aus Wartung
 
 -- Variante 2: Bedingung in WHERE
-SELECT a.name, ab.name
-FROM angestellte a
-LEFT JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id
-WHERE ab.standort = 'Wien';
--- Ergebnis: Nur Angestellte in Wiener Abteilungen (wie INNER JOIN!)
+SELECT m.name, t.name
+FROM maschinen m
+LEFT JOIN techniker t ON m.techniker_id = t.techniker_id
+WHERE t.abteilung = 'Wartung';
+-- Ergebnis: Nur Maschinen mit Wartungs-Technikern (wie INNER JOIN!)
 ```
 
 <div style="background:#dc262611; border-left:4px solid #dc2626; padding:12px 16px; margin:16px 0;">
@@ -397,110 +397,110 @@ Bei LEFT/RIGHT JOIN: Filterbedingungen auf die rechte/linke Tabelle in <code>WHE
 
 ## Praktische Anwendungen
 
-### Welche Angestellten haben KEINE Abteilung?
+### Welche Maschinen haben KEINEN zuständigen Techniker?
 
 ```sql
 SELECT name
-FROM angestellte
-WHERE abteilung_id IS NULL;
+FROM maschinen
+WHERE techniker_id IS NULL;
 ```
 
 oder mit LEFT JOIN:
 
 ```sql
-SELECT a.name
-FROM angestellte a
-LEFT JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id
-WHERE ab.abteilung_id IS NULL;
+SELECT m.name
+FROM maschinen m
+LEFT JOIN techniker t ON m.techniker_id = t.techniker_id
+WHERE t.techniker_id IS NULL;
 ```
 
-### Welche Kurse werden von KEINEM Studierenden belegt?
+### Welche Ersatzteile werden von KEINER Maschine benötigt?
 
 ```sql
-SELECT k.kursname
-FROM kurse k
-LEFT JOIN kurs_belegungen kb ON k.kurs_id = kb.kurs_id
-WHERE kb.kurs_id IS NULL;
+SELECT e.teilname
+FROM ersatzteile e
+LEFT JOIN maschinen_ersatzteile me ON e.teil_id = me.teil_id
+WHERE me.teil_id IS NULL;
 ```
 
 ---
 
 ## Praktische Übungen 🎯
 
-Verwende die Tabellen aus Kapitel 5 (Studierende, Kurse, Belegungen).
+Verwende die Tabellen aus Kapitel 5 (Maschinen, Ersatzteile, Zuordnungen).
 
 ### Aufgabe 1: INNER JOIN
 
-Zeige alle Kursbelegungen mit Studierendennamen und Kursnamen.
+Zeige alle Ersatzteil-Zuordnungen mit Maschinennamen und Teilnamen.
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT 
-    s.vorname,
-    s.nachname,
-    k.kursname,
-    kb.note
-FROM kurs_belegungen kb
-INNER JOIN studierende s ON kb.matrikel_nr = s.matrikel_nr
-INNER JOIN kurse k ON kb.kurs_id = k.kurs_id;
+SELECT
+    m.name AS maschine,
+    e.teilname,
+    me.menge,
+    e.preis
+FROM maschinen_ersatzteile me
+INNER JOIN maschinen m ON me.maschinen_id = m.maschinen_id
+INNER JOIN ersatzteile e ON me.teil_id = e.teil_id;
 ```
 </details>
 
 ### Aufgabe 2: LEFT JOIN
 
-Zeige alle Studierenden und ihre Kurse. Auch Studierende ohne Kurse sollen angezeigt werden.
+Zeige alle Maschinen und ihre Ersatzteile. Auch Maschinen ohne Ersatzteile sollen angezeigt werden.
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT 
-    s.vorname,
-    s.nachname,
-    k.kursname
-FROM studierende s
-LEFT JOIN kurs_belegungen kb ON s.matrikel_nr = kb.matrikel_nr
-LEFT JOIN kurse k ON kb.kurs_id = k.kurs_id;
+SELECT
+    m.name AS maschine,
+    e.teilname,
+    me.menge
+FROM maschinen m
+LEFT JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+LEFT JOIN ersatzteile e ON me.teil_id = e.teil_id;
 ```
 </details>
 
 ### Aufgabe 3: Aggregation mit JOIN
 
-Wie viele Studierende belegen jeden Kurs?
+Wie viele Maschinen benötigen jedes Ersatzteil?
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT 
-    k.kursname,
-    COUNT(kb.matrikel_nr) AS anzahl_studierende
-FROM kurse k
-LEFT JOIN kurs_belegungen kb ON k.kurs_id = kb.kurs_id
-GROUP BY k.kursname
-ORDER BY anzahl_studierende DESC;
+SELECT
+    e.teilname,
+    COUNT(me.maschinen_id) AS anzahl_maschinen
+FROM ersatzteile e
+LEFT JOIN maschinen_ersatzteile me ON e.teil_id = me.teil_id
+GROUP BY e.teilname
+ORDER BY anzahl_maschinen DESC;
 ```
 </details>
 
-### Aufgabe 4: Durchschnittsnote pro Kurs
+### Aufgabe 4: Durchschnittskosten pro Maschine
 
-Berechne die Durchschnittsnote für jeden Kurs.
+Berechne die durchschnittlichen Ersatzteilkosten für jede Maschine (gewichtet mit Menge).
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT 
-    k.kursname,
-    AVG(kb.note) AS durchschnittsnote,
-    COUNT(*) AS anzahl_noten
-FROM kurse k
-INNER JOIN kurs_belegungen kb ON k.kurs_id = kb.kurs_id
-WHERE kb.note IS NOT NULL
-GROUP BY k.kursname
-ORDER BY durchschnittsnote;
+SELECT
+    m.name AS maschine,
+    AVG(e.preis * me.menge) AS durchschnitt_kosten,
+    SUM(e.preis * me.menge) AS gesamt_kosten
+FROM maschinen m
+INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+GROUP BY m.name
+ORDER BY gesamt_kosten DESC;
 ```
 </details>
 

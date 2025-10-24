@@ -1,6 +1,6 @@
 # Daten manipulieren (INSERT, UPDATE, DELETE)
 
-Bisher haben wir gelernt, wie man Daten **einfügt** und **abfragt**. Aber was passiert, wenn sich Daten ändern müssen? Wenn ein Studierender das Semester wechselt, den Studiengang ändert oder die Universität verlässt?
+Bisher haben wir gelernt, wie man Daten **einfügt** und **abfragt**. Aber was passiert, wenn sich Daten ändern müssen? Wenn eine Maschine in die Wartung geht, der Standort wechselt oder ausgemustert wird?
 
 In diesem Kapitel lernen wir die drei **Manipulationsbefehle** von SQL kennen: **INSERT**, **UPDATE** und **DELETE**. Zusammen mit **SELECT** bilden sie die vier Grundoperationen der Datenverwaltung – oft als **CRUD** bezeichnet:
 
@@ -18,26 +18,26 @@ Wir kennen **INSERT** bereits aus Kapitel 2, aber hier noch einmal die wichtigst
 ### Einzelnen Datensatz einfügen
 
 ```sql
-INSERT INTO studierende (matrikel_nr, vorname, nachname, studiengang, semester)
-VALUES (12353, 'Julia', 'Mayer', 'Physik', 2);
+INSERT INTO maschinen (maschinen_id, name, typ, standort, anschaffungsjahr, status)
+VALUES (9, 'Pressmaschine Iota', 'Pressmaschine', 'Halle C', 2023, 'Aktiv');
 ```
 
 ### Mehrere Datensätze auf einmal
 
 ```sql
-INSERT INTO studierende (matrikel_nr, vorname, nachname, studiengang, semester)
-VALUES 
-    (12354, 'Felix', 'Huber', 'Chemie', 1),
-    (12355, 'Nina', 'Schneider', 'Biologie', 3),
-    (12356, 'Tim', 'Koch', 'Physik', 2);
+INSERT INTO maschinen (maschinen_id, name, typ, standort, anschaffungsjahr, status)
+VALUES
+    (10, 'Bohrmaschine Kappa', 'Bohrmaschine', 'Halle A', 2022, 'Aktiv'),
+    (11, 'Fräse Lambda', 'CNC-Fräse', 'Halle B', 2021, 'Aktiv'),
+    (12, 'Poliermaschine Mu', 'Poliermaschine', 'Halle C', 2020, 'Wartung');
 ```
 
 ### Nur bestimmte Spalten befüllen
 
 ```sql
--- Semester wird nicht angegeben (erhält NULL oder Standardwert)
-INSERT INTO studierende (matrikel_nr, vorname, nachname, studiengang)
-VALUES (12357, 'Laura', 'Becker', 'Chemie');
+-- Status wird nicht angegeben (erhält NULL oder Standardwert)
+INSERT INTO maschinen (maschinen_id, name, typ, standort, anschaffungsjahr)
+VALUES (13, 'Testanlage Nu', 'Testanlage', 'Halle D', 2024);
 ```
 
 <div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
@@ -76,34 +76,34 @@ Ohne <code>WHERE</code> werden <strong>ALLE</strong> Datensätze geändert!<br>
 #### Einen einzelnen Datensatz ändern
 
 ```sql
--- Anna Müller wechselt ins 4. Semester
-UPDATE studierende
-SET semester = 4
-WHERE matrikel_nr = 12345;
+-- CNC-Fräse Alpha geht in Wartung
+UPDATE maschinen
+SET status = 'Wartung'
+WHERE maschinen_id = 1;
 ```
 
 #### Mehrere Spalten gleichzeitig ändern
 
 ```sql
--- Max Schmidt wechselt von BWL zu Wirtschaftsinformatik und kommt ins 3. Semester
-UPDATE studierende
-SET studiengang = 'Wirtschaftsinformatik',
-    semester = 3
-WHERE matrikel_nr = 12346;
+-- Drehbank Beta wechselt Standort und geht in Wartung
+UPDATE maschinen
+SET standort = 'Halle C',
+    status = 'Wartung'
+WHERE maschinen_id = 2;
 ```
 
 #### Mehrere Datensätze ändern (mit Bedingung)
 
 ```sql
--- Alle Informatik-Studierenden kommen ein Semester weiter
-UPDATE studierende
-SET semester = semester + 1
-WHERE studiengang = 'Informatik';
+-- Alle Maschinen in Halle A werden auf Aktiv gesetzt
+UPDATE maschinen
+SET status = 'Aktiv'
+WHERE standort = 'Halle A';
 ```
 
 <div style="background:#00948511; border-left:4px solid #009485; padding:12px 16px; margin:16px 0;">
 <strong>💡 Tipp:</strong> Du kannst in <code>SET</code> auch mit dem aktuellen Wert rechnen:<br>
-<code>semester = semester + 1</code> erhöht das Semester um 1.
+<code>anschaffungsjahr = anschaffungsjahr + 1</code> würde das Jahr um 1 erhöhen (falls nötig).
 </div>
 
 ---
@@ -113,22 +113,22 @@ WHERE studiengang = 'Informatik';
 **Was passiert hier?**
 
 ```sql
-UPDATE studierende
-SET semester = 1;
+UPDATE maschinen
+SET status = 'Defekt';
 ```
 
-❌ **Alle Studierenden** werden jetzt auf Semester 1 gesetzt – egal in welchem Semester sie vorher waren!
+❌ **Alle Maschinen** werden jetzt auf Status 'Defekt' gesetzt – egal welchen Status sie vorher hatten!
 
 **Visualisierung:**
 
 ```
-Vorher:                          Nachher:
- matrikel_nr │ semester           matrikel_nr │ semester
-─────────────┼──────────         ─────────────┼──────────
-       12345 │    3                     12345 │    1
-       12346 │    2          →          12346 │    1
-       12347 │    5                     12347 │    1
-       12348 │    1                     12348 │    1
+Vorher:                               Nachher:
+ maschinen_id │ status                maschinen_id │ status
+──────────────┼────────              ──────────────┼────────
+            1 │ Aktiv                             1 │ Defekt
+            2 │ Aktiv            →                2 │ Defekt
+            3 │ Wartung                           3 │ Defekt
+            4 │ Aktiv                             4 │ Defekt
 ```
 
 <div style="background:#dc262611; border-left:4px solid #dc2626; padding:12px 16px; margin:16px 0;">
@@ -140,15 +140,15 @@ Teste <strong>immer erst mit SELECT</strong>, ob deine WHERE-Bedingung die richt
 
 ```sql
 -- 1. Erst prüfen: Welche Zeilen würden betroffen sein?
-SELECT * FROM studierende WHERE matrikel_nr = 12345;
+SELECT * FROM maschinen WHERE maschinen_id = 1;
 
 -- 2. Wenn richtig: UPDATE ausführen
-UPDATE studierende
-SET semester = 4
-WHERE matrikel_nr = 12345;
+UPDATE maschinen
+SET status = 'Wartung'
+WHERE maschinen_id = 1;
 
 -- 3. Kontrolle: Hat es funktioniert?
-SELECT * FROM studierende WHERE matrikel_nr = 12345;
+SELECT * FROM maschinen WHERE maschinen_id = 1;
 ```
 
 ---
@@ -175,25 +175,25 @@ Ohne <code>WHERE</code> werden <strong>ALLE</strong> Datensätze gelöscht!<br>
 #### Einzelnen Datensatz löschen
 
 ```sql
--- Studierenden mit Matrikelnummer 12348 löschen
-DELETE FROM studierende
-WHERE matrikel_nr = 12348;
+-- Maschine mit ID 8 löschen (z.B. weil ausgemustert)
+DELETE FROM maschinen
+WHERE maschinen_id = 8;
 ```
 
 #### Mehrere Datensätze löschen (mit Bedingung)
 
 ```sql
--- Alle Erstsemester löschen (z.B. weil sie exmatrikuliert wurden)
-DELETE FROM studierende
-WHERE semester = 1;
+-- Alle defekten Maschinen löschen (z.B. weil verschrottet)
+DELETE FROM maschinen
+WHERE status = 'Defekt';
 ```
 
 #### Nach mehreren Kriterien
 
 ```sql
--- BWL-Studierende im 4. Semester löschen
-DELETE FROM studierende
-WHERE studiengang = 'BWL' AND semester = 4;
+-- Maschinen in Halle C mit Status Defekt löschen
+DELETE FROM maschinen
+WHERE standort = 'Halle C' AND status = 'Defekt';
 ```
 
 ---
@@ -203,14 +203,14 @@ WHERE studiengang = 'BWL' AND semester = 4;
 **Was passiert hier?**
 
 ```sql
-DELETE FROM studierende;
+DELETE FROM maschinen;
 ```
 
 ❌ **Alle Datensätze** werden gelöscht! Die Tabelle ist danach leer (aber existiert noch).
 
 ```mermaid
 graph LR
-    A[Tabelle mit<br>8 Studierenden]:::peach --> B[DELETE FROM<br>studierende]:::teal
+    A[Tabelle mit<br>8 Maschinen]:::peach --> B[DELETE FROM<br>maschinen]:::teal
     B --> C[Leere Tabelle<br>0 Datensätze]:::peach
 
     classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
@@ -229,13 +229,13 @@ graph LR
 
 ```sql
 -- 1. Erst prüfen: Welche Zeilen würden gelöscht?
-SELECT * FROM studierende WHERE semester = 1;
+SELECT * FROM maschinen WHERE status = 'Defekt';
 
 -- 2. Sicher? Dann löschen
-DELETE FROM studierende WHERE semester = 1;
+DELETE FROM maschinen WHERE status = 'Defekt';
 
 -- 3. Kontrolle: Sind sie weg?
-SELECT * FROM studierende WHERE semester = 1;  -- Sollte leer sein
+SELECT * FROM maschinen WHERE status = 'Defekt';  -- Sollte leer sein
 ```
 
 ---
@@ -247,26 +247,26 @@ Du kannst in UPDATE auch mit Werten rechnen:
 ### Numerische Berechnungen
 
 ```sql
--- Alle Semester um 1 erhöhen (Semesterwechsel)
-UPDATE studierende
-SET semester = semester + 1;
+-- Alle Anschaffungsjahre um 1 erhöhen (z.B. Korrektur)
+UPDATE maschinen
+SET anschaffungsjahr = anschaffungsjahr + 1;
 
--- ECTS-Punkte eines Kurses verdoppeln
-UPDATE kurse
-SET ects = ects * 2
-WHERE kurs_id = 101;
+-- Wartungskosten in einer Wartungstabelle verdoppeln
+UPDATE wartungsprotokolle
+SET kosten = kosten * 2
+WHERE wartungs_id = 101;
 ```
 
 ### String-Operationen
 
 ```sql
--- Prefix zu allen Matrikelnummern hinzufügen
-UPDATE studierende
-SET matrikel_nr = matrikel_nr + 10000;
+-- Prefix zu allen Maschinen-IDs hinzufügen (numerisch)
+UPDATE maschinen
+SET maschinen_id = maschinen_id + 1000;
 
--- E-Mail-Domain ändern
-UPDATE studierende
-SET email = REPLACE(email, '@old-uni.at', '@new-uni.at');
+-- Standort-Namen aktualisieren
+UPDATE maschinen
+SET standort = REPLACE(standort, 'Halle', 'Produktionshalle');
 ```
 
 ---
@@ -276,12 +276,12 @@ SET email = REPLACE(email, '@old-uni.at', '@new-uni.at');
 Manchmal möchte man Werte aus einer anderen Tabelle verwenden (fortgeschrittenes Thema, kommt später in Joins):
 
 ```sql
--- Beispiel: Studierende bekommen den Dozent-Namen ihres Hauptkurses
-UPDATE studierende
-SET betreuer = (
-    SELECT dozent 
-    FROM kurse 
-    WHERE kurs_id = studierende.hauptkurs_id
+-- Beispiel: Maschinen bekommen den Namen des zuständigen Technikers
+UPDATE maschinen
+SET zustaendiger_techniker = (
+    SELECT CONCAT(vorname, ' ', nachname)
+    FROM techniker
+    WHERE techniker_id = maschinen.techniker_id
 );
 ```
 
@@ -299,68 +299,69 @@ Stelle sicher, dass du folgende Testdaten in deiner Datenbank hast:
 
 ```sql
 -- Falls nötig, Tabelle neu erstellen
-DROP TABLE IF EXISTS studierende;
+DROP TABLE IF EXISTS maschinen;
 
-CREATE TABLE studierende (
-    matrikel_nr INTEGER PRIMARY KEY,
-    vorname VARCHAR(50),
-    nachname VARCHAR(50),
-    studiengang VARCHAR(100),
-    semester INTEGER
+CREATE TABLE maschinen (
+    maschinen_id INTEGER PRIMARY KEY,
+    name VARCHAR(100),
+    typ VARCHAR(50),
+    standort VARCHAR(50),
+    anschaffungsjahr INTEGER,
+    status VARCHAR(20)
 );
 
-INSERT INTO studierende (matrikel_nr, vorname, nachname, studiengang, semester)
-VALUES 
-    (12345, 'Anna', 'Müller', 'Informatik', 3),
-    (12346, 'Max', 'Schmidt', 'BWL', 2),
-    (12347, 'Lisa', 'Weber', 'Informatik', 5),
-    (12348, 'Tom', 'Bauer', 'Mathematik', 1),
-    (12349, 'Sarah', 'Klein', 'Informatik', 3);
+INSERT INTO maschinen (maschinen_id, name, typ, standort, anschaffungsjahr, status)
+VALUES
+    (1, 'CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A', 2019, 'Aktiv'),
+    (2, 'Drehbank Beta', 'Drehbank', 'Halle A', 2021, 'Aktiv'),
+    (3, 'Schweißroboter Gamma', 'Schweißroboter', 'Halle B', 2020, 'Wartung'),
+    (4, 'Lackieranlage Delta', 'Lackieranlage', 'Halle C', 2018, 'Aktiv'),
+    (5, 'CNC-Fräse Epsilon', 'CNC-Fräse', 'Halle A', 2022, 'Aktiv');
 ```
 
 ### Aufgabe 1: UPDATE üben
 
-1. Anna Müller kommt ins 4. Semester
-2. Max Schmidt wechselt zu "Wirtschaftsinformatik"
-3. Alle Informatik-Studierenden im 3. Semester kommen ins 4. Semester
+1. CNC-Fräse Alpha geht in Wartung
+2. Drehbank Beta wechselt nach "Halle C"
+3. Alle CNC-Fräsen in Halle A bekommen Status "Aktiv"
 
 <details>
 <summary>💡 Lösungen anzeigen</summary>
 
 ```sql
 -- 1
-UPDATE studierende
-SET semester = 4
-WHERE matrikel_nr = 12345;
+UPDATE maschinen
+SET status = 'Wartung'
+WHERE maschinen_id = 1;
 
 -- 2
-UPDATE studierende
-SET studiengang = 'Wirtschaftsinformatik'
-WHERE matrikel_nr = 12346;
+UPDATE maschinen
+SET standort = 'Halle C'
+WHERE maschinen_id = 2;
 
 -- 3
-UPDATE studierende
-SET semester = 4
-WHERE studiengang = 'Informatik' AND semester = 3;
+UPDATE maschinen
+SET status = 'Aktiv'
+WHERE typ = 'CNC-Fräse' AND standort = 'Halle A';
 ```
 </details>
 
 ### Aufgabe 2: DELETE üben
 
-1. Lösche Tom Bauer (Matrikelnummer 12348)
-2. Lösche alle Studierenden im 5. Semester
+1. Lösche Lackieranlage Delta (Maschinen-ID 4)
+2. Lösche alle Maschinen in Wartung
 
 <details>
 <summary>💡 Lösungen anzeigen</summary>
 
 ```sql
 -- 1
-DELETE FROM studierende
-WHERE matrikel_nr = 12348;
+DELETE FROM maschinen
+WHERE maschinen_id = 4;
 
 -- 2
-DELETE FROM studierende
-WHERE semester = 5;
+DELETE FROM maschinen
+WHERE status = 'Wartung';
 ```
 </details>
 
@@ -370,26 +371,26 @@ Was ist an folgenden Befehlen falsch oder gefährlich?
 
 ```sql
 -- A)
-UPDATE studierende
-SET semester = 1;
+UPDATE maschinen
+SET status = 'Defekt';
 
 -- B)
-DELETE FROM studierende;
+DELETE FROM maschinen;
 
 -- C)
-UPDATE studierende
-SET studiengang = 'Informatik'
-WHERE name = 'Müller';
+UPDATE maschinen
+SET typ = 'CNC-Fräse'
+WHERE maschine = 'Alpha';
 ```
 
 <details>
 <summary>💡 Lösungen anzeigen</summary>
 
-**A)** Keine WHERE-Klausel → Alle Studierenden werden auf Semester 1 gesetzt!
+**A)** Keine WHERE-Klausel → Alle Maschinen werden auf Status 'Defekt' gesetzt!
 
-**B)** Keine WHERE-Klausel → Alle Studierenden werden gelöscht!
+**B)** Keine WHERE-Klausel → Alle Maschinen werden gelöscht!
 
-**C)** Die Spalte heißt `nachname`, nicht `name` → Fehler oder keine Zeilen betroffen!
+**C)** Die Spalte heißt `name`, nicht `maschine` → Fehler oder keine Zeilen betroffen!
 </details>
 
 ---
@@ -400,19 +401,19 @@ WHERE name = 'Müller';
 
 ```sql
 -- ❌ Nicht so:
-UPDATE studierende SET semester = 5 WHERE studiengang = 'Informatik';
+UPDATE maschinen SET status = 'Wartung' WHERE standort = 'Halle A';
 
 -- ✅ Besser:
-SELECT * FROM studierende WHERE studiengang = 'Informatik';  -- Prüfen!
-UPDATE studierende SET semester = 5 WHERE studiengang = 'Informatik';
-SELECT * FROM studierende WHERE studiengang = 'Informatik';  -- Kontrolle!
+SELECT * FROM maschinen WHERE standort = 'Halle A';  -- Prüfen!
+UPDATE maschinen SET status = 'Wartung' WHERE standort = 'Halle A';
+SELECT * FROM maschinen WHERE standort = 'Halle A';  -- Kontrolle!
 ```
 
 ### 2. Transaktionen verwenden (kommt in Kapitel 10)
 
 ```sql
 BEGIN;  -- Transaktion starten
-UPDATE studierende SET semester = 5 WHERE studiengang = 'Informatik';
+UPDATE maschinen SET status = 'Wartung' WHERE standort = 'Halle A';
 -- Prüfen ob richtig...
 COMMIT;  -- oder ROLLBACK bei Fehler
 ```
@@ -427,10 +428,10 @@ Bei <strong>UPDATE</strong> und <strong>DELETE</strong> ohne WHERE-Klausel sollt
 
 ```sql
 -- ✅ Am sichersten: Nach Primärschlüssel
-DELETE FROM studierende WHERE matrikel_nr = 12345;
+DELETE FROM maschinen WHERE maschinen_id = 1;
 
 -- ⚠️ Gefährlicher: Nach anderen Attributen (könnten mehrfach vorkommen)
-DELETE FROM studierende WHERE vorname = 'Max';  -- Wie viele "Max" gibt es?
+DELETE FROM maschinen WHERE typ = 'CNC-Fräse';  -- Wie viele CNC-Fräsen gibt es?
 ```
 
 ---
@@ -440,42 +441,42 @@ DELETE FROM studierende WHERE vorname = 'Max';  -- Wie viele "Max" gibt es?
 ### Fehler 1: Spalte existiert nicht
 
 ```sql
-UPDATE studierende
-SET name = 'Neuer Name'
-WHERE matrikel_nr = 12345;
+UPDATE maschinen
+SET maschine = 'Neuer Name'
+WHERE maschinen_id = 1;
 ```
 
-**Fehler:** `column "name" does not exist`
+**Fehler:** `column "maschine" does not exist`
 
-**Lösung:** Spalte heißt `vorname` oder `nachname`:
+**Lösung:** Spalte heißt `name`:
 
 ```sql
-UPDATE studierende
-SET nachname = 'Neuer Name'
-WHERE matrikel_nr = 12345;
+UPDATE maschinen
+SET name = 'Neuer Name'
+WHERE maschinen_id = 1;
 ```
 
 ### Fehler 2: Primärschlüssel-Verletzung
 
 ```sql
-UPDATE studierende
-SET matrikel_nr = 12345
-WHERE matrikel_nr = 12346;
+UPDATE maschinen
+SET maschinen_id = 1
+WHERE maschinen_id = 2;
 ```
 
 **Fehler:** `duplicate key value violates unique constraint`
 
-**Grund:** Matrikelnummer 12345 existiert bereits!
+**Grund:** Maschinen-ID 1 existiert bereits!
 
 ### Fehler 3: NULL in NOT NULL Spalte
 
 ```sql
-UPDATE studierende
-SET matrikel_nr = NULL
-WHERE matrikel_nr = 12345;
+UPDATE maschinen
+SET maschinen_id = NULL
+WHERE maschinen_id = 1;
 ```
 
-**Fehler:** `null value in column "matrikel_nr" violates not-null constraint`
+**Fehler:** `null value in column "maschinen_id" violates not-null constraint`
 
 **Grund:** Primärschlüssel darf nicht NULL sein!
 

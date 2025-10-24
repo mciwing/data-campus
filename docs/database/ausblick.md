@@ -29,18 +29,19 @@ FROM tabelle
 WHERE bedingung;
 ```
 
-### Beispiel: View für verfügbare Bücher
+### Beispiel: View für verfügbare Maschinen
 
-Aus unserem Bibliotheksprojekt (Kapitel 11) können wir eine View erstellen, die nur **verfügbare Bücher** zeigt:
+Wir können eine View erstellen, die nur **betriebsbereite Maschinen** zeigt:
 
 ```sql
-CREATE VIEW verfuegbare_buecher AS
-SELECT b.isbn, b.titel, b.autor, b.genre
-FROM buecher b
-WHERE b.isbn NOT IN (
-    SELECT buch_isbn 
-    FROM ausleihen 
-    WHERE rueckgabedatum IS NULL
+CREATE VIEW betriebsbereite_maschinen AS
+SELECT m.maschinen_id, m.name, m.typ, m.standort
+FROM maschinen m
+WHERE m.status = 'Aktiv'
+  AND m.maschinen_id NOT IN (
+    SELECT maschinen_id
+    FROM wartungsauftraege
+    WHERE status = 'in_arbeit'
 );
 ```
 
@@ -48,11 +49,11 @@ WHERE b.isbn NOT IN (
 
 ```sql
 -- View verwenden wie eine normale Tabelle
-SELECT * FROM verfuegbare_buecher;
+SELECT * FROM betriebsbereite_maschinen;
 
 -- Mit zusätzlichen Filtern
-SELECT * FROM verfuegbare_buecher 
-WHERE genre = 'Fantasy';
+SELECT * FROM betriebsbereite_maschinen
+WHERE typ = 'CNC-Fräse';
 ```
 
 ### Warum Views verwenden?
@@ -72,7 +73,7 @@ WHERE genre = 'Fantasy';
 ### View löschen
 
 ```sql
-DROP VIEW IF EXISTS verfuegbare_buecher;
+DROP VIEW IF EXISTS betriebsbereite_maschinen;
 ```
 
 ---
@@ -96,17 +97,17 @@ DROP VIEW IF EXISTS verfuegbare_buecher;
 | Kann in SELECT-Statements verwendet werden | Wird mit CALL aufgerufen |
 | Sollte keine Daten ändern | Darf Daten ändern |
 
-### Beispiel: Function für Ausleihstatus
+### Beispiel: Function für Maschinenstatus
 
 ```sql
-CREATE OR REPLACE FUNCTION ist_verfuegbar(p_isbn VARCHAR)
+CREATE OR REPLACE FUNCTION ist_betriebsbereit(p_maschinen_id INTEGER)
 RETURNS BOOLEAN AS $$
 BEGIN
     RETURN NOT EXISTS (
-        SELECT 1 
-        FROM ausleihen 
-        WHERE buch_isbn = p_isbn 
-          AND rueckgabedatum IS NULL
+        SELECT 1
+        FROM wartungsauftraege
+        WHERE maschinen_id = p_maschinen_id
+          AND status = 'in_arbeit'
     );
 END;
 $$ LANGUAGE plpgsql;
@@ -115,29 +116,33 @@ $$ LANGUAGE plpgsql;
 **Verwendung:**
 
 ```sql
-SELECT titel, ist_verfuegbar(isbn) AS verfuegbar
-FROM buecher;
+SELECT name, ist_betriebsbereit(maschinen_id) AS betriebsbereit
+FROM maschinen;
 ```
 
-### Beispiel: Procedure für automatische Mahngebühren
+### Beispiel: Procedure für überfällige Wartungen
 
 ```sql
-CREATE OR REPLACE PROCEDURE berechne_mahngebuehren()
+CREATE OR REPLACE PROCEDURE markiere_ueberfaellige_wartungen()
 LANGUAGE plpgsql AS $$
 DECLARE
-    ueberfaellige RECORD;
+    ueberfaellig RECORD;
 BEGIN
-    FOR ueberfaellige IN 
-        SELECT ausleihe_id, mitglied_id, 
-               CURRENT_DATE - ausleihdatum AS tage
-        FROM ausleihen
-        WHERE rueckgabedatum IS NULL 
-          AND ausleihdatum < CURRENT_DATE - INTERVAL '14 days'
+    FOR ueberfaellig IN
+        SELECT maschinen_id, name,
+               CURRENT_DATE - installationsdatum AS tage_seit_installation
+        FROM maschinen
+        WHERE status = 'Aktiv'
+          AND installationsdatum < CURRENT_DATE - INTERVAL '365 days'
+          AND maschinen_id NOT IN (
+              SELECT maschinen_id FROM wartungsprotokolle
+              WHERE wartungsdatum > CURRENT_DATE - INTERVAL '365 days'
+          )
     LOOP
-        -- Hier würde die Mahngebühr berechnet und eingefügt
-        RAISE NOTICE 'Mahngebühr für Mitglied %: % Euro', 
-                     ueberfaellige.mitglied_id, 
-                     (ueberfaellige.tage - 14) * 0.50;
+        -- Hier würde ein Wartungsauftrag erstellt
+        RAISE NOTICE 'Wartung überfällig für Maschine %: % Tage seit letzter Wartung',
+                     ueberfaellig.name,
+                     ueberfaellig.tage_seit_installation;
     END LOOP;
 END;
 $$;
@@ -146,7 +151,7 @@ $$;
 **Verwendung:**
 
 ```sql
-CALL berechne_mahngebuehren();
+CALL markiere_ueberfaellige_wartungen();
 ```
 
 ---
@@ -167,7 +172,7 @@ Ein **Trigger** ist ein **automatisch ausgeführtes SQL-Programm**, das bei best
 
 ```sql
 -- Tabelle erweitern
-ALTER TABLE buecher 
+ALTER TABLE maschinen
 ADD COLUMN letzte_aenderung TIMESTAMP;
 
 -- Trigger-Function erstellen
@@ -180,13 +185,13 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger erstellen
-CREATE TRIGGER buch_update_timestamp
-BEFORE UPDATE ON buecher
+CREATE TRIGGER maschine_update_timestamp
+BEFORE UPDATE ON maschinen
 FOR EACH ROW
 EXECUTE FUNCTION update_timestamp();
 ```
 
-**Wirkung:** Jedes Mal, wenn ein Buch geändert wird, wird automatisch `letzte_aenderung` aktualisiert.
+**Wirkung:** Jedes Mal, wenn eine Maschine geändert wird, wird automatisch `letzte_aenderung` aktualisiert.
 
 ### Trigger-Arten
 
@@ -206,37 +211,37 @@ PostgreSQL bietet **native Unterstützung für JSON-Daten**, was flexible, semi-
 * `JSON` – Speichert JSON als Text (langsamer)
 * `JSONB` – Speichert JSON binär (schneller, empfohlen)
 
-### Beispiel: Buch mit Metadaten
+### Beispiel: Maschine mit Metadaten
 
 ```sql
-CREATE TABLE buecher_extended (
-    isbn VARCHAR(13) PRIMARY KEY,
-    titel VARCHAR(200) NOT NULL,
-    autor VARCHAR(100) NOT NULL,
+CREATE TABLE maschinen_extended (
+    maschinen_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    typ VARCHAR(100) NOT NULL,
     metadaten JSONB  -- Flexible zusätzliche Daten
 );
 
-INSERT INTO buecher_extended (isbn, titel, autor, metadaten) VALUES
-('9783499267758', 'Der Medicus', 'Noah Gordon', 
- '{"seitenzahl": 896, "sprache": "Deutsch", "gewicht_g": 520, "tags": ["Medizin", "Mittelalter"]}'::jsonb);
+INSERT INTO maschinen_extended (name, typ, metadaten) VALUES
+('CNC-Fräse Alpha', 'CNC-Fräse',
+ '{"leistung_kw": 15.5, "hersteller": "DMG MORI", "gewicht_kg": 3200, "tags": ["Präzision", "5-Achsen"]}'::jsonb);
 ```
 
 ### JSON-Abfragen
 
 ```sql
 -- Zugriff auf JSON-Felder
-SELECT titel, metadaten->>'sprache' AS sprache
-FROM buecher_extended;
+SELECT name, metadaten->>'hersteller' AS hersteller
+FROM maschinen_extended;
 
 -- Nach JSON-Werten filtern
-SELECT titel
-FROM buecher_extended
-WHERE metadaten->>'sprache' = 'Deutsch';
+SELECT name
+FROM maschinen_extended
+WHERE metadaten->>'hersteller' = 'DMG MORI';
 
 -- In JSON-Arrays suchen
-SELECT titel
-FROM buecher_extended
-WHERE metadaten->'tags' ? 'Medizin';
+SELECT name
+FROM maschinen_extended
+WHERE metadaten->'tags' ? 'Präzision';
 ```
 
 ### Wann JSON verwenden?
@@ -259,34 +264,34 @@ WHERE metadaten->'tags' ? 'Medizin';
 
 PostgreSQL unterstützt **Array-Datentypen** für Listen von Werten.
 
-### Beispiel: Mehrere Autoren
+### Beispiel: Mehrere Techniker pro Maschine
 
 ```sql
-CREATE TABLE buecher_array (
-    isbn VARCHAR(13) PRIMARY KEY,
-    titel VARCHAR(200) NOT NULL,
-    autoren TEXT[]  -- Array von Text-Werten
+CREATE TABLE maschinen_array (
+    maschinen_id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    verantwortliche_techniker TEXT[]  -- Array von Text-Werten
 );
 
-INSERT INTO buecher_array (isbn, titel, autoren) VALUES
-('9783551551672', 'Harry Potter', ARRAY['J.K. Rowling']),
-('9783499267758', 'Der Medicus', ARRAY['Noah Gordon']);
+INSERT INTO maschinen_array (name, verantwortliche_techniker) VALUES
+('CNC-Fräse Alpha', ARRAY['Thomas Müller', 'Sandra Schmidt']),
+('Drehbank Beta', ARRAY['Klaus Weber']);
 ```
 
 ### Array-Operationen
 
 ```sql
--- Alle Autoren anzeigen
-SELECT titel, autoren FROM buecher_array;
+-- Alle Techniker anzeigen
+SELECT name, verantwortliche_techniker FROM maschinen_array;
 
--- Nach bestimmtem Autor suchen
-SELECT titel 
-FROM buecher_array 
-WHERE 'J.K. Rowling' = ANY(autoren);
+-- Nach bestimmtem Techniker suchen
+SELECT name
+FROM maschinen_array
+WHERE 'Thomas Müller' = ANY(verantwortliche_techniker);
 
--- Anzahl der Autoren
-SELECT titel, array_length(autoren, 1) AS anzahl_autoren
-FROM buecher_array;
+-- Anzahl der Techniker
+SELECT name, array_length(verantwortliche_techniker, 1) AS anzahl_techniker
+FROM maschinen_array;
 ```
 
 ---
@@ -305,19 +310,19 @@ Exportiert die Datenbank als **SQL-Skript**.
 
 ```bash
 # Gesamte Datenbank sichern
-pg_dump bibliothek > bibliothek_backup.sql
+pg_dump produktionsdb > produktionsdb_backup.sql
 
 # Nur Struktur (ohne Daten)
-pg_dump --schema-only bibliothek > struktur.sql
+pg_dump --schema-only produktionsdb > struktur.sql
 
 # Nur Daten (ohne Struktur)
-pg_dump --data-only bibliothek > daten.sql
+pg_dump --data-only produktionsdb > daten.sql
 ```
 
 **Wiederherstellen:**
 
 ```bash
-psql bibliothek < bibliothek_backup.sql
+psql produktionsdb < produktionsdb_backup.sql
 ```
 
 #### 2. pg_dumpall – Alle Datenbanken
@@ -389,13 +394,13 @@ Leistungsstarke **Volltextsuche** direkt in der Datenbank.
 
 ```sql
 -- Suchindex erstellen
-ALTER TABLE buecher ADD COLUMN textsearch tsvector;
-UPDATE buecher SET textsearch = to_tsvector('german', titel || ' ' || autor);
+ALTER TABLE maschinen ADD COLUMN textsearch tsvector;
+UPDATE maschinen SET textsearch = to_tsvector('german', name || ' ' || typ);
 
 -- Suchen
-SELECT titel, autor 
-FROM buecher 
-WHERE textsearch @@ to_tsquery('german', 'Medizin');
+SELECT name, typ
+FROM maschinen
+WHERE textsearch @@ to_tsquery('german', 'Fräse');
 ```
 
 ### 2. Geospatial-Daten mit PostGIS
@@ -406,16 +411,16 @@ Erweiterung für **geografische Daten** (Koordinaten, Karten).
 -- PostGIS aktivieren
 CREATE EXTENSION postgis;
 
--- Bibliotheksstandorte speichern
-CREATE TABLE bibliotheken (
+-- Produktionsstandorte speichern
+CREATE TABLE produktionsstandorte (
     name VARCHAR(100),
     standort GEOGRAPHY(POINT)
 );
 
 -- Entfernung berechnen
-SELECT name, 
+SELECT name,
        ST_Distance(standort, ST_MakePoint(13.04, 47.79)::geography) AS entfernung_meter
-FROM bibliotheken;
+FROM produktionsstandorte;
 ```
 
 ### 3. Window Functions
@@ -423,14 +428,14 @@ FROM bibliotheken;
 Berechnungen über **Zeilen hinweg** ohne GROUP BY.
 
 ```sql
--- Ranking von Büchern nach Ausleihen
-SELECT 
-    b.titel,
-    COUNT(a.ausleihe_id) AS ausleihen,
-    RANK() OVER (ORDER BY COUNT(a.ausleihe_id) DESC) AS rang
-FROM buecher b
-LEFT JOIN ausleihen a ON b.isbn = a.buch_isbn
-GROUP BY b.titel;
+-- Ranking von Maschinen nach Wartungshäufigkeit
+SELECT
+    m.name,
+    COUNT(w.wartungs_id) AS anzahl_wartungen,
+    RANK() OVER (ORDER BY COUNT(w.wartungs_id) DESC) AS rang
+FROM maschinen m
+LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
+GROUP BY m.name;
 ```
 
 ---

@@ -39,27 +39,27 @@ flowchart LR
 
 ## Warum brauchen wir Transaktionen?
 
-### Beispiel: Banküberweisung
+### Beispiel: Lagertransfer
 
-Stell dir vor, du überweist 100 € von deinem Konto auf das Konto deiner Freundin:
+Stell dir vor, du transferierst 50 Ersatzteile vom Hauptlager ins Produktionslager:
 
 ```sql
--- Schritt 1: Betrag von meinem Konto abziehen
-UPDATE konten 
-SET saldo = saldo - 100 
-WHERE konto_id = 'A123';
+-- Schritt 1: Teile aus Hauptlager entnehmen
+UPDATE lager
+SET bestand = bestand - 50
+WHERE lager_id = 'HAUPT01';
 
--- Schritt 2: Betrag auf das Konto der Freundin aufbuchen
-UPDATE konten 
-SET saldo = saldo + 100 
-WHERE konto_id = 'B456';
+-- Schritt 2: Teile ins Produktionslager einbuchen
+UPDATE lager
+SET bestand = bestand + 50
+WHERE lager_id = 'PROD01';
 ```
 
 **Was passiert, wenn zwischen diesen beiden Schritten ein Fehler auftritt?**
 
-* Das Geld wäre von **deinem Konto abgebucht**
-* Aber **nicht auf dem Konto der Freundin angekommen**
-* 100 € wären einfach verschwunden! 💸
+* Die Teile wären aus dem **Hauptlager entnommen**
+* Aber **nicht im Produktionslager angekommen**
+* 50 Ersatzteile wären einfach verschwunden! 📦
 
 Mit einer **Transaktion** stellen wir sicher, dass **entweder beide** Operationen erfolgreich sind, **oder keine von beiden**.
 
@@ -90,52 +90,52 @@ COMMIT;  -- oder ROLLBACK;
 
 ---
 
-## Praktisches Beispiel: Überweisung mit Transaktion
+## Praktisches Beispiel: Lagertransfer mit Transaktion
 
 Wir erstellen zunächst eine Beispieltabelle:
 
 ```sql
-CREATE TABLE konten (
-    konto_id VARCHAR(10) PRIMARY KEY,
-    inhaber VARCHAR(50) NOT NULL,
-    saldo NUMERIC(10,2) NOT NULL CHECK(saldo >= 0)
+CREATE TABLE lager (
+    lager_id VARCHAR(10) PRIMARY KEY,
+    standort VARCHAR(50) NOT NULL,
+    bestand INTEGER NOT NULL CHECK(bestand >= 0)
 );
 
-INSERT INTO konten (konto_id, inhaber, saldo) VALUES
-('A123', 'Anna Schmidt', 500.00),
-('B456', 'Ben Müller', 300.00);
+INSERT INTO lager (lager_id, standort, bestand) VALUES
+('HAUPT01', 'Hauptlager Halle A', 200),
+('PROD01', 'Produktionslager Halle B', 100);
 ```
 
-Jetzt führen wir die Überweisung **mit einer Transaktion** durch:
+Jetzt führen wir den Transfer **mit einer Transaktion** durch:
 
 ```sql
 BEGIN;
 
--- Saldo vor der Überweisung anzeigen
-SELECT * FROM konten;
+-- Bestand vor dem Transfer anzeigen
+SELECT * FROM lager;
 
--- Schritt 1: Betrag abziehen
-UPDATE konten 
-SET saldo = saldo - 100 
-WHERE konto_id = 'A123';
+-- Schritt 1: Teile aus Hauptlager entnehmen
+UPDATE lager
+SET bestand = bestand - 50
+WHERE lager_id = 'HAUPT01';
 
--- Schritt 2: Betrag aufbuchen
-UPDATE konten 
-SET saldo = saldo + 100 
-WHERE konto_id = 'B456';
+-- Schritt 2: Teile ins Produktionslager einbuchen
+UPDATE lager
+SET bestand = bestand + 50
+WHERE lager_id = 'PROD01';
 
 -- Überprüfung
-SELECT * FROM konten;
+SELECT * FROM lager;
 
 COMMIT;  -- Änderungen dauerhaft speichern
 ```
 
 **Ergebnis nach COMMIT:**
 
-| konto_id | inhaber | saldo |
-|----------|---------|-------|
-| A123 | Anna Schmidt | 400.00 |
-| B456 | Ben Müller | 400.00 |
+| lager_id | standort | bestand |
+|----------|----------|---------|
+| HAUPT01 | Hauptlager Halle A | 150 |
+| PROD01 | Produktionslager Halle B | 150 |
 
 ---
 
@@ -146,17 +146,17 @@ Was passiert, wenn wir einen **Fehler bemerken** oder die Transaktion **abbreche
 ```sql
 BEGIN;
 
--- Versuch einer Überweisung
-UPDATE konten 
-SET saldo = saldo - 100 
-WHERE konto_id = 'A123';
+-- Versuch eines Transfers
+UPDATE lager
+SET bestand = bestand - 50
+WHERE lager_id = 'HAUPT01';
 
--- Ups, falscher Betrag! Abbrechen:
+-- Ups, falsches Lager! Abbrechen:
 ROLLBACK;
 
 -- Überprüfung: Die Änderung wurde NICHT gespeichert
-SELECT * FROM konten WHERE konto_id = 'A123';
--- Saldo ist immer noch 500.00
+SELECT * FROM lager WHERE lager_id = 'HAUPT01';
+-- Bestand ist immer noch 200
 ```
 
 Mit `ROLLBACK` werden **alle Änderungen seit BEGIN** verworfen, als hätten sie nie stattgefunden.
@@ -170,14 +170,14 @@ PostgreSQL führt **automatisch ein ROLLBACK** durch, wenn während einer Transa
 ```sql
 BEGIN;
 
-UPDATE konten 
-SET saldo = saldo - 100 
-WHERE konto_id = 'A123';
+UPDATE lager
+SET bestand = bestand - 50
+WHERE lager_id = 'HAUPT01';
 
--- Dieser Befehl verletzt die CHECK-Constraint (Saldo darf nicht negativ sein)
-UPDATE konten 
-SET saldo = saldo - 1000 
-WHERE konto_id = 'B456';  -- Fehler! Saldo würde negativ werden
+-- Dieser Befehl verletzt die CHECK-Constraint (Bestand darf nicht negativ sein)
+UPDATE lager
+SET bestand = bestand - 200
+WHERE lager_id = 'PROD01';  -- Fehler! Bestand würde negativ werden
 
 -- PostgreSQL führt automatisch ROLLBACK durch
 -- Die erste UPDATE-Operation wird ebenfalls rückgängig gemacht
@@ -199,7 +199,7 @@ Transaktionen folgen den sogenannten **ACID-Prinzipien**. ACID ist ein Akronym u
 * Oder **keine einzige Operation** wird übernommen
 * Es gibt **kein "teilweise erfolgreich"**
 
-**Beispiel:** Bei der Überweisung werden entweder beide Updates durchgeführt oder keines.
+**Beispiel:** Beim Lagertransfer werden entweder beide Updates durchgeführt oder keines.
 
 ---
 
@@ -210,14 +210,14 @@ Transaktionen folgen den sogenannten **ACID-Prinzipien**. ACID ist ein Akronym u
 * Alle **Integritätsbedingungen** (Constraints) müssen erfüllt sein
 * **Vor** und **nach** der Transaktion ist die Datenbank in einem gültigen Zustand
 
-**Beispiel:** Die Gesamtsumme aller Kontostände bleibt bei einer Überweisung gleich.
+**Beispiel:** Die Gesamtsumme aller Lagerbestände bleibt bei einem Transfer gleich.
 
 ```sql
--- Vor der Überweisung
-SELECT SUM(saldo) FROM konten;  -- z.B. 800.00
+-- Vor dem Transfer
+SELECT SUM(bestand) FROM lager;  -- z.B. 300
 
--- Nach der Überweisung
-SELECT SUM(saldo) FROM konten;  -- immer noch 800.00
+-- Nach dem Transfer
+SELECT SUM(bestand) FROM lager;  -- immer noch 300
 ```
 
 ---
@@ -229,7 +229,7 @@ SELECT SUM(saldo) FROM konten;  -- immer noch 800.00
 * Jede Transaktion läuft **isoliert**, als wäre sie die einzige
 * Änderungen einer Transaktion sind für andere **erst nach COMMIT sichtbar**
 
-**Beispiel:** Zwei Benutzer überweisen gleichzeitig Geld vom selben Konto – die Datenbank stellt sicher, dass keine Inkonsistenzen entstehen.
+**Beispiel:** Zwei Benutzer entnehmen gleichzeitig Ersatzteile aus demselben Lager – die Datenbank stellt sicher, dass keine Inkonsistenzen entstehen.
 
 ---
 
@@ -240,7 +240,7 @@ SELECT SUM(saldo) FROM konten;  -- immer noch 800.00
 * Nach einem **COMMIT** sind die Änderungen **permanent gespeichert**
 * Auch bei **Systemabstürzen** oder **Stromausfällen** gehen die Daten nicht verloren
 
-**Beispiel:** Nachdem eine Überweisung mit COMMIT abgeschlossen wurde, ist sie dauerhaft gespeichert – selbst wenn der Server sofort danach abstürzt.
+**Beispiel:** Nachdem ein Lagertransfer mit COMMIT abgeschlossen wurde, ist er dauerhaft gespeichert – selbst wenn der Server sofort danach abstürzt.
 
 ---
 
@@ -248,35 +248,35 @@ SELECT SUM(saldo) FROM konten;  -- immer noch 800.00
 
 ### Übung 1: Einfache Transaktion
 
-Erstelle eine Tabelle `lager` mit Produkten und führe eine Transaktion durch:
+Erstelle eine Tabelle `ersatzteillager` und führe eine Transaktion durch:
 
 ```sql
-CREATE TABLE lager (
-    produkt_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
+CREATE TABLE ersatzteillager (
+    teil_id SERIAL PRIMARY KEY,
+    teilname VARCHAR(50) NOT NULL,
     bestand INTEGER NOT NULL CHECK(bestand >= 0)
 );
 
-INSERT INTO lager (name, bestand) VALUES
-('Laptop', 10),
-('Maus', 50),
-('Tastatur', 30);
+INSERT INTO ersatzteillager (teilname, bestand) VALUES
+('Spindelmotor', 10),
+('Kühlmittelpumpe', 50),
+('Schweißdrahtspule', 30);
 ```
 
-**Aufgabe:** Starte eine Transaktion, reduziere den Bestand von "Laptop" um 2 Stück und erhöhe den Bestand von "Maus" um 5 Stück. Bestätige die Änderungen mit COMMIT.
+**Aufgabe:** Starte eine Transaktion, reduziere den Bestand von "Spindelmotor" um 2 Stück und erhöhe den Bestand von "Kühlmittelpumpe" um 5 Stück. Bestätige die Änderungen mit COMMIT.
 
 ???+ tip "Lösung"
     ```sql
     BEGIN;
-    
-    UPDATE lager 
-    SET bestand = bestand - 2 
-    WHERE name = 'Laptop';
-    
-    UPDATE lager 
-    SET bestand = bestand + 5 
-    WHERE name = 'Maus';
-    
+
+    UPDATE ersatzteillager
+    SET bestand = bestand - 2
+    WHERE teilname = 'Spindelmotor';
+
+    UPDATE ersatzteillager
+    SET bestand = bestand + 5
+    WHERE teilname = 'Kühlmittelpumpe';
+
     COMMIT;
     ```
 
@@ -284,16 +284,16 @@ INSERT INTO lager (name, bestand) VALUES
 
 ### Übung 2: Rollback bei Fehler
 
-**Aufgabe:** Versuche, den Bestand von "Tastatur" um 50 Stück zu reduzieren (was einen negativen Bestand ergeben würde). Beobachte, was passiert.
+**Aufgabe:** Versuche, den Bestand von "Schweißdrahtspule" um 50 Stück zu reduzieren (was einen negativen Bestand ergeben würde). Beobachte, was passiert.
 
 ???+ tip "Lösung"
     ```sql
     BEGIN;
-    
-    UPDATE lager 
-    SET bestand = bestand - 50 
-    WHERE name = 'Tastatur';  -- Fehler! CHECK constraint verletzt
-    
+
+    UPDATE ersatzteillager
+    SET bestand = bestand - 50
+    WHERE teilname = 'Schweißdrahtspule';  -- Fehler! CHECK constraint verletzt
+
     -- PostgreSQL führt automatisch ROLLBACK durch
     -- Die Änderung wird nicht gespeichert
     ```
@@ -304,40 +304,40 @@ INSERT INTO lager (name, bestand) VALUES
 
 **Aufgabe:** Erstelle eine Transaktion, die:
 
-1. Einen neuen Kunden in eine `kunden`-Tabelle einfügt
-2. Eine Bestellung in eine `bestellungen`-Tabelle einfügt
+1. Eine neue Maschine in die `maschinen`-Tabelle einfügt
+2. Einen Wartungsauftrag in die `wartungsauftraege`-Tabelle einfügt
 
 Wenn ein Fehler auftritt, sollen beide Operationen rückgängig gemacht werden.
 
 ```sql
-CREATE TABLE kunden (
-    kunden_id SERIAL PRIMARY KEY,
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE bestellungen (
-    bestellung_id SERIAL PRIMARY KEY,
-    kunden_id INTEGER REFERENCES kunden(kunden_id),
-    produkt VARCHAR(50) NOT NULL,
-    menge INTEGER NOT NULL
+CREATE TABLE wartungsauftraege (
+    auftrag_id SERIAL PRIMARY KEY,
+    maschinen_id INTEGER REFERENCES maschinen(maschinen_id),
+    beschreibung TEXT NOT NULL,
+    kosten NUMERIC(10, 2)
 );
 ```
 
 ???+ tip "Lösung"
     ```sql
     BEGIN;
-    
-    -- Neuen Kunden anlegen
-    INSERT INTO kunden (name) VALUES ('Maria Weber');
-    
-    -- Bestellung für diesen Kunden anlegen
-    INSERT INTO bestellungen (kunden_id, produkt, menge) 
+
+    -- Neue Maschine anlegen
+    INSERT INTO maschinen (name) VALUES ('Drehbank Delta');
+
+    -- Wartungsauftrag für diese Maschine anlegen
+    INSERT INTO wartungsauftraege (maschinen_id, beschreibung, kosten)
     VALUES (
-        (SELECT kunden_id FROM kunden WHERE name = 'Maria Weber'),
-        'Laptop',
-        1
+        (SELECT maschinen_id FROM maschinen WHERE name = 'Drehbank Delta'),
+        'Erstinspektion nach Installation',
+        450.00
     );
-    
+
     COMMIT;
     ```
 
@@ -350,17 +350,17 @@ CREATE TABLE bestellungen (
 ???+ tip "Lösung"
     ```sql
     BEGIN;
-    
-    INSERT INTO lager (name, bestand) VALUES ('Monitor', 15);
-    
+
+    INSERT INTO ersatzteillager (teilname, bestand) VALUES ('Kettenrad', 15);
+
     -- Überprüfung (nur innerhalb der Transaktion sichtbar)
-    SELECT * FROM lager WHERE name = 'Monitor';
-    
+    SELECT * FROM ersatzteillager WHERE teilname = 'Kettenrad';
+
     -- Änderung verwerfen
     ROLLBACK;
-    
+
     -- Überprüfung: Der Datensatz wurde nicht gespeichert
-    SELECT * FROM lager WHERE name = 'Monitor';  -- Kein Ergebnis
+    SELECT * FROM ersatzteillager WHERE teilname = 'Kettenrad';  -- Kein Ergebnis
     ```
 
 ---
@@ -377,7 +377,7 @@ CREATE TABLE bestellungen (
     * **Consistency**: Datenbank bleibt konsistent
     * **Isolation**: Transaktionen laufen unabhängig
     * **Durability**: Änderungen bleiben dauerhaft erhalten
-* Transaktionen sind besonders wichtig bei **kritischen Operationen** wie Überweisungen, Bestellungen oder anderen zusammenhängenden Änderungen
+* Transaktionen sind besonders wichtig bei **kritischen Operationen** wie Lagertransfers, Maschinenregistrierungen oder anderen zusammenhängenden Änderungen
 
 ---
 
@@ -395,9 +395,9 @@ CREATE TABLE bestellungen (
     
     ```sql
     BEGIN;
-    UPDATE konten SET saldo = saldo - 100 WHERE konto_id = 'A123';
+    UPDATE lager SET bestand = bestand - 50 WHERE lager_id = 'HAUPT01';
     SAVEPOINT mein_savepoint;
-    UPDATE konten SET saldo = saldo + 100 WHERE konto_id = 'B456';
+    UPDATE lager SET bestand = bestand + 50 WHERE lager_id = 'PROD01';
     -- Ups, Fehler! Nur den zweiten UPDATE rückgängig machen:
     ROLLBACK TO SAVEPOINT mein_savepoint;
     COMMIT;

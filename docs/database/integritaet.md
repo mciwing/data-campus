@@ -1,6 +1,6 @@
 # Datenintegrität & Constraints
 
-Stell dir vor, jemand gibt in deine Datenbank ein: `semester = -5` oder `geburtsdatum = '2099-12-31'`. Offensichtlich unsinnige Daten! Wie können wir solche **Datenfehler verhindern**?
+Stell dir vor, jemand gibt in deine Datenbank ein: `anschaffungsjahr = 1800` oder `preis = -500`. Offensichtlich unsinnige Daten! Wie können wir solche **Datenfehler verhindern**?
 
 Die Antwort: **Constraints** (Integritätsbedingungen)!
 
@@ -53,7 +53,7 @@ graph LR
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>UNIQUE</code></td>
         <td style="padding:10px 14px;">Muss eindeutig sein</td>
-        <td style="padding:10px 14px;">E-Mail, Matrikelnummer</td>
+        <td style="padding:10px 14px;">Seriennummer, Teilnummer</td>
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>PRIMARY KEY</code></td>
@@ -63,7 +63,7 @@ graph LR
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>FOREIGN KEY</code></td>
         <td style="padding:10px 14px;">Verweist auf andere Tabelle</td>
-        <td style="padding:10px 14px;">abteilung_id</td>
+        <td style="padding:10px 14px;">techniker_id</td>
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>CHECK</code></td>
@@ -83,27 +83,27 @@ graph LR
 ### Beispiel
 
 ```sql
-CREATE TABLE studierende (
-    matrikel_nr INTEGER PRIMARY KEY,
-    vorname VARCHAR(50) NOT NULL,      -- Muss ausgefüllt sein!
-    nachname VARCHAR(50) NOT NULL,     -- Muss ausgefüllt sein!
-    email VARCHAR(100),                -- Darf leer sein
-    semester INTEGER NOT NULL          -- Muss ausgefüllt sein!
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,        -- Muss ausgefüllt sein!
+    typ VARCHAR(50) NOT NULL,          -- Muss ausgefüllt sein!
+    seriennummer VARCHAR(50),          -- Darf leer sein
+    anschaffungsjahr INTEGER NOT NULL  -- Muss ausgefüllt sein!
 );
 ```
 
 ### Was passiert bei Verstoß?
 
 ```sql
--- Fehler: vorname ist NOT NULL!
-INSERT INTO studierende (matrikel_nr, nachname, semester)
-VALUES (12345, 'Müller', 3);
+-- Fehler: name ist NOT NULL!
+INSERT INTO maschinen (typ, anschaffungsjahr)
+VALUES ('CNC-Fräse', 2020);
 ```
 
 **Fehlermeldung:**
 
 ```
-ERROR: null value in column "vorname" violates not-null constraint
+ERROR: null value in column "name" violates not-null constraint
 ```
 
 <div style="background:#00948511; border-left:4px solid #009485; padding:12px 16px; margin:16px 0;">
@@ -120,12 +120,12 @@ Verwende NOT NULL für alle Spalten, die <strong>immer</strong> einen Wert haben
 ### Beispiel
 
 ```sql
-CREATE TABLE studierende (
-    matrikel_nr INTEGER PRIMARY KEY,
-    vorname VARCHAR(50) NOT NULL,
-    nachname VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE,         -- Jede E-Mail nur einmal!
-    semester INTEGER
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    typ VARCHAR(50) NOT NULL,
+    seriennummer VARCHAR(50) UNIQUE,   -- Jede Seriennummer nur einmal!
+    anschaffungsjahr INTEGER
 );
 ```
 
@@ -133,33 +133,33 @@ CREATE TABLE studierende (
 
 ```sql
 -- Erste Einfügung: OK
-INSERT INTO studierende (matrikel_nr, vorname, nachname, email, semester)
-VALUES (12345, 'Anna', 'Müller', 'anna@uni.at', 3);
+INSERT INTO maschinen (name, typ, seriennummer, anschaffungsjahr)
+VALUES ('CNC-Fräse Alpha', 'CNC-Fräse', 'CNC-2019-001', 2019);
 
--- Zweite Einfügung mit gleicher E-Mail: FEHLER!
-INSERT INTO studierende (matrikel_nr, vorname, nachname, email, semester)
-VALUES (12346, 'Max', 'Schmidt', 'anna@uni.at', 2);
+-- Zweite Einfügung mit gleicher Seriennummer: FEHLER!
+INSERT INTO maschinen (name, typ, seriennummer, anschaffungsjahr)
+VALUES ('CNC-Fräse Beta', 'CNC-Fräse', 'CNC-2019-001', 2020);
 ```
 
 **Fehlermeldung:**
 
 ```
-ERROR: duplicate key value violates unique constraint "studierende_email_key"
+ERROR: duplicate key value violates unique constraint "maschinen_seriennummer_key"
 ```
 
 ### UNIQUE mit mehreren Spalten
 
 ```sql
-CREATE TABLE kurse (
-    kurs_id SERIAL PRIMARY KEY,
-    kursname VARCHAR(100),
-    semester VARCHAR(20),
-    dozent VARCHAR(100),
-    UNIQUE (kursname, semester)  -- Diese Kombination muss eindeutig sein
+CREATE TABLE wartungsprotokolle (
+    wartungs_id SERIAL PRIMARY KEY,
+    maschinen_id INTEGER,
+    wartungsdatum DATE,
+    beschreibung TEXT,
+    UNIQUE (maschinen_id, wartungsdatum)  -- Diese Kombination muss eindeutig sein
 );
 ```
 
-Das erlaubt denselben Kurs in verschiedenen Semestern, aber nicht zweimal im selben Semester.
+Das erlaubt mehrere Wartungen für eine Maschine, aber nicht zweimal am selben Tag.
 
 ---
 
@@ -170,56 +170,56 @@ Mit **CHECK** können wir **beliebige Bedingungen** definieren, die erfüllt sei
 ### Beispiel: Wertebereich prüfen
 
 ```sql
-CREATE TABLE studierende (
-    matrikel_nr INTEGER PRIMARY KEY,
-    vorname VARCHAR(50) NOT NULL,
-    nachname VARCHAR(50) NOT NULL,
-    semester INTEGER CHECK (semester >= 1 AND semester <= 20),  -- 1-20
-    geburtsdatum DATE CHECK (geburtsdatum < CURRENT_DATE)       -- In der Vergangenheit
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    typ VARCHAR(50) NOT NULL,
+    anschaffungsjahr INTEGER CHECK (anschaffungsjahr >= 1950 AND anschaffungsjahr <= 2030),
+    installationsdatum DATE CHECK (installationsdatum <= CURRENT_DATE)  -- In der Vergangenheit
 );
 ```
 
 ### Was passiert bei Verstoß?
 
 ```sql
--- Fehler: Semester -5 ist ungültig!
-INSERT INTO studierende (matrikel_nr, vorname, nachname, semester)
-VALUES (12345, 'Anna', 'Müller', -5);
+-- Fehler: Anschaffungsjahr 1800 ist ungültig!
+INSERT INTO maschinen (name, typ, anschaffungsjahr)
+VALUES ('Alte Maschine', 'Presse', 1800);
 ```
 
 **Fehlermeldung:**
 
 ```
-ERROR: new row for relation "studierende" violates check constraint "studierende_semester_check"
+ERROR: new row for relation "maschinen" violates check constraint "maschinen_anschaffungsjahr_check"
 ```
 
 ### Weitere CHECK-Beispiele
 
 ```sql
--- Gehalt muss positiv sein
-CREATE TABLE angestellte (
-    angestellte_id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    gehalt NUMERIC(10, 2) CHECK (gehalt > 0)
+-- Preis muss positiv sein
+CREATE TABLE ersatzteile (
+    teil_id SERIAL PRIMARY KEY,
+    teilname VARCHAR(100),
+    preis NUMERIC(10, 2) CHECK (preis > 0)
 );
 ```
 
 ```sql
--- E-Mail muss '@' enthalten
-CREATE TABLE benutzer (
-    benutzer_id SERIAL PRIMARY KEY,
-    email VARCHAR(100) CHECK (email LIKE '%@%')
+-- Seriennummer muss bestimmtes Format haben
+CREATE TABLE sensoren (
+    sensor_id SERIAL PRIMARY KEY,
+    seriennummer VARCHAR(20) CHECK (seriennummer LIKE 'SN-%')
 );
 ```
 
 ```sql
 -- Mehrere Bedingungen kombinieren
-CREATE TABLE kurse (
-    kurs_id SERIAL PRIMARY KEY,
-    kursname VARCHAR(100) NOT NULL,
-    ects INTEGER CHECK (ects >= 1 AND ects <= 15),
-    max_teilnehmer INTEGER CHECK (max_teilnehmer > 0),
-    CHECK (max_teilnehmer >= 5)  -- Tabellen-Level Constraint
+CREATE TABLE wartungsauftraege (
+    auftrag_id SERIAL PRIMARY KEY,
+    beschreibung TEXT NOT NULL,
+    kosten NUMERIC(10, 2) CHECK (kosten >= 0 AND kosten <= 50000),
+    dauer_stunden INTEGER CHECK (dauer_stunden > 0),
+    CHECK (dauer_stunden <= 168)  -- Max 1 Woche (Tabellen-Level Constraint)
 );
 ```
 
@@ -232,28 +232,28 @@ CREATE TABLE kurse (
 ### Beispiel
 
 ```sql
-CREATE TABLE studierende (
-    matrikel_nr INTEGER PRIMARY KEY,
-    vorname VARCHAR(50) NOT NULL,
-    nachname VARCHAR(50) NOT NULL,
-    semester INTEGER DEFAULT 1,                    -- Standard: 1
-    einschreibedatum DATE DEFAULT CURRENT_DATE,    -- Standard: Heute
-    aktiv BOOLEAN DEFAULT TRUE                     -- Standard: aktiv
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    typ VARCHAR(50) NOT NULL,
+    status VARCHAR(20) DEFAULT 'Aktiv',            -- Standard: Aktiv
+    installationsdatum DATE DEFAULT CURRENT_DATE,  -- Standard: Heute
+    betriebsbereit BOOLEAN DEFAULT TRUE            -- Standard: betriebsbereit
 );
 ```
 
 ### Verwendung
 
 ```sql
--- Ohne semester: wird automatisch 1
-INSERT INTO studierende (matrikel_nr, vorname, nachname)
-VALUES (12345, 'Anna', 'Müller');
+-- Ohne status: wird automatisch 'Aktiv'
+INSERT INTO maschinen (name, typ)
+VALUES ('CNC-Fräse Alpha', 'CNC-Fräse');
 
 -- Ergebnis:
--- matrikel_nr: 12345
--- semester: 1 (DEFAULT)
--- einschreibedatum: 2024-03-15 (CURRENT_DATE)
--- aktiv: TRUE (DEFAULT)
+-- maschinen_id: 1 (automatisch)
+-- status: 'Aktiv' (DEFAULT)
+-- installationsdatum: 2024-03-15 (CURRENT_DATE)
+-- betriebsbereit: TRUE (DEFAULT)
 ```
 
 ---
@@ -265,29 +265,29 @@ Du kannst Constraints auch zu bestehenden Tabellen hinzufügen.
 ### NOT NULL hinzufügen
 
 ```sql
-ALTER TABLE studierende
-ALTER COLUMN email SET NOT NULL;
+ALTER TABLE maschinen
+ALTER COLUMN seriennummer SET NOT NULL;
 ```
 
 ### UNIQUE hinzufügen
 
 ```sql
-ALTER TABLE studierende
-ADD CONSTRAINT email_unique UNIQUE (email);
+ALTER TABLE maschinen
+ADD CONSTRAINT seriennummer_unique UNIQUE (seriennummer);
 ```
 
 ### CHECK hinzufügen
 
 ```sql
-ALTER TABLE studierende
-ADD CONSTRAINT semester_check CHECK (semester >= 1 AND semester <= 20);
+ALTER TABLE maschinen
+ADD CONSTRAINT jahr_check CHECK (anschaffungsjahr >= 1950 AND anschaffungsjahr <= 2030);
 ```
 
 ### Constraint entfernen
 
 ```sql
-ALTER TABLE studierende
-DROP CONSTRAINT email_unique;
+ALTER TABLE maschinen
+DROP CONSTRAINT seriennummer_unique;
 ```
 
 ---
@@ -297,41 +297,41 @@ DROP CONSTRAINT email_unique;
 ### Vollständige Tabelle mit allen Constraints
 
 ```sql
-CREATE TABLE kurse (
-    kurs_id SERIAL PRIMARY KEY,
-    kursname VARCHAR(100) NOT NULL,
-    dozent VARCHAR(100) NOT NULL,
-    ects INTEGER NOT NULL CHECK (ects >= 1 AND ects <= 15),
-    max_teilnehmer INTEGER DEFAULT 30 CHECK (max_teilnehmer > 0),
-    raum VARCHAR(50),
-    semester VARCHAR(20) NOT NULL DEFAULT 'WS2024',
-    aktiv BOOLEAN DEFAULT TRUE,
-    erstellt_am TIMESTAMP DEFAULT NOW(),
-    
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    typ VARCHAR(50) NOT NULL,
+    leistung_kw NUMERIC(5, 2) NOT NULL CHECK (leistung_kw >= 0.1 AND leistung_kw <= 500),
+    anschaffungsjahr INTEGER DEFAULT 2024 CHECK (anschaffungsjahr >= 1950),
+    standort VARCHAR(50),
+    status VARCHAR(20) NOT NULL DEFAULT 'Aktiv',
+    betriebsbereit BOOLEAN DEFAULT TRUE,
+    installiert_am TIMESTAMP DEFAULT NOW(),
+
     -- Eindeutige Kombination
-    UNIQUE (kursname, semester),
-    
+    UNIQUE (name, standort),
+
     -- Tabellen-Level CHECK
-    CHECK (max_teilnehmer >= 5)
+    CHECK (leistung_kw < 1000)
 );
 ```
 
-### Praktisches Beispiel: E-Commerce
+### Praktisches Beispiel: Ersatzteilverwaltung
 
 ```sql
-CREATE TABLE produkte (
-    produkt_id SERIAL PRIMARY KEY,
-    name VARCHAR(200) NOT NULL,
+CREATE TABLE ersatzteile (
+    teil_id SERIAL PRIMARY KEY,
+    teilname VARCHAR(200) NOT NULL,
     beschreibung TEXT,
     preis NUMERIC(10, 2) NOT NULL CHECK (preis > 0),
-    bestand INTEGER DEFAULT 0 CHECK (bestand >= 0),
+    lagerbestand INTEGER DEFAULT 0 CHECK (lagerbestand >= 0),
     kategorie VARCHAR(50) NOT NULL,
-    sku VARCHAR(50) UNIQUE NOT NULL,  -- Artikelnummer
+    teilnummer VARCHAR(50) UNIQUE NOT NULL,  -- Eindeutige Teilnummer
     aktiv BOOLEAN DEFAULT TRUE,
     erstellt_am TIMESTAMP DEFAULT NOW(),
-    
-    -- Preis darf nicht zu hoch sein (Plausibilitätsprüfung)
-    CHECK (preis <= 100000)
+
+    -- Preis-Plausibilitätsprüfung (Ersatzteile sollten nicht extrem teuer sein)
+    CHECK (preis <= 50000)
 );
 ```
 
@@ -339,27 +339,27 @@ CREATE TABLE produkte (
 
 ## Praktische Übungen 🎯
 
-### Aufgabe 1: Mitarbeiter-Tabelle
+### Aufgabe 1: Techniker-Tabelle
 
-Erstelle eine Tabelle `mitarbeiter` mit folgenden Anforderungen:
+Erstelle eine Tabelle `techniker` mit folgenden Anforderungen:
 
 - ID (Primärschlüssel, automatisch)
-- Vorname (Pflicht)
-- Nachname (Pflicht)
-- E-Mail (eindeutig, Pflicht)
-- Gehalt (positiv, mindestens 1000)
+- Name (Pflicht)
+- Abteilung (Pflicht)
+- Telefon (eindeutig, Pflicht)
+- Erfahrungsjahre (positiv, mindestens 0, maximal 50)
 - Einstellungsdatum (Standardwert: heute)
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-CREATE TABLE mitarbeiter (
-    mitarbeiter_id SERIAL PRIMARY KEY,
-    vorname VARCHAR(50) NOT NULL,
-    nachname VARCHAR(50) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    gehalt NUMERIC(10, 2) CHECK (gehalt >= 1000),
+CREATE TABLE techniker (
+    techniker_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    abteilung VARCHAR(50) NOT NULL,
+    telefon VARCHAR(20) UNIQUE NOT NULL,
+    erfahrungsjahre INTEGER CHECK (erfahrungsjahre >= 0 AND erfahrungsjahre <= 50),
     einstellungsdatum DATE DEFAULT CURRENT_DATE
 );
 ```
@@ -367,14 +367,14 @@ CREATE TABLE mitarbeiter (
 
 ### Aufgabe 2: Constraint hinzufügen
 
-Füge zur bestehenden `studierende`-Tabelle ein Constraint hinzu: Die E-Mail muss '@uni.at' enthalten.
+Füge zur bestehenden `ersatzteile`-Tabelle ein Constraint hinzu: Die Teilnummer muss mit 'ET-' beginnen.
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-ALTER TABLE studierende
-ADD CONSTRAINT email_format CHECK (email LIKE '%@uni.at');
+ALTER TABLE ersatzteile
+ADD CONSTRAINT teilnummer_format CHECK (teilnummer LIKE 'ET-%');
 ```
 </details>
 
@@ -383,10 +383,10 @@ ADD CONSTRAINT email_format CHECK (email LIKE '%@uni.at');
 Was ist an dieser Tabellendefinition problematisch?
 
 ```sql
-CREATE TABLE bestellungen (
-    bestellung_id SERIAL,
-    kunde_id INTEGER,
-    betrag NUMERIC(10, 2),
+CREATE TABLE wartungsauftraege (
+    auftrag_id SERIAL,
+    maschinen_id INTEGER,
+    kosten NUMERIC(10, 2),
     status VARCHAR(20)
 );
 ```
@@ -396,20 +396,20 @@ CREATE TABLE bestellungen (
 
 **Probleme:**
 
-1. Kein PRIMARY KEY definiert (sollte bei `bestellung_id` sein)
-2. `kunde_id` sollte NOT NULL sein (jede Bestellung braucht einen Kunden)
-3. `betrag` sollte CHECK (betrag > 0) haben
+1. Kein PRIMARY KEY definiert (sollte bei `auftrag_id` sein)
+2. `maschinen_id` sollte NOT NULL sein (jeder Auftrag braucht eine Maschine)
+3. `kosten` sollte CHECK (kosten >= 0) haben
 4. `status` könnte auf bestimmte Werte eingeschränkt werden
 
 **Verbesserung:**
 
 ```sql
-CREATE TABLE bestellungen (
-    bestellung_id SERIAL PRIMARY KEY,
-    kunde_id INTEGER NOT NULL,
-    betrag NUMERIC(10, 2) CHECK (betrag > 0),
-    status VARCHAR(20) CHECK (status IN ('offen', 'bezahlt', 'versandt', 'abgeschlossen')),
-    FOREIGN KEY (kunde_id) REFERENCES kunden(kunde_id)
+CREATE TABLE wartungsauftraege (
+    auftrag_id SERIAL PRIMARY KEY,
+    maschinen_id INTEGER NOT NULL,
+    kosten NUMERIC(10, 2) CHECK (kosten >= 0),
+    status VARCHAR(20) CHECK (status IN ('geplant', 'in_arbeit', 'abgeschlossen', 'abgebrochen')),
+    FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
 );
 ```
 </details>
@@ -421,21 +421,21 @@ CREATE TABLE bestellungen (
 Du kannst Constraints **Namen geben**, um sie später leichter zu identifizieren:
 
 ```sql
-CREATE TABLE studierende (
-    matrikel_nr INTEGER,
-    email VARCHAR(100),
-    semester INTEGER,
-    
-    CONSTRAINT pk_studierende PRIMARY KEY (matrikel_nr),
-    CONSTRAINT uq_email UNIQUE (email),
-    CONSTRAINT ck_semester CHECK (semester >= 1 AND semester <= 20)
+CREATE TABLE maschinen (
+    maschinen_id INTEGER,
+    seriennummer VARCHAR(50),
+    anschaffungsjahr INTEGER,
+
+    CONSTRAINT pk_maschinen PRIMARY KEY (maschinen_id),
+    CONSTRAINT uq_seriennummer UNIQUE (seriennummer),
+    CONSTRAINT ck_anschaffungsjahr CHECK (anschaffungsjahr >= 1950 AND anschaffungsjahr <= 2030)
 );
 ```
 
 **Vorteil:** Bei Fehlern siehst du den Namen:
 
 ```
-ERROR: new row violates check constraint "ck_semester"
+ERROR: new row violates check constraint "ck_anschaffungsjahr"
 ```
 
 ---

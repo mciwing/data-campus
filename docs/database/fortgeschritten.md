@@ -16,29 +16,29 @@ In diesem Kapitel lernst du:
 
 Eine **Unterabfrage** (Subquery) ist eine SELECT-Abfrage **innerhalb** einer anderen Abfrage.
 
-### Beispiel: Studierende über dem Durchschnittsgehalt
+### Beispiel: Maschinen über dem Durchschnittsanschaffungsjahr
 
-**Frage:** Welche Angestellten verdienen mehr als das Durchschnittsgehalt?
+**Frage:** Welche Maschinen wurden später angeschafft als im Durchschnitt?
 
 **Ohne Unterabfrage:**
 
 ```sql
 -- 1. Durchschnitt berechnen
-SELECT AVG(gehalt) FROM angestellte;  -- Ergebnis: 4000
+SELECT AVG(anschaffungsjahr) FROM maschinen;  -- Ergebnis: 2019
 
 -- 2. Dann manuell verwenden
-SELECT name FROM angestellte WHERE gehalt > 4000;
+SELECT name FROM maschinen WHERE anschaffungsjahr > 2019;
 ```
 
 **Mit Unterabfrage (in einer Abfrage!):**
 
 ```sql
-SELECT name, gehalt
-FROM angestellte
-WHERE gehalt > (SELECT AVG(gehalt) FROM angestellte);
+SELECT name, anschaffungsjahr
+FROM maschinen
+WHERE anschaffungsjahr > (SELECT AVG(anschaffungsjahr) FROM maschinen);
 ```
 
-Die innere Abfrage `(SELECT AVG(gehalt) FROM angestellte)` wird **zuerst** ausgeführt und liefert einen Wert (z.B. 4000), der dann in der äußeren Abfrage verwendet wird.
+Die innere Abfrage `(SELECT AVG(anschaffungsjahr) FROM maschinen)` wird **zuerst** ausgeführt und liefert einen Wert (z.B. 2019), der dann in der äußeren Abfrage verwendet wird.
 
 ---
 
@@ -46,34 +46,34 @@ Die innere Abfrage `(SELECT AVG(gehalt) FROM angestellte)` wird **zuerst** ausge
 
 Mit **IN** können wir prüfen, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist.
 
-### Beispiel: Studierende, die Informatik-Kurse belegen
+### Beispiel: Maschinen, die Spindelmotoren verwenden
 
 ```sql
--- Welche Studierenden belegen Kurse aus der IT-Fakultät?
-SELECT vorname, nachname
-FROM studierende
-WHERE matrikel_nr IN (
-    SELECT matrikel_nr 
-    FROM kurs_belegungen kb
-    INNER JOIN kurse k ON kb.kurs_id = k.kurs_id
-    WHERE k.dozent LIKE '%Dr. Weber%'
+-- Welche Maschinen benötigen Spindelmotoren?
+SELECT name
+FROM maschinen
+WHERE maschinen_id IN (
+    SELECT maschinen_id
+    FROM maschinen_ersatzteile me
+    INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+    WHERE e.teilname LIKE '%Spindelmotor%'
 );
 ```
 
 **Ablauf:**
 
-1. Innere Abfrage findet alle `matrikel_nr` von Studierenden bei Dr. Weber
-2. Äußere Abfrage filtert Studierende, deren `matrikel_nr` in dieser Liste ist
+1. Innere Abfrage findet alle `maschinen_id` von Maschinen mit Spindelmotoren
+2. Äußere Abfrage filtert Maschinen, deren `maschinen_id` in dieser Liste ist
 
 ### NOT IN
 
 ```sql
--- Studierende, die KEINE Kurse belegen
-SELECT vorname, nachname
-FROM studierende
-WHERE matrikel_nr NOT IN (
-    SELECT DISTINCT matrikel_nr 
-    FROM kurs_belegungen
+-- Maschinen, die KEINE Ersatzteile zugeordnet haben
+SELECT name
+FROM maschinen
+WHERE maschinen_id NOT IN (
+    SELECT DISTINCT maschinen_id
+    FROM maschinen_ersatzteile
 );
 ```
 
@@ -88,31 +88,31 @@ WHERE matrikel_nr NOT IN (
 
 **EXISTS** prüft, ob eine Unterabfrage **mindestens ein Ergebnis** liefert.
 
-### Beispiel: Abteilungen mit Angestellten
+### Beispiel: Techniker mit zugeordneten Maschinen
 
 ```sql
--- Welche Abteilungen haben mindestens einen Angestellten?
+-- Welche Techniker haben mindestens eine zugeordnete Maschine?
 SELECT name
-FROM abteilungen ab
+FROM techniker t
 WHERE EXISTS (
-    SELECT 1 
-    FROM angestellte a 
-    WHERE a.abteilung_id = ab.abteilung_id
+    SELECT 1
+    FROM maschinen m
+    WHERE m.techniker_id = t.techniker_id
 );
 ```
 
-**Erklärung:** Für jede Abteilung prüft die Unterabfrage, ob es Angestellte gibt. `EXISTS` ist wahr, sobald **mindestens eine Zeile** gefunden wird.
+**Erklärung:** Für jeden Techniker prüft die Unterabfrage, ob es zugeordnete Maschinen gibt. `EXISTS` ist wahr, sobald **mindestens eine Zeile** gefunden wird.
 
 ### NOT EXISTS
 
 ```sql
--- Abteilungen OHNE Angestellte
+-- Techniker OHNE zugeordnete Maschinen
 SELECT name
-FROM abteilungen ab
+FROM techniker t
 WHERE NOT EXISTS (
-    SELECT 1 
-    FROM angestellte a 
-    WHERE a.abteilung_id = ab.abteilung_id
+    SELECT 1
+    FROM maschinen m
+    WHERE m.techniker_id = t.techniker_id
 );
 ```
 
@@ -132,20 +132,21 @@ WHERE NOT EXISTS (
 Man kann eine Unterabfrage auch in der **FROM-Klausel** verwenden – als wäre sie eine Tabelle!
 
 ```sql
--- Durchschnittsgehalt pro Abteilung, aber nur für Abteilungen mit Durchschnitt > 4000
-SELECT abt_name, avg_gehalt
+-- Durchschnittliche Ersatzteilkosten pro Maschine, aber nur für Maschinen mit Kosten > 1000
+SELECT maschine, avg_kosten
 FROM (
-    SELECT 
-        ab.name AS abt_name,
-        AVG(a.gehalt) AS avg_gehalt
-    FROM angestellte a
-    INNER JOIN abteilungen ab ON a.abteilung_id = ab.abteilung_id
-    GROUP BY ab.name
-) AS abt_durchschnitt
-WHERE avg_gehalt > 4000;
+    SELECT
+        m.name AS maschine,
+        AVG(e.preis * me.menge) AS avg_kosten
+    FROM maschinen m
+    INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+    INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+    GROUP BY m.name
+) AS maschinen_kosten
+WHERE avg_kosten > 1000;
 ```
 
-**Wichtig:** Die Unterabfrage **muss einen Alias** haben (hier: `AS abt_durchschnitt`)!
+**Wichtig:** Die Unterabfrage **muss einen Alias** haben (hier: `AS maschinen_kosten`)!
 
 ---
 
@@ -208,49 +209,50 @@ SQL bietet viele Funktionen zur Textverarbeitung.
 ### Praktische Beispiele
 
 ```sql
--- Vollständiger Name aus Vor- und Nachname
-SELECT 
-    CONCAT(vorname, ' ', nachname) AS vollstaendiger_name
-FROM studierende;
+-- Vollständige Maschinenbezeichnung mit Standort
+SELECT
+    CONCAT(name, ' (', typ, ')') AS vollstaendige_bezeichnung
+FROM maschinen;
 ```
 
 ```sql
--- Alle Namen in Großbuchstaben
-SELECT 
-    UPPER(nachname) AS nachname_gross,
-    vorname
-FROM studierende
-ORDER BY nachname_gross;
+-- Alle Maschinennamen in Großbuchstaben
+SELECT
+    UPPER(name) AS name_gross,
+    typ
+FROM maschinen
+ORDER BY name_gross;
 ```
 
 ```sql
--- Erste 3 Buchstaben des Nachnamens
-SELECT 
-    vorname,
-    SUBSTRING(nachname, 1, 3) AS name_kurz
-FROM studierende;
+-- Erste 3 Buchstaben des Maschinentyps als Kurzform
+SELECT
+    name,
+    SUBSTRING(typ, 1, 3) AS typ_kurz
+FROM maschinen;
 ```
 
 ```sql
--- E-Mail-Adressen generieren
-SELECT 
+-- Seriennummern generieren
+SELECT
     CONCAT(
-        LOWER(vorname), 
-        '.', 
-        LOWER(nachname), 
-        '@uni.at'
-    ) AS email
-FROM studierende;
+        UPPER(SUBSTRING(typ, 1, 3)),
+        '-',
+        maschinen_id,
+        '-',
+        anschaffungsjahr
+    ) AS seriennummer
+FROM maschinen;
 ```
 
 **Ergebnis:**
 
 ```
- email 
-──────────────────────
- anna.mueller@uni.at
- max.schmidt@uni.at
- lisa.weber@uni.at
+ seriennummer
+──────────────
+ CNC-1-2019
+ DRE-2-2021
+ ROB-3-2020
 ```
 
 ---
@@ -304,39 +306,38 @@ PostgreSQL bietet umfangreiche Funktionen für Datum und Zeit.
 ### Beispiele
 
 ```sql
--- Tabelle mit Geburtsdatum erweitern
-ALTER TABLE studierende ADD COLUMN geburtsdatum DATE;
+-- Tabelle mit Installationsdatum erweitern
+ALTER TABLE maschinen ADD COLUMN installationsdatum DATE;
 
-UPDATE studierende SET geburtsdatum = '2002-05-15' WHERE matrikel_nr = 12345;
-UPDATE studierende SET geburtsdatum = '2001-08-20' WHERE matrikel_nr = 12346;
-UPDATE studierende SET geburtsdatum = '2000-12-03' WHERE matrikel_nr = 12347;
+UPDATE maschinen SET installationsdatum = '2019-03-15' WHERE maschinen_id = 1;
+UPDATE maschinen SET installationsdatum = '2021-06-10' WHERE maschinen_id = 2;
+UPDATE maschinen SET installationsdatum = '2020-09-20' WHERE maschinen_id = 3;
 ```
 
 ```sql
--- Alter berechnen
-SELECT 
-    vorname,
-    nachname,
-    geburtsdatum,
-    EXTRACT(YEAR FROM AGE(geburtsdatum)) AS alter
-FROM studierende;
+-- Betriebsdauer in Jahren berechnen
+SELECT
+    name,
+    installationsdatum,
+    EXTRACT(YEAR FROM AGE(installationsdatum)) AS betriebsjahre
+FROM maschinen;
 ```
 
 ```sql
--- Studierende, die diesen Monat Geburtstag haben
-SELECT vorname, nachname, geburtsdatum
-FROM studierende
-WHERE EXTRACT(MONTH FROM geburtsdatum) = EXTRACT(MONTH FROM CURRENT_DATE);
+-- Maschinen, die diesen Monat installiert wurden (Jahrestag)
+SELECT name, installationsdatum
+FROM maschinen
+WHERE EXTRACT(MONTH FROM installationsdatum) = EXTRACT(MONTH FROM CURRENT_DATE);
 ```
 
 ```sql
--- Studierende nach Geburtsjahr gruppieren
-SELECT 
-    EXTRACT(YEAR FROM geburtsdatum) AS geburtsjahr,
+-- Maschinen nach Installationsjahr gruppieren
+SELECT
+    EXTRACT(YEAR FROM installationsdatum) AS installationsjahr,
     COUNT(*) AS anzahl
-FROM studierende
-GROUP BY EXTRACT(YEAR FROM geburtsdatum)
-ORDER BY geburtsjahr;
+FROM maschinen
+GROUP BY EXTRACT(YEAR FROM installationsdatum)
+ORDER BY installationsjahr;
 ```
 
 ---
@@ -355,58 +356,55 @@ CASE
 END
 ```
 
-### Beispiel: Noten-Kategorien
+### Beispiel: Wartungs-Prioritätskategorien
 
 ```sql
-SELECT 
-    vorname,
-    nachname,
-    note,
+SELECT
+    name,
+    anschaffungsjahr,
     CASE
-        WHEN note <= 1.5 THEN 'Sehr gut'
-        WHEN note <= 2.5 THEN 'Gut'
-        WHEN note <= 3.5 THEN 'Befriedigend'
-        WHEN note <= 4.0 THEN 'Ausreichend'
-        ELSE 'Nicht bestanden'
-    END AS note_text
-FROM kurs_belegungen kb
-INNER JOIN studierende s ON kb.matrikel_nr = s.matrikel_nr;
+        WHEN anschaffungsjahr >= 2022 THEN 'Neu - Niedrige Priorität'
+        WHEN anschaffungsjahr >= 2020 THEN 'Mittel'
+        WHEN anschaffungsjahr >= 2015 THEN 'Alt - Hohe Priorität'
+        ELSE 'Sehr alt - Kritisch'
+    END AS wartungspriorität
+FROM maschinen;
 ```
 
 **Ergebnis:**
 
 ```
- vorname │ nachname │ note │ note_text      
-─────────┼──────────┼──────┼────────────────
- Anna    │ Müller   │  1.3 │ Sehr gut
- Anna    │ Müller   │  2.0 │ Gut
- Max     │ Schmidt  │  3.2 │ Befriedigend
+ name                 │ anschaffungsjahr │ wartungspriorität
+──────────────────────┼──────────────────┼───────────────────────
+ CNC-Fräse Alpha      │             2019 │ Mittel
+ Drehbank Beta        │             2021 │ Mittel
+ Schweißroboter Gamma │             2020 │ Mittel
 ```
 
-### Beispiel: Gehaltskategorien
+### Beispiel: Ersatzteil-Kostenkategorien
 
 ```sql
-SELECT 
-    name,
-    gehalt,
+SELECT
+    teilname,
+    preis,
     CASE
-        WHEN gehalt < 3000 THEN 'Niedrig'
-        WHEN gehalt < 4500 THEN 'Mittel'
-        ELSE 'Hoch'
-    END AS gehaltskategorie
-FROM angestellte
-ORDER BY gehalt;
+        WHEN preis < 100 THEN 'Günstig'
+        WHEN preis < 500 THEN 'Mittel'
+        ELSE 'Teuer'
+    END AS preiskategorie
+FROM ersatzteile
+ORDER BY preis;
 ```
 
 ### CASE in Aggregationen
 
 ```sql
--- Wie viele Studierende haben Note besser als 2.0?
-SELECT 
-    COUNT(CASE WHEN note <= 2.0 THEN 1 END) AS sehr_gut_bis_gut,
-    COUNT(CASE WHEN note > 2.0 THEN 1 END) AS befriedigend_oder_schlechter,
+-- Wie viele Ersatzteile sind teurer als 500 Euro?
+SELECT
+    COUNT(CASE WHEN preis <= 500 THEN 1 END) AS guenstig_bis_mittel,
+    COUNT(CASE WHEN preis > 500 THEN 1 END) AS teuer,
     COUNT(*) AS gesamt
-FROM kurs_belegungen;
+FROM ersatzteile;
 ```
 
 ---
@@ -424,26 +422,26 @@ COALESCE(wert1, wert2, wert3, ..., standard)
 ### Beispiel: Standardwerte für NULL
 
 ```sql
--- Wenn keine Abteilung: "Keine Abteilung"
-SELECT 
+-- Wenn kein Techniker zugeordnet: "Nicht zugeordnet"
+SELECT
     name,
-    COALESCE(abteilung_id::TEXT, 'Keine Abteilung') AS abteilung
-FROM angestellte;
+    COALESCE(techniker_id::TEXT, 'Nicht zugeordnet') AS techniker
+FROM maschinen;
 ```
 
-### Beispiel: Notendurchschnitt mit Standardwert
+### Beispiel: Durchschnittskosten mit Standardwert
 
 ```sql
-SELECT 
-    s.vorname,
-    s.nachname,
-    COALESCE(AVG(kb.note), 0) AS durchschnitt
-FROM studierende s
-LEFT JOIN kurs_belegungen kb ON s.matrikel_nr = kb.matrikel_nr
-GROUP BY s.vorname, s.nachname;
+SELECT
+    m.name,
+    COALESCE(AVG(e.preis * me.menge), 0) AS durchschnitt_kosten
+FROM maschinen m
+LEFT JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+LEFT JOIN ersatzteile e ON me.teil_id = e.teil_id
+GROUP BY m.name;
 ```
 
-Studierende ohne Noten bekommen `0` statt `NULL`.
+Maschinen ohne Ersatzteile bekommen `0` statt `NULL`.
 
 ---
 
@@ -495,14 +493,14 @@ Studierende ohne Noten bekommen `0` statt `NULL`.
 </div>
 
 ```sql
--- Noten auf 1 Nachkommastelle runden
-SELECT 
-    vorname,
-    nachname,
-    ROUND(AVG(note), 1) AS durchschnittsnote
-FROM kurs_belegungen kb
-INNER JOIN studierende s ON kb.matrikel_nr = s.matrikel_nr
-GROUP BY vorname, nachname;
+-- Ersatzteilkosten auf 2 Nachkommastellen runden
+SELECT
+    m.name,
+    ROUND(AVG(e.preis * me.menge), 2) AS durchschnitt_kosten
+FROM maschinen m
+INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+GROUP BY m.name;
 ```
 
 ---
@@ -511,74 +509,87 @@ GROUP BY vorname, nachname;
 
 ### Aufgabe 1: Unterabfragen
 
-Finde alle Kurse, die teurer sind als der Durchschnitt (gemessen an ECTS).
+Finde alle Ersatzteile, die teurer sind als der Durchschnittspreis.
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT kursname, ects
-FROM kurse
-WHERE ects > (SELECT AVG(ects) FROM kurse);
+SELECT teilname, preis
+FROM ersatzteile
+WHERE preis > (SELECT AVG(preis) FROM ersatzteile);
 ```
 </details>
 
 ### Aufgabe 2: String-Funktionen
 
-Erstelle für alle Studierenden eine E-Mail-Adresse im Format: `vorname.nachname@student.uni.at`
+Erstelle für alle Maschinen eine Seriennummer im Format: `TYP-ID-JAHR` (z.B. `CNC-1-2019`)
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT 
-    vorname,
-    nachname,
-    CONCAT(LOWER(vorname), '.', LOWER(nachname), '@student.uni.at') AS email
-FROM studierende;
+SELECT
+    name,
+    CONCAT(
+        UPPER(SUBSTRING(typ, 1, 3)),
+        '-',
+        maschinen_id,
+        '-',
+        anschaffungsjahr
+    ) AS seriennummer
+FROM maschinen;
 ```
 </details>
 
 ### Aufgabe 3: CASE WHEN
 
-Kategorisiere Kurse nach ECTS: 
-- 1-3 ECTS: "Klein"
-- 4-5 ECTS: "Mittel"  
-- 6+ ECTS: "Groß"
+Kategorisiere Maschinen nach Anschaffungsjahr:
+- ab 2022: "Neu"
+- 2018-2021: "Mittel"
+- vor 2018: "Alt"
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT 
-    kursname,
-    ects,
+SELECT
+    name,
+    anschaffungsjahr,
     CASE
-        WHEN ects <= 3 THEN 'Klein'
-        WHEN ects <= 5 THEN 'Mittel'
-        ELSE 'Groß'
-    END AS groesse
-FROM kurse;
+        WHEN anschaffungsjahr >= 2022 THEN 'Neu'
+        WHEN anschaffungsjahr >= 2018 THEN 'Mittel'
+        ELSE 'Alt'
+    END AS altersklasse
+FROM maschinen;
 ```
 </details>
 
 ### Aufgabe 4: Kombiniert
 
-Finde Studierende, die überdurchschnittlich gute Noten haben, und zeige ihre E-Mail-Adresse.
+Finde Maschinen, die überdurchschnittlich hohe Ersatzteilkosten haben.
 
 <details>
 <summary>💡 Lösung anzeigen</summary>
 
 ```sql
-SELECT 
-    s.vorname,
-    s.nachname,
-    CONCAT(LOWER(s.vorname), '.', LOWER(s.nachname), '@student.uni.at') AS email,
-    ROUND(AVG(kb.note), 2) AS durchschnitt
-FROM studierende s
-INNER JOIN kurs_belegungen kb ON s.matrikel_nr = kb.matrikel_nr
-GROUP BY s.vorname, s.nachname
-HAVING AVG(kb.note) < (SELECT AVG(note) FROM kurs_belegungen);
+SELECT
+    m.name,
+    ROUND(SUM(e.preis * me.menge), 2) AS gesamt_kosten
+FROM maschinen m
+INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+GROUP BY m.name
+HAVING SUM(e.preis * me.menge) > (
+    SELECT AVG(kosten)
+    FROM (
+        SELECT SUM(e.preis * me.menge) AS kosten
+        FROM maschinen m
+        INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+        INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+        GROUP BY m.maschinen_id
+    ) AS durchschnitt
+);
 ```
 </details>
 

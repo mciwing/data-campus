@@ -27,19 +27,19 @@ Lass uns das Schritt für Schritt durchgehen!
 
 ## Beispieldaten
 
-Für die folgenden Beispiele verwenden wir unsere `studierende` Tabelle und erweitern sie:
+Für die folgenden Beispiele verwenden wir unsere `maschinen` Tabelle und erweitern sie:
 
 ```sql
-INSERT INTO studierende (matrikel_nr, vorname, nachname, studiengang, semester)
-VALUES 
-    (12345, 'Anna', 'Müller', 'Informatik', 3),
-    (12346, 'Max', 'Schmidt', 'BWL', 2),
-    (12347, 'Lisa', 'Weber', 'Informatik', 5),
-    (12348, 'Tom', 'Bauer', 'Mathematik', 1),
-    (12349, 'Sarah', 'Klein', 'Informatik', 3),
-    (12350, 'Paul', 'Fischer', 'BWL', 4),
-    (12351, 'Emma', 'Wagner', 'Mathematik', 2),
-    (12352, 'Leon', 'Hoffmann', 'Informatik', 1);
+INSERT INTO maschinen (maschinen_id, name, typ, standort, anschaffungsjahr, status)
+VALUES
+    (1, 'CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A', 2019, 'Aktiv'),
+    (2, 'Drehbank Beta', 'Drehbank', 'Halle A', 2021, 'Aktiv'),
+    (3, 'Schweißroboter Gamma', 'Schweißroboter', 'Halle B', 2020, 'Wartung'),
+    (4, 'Lackieranlage Delta', 'Lackieranlage', 'Halle C', 2018, 'Aktiv'),
+    (5, 'CNC-Fräse Epsilon', 'CNC-Fräse', 'Halle A', 2022, 'Aktiv'),
+    (6, 'Drehbank Zeta', 'Drehbank', 'Halle B', 2017, 'Defekt'),
+    (7, 'Schweißroboter Eta', 'Schweißroboter', 'Halle B', 2020, 'Aktiv'),
+    (8, 'Stanzmaschine Theta', 'Stanzmaschine', 'Halle A', 2023, 'Aktiv');
 ```
 
 ---
@@ -51,20 +51,18 @@ Mit der **WHERE-Klausel** können wir Datensätze nach bestimmten Kriterien filt
 ### Einfache Vergleiche
 
 ```sql
--- Alle Informatik-Studierenden
-SELECT * FROM studierende
-WHERE studiengang = 'Informatik';
+-- Alle CNC-Fräsen
+SELECT * FROM maschinen
+WHERE typ = 'CNC-Fräse';
 ```
 
 **Ergebnis:**
 
 ```
- matrikel_nr │ vorname │ nachname │ studiengang │ semester 
-─────────────┼─────────┼──────────┼─────────────┼──────────
-       12345 │ Anna    │ Müller   │ Informatik  │        3
-       12347 │ Lisa    │ Weber    │ Informatik  │        5
-       12349 │ Sarah   │ Klein    │ Informatik  │        3
-       12352 │ Leon    │ Hoffmann │ Informatik  │        1
+ maschinen_id │ name              │ typ       │ standort │ anschaffungsjahr │ status
+──────────────┼───────────────────┼───────────┼──────────┼──────────────────┼────────
+            1 │ CNC-Fräse Alpha   │ CNC-Fräse │ Halle A  │             2019 │ Aktiv
+            5 │ CNC-Fräse Epsilon │ CNC-Fräse │ Halle A  │             2022 │ Aktiv
 ```
 
 ### Vergleichsoperatoren
@@ -83,32 +81,32 @@ WHERE studiengang = 'Informatik';
     <tr>
         <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>=</code></td>
         <td style="padding:10px 14px;">Gleich</td>
-        <td style="padding:10px 14px;"><code>semester = 3</code></td>
+        <td style="padding:10px 14px;"><code>status = 'Aktiv'</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>!=</code> oder <code>&lt;&gt;</code></td>
         <td style="padding:10px 14px;">Ungleich</td>
-        <td style="padding:10px 14px;"><code>semester != 1</code></td>
+        <td style="padding:10px 14px;"><code>status != 'Defekt'</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&gt;</code></td>
         <td style="padding:10px 14px;">Größer als</td>
-        <td style="padding:10px 14px;"><code>semester &gt; 2</code></td>
+        <td style="padding:10px 14px;"><code>anschaffungsjahr &gt; 2020</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&lt;</code></td>
         <td style="padding:10px 14px;">Kleiner als</td>
-        <td style="padding:10px 14px;"><code>semester &lt; 4</code></td>
+        <td style="padding:10px 14px;"><code>anschaffungsjahr &lt; 2019</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&gt;=</code></td>
         <td style="padding:10px 14px;">Größer oder gleich</td>
-        <td style="padding:10px 14px;"><code>semester &gt;= 3</code></td>
+        <td style="padding:10px 14px;"><code>anschaffungsjahr &gt;= 2020</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&lt;=</code></td>
         <td style="padding:10px 14px;">Kleiner oder gleich</td>
-        <td style="padding:10px 14px;"><code>semester &lt;= 2</code></td>
+        <td style="padding:10px 14px;"><code>anschaffungsjahr &lt;= 2019</code></td>
     </tr>
     </tbody>
 </table>
@@ -117,17 +115,17 @@ WHERE studiengang = 'Informatik';
 ### Beispiele
 
 ```sql
--- Studierende ab dem 3. Semester
-SELECT vorname, nachname, semester 
-FROM studierende
-WHERE semester >= 3;
+-- Maschinen ab Anschaffungsjahr 2020
+SELECT name, typ, anschaffungsjahr
+FROM maschinen
+WHERE anschaffungsjahr >= 2020;
 ```
 
 ```sql
--- Alle außer BWL-Studierende
-SELECT vorname, nachname, studiengang 
-FROM studierende
-WHERE studiengang != 'BWL';
+-- Alle außer Maschinen in Halle A
+SELECT name, typ, standort
+FROM maschinen
+WHERE standort != 'Halle A';
 ```
 
 ---
@@ -141,19 +139,19 @@ Mit **AND**, **OR** und **NOT** können wir komplexe Bedingungen formulieren.
 Beide Bedingungen müssen erfüllt sein:
 
 ```sql
--- Informatik-Studierende im 3. Semester
-SELECT vorname, nachname 
-FROM studierende
-WHERE studiengang = 'Informatik' AND semester = 3;
+-- CNC-Fräsen in Halle A
+SELECT name, typ, standort
+FROM maschinen
+WHERE typ = 'CNC-Fräse' AND standort = 'Halle A';
 ```
 
 **Ergebnis:**
 
 ```
- vorname │ nachname 
-─────────┼──────────
- Anna    │ Müller
- Sarah   │ Klein
+ name              │ typ       │ standort
+───────────────────┼───────────┼──────────
+ CNC-Fräse Alpha   │ CNC-Fräse │ Halle A
+ CNC-Fräse Epsilon │ CNC-Fräse │ Halle A
 ```
 
 ### OR (Oder)
@@ -161,10 +159,10 @@ WHERE studiengang = 'Informatik' AND semester = 3;
 Mindestens eine Bedingung muss erfüllt sein:
 
 ```sql
--- Studierende in BWL oder Mathematik
-SELECT vorname, nachname, studiengang 
-FROM studierende
-WHERE studiengang = 'BWL' OR studiengang = 'Mathematik';
+-- Maschinen die in Wartung oder Defekt sind
+SELECT name, typ, status
+FROM maschinen
+WHERE status = 'Wartung' OR status = 'Defekt';
 ```
 
 ### NOT (Nicht)
@@ -172,10 +170,10 @@ WHERE studiengang = 'BWL' OR studiengang = 'Mathematik';
 Negiert eine Bedingung:
 
 ```sql
--- Alle außer Erstsemester
-SELECT vorname, nachname, semester 
-FROM studierende
-WHERE NOT semester = 1;
+-- Alle außer aktive Maschinen
+SELECT name, typ, status
+FROM maschinen
+WHERE NOT status = 'Aktiv';
 ```
 
 ---
@@ -185,10 +183,10 @@ WHERE NOT semester = 1;
 ### BETWEEN - Wertebereich
 
 ```sql
--- Studierende im 2. bis 4. Semester
-SELECT vorname, nachname, semester 
-FROM studierende
-WHERE semester BETWEEN 2 AND 4;
+-- Maschinen aus den Jahren 2018 bis 2020
+SELECT name, typ, anschaffungsjahr
+FROM maschinen
+WHERE anschaffungsjahr BETWEEN 2018 AND 2020;
 ```
 
 <div style="background:#00948511; border-left:4px solid #009485; padding:12px 16px; margin:16px 0;">
@@ -198,16 +196,16 @@ WHERE semester BETWEEN 2 AND 4;
 ### IN - Liste von Werten
 
 ```sql
--- Studierende in bestimmten Studiengängen
-SELECT vorname, nachname, studiengang 
-FROM studierende
-WHERE studiengang IN ('Informatik', 'Mathematik');
+-- Maschinen bestimmter Typen
+SELECT name, typ, standort
+FROM maschinen
+WHERE typ IN ('CNC-Fräse', 'Drehbank');
 ```
 
 Das ist äquivalent zu:
 
 ```sql
-WHERE studiengang = 'Informatik' OR studiengang = 'Mathematik'
+WHERE typ = 'CNC-Fräse' OR typ = 'Drehbank'
 ```
 
 ---
@@ -224,42 +222,41 @@ Mit **LIKE** können wir nach Textmustern suchen.
 ### Beispiele
 
 ```sql
--- Alle mit Nachname beginnend mit 'M'
-SELECT vorname, nachname 
-FROM studierende
-WHERE nachname LIKE 'M%';
+-- Alle Maschinen deren Name mit 'CNC' beginnt
+SELECT name, typ
+FROM maschinen
+WHERE name LIKE 'CNC%';
 ```
 
 **Ergebnis:**
 
 ```
- vorname │ nachname 
-─────────┼──────────
- Anna    │ Müller
+ name              │ typ
+───────────────────┼───────────
+ CNC-Fräse Alpha   │ CNC-Fräse
+ CNC-Fräse Epsilon │ CNC-Fräse
 ```
 
 ```sql
--- Alle mit 'er' im Nachnamen
-SELECT vorname, nachname 
-FROM studierende
-WHERE nachname LIKE '%er%';
+-- Alle Maschinen mit 'Beta' im Namen
+SELECT name, typ
+FROM maschinen
+WHERE name LIKE '%Beta%';
 ```
 
 **Ergebnis:**
 
 ```
- vorname │ nachname 
-─────────┼──────────
- Anna    │ Müller
- Lisa    │ Weber
- Paul    │ Fischer
+ name           │ typ
+────────────────┼──────────
+ Drehbank Beta  │ Drehbank
 ```
 
 ```sql
--- Vornamen mit genau 4 Buchstaben
-SELECT vorname 
-FROM studierende
-WHERE vorname LIKE '____';  -- 4 Unterstriche
+-- Maschinen mit Namen genau 4 Zeichen lang
+SELECT name
+FROM maschinen
+WHERE name LIKE '____';  -- 4 Unterstriche
 ```
 
 ---
@@ -271,37 +268,37 @@ Mit **ORDER BY** können wir Ergebnisse sortieren.
 ### Aufsteigend sortieren (Standard)
 
 ```sql
--- Nach Nachname sortiert (A-Z)
-SELECT vorname, nachname 
-FROM studierende
-ORDER BY nachname;
+-- Nach Name sortiert (A-Z)
+SELECT name, typ
+FROM maschinen
+ORDER BY name;
 ```
 
 oder explizit:
 
 ```sql
-ORDER BY nachname ASC;  -- ASC = ascending (aufsteigend)
+ORDER BY name ASC;  -- ASC = ascending (aufsteigend)
 ```
 
 ### Absteigend sortieren
 
 ```sql
--- Nach Semester sortiert (höchste zuerst)
-SELECT vorname, nachname, semester 
-FROM studierende
-ORDER BY semester DESC;  -- DESC = descending (absteigend)
+-- Nach Anschaffungsjahr sortiert (neuste zuerst)
+SELECT name, typ, anschaffungsjahr
+FROM maschinen
+ORDER BY anschaffungsjahr DESC;  -- DESC = descending (absteigend)
 ```
 
 ### Nach mehreren Spalten sortieren
 
 ```sql
--- Erst nach Studiengang, dann nach Semester
-SELECT vorname, nachname, studiengang, semester 
-FROM studierende
-ORDER BY studiengang ASC, semester DESC;
+-- Erst nach Standort, dann nach Anschaffungsjahr
+SELECT name, standort, anschaffungsjahr
+FROM maschinen
+ORDER BY standort ASC, anschaffungsjahr DESC;
 ```
 
-Das bedeutet: Gruppiere nach Studiengang (alphabetisch), und innerhalb jeder Gruppe sortiere nach Semester (absteigend).
+Das bedeutet: Gruppiere nach Standort (alphabetisch), und innerhalb jeder Gruppe sortiere nach Anschaffungsjahr (neuste zuerst).
 
 ---
 
@@ -310,20 +307,20 @@ Das bedeutet: Gruppiere nach Studiengang (alphabetisch), und innerhalb jeder Gru
 Mit **LIMIT** können wir die Anzahl der zurückgegebenen Zeilen begrenzen.
 
 ```sql
--- Die 3 ersten Studierenden (alphabetisch nach Nachname)
-SELECT vorname, nachname 
-FROM studierende
-ORDER BY nachname
+-- Die 3 ältesten Maschinen
+SELECT name, anschaffungsjahr
+FROM maschinen
+ORDER BY anschaffungsjahr ASC
 LIMIT 3;
 ```
 
 ### Mit OFFSET - Paginierung
 
 ```sql
--- Zeilen 4-6 (überspringt die ersten 3)
-SELECT vorname, nachname 
-FROM studierende
-ORDER BY nachname
+-- Maschinen 4-6 (überspringt die ersten 3)
+SELECT name, anschaffungsjahr
+FROM maschinen
+ORDER BY anschaffungsjahr ASC
 LIMIT 3 OFFSET 3;
 ```
 
@@ -358,27 +355,27 @@ LIMIT 3 OFFSET 3;
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>COUNT(spalte)</code></td>
         <td style="padding:10px 14px;">Anzahl der Nicht-NULL-Werte</td>
-        <td style="padding:10px 14px;"><code>COUNT(semester)</code></td>
+        <td style="padding:10px 14px;"><code>COUNT(status)</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>SUM(spalte)</code></td>
         <td style="padding:10px 14px;">Summe aller Werte</td>
-        <td style="padding:10px 14px;"><code>SUM(ects)</code></td>
+        <td style="padding:10px 14px;"><code>SUM(kosten)</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>AVG(spalte)</code></td>
         <td style="padding:10px 14px;">Durchschnitt</td>
-        <td style="padding:10px 14px;"><code>AVG(semester)</code></td>
+        <td style="padding:10px 14px;"><code>AVG(anschaffungsjahr)</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>MIN(spalte)</code></td>
         <td style="padding:10px 14px;">Kleinster Wert</td>
-        <td style="padding:10px 14px;"><code>MIN(semester)</code></td>
+        <td style="padding:10px 14px;"><code>MIN(anschaffungsjahr)</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>MAX(spalte)</code></td>
         <td style="padding:10px 14px;">Größter Wert</td>
-        <td style="padding:10px 14px;"><code>MAX(semester)</code></td>
+        <td style="padding:10px 14px;"><code>MAX(anschaffungsjahr)</code></td>
     </tr>
     </tbody>
 </table>
@@ -387,31 +384,31 @@ LIMIT 3 OFFSET 3;
 ### Beispiele
 
 ```sql
--- Wie viele Studierende gibt es insgesamt?
-SELECT COUNT(*) AS anzahl_studierende 
-FROM studierende;
+-- Wie viele Maschinen gibt es insgesamt?
+SELECT COUNT(*) AS anzahl_maschinen
+FROM maschinen;
 ```
 
 **Ergebnis:**
 
 ```
- anzahl_studierende 
-────────────────────
-                  8
+ anzahl_maschinen
+──────────────────
+                8
 ```
 
 ```sql
--- Durchschnittliches Semester
-SELECT AVG(semester) AS durchschnitt 
-FROM studierende;
+-- Durchschnittliches Anschaffungsjahr
+SELECT AVG(anschaffungsjahr) AS durchschnitt
+FROM maschinen;
 ```
 
 ```sql
--- Höchstes und niedrigstes Semester
-SELECT 
-    MIN(semester) AS min_semester,
-    MAX(semester) AS max_semester
-FROM studierende;
+-- Älteste und neueste Maschine
+SELECT
+    MIN(anschaffungsjahr) AS aelteste,
+    MAX(anschaffungsjahr) AS neueste
+FROM maschinen;
 ```
 
 ---
@@ -428,29 +425,32 @@ FROM tabelle
 GROUP BY gruppenspalte;
 ```
 
-### Beispiel: Studierende pro Studiengang zählen
+### Beispiel: Maschinen pro Typ zählen
 
 ```sql
-SELECT studiengang, COUNT(*) AS anzahl
-FROM studierende
-GROUP BY studiengang;
+SELECT typ, COUNT(*) AS anzahl
+FROM maschinen
+GROUP BY typ;
 ```
 
 **Ergebnis:**
 
 ```
- studiengang │ anzahl 
-─────────────┼────────
- Informatik  │      4
- BWL         │      2
- Mathematik  │      2
+ typ             │ anzahl
+─────────────────┼────────
+ CNC-Fräse       │      2
+ Drehbank        │      2
+ Schweißroboter  │      2
+ Lackieranlage   │      1
+ Stanzmaschine   │      1
 ```
 
 ```mermaid
 graph TD
-    A[Alle Studierenden]:::peach --> B[Gruppe: Informatik<br>4 Studierende]:::teal
-    A --> C[Gruppe: BWL<br>2 Studierende]:::teal
-    A --> D[Gruppe: Mathematik<br>2 Studierende]:::teal
+    A[Alle Maschinen]:::peach --> B[Gruppe: CNC-Fräse<br>2 Maschinen]:::teal
+    A --> C[Gruppe: Drehbank<br>2 Maschinen]:::teal
+    A --> D[Gruppe: Schweißroboter<br>2 Maschinen]:::teal
+    A --> E[Gruppe: Andere<br>2 Maschinen]:::teal
 
     classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
@@ -459,23 +459,23 @@ graph TD
 ### Mehrere Aggregationen
 
 ```sql
-SELECT 
-    studiengang, 
+SELECT
+    standort,
     COUNT(*) AS anzahl,
-    AVG(semester) AS durchschnitt_semester
-FROM studierende
-GROUP BY studiengang
+    AVG(anschaffungsjahr) AS durchschnitt_jahr
+FROM maschinen
+GROUP BY standort
 ORDER BY anzahl DESC;
 ```
 
 **Ergebnis:**
 
 ```
- studiengang │ anzahl │ durchschnitt_semester 
-─────────────┼────────┼──────────────────────
- Informatik  │      4 │                   3.0
- BWL         │      2 │                   3.0
- Mathematik  │      2 │                   1.5
+ standort │ anzahl │ durchschnitt_jahr
+──────────┼────────┼───────────────────
+ Halle A  │      4 │            2020.75
+ Halle B  │      3 │            2019.00
+ Halle C  │      1 │            2018.00
 ```
 
 <div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
@@ -501,37 +501,39 @@ Wenn du <code>GROUP BY</code> verwendest, dürfen im <code>SELECT</code> nur vor
 ### Beispiel
 
 ```sql
--- Studiengänge mit mehr als 2 Studierenden
-SELECT studiengang, COUNT(*) AS anzahl
-FROM studierende
-GROUP BY studiengang
-HAVING COUNT(*) > 2;
+-- Maschinentypen mit mehr als 1 Maschine
+SELECT typ, COUNT(*) AS anzahl
+FROM maschinen
+GROUP BY typ
+HAVING COUNT(*) > 1;
 ```
 
 **Ergebnis:**
 
 ```
- studiengang │ anzahl 
-─────────────┼────────
- Informatik  │      4
+ typ             │ anzahl
+─────────────────┼────────
+ CNC-Fräse       │      2
+ Drehbank        │      2
+ Schweißroboter  │      2
 ```
 
 ### WHERE vs. HAVING kombiniert
 
 ```sql
--- Studiengänge mit mehr als 2 Studierenden, aber nur ab Semester 2
-SELECT studiengang, COUNT(*) AS anzahl
-FROM studierende
-WHERE semester >= 2  -- Filtert ZEILEN
-GROUP BY studiengang
+-- Standorte mit mehr als 1 aktiver Maschine
+SELECT standort, COUNT(*) AS anzahl
+FROM maschinen
+WHERE status = 'Aktiv'  -- Filtert ZEILEN
+GROUP BY standort
 HAVING COUNT(*) > 1;  -- Filtert GRUPPEN
 ```
 
 **Ablauf:**
 
-1. **WHERE**: Filtere alle Zeilen mit `semester >= 2`
-2. **GROUP BY**: Gruppiere nach Studiengang
-3. **HAVING**: Zeige nur Gruppen mit mehr als 1 Studierendem
+1. **WHERE**: Filtere alle Zeilen mit `status = 'Aktiv'`
+2. **GROUP BY**: Gruppiere nach Standort
+3. **HAVING**: Zeige nur Gruppen mit mehr als 1 Maschine
 
 ---
 
@@ -540,89 +542,91 @@ HAVING COUNT(*) > 1;  -- Filtert GRUPPEN
 **DISTINCT** entfernt doppelte Zeilen aus dem Ergebnis.
 
 ```sql
--- Welche Studiengänge gibt es? (ohne Duplikate)
-SELECT DISTINCT studiengang 
-FROM studierende;
+-- Welche Maschinentypen gibt es? (ohne Duplikate)
+SELECT DISTINCT typ
+FROM maschinen;
 ```
 
 **Ergebnis:**
 
 ```
- studiengang 
-─────────────
- Informatik
- BWL
- Mathematik
+ typ
+─────────────────
+ CNC-Fräse
+ Drehbank
+ Schweißroboter
+ Lackieranlage
+ Stanzmaschine
 ```
 
 ---
 
 ## Praktische Übungen 🎯
 
-Verwende die `studierende` und `kurse` Tabellen für folgende Aufgaben:
+Verwende die `maschinen` und `ersatzteile` Tabellen für folgende Aufgaben:
 
 ### Aufgabe 1: Einfache Abfragen
 
-1. Zeige alle BWL-Studierenden
-2. Zeige Studierende im 1. oder 2. Semester
-3. Zeige Studierende, deren Vorname mit 'L' beginnt
+1. Zeige alle Maschinen in Halle B
+2. Zeige Maschinen, die 2020 oder 2021 angeschafft wurden
+3. Zeige Maschinen, deren Name mit 'Schweißroboter' beginnt
 
 <details>
 <summary>💡 Lösungen anzeigen</summary>
 
 ```sql
 -- 1
-SELECT * FROM studierende WHERE studiengang = 'BWL';
+SELECT * FROM maschinen WHERE standort = 'Halle B';
 
 -- 2
-SELECT * FROM studierende WHERE semester IN (1, 2);
+SELECT * FROM maschinen WHERE anschaffungsjahr IN (2020, 2021);
 
 -- 3
-SELECT * FROM studierende WHERE vorname LIKE 'L%';
+SELECT * FROM maschinen WHERE name LIKE 'Schweißroboter%';
 ```
 </details>
 
 ### Aufgabe 2: Sortierung
 
-1. Sortiere Studierende nach Semester (aufsteigend), dann nach Nachname
-2. Zeige die 5 Studierenden mit den höchsten Semestern
+1. Sortiere Maschinen nach Standort (aufsteigend), dann nach Anschaffungsjahr (absteigend)
+2. Zeige die 3 neuesten Maschinen
 
 <details>
 <summary>💡 Lösungen anzeigen</summary>
 
 ```sql
 -- 1
-SELECT * FROM studierende ORDER BY semester ASC, nachname ASC;
+SELECT * FROM maschinen ORDER BY standort ASC, anschaffungsjahr DESC;
 
 -- 2
-SELECT * FROM studierende ORDER BY semester DESC LIMIT 5;
+SELECT * FROM maschinen ORDER BY anschaffungsjahr DESC LIMIT 3;
 ```
 </details>
 
 ### Aufgabe 3: Aggregationen
 
-1. Wie viele Studierende gibt es pro Semester?
-2. Welches ist das durchschnittliche Semester aller Studierenden?
-3. In welchen Studiengängen sind mindestens 3 Studierende?
+1. Wie viele Maschinen gibt es pro Standort?
+2. Was ist das durchschnittliche Anschaffungsjahr aller Maschinen?
+3. Welche Maschinentypen haben mindestens 2 Maschinen?
 
 <details>
 <summary>💡 Lösungen anzeigen</summary>
 
 ```sql
 -- 1
-SELECT semester, COUNT(*) AS anzahl 
-FROM studierende 
-GROUP BY semester 
-ORDER BY semester;
+SELECT standort, COUNT(*) AS anzahl
+FROM maschinen
+GROUP BY standort
+ORDER BY standort;
 
 -- 2
-SELECT AVG(semester) AS durchschnitt FROM studierende;
+SELECT AVG(anschaffungsjahr) AS durchschnitt FROM maschinen;
 
 -- 3
-SELECT studiengang, COUNT(*) AS anzahl 
-FROM studierende 
-GROUP BY studiengang 
-HAVING COUNT(*) >= 3;
+SELECT typ, COUNT(*) AS anzahl
+FROM maschinen
+GROUP BY typ
+HAVING COUNT(*) >= 2;
 ```
 </details>
 
