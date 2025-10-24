@@ -2,7 +2,13 @@
 
 In den vorherigen Kapiteln haben wir uns mit **[Datenerfassung, -verarbeitung und -speicherung](../data/index.md)** beschäftigt. Wir haben gesehen, wie Daten von Sensoren erfasst, in binärer Form verarbeitet und auf verschiedenen Speichermedien wie RAM, SSD oder HDD gesichert werden.
 
-Doch was passiert, wenn wir **große Datenmengen strukturiert organisieren, effizient durchsuchen und gleichzeitig von mehreren Anwendungen nutzen** möchten? Hier stoßen einfache Dateisysteme schnell an ihre Grenzen.
+Doch was passiert, wenn wir **große Datenmengen strukturiert organisieren, effizient durchsuchen und gleichzeitig von mehreren Anwendungen nutzen** möchten? 
+
+<div style="text-align: center;">
+    <img src="https://i.imgflip.com/64tqdl.png" alt="" style="width:220px; margin-bottom: 1em;">
+</div>
+
+Hier stoßen einfache Dateisysteme schnell an ihre Grenzen.
 
 Die Lösung: **Datenbanken** - spezialisierte Systeme zur strukturierten Verwaltung von Daten.
 
@@ -139,7 +145,7 @@ Das DBMS ist die **Vermittlungsschicht** zwischen Anwendungen und den eigentlich
 
 ## PostgreSQL - Unser Werkzeug
 
-In diesem Kurs verwenden wir **PostgreSQL**, eines der leistungsfähigsten und beliebtesten **relationalen Datenbankmanagementsysteme (RDBMS)** (was dies bedeutet, erfahren wir in einem späteren Kapitel).
+In diesem Kurs verwenden wir **PostgreSQL**, eines der leistungsfähigsten und beliebtesten **relationalen Datenbankmanagementsysteme** (RDBMS) (was dies bedeutet, erfahren wir in einem späteren Kapitel).
 
 ???+ adv "Vorteile von PostgreSQL"
 
@@ -156,7 +162,10 @@ PostgreSQL speichert Daten in **Tabellen** - ähnlich wie Excel, aber mit viel m
 
 ### Installation & Setup
 
-Bevor wir mit Datenbanken arbeiten können, müssen wir PostgreSQL und ein **Client-Tool** installieren.
+Bevor wir mit Datenbanken arbeiten können, müssen wir **PostgreSQL** und ein **Client-Tool** installieren.
+
+???+ question "Installation, Setup & erster Test"
+    Nachfolgend werden wir sehen, wie wir alle notwendigen Tools zum Umgang mit PostgreSQL aufsetzen und auch testen können. Folge der Anleitung und versuche alle Schritte erfolgreich durchzuführen. 
 
 #### Schritt 1: PostgreSQL installieren
 
@@ -223,7 +232,7 @@ Bevor wir mit Datenbanken arbeiten können, müssen wir PostgreSQL und ein **Cli
     4. Als Ergebnis sollte die installierte Version wie nachfolgend angeführt werden.
 
     <div style="text-align: center;">
-        <img src="/assets/database/einfuehrung/sql_verify.png" alt="Hieratische Zahlen" style="width: 70%; display: inline-block;">
+        <img src="/assets/database/einfuehrung/sql_verify.png" alt="" style="width: 70%; display: inline-block;">
     </div>
 
 === ":fontawesome-brands-apple: macOS"
@@ -237,62 +246,106 @@ Bevor wir mit Datenbanken arbeiten können, müssen wir PostgreSQL und ein **Cli
 
 #### Schritt 2: Client-Tool installieren
 
-Um mit PostgreSQL zu arbeiten, benötigen wir ein **Client-Tool**. Wir empfehlen **DBeaver Community Edition** - ein kostenloser, plattformunabhängiger Datenbank-Client.
+Um mit PostgreSQL zu arbeiten, können wir neben der Komandozeile (CLI) auch ein **Client-Tool** verwenden. Der Vorteil besteht darin, dass das Client-Tool eine grafische Oberfläche (GUI) besitzt und wir uns gewisse Dinge auch grafisch darstellen lassen können. Wir verwenden **pgAdmin 4** - das offizielle, kostenlose PostgreSQL-Verwaltungstool. 
 
-**DBeaver installieren**
+???+ info "CLI vs GUI"
+    Wir werden in weiterer Folge vermehrt die Komandozeile verwenden. Dabei ist es uns möglich, die benötigten Befehle kennenzulernen und diese auch besser zu verstehen. Spätestens wenn man in Zukunft eine Software rund um die Datenbank bauen möchte (sei es mit Python oder Javascript) werden diese Befehle benötigt. Das Client-Tool verwenden wir zur Kontrolle und zum besseren Verständnis.
 
-1. Gehe zu [dbeaver.io](https://dbeaver.io/download/)
-2. Lade die **Community Edition** für dein Betriebssystem herunter
-3. Installiere DBeaver
+**pgAdmin 4 installieren**
 
-???+ tip "Alternative: pgAdmin 4"
-    [pgAdmin 4](https://www.pgadmin.org/) ist das offizielle PostgreSQL-Tool. Es ist etwas komplexer, bietet aber mehr Funktionen für fortgeschrittene Anwendungen.
+=== ":fontawesome-brands-windows: Windows"
+
+    1. Gehe zu [pgadmin.org/download](https://www.pgadmin.org/download/)
+    2. Wähle dein Betriebssystem (Windows)
+    3. Lade den Installer herunter (beim Erstellen der Unterlagen Version 9.9)
+    4. Führe die Installation aus (alle Standardeinstellungen sind OK)
+
+    <div class="image-slideshow" markdown="1">
+        <div class="slideshow-container">
+            <div class="slideshow-slide active" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;">
+            </div>
+        </div>
+        <div class="slideshow-nav">
+            <button class="slideshow-btn slideshow-prev">← Zurück</button>
+            <div class="slideshow-counter"> </div>
+            <button class="slideshow-btn slideshow-next">Weiter →</button>
+        </div>
+        <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+    </div>
+
+=== ":fontawesome-brands-apple: macOS"
+    
+    
+    XXXX FOLGT XXXX
 
 ---
 
 #### Schritt 3: Erste Verbindung herstellen
 
-Jetzt verbinden wir DBeaver mit unserer PostgreSQL-Datenbank.
+Jetzt verbinden wir pgAdmin mit unserer PostgreSQL-Datenbank.
 
-1. **DBeaver öffnen**
-2. Klicke auf **"Neue Verbindung"** (das Stecker-Symbol)
-3. Wähle **PostgreSQL** aus
-4. Gib folgende Daten ein:
+1. **pgAdmin 4 öffnen**
+2. In der linken Sidebar: Bei "Servers" auf den Pfeil klicken, um bereits verfügbare Server aufzulisten.
+3. Da wir bei der Installation von PostgreSQL bereits eine lokalen Server erzeugt haben, sollte hier nun bereits 'PostgreSQL 18' stehen. 
+4. Nach Eingabe des Passworts (welches wir bei der Installation gewählt haben) sind wir erfolgreich mit dem Server verbunden.
 
-   ```
-   Host: localhost
-   Port: 5432
-   Database: postgres
-   Benutzername: postgres
-   Passwort: [dein Passwort]
-   ```
+    <div class="image-slideshow" markdown="1">
+        <div class="slideshow-container">
+            <div class="slideshow-slide active" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin8.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin9.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="/assets/database/einfuehrung/pgAdmin10.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
+            </div>
+        </div>
+        <div class="slideshow-nav">
+            <button class="slideshow-btn slideshow-prev">← Zurück</button>
+            <div class="slideshow-counter"> </div>
+            <button class="slideshow-btn slideshow-next">Weiter →</button>
+        </div>
+        <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+    </div>
 
-5. Klicke auf **"Verbindung testen"**
-6. Bei Erfolg: **"Fertigstellen"**
 
 ???+ tip "Verbindungsprobleme?"
     Wenn die Verbindung fehlschlägt, prüfe:
 
-    - Läuft PostgreSQL? (Windows: Task-Manager, macOS/Linux: `pg_isready`)
-    - Ist das Passwort korrekt?
-    - Ist Port 5432 frei?
+    - Läuft PostgreSQL? (Windows: Task-Manager → Dienste → "postgresql-x64-XX", macOS/Linux: `pg_isready`)
+    - Ist das **PostgreSQL-Passwort** korrekt
+    - Ist Port 5432 frei und nicht von einer Firewall blockiert?
 
 ---
 
 ## Deine erste Datenbank
 
-Jetzt erstellen wir unsere erste eigene Datenbank!
+Jetzt erstellen wir unsere erste eigene Datenbank! 
 
-### In DBeaver
+In pgAdmin klicken wir auf der linken Seite auf 'PSQL Tool Workspace' und wählen unseren bereits existierenden Server aus. Anschließend klicken wir auf 'Connect & Open PSQL' (es kann sein, dass wir nochmals das Passwort eingeben müssen)
 
-1. **Rechtsklick** auf "Datenbanken" in der linken Seitenleiste
-2. Wähle **"Neue Datenbank erstellen"**
-3. Name: `produktions_db`
-4. Klicke auf **"OK"**
+<div style="text-align: center;">
+    <img src="/assets/database/einfuehrung/pgAdmin11.png" alt="" style="width: 70%; display: inline-block;">
+</div>
 
-### Mit SQL (optional)
-
-Alternativ kannst du die Datenbank auch mit einem **SQL-Befehl** erstellen. Öffne dazu ein neues **SQL-Editor-Fenster** in DBeaver und führe aus:
+Nun sind wir wieder in unserer Komandozeilen Darstellung und können einen ersten SQL-Befehl kennenlernen: 
 
 ```sql
 CREATE DATABASE produktions_db;
@@ -301,24 +354,23 @@ CREATE DATABASE produktions_db;
 ???+ defi "Was ist SQL?"
     **SQL (Structured Query Language)** ist die Sprache, mit der wir mit Datenbanken kommunizieren. Alle Befehle - vom Erstellen einer Tabelle bis zur Abfrage von Daten - werden in SQL geschrieben.
 
----
 
-## Verifizierung: Funktioniert alles?
+Wenn man sich den Befehl ansieht, erkennt man, dass eine neue Datenbank erzeugt werden soll und diese den namen `produktions_db` haben soll. Wenn wir diesen Befehl in die Komandozeile eingeben, wird die neue Datenbank erstellt. 
 
-Führe folgenden Test-Befehl aus, um zu prüfen, ob alles funktioniert:
+<div style="text-align: center;">
+    <img src="/assets/database/einfuehrung/pgAdmin12.png" alt="" style="width: 50%; display: inline-block;">
+</div>
 
-```sql
-SELECT version();
-```
+Wenn wir wieder in die vorige Darstellung von pgAdmin wechseln (Default Workspace) sollen wir nun unter *PostgreSQL 18* > *Databases* unsere neue Datenbank sehen. 
 
-Du solltest eine Ausgabe sehen wie:
+???+ info "Refresh"
+    Wenn die neu erzeugte Datenbank nicht angezeigt wird, kann es daran liegen, dass die Darstellung noch nicht aktualisiert wurde. Durch Rechtsklick auf *PostgreSQL 18* kann man *Refresh* auswählen (oder Taste F5)
 
-```
-PostgreSQL 16.1 on x86_64-apple-darwin, compiled by ...
-```
+<div style="text-align: center;">
+    <img src="/assets/database/einfuehrung/pgAdmin13.png" alt="" style="width: 50%; display: inline-block;">
+</div>
 
-???+ success "Glückwunsch!"
-    Deine Datenbank-Umgebung ist einsatzbereit! 🎉
+**🎉 Gratulation:** Du hast nun deine erste Datenbank erstellt. 
 
 ---
 
@@ -327,10 +379,14 @@ PostgreSQL 16.1 on x86_64-apple-darwin, compiled by ...
 - **Datenbanken** lösen die Probleme einfacher Dateispeicherung: strukturierte Datenhaltung, Zugriffskontrolle, Konsistenz, gleichzeitige Zugriffe
 - Ein **DBMS** (Datenbankmanagementsystem) verwaltet und koordiniert alle Zugriffe auf die Daten
 - **PostgreSQL** ist ein mächtiges, kostenloses und weit verbreitetes relationales DBMS
-- **DBeaver Community** ist ein benutzerfreundliches Tool zum Arbeiten mit Datenbanken (plattformunabhängig)
+- **pgAdmin 4** ist das offizielle PostgreSQL-Verwaltungstool mit grafischer Oberfläche und Query-Editor
 - **SQL** ist die Sprache, mit der wir Datenbanken abfragen und manipulieren
-- Du hast PostgreSQL installiert, eine Verbindung hergestellt und deine erste Datenbank erstellt
+- Du hast PostgreSQL und pgAdmin installiert, eine Verbindung hergestellt und deine erste Datenbank erstellt
 
 ---
 
 Im nächsten Kapitel lernen wir das **relationale Modell** kennen - wie Daten in Tabellen organisiert werden und welche Datentypen PostgreSQL bietet. Wir werden unsere erste Tabelle erstellen und Daten einfügen!
+
+<div style="text-align: center;">
+    <img src="https://media.tenor.com/81tG-DO8BcAAAAAM/omg-oh-my-god.gif" alt="" style="width:220px; margin-bottom: 1em;">
+</div>
