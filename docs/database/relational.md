@@ -8,36 +8,26 @@ Die Antwort: In **Tabellen**!
 
 ## Das relationale Modell
 
-Eine **relationale Datenbank** organisiert Daten in **Tabellen** (auch **Relationen** genannt). Jede Tabelle besteht aus:
+Eine **relationale Datenbank** organisiert Daten in **Tabellen** (auch Relationen genannt). Jede Tabelle besitzt einen Namen (**Relationennamen**) und besteht aus:
 
-- **Zeilen** (auch **Tupel** oder **Datensätze** genannt) – repräsentieren einzelne Objekte oder Einträge
-- **Spalten** (auch **Attribute** oder **Felder** genannt) – beschreiben Eigenschaften dieser Objekte
-
-```
-                 Spalten (Attribute)
-                    ↓        ↓          ↓
-        ┌──────────────┬──────────┬──────────────┐
-        │ Name         │ Typ      │ Standort     │  ← Tabellenkopf
-        ├──────────────┼──────────┼──────────────┤
-Zeilen  │ CNC-Fräse A  │ Fräse    │ Halle A      │  ← Datensatz 1 (Tupel)
-(Tupel) │ Drehbank B   │ Drehbank │ Halle A      │  ← Datensatz 2
-        │ Roboter C    │ Roboter  │ Halle B      │  ← Datensatz 3
-        └──────────────┴──────────┴──────────────┘
-```
-
-<div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
-<strong>📘 Terminologie</strong><br>
-In der Praxis werden oft verschiedene Begriffe synonym verwendet:<br>
-• <strong>Tabelle</strong> = Relation<br>
-• <strong>Zeile</strong> = Datensatz = Tupel = Record<br>
-• <strong>Spalte</strong> = Attribut = Feld = Column
+<div style="text-align: center;">
+    <img src="/assets/database/relationen/wording.png" alt="" style="margin-bottom: 1em;">
 </div>
+
+???+ defi "Relationale Datenbank"
+    Eine Relationale Datenbank wird wiefolgt beschrieben:
+
+    - **Tupel** (auch Zeilen oder Datensätze genannt) – repräsentieren einzelne Objekte oder Einträge
+    - **Attribute** (auch Spalten oder Felder genannt) – beschreiben Eigenschaften dieser Objekte
+    - **Relationenschema** - Menge von Attributen. 
+    - **Relationenname** - Name der Tabelle
+
 
 ---
 
 ## Datentypen in PostgreSQL
 
-Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von Daten gespeichert werden kann. PostgreSQL bietet eine Vielzahl von Datentypen – wir konzentrieren uns zunächst auf die wichtigsten:
+Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von Daten gespeichert werden kann. PostgreSQL bietet eine Vielzahl von Datentypen (siehe [Dokumentation](https://www.postgresql.org/docs/current/datatype.html))- wir konzentrieren uns zunächst auf die wichtigsten:
 
 ### Textdaten
 
@@ -96,7 +86,7 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>BIGINT</code></td>
-        <td style="padding:10px 14px;">Große ganze Zahl</td>
+        <td style="padding:10px 14px;">Große ganze Zahl (-9.223.372.036.854.775.808 bis 9.223.372.036.854.775.807)</td>
         <td style="padding:10px 14px;"><code>9876543210</code></td>
     </tr>
     <tr>
@@ -112,6 +102,23 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
     </tbody>
 </table>
 </div>
+
+???+ defi "Signed / Unsigned"
+    Generell unterschiedet man bei ganzzahligen Datentypen zwischen **signed** (vorzeichenbehaftet) und **unsigned** (vorzeichenlos):
+
+    **Signed (vorzeichenbehaftet)**:
+
+    - Kann **positive und negative** Zahlen speichern
+    - Beispiel `INTEGER`: -2.147.483.648 bis +2.147.483.647
+    - Das erste Bit (Vorzeichenbit) bestimmt, ob die Zahl positiv oder negativ ist
+
+    **Unsigned (vorzeichenlos)**:
+
+    - Kann **nur positive** Zahlen speichern (inkl. 0)
+    - Würde bei `INTEGER` theoretisch 0 bis 4.294.967.295 ermöglichen
+    
+    **Wichtig:** PostgreSQL unterstützt standardmäßig **keine unsigned-Typen**!
+
 
 ### Datum & Zeit
 
@@ -172,46 +179,86 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
 </table>
 </div>
 
+
 ---
 
 ## Der Primärschlüssel
 
-Stellen wir uns vor, unser Produktionsbetrieb hat zwei CNC-Fräsen mit dem Namen "CNC-Fräse Alpha". Wie können wir sie eindeutig unterscheiden?
+Stellen wir uns vor, unser Produktionsbetrieb hat zwei CNC-Fräsen mit dem Namen "CNC-Fräse Alpha". Beide stehen in Halle A, beide wurden im Jahr 2019 angeschafft. Wie können wir diese beiden Maschinen in unserer Datenbank eindeutig voneinander unterscheiden? Was passiert, wenn wir eine Wartung für die erste Fräse dokumentieren wollen - wie weiß die Datenbank, welche der beiden gemeint ist?
 
-Die Lösung: **Primärschlüssel** (Primary Key)!
+Genau hier kommt der **Primärschlüssel** (engl. Primary Key) ins Spiel!
 
-Ein **Primärschlüssel** ist eine Spalte (oder Kombination von Spalten), die jeden Datensatz eindeutig identifiziert.
+Ein **Primärschlüssel** ist eine Spalte (oder eine Kombination mehrerer Spalten), die jeden Datensatz in einer Tabelle **eindeutig identifiziert**. Er funktioniert wie eine Seriennummer oder Personalausweisnummer: Jede Maschine, jeder Auftrag, jedes Ersatzteil erhält einen einzigartigen Wert, über den es jederzeit zweifelsfrei identifiziert werden kann.
 
-**Eigenschaften eines Primärschlüssels:**
+In unserem Beispiel würden wir den beiden CNC-Fräsen unterschiedliche Maschinen-IDs zuweisen - etwa `maschinen_id = 1` für die erste und `maschinen_id = 5` für die zweite Fräse. Selbst wenn beide denselben Namen, Typ und Standort haben, sind sie durch ihre ID eindeutig unterscheidbar.
 
-- ✅ **Eindeutig** – Kein Wert darf doppelt vorkommen
-- ✅ **Nicht NULL** – Jeder Datensatz muss einen Wert haben
-- ✅ **Unveränderlich** – Sollte sich idealerweise nie ändern
+???+ defi "Primärschlüssel (Primary Key)"
+    Ein **Primärschlüssel** ist ein Attribut (oder eine Kombination von Attributen), das jeden Datensatz in einer Tabelle eindeutig identifiziert.
 
-**Beispiele für Primärschlüssel:**
+    **Eigenschaften eines Primärschlüssels:**
 
-- Maschinen-ID (Produktionsmaschinen)
-- Auftragsnummer (Produktionsaufträge)
-- Artikel-Nr. (Ersatzteile)
-- Mitarbeiter-ID (Techniker)
+    - **Eindeutig** – Kein Wert darf in der Tabelle doppelt vorkommen
+    - **Nicht NULL** – Jeder Datensatz muss einen Wert haben (leere Einträge sind nicht erlaubt)
+    - **Unveränderlich** – Sollte sich idealerweise nie ändern, um Konsistenz zu gewährleisten
 
-```mermaid
-graph LR
-    A[Primärschlüssel]:::teal --> B[Identifiziert jeden<br>Datensatz eindeutig]:::peach
-    A --> C[Kann nicht NULL sein]:::peach
-    A --> D[Darf nicht doppelt<br>vorkommen]:::peach
+    **Beispiele aus der Praxis:**
 
-    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
-    classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
-```
+    - **Maschinen-ID** für Produktionsmaschinen (z.B. `M001`, `M002`, ...)
+    - **Auftragsnummer** für Produktionsaufträge (z.B. `AUF-2024-00123`)
+    - **Artikel-Nr.** für Ersatzteile (z.B. `201`, `202`, ...)
+    - **Mitarbeiter-ID** für Techniker (z.B. `T42`)
+
+### Warum sind Primärschlüssel wichtig?
+
+Ohne Primärschlüssel würde es in der Datenbank schnell zu Chaos kommen. Ohne eindeutige Identifikation wäre eine verlässliche Datenverwaltung unmöglich. Der Primärschlüssel sorgt dafür, dass:
+
+- **Datensätze eindeutig identifiziert** werden können
+- **Verknüpfungen zwischen Tabellen** funktionieren (mehr dazu später bei Fremdschlüsseln)
+- **Keine Duplikate** entstehen können
+- **Daten konsistent** bleiben, selbst wenn andere Werte geändert werden
+
+In der Praxis verwendet man häufig eine **fortlaufende Nummer** (1, 2, 3, ...) als Primärschlüssel, da diese automatisch eindeutig ist und sich nie ändert – selbst wenn der Maschinenname oder Standort später angepasst wird.
+
+<div style="text-align: center;">
+    <img src="https://i.imgflip.com/aadzku.jpg" alt="" style="margin-bottom: 0em;">
+    <figcaption>Quelle: <a href="https://i.imgflip.com/aadzku.jpg">Imgflip</a></figcaption>
+</div>
 
 ---
 
-## Erste Tabelle erstellen
+## Erstellen einer Tabelle
 
-Jetzt erstellen wir unsere erste Tabelle! Wir speichern Maschinen unseres Produktionsbetriebs.
+Nun wollen wir wieder in den praktischen Teil zurückkehren und eine Tabelle erstellen. Diese soll die Maschinen unseres Produktionsbetriebs speichern. 
 
-### Schritt 1: Tabelle definieren
+### Verbindung zur Datenbank
+
+Wir wechseln daher wieder zu pgAdmin in the *PSQL Tool Workspace* und wählen unsere bereits zuvor erzeugte Datenbank `produktions_db` aus.
+
+<div style="text-align: center;">
+    <img src="/assets/database/relationen/connect.png" alt="" style="width: 70%; margin-bottom: 0em;">
+</div>
+
+???+ info "Dankenbank nicht gefunden?"
+    Wenn die Datenbank nicht gefunden wird, kann es daran liegen, dass die Darstellung noch nicht aktualisiert wurde. Enfernen Sie die Auswahl des Servers im *PSQL Tool Workspace* und wählen anschließend erneut 'PostgreSQL 18' aus. Nun sollte unter 'Database' unsere Datenbank `produktions_db` zu sehen sein.
+
+Alternativ können wir auch über den Windows Terminal (cmd) die Verbindung zur Datenbank herstellen und dort direkt die SQL-Befehle ausführen:
+```cmd
+psql -h localhost -p 5432 -U postgres -d produktions_db
+```
+
+### Erstellen (CREATE TABLE)
+
+Beim **erstellen der Tabelle** verwenden wir - wie beim erstellen einer Datenbank - den Befehl `CREATE`. Dieses mal müssen wir aber noch den Befehl `TABLE` anstelle von `DATABASE` hinzufügen.
+
+```sql
+CREATE TABLE tabellenname (
+    attribut1 typ,
+    attribut2 typ,
+    ...
+);
+```
+
+Nach dem Befehl `CREATE TABLE` folgt der Name der Tabelle und anschließend die **Attribute** der Tabelle in einer Klammern. Jedes Attribut hat einen Namen und einen Datentyp und wird durch ein Komma getrennt. Wenn wir bei unserem Beispiel von zuvor beleiben, müssen wir die Tabelle `maschinen` wiefolgt erstellen:
 
 ```sql
 CREATE TABLE maschinen (
@@ -224,26 +271,25 @@ CREATE TABLE maschinen (
 );
 ```
 
-**Erklärung:**
+Den **Primärschlüssel** haben wir dabei mit Hilfe des Befehls `PRIMARY KEY` auf das Attribut `maschinen_id` gesetzt.
 
-- `CREATE TABLE maschinen` – Erstelle eine Tabelle mit dem Namen "maschinen"
-- `maschinen_id INTEGER PRIMARY KEY` – Spalte für die Maschinen-ID (eindeutig!)
-- `name VARCHAR(100)` – Maschinenname (max. 100 Zeichen)
-- `typ VARCHAR(50)` – Maschinentyp (z.B. "CNC-Fräse", "Drehbank")
-- `standort VARCHAR(50)` – Standort (z.B. "Halle A")
-- `anschaffungsjahr INTEGER` – Jahr der Anschaffung (ganze Zahl)
-- `status VARCHAR(20)` – Status (z.B. "Aktiv", "Wartung", "Defekt")
+???+ info "Erkärung"
+    - `CREATE TABLE maschinen` – Erstelle eine Tabelle mit dem Namen "maschinen"
+    - `maschinen_id INTEGER PRIMARY KEY` – Spalte für die Maschinen-ID (eindeutig!)
+    - `name VARCHAR(100)` – Maschinenname (max. 100 Zeichen)
+    - `typ VARCHAR(50)` – Maschinentyp (z.B. "CNC-Fräse", "Drehbank", max 50 Zeichen)
+    - `standort VARCHAR(50)` – Standort (z.B. "Halle A", max 50 Zeichen)
+    - `anschaffungsjahr INTEGER` – Jahr der Anschaffung (ganze Zahl)
+    - `status VARCHAR(20)` – Status (z.B. "Aktiv", "Wartung", "Defekt", max 20 Zeichen)
 
-### Schritt 2: In pgAdmin ausführen
+Wenn der Befehl erfolgreich ausgeführt wurde, sollte die Tabelle in der Datenbank angezeigt werden (*Default Workspace* > ... > *produktions_db* > *Schemas* > *public* > *Tables*).
 
-1. Öffne pgAdmin und verbinde dich mit der Datenbank `produktions_db`
-2. Klicke auf **"Query Tool"** (Rechtsklick auf die Datenbank → Query Tool)
-3. Kopiere den obigen Code
-4. Führe ihn aus mit **F5** oder klicke auf den "Execute"-Button (▶)
+### Daten einfügen (INSERT)
 
-<div style="background:#00948511; border-left:4px solid #009485; padding:12px 16px; margin:16px 0;">
-<strong>💡 Tipp:</strong> Du kannst die Tabelle in der linken Sidebar unter "produktions_db → Schemas → public → Tables" sehen. Klicke mit rechts darauf → "View/Edit Data" → "All Rows", um die (noch leere) Tabelle zu sehen.
-</div>
+### Daten abfragen (SELECT)
+
+
+# xxxxxxxxxxxxxxxxx
 
 ---
 
