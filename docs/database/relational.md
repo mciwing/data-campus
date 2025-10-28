@@ -250,189 +250,211 @@ psql -h localhost -p 5432 -U postgres -d produktions_db
 
 Beim **erstellen der Tabelle** verwenden wir - wie beim erstellen einer Datenbank - den Befehl `CREATE`. Dieses mal müssen wir aber noch den Befehl `TABLE` anstelle von `DATABASE` hinzufügen.
 
-```sql
-CREATE TABLE tabellenname (
-    attribut1 typ,
-    attribut2 typ,
-    ...
-);
-```
-
 Nach dem Befehl `CREATE TABLE` folgt der Name der Tabelle und anschließend die **Attribute** der Tabelle in einer Klammern. Jedes Attribut hat einen Namen und einen Datentyp und wird durch ein Komma getrennt. Wenn wir bei unserem Beispiel von zuvor beleiben, müssen wir die Tabelle `maschinen` wiefolgt erstellen:
 
-```sql
-CREATE TABLE maschinen (
-    maschinen_id INTEGER PRIMARY KEY,
-    name VARCHAR(100),
-    typ VARCHAR(50),
-    standort VARCHAR(50),
-    anschaffungsjahr INTEGER,
-    status VARCHAR(20)
-);
-```
+<div class="grid cards" markdown>
+
+-   __Syntax__
+
+    ---
+
+    ```sql { .yaml .no-copy }
+    CREATE TABLE tabellenname (
+        attribut1 typ,
+        attribut2 typ,
+        ...
+    );
+    ```
+
+
+-   __Beispiel__
+
+    ---
+
+    ???+ example "Beispiel"
+
+        ```sql { .annotate }
+        CREATE TABLE maschinen ( --(1)!
+            maschinen_id INTEGER PRIMARY KEY, --(2)!
+            name VARCHAR(100), --(3)!
+            typ VARCHAR(50), --(4)!
+            standort VARCHAR(50), --(5)!
+            anschaffungsjahr INTEGER, --(6)!
+            status VARCHAR(20) --(7)!
+        );
+        ```
+
+        1. Erstelle eine Tabelle mit dem Namen "maschinen"
+        2. Spalte für die Maschinen-ID (Primärschlüssel = eindeutig!)
+        3. Maschinenname (max. 100 Zeichen)
+        4. Maschinentyp (z.B. "CNC-Fräse", "Drehbank", max 50 Zeichen)
+        5. Standort (z.B. "Halle A", max 50 Zeichen)
+        6. Jahr der Anschaffung (ganze Zahl)
+        7. Status (z.B. "Aktiv", "Wartung", "Defekt", max 20 Zeichen)
+
+</div>
+
+
+
+
+
+
+
 
 Den **Primärschlüssel** haben wir dabei mit Hilfe des Befehls `PRIMARY KEY` auf das Attribut `maschinen_id` gesetzt.
-
-???+ info "Erkärung"
-    - `CREATE TABLE maschinen` – Erstelle eine Tabelle mit dem Namen "maschinen"
-    - `maschinen_id INTEGER PRIMARY KEY` – Spalte für die Maschinen-ID (eindeutig!)
-    - `name VARCHAR(100)` – Maschinenname (max. 100 Zeichen)
-    - `typ VARCHAR(50)` – Maschinentyp (z.B. "CNC-Fräse", "Drehbank", max 50 Zeichen)
-    - `standort VARCHAR(50)` – Standort (z.B. "Halle A", max 50 Zeichen)
-    - `anschaffungsjahr INTEGER` – Jahr der Anschaffung (ganze Zahl)
-    - `status VARCHAR(20)` – Status (z.B. "Aktiv", "Wartung", "Defekt", max 20 Zeichen)
 
 Wenn der Befehl erfolgreich ausgeführt wurde, sollte die Tabelle in der Datenbank angezeigt werden (*Default Workspace* > ... > *produktions_db* > *Schemas* > *public* > *Tables*).
 
 ### Daten einfügen (INSERT)
 
+Eine leere Tabelle ist meist nicht das Ziel. Daher müssen wir uns nun ansehen, wie wir Daten (Zeilen / Tuple) in unsere nun bestehende Tabelle einfügen können. Dazu gibt es in SQL den `INSERT` Befehl. 
+
+
+<div class="grid cards" markdown>
+
+-   __Syntax__
+
+    ---
+
+    ```sql
+    INSERT INTO tabellenname (attribut1, attribut2, ...)
+    VALUES (wert1, wert2, ...);
+    ```
+
+
+-   __Beispiel__
+
+    ---
+
+
+    ???+ example "Beispiel"
+
+        ```sql
+        INSERT INTO maschinen (
+            maschinen_id, name, typ, standort, anschaffungsjahr, status
+        )
+        VALUES
+        (1, 'CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A', 2019, 'Aktiv'),
+        (2, 'Drehbank Beta', 'Drehbank', 'Halle A', 2021, 'Aktiv'),
+        (3, 'Schweißroboter Gamma', 'Schweißroboter', 'Halle B', 2020, 'Wartung'),
+        (4, 'Lackieranlage Delta', 'Lackieranlage', 'Halle C', 2018, 'Aktiv');
+        ```
+
+</div>
+
+???+ info "Datentyp"
+    - Textwerte müssen in einfachen Anführungszeichen stehen: `'Text'`
+    - Zahlen stehen ohne Anführungszeichen: `42`
+
 ### Daten abfragen (SELECT)
 
+Nachdem wir nun eine befüllte Tabelle vor uns haben, ist die nächste Aufgabe klar: wir wollen die Daten aus der Datenbank auslesen/abrufen. Dazu verwenden wir den `SELECT` Befehl:
 
-# xxxxxxxxxxxxxxxxx
+<div class="grid cards" markdown>
 
----
+-   __Syntax__
 
-## Daten einfügen (INSERT)
+    ---
 
-Eine leere Tabelle ist langweilig – fügen wir Daten ein!
+    ```sql
+    SELECT * FROM tabellenname;
+    ```
 
-### Syntax
 
-```sql
-INSERT INTO tabellenname (spalte1, spalte2, ...)
-VALUES (wert1, wert2, ...);
-```
+-   __Output__
 
-### Beispiel: Eine Maschine hinzufügen
+    ---
 
-```sql
-INSERT INTO maschinen (maschinen_id, name, typ, standort, anschaffungsjahr, status)
-VALUES (1, 'CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A', 2019, 'Aktiv');
-```
 
-### Mehrere Datensätze auf einmal einfügen
+    ???+ example "Beispiel"
+        ```sql
+        SELECT * FROM maschinen;
+        ```
 
-```sql
-INSERT INTO maschinen (maschinen_id, name, typ, standort, anschaffungsjahr, status)
-VALUES
-    (1, 'CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A', 2019, 'Aktiv'),
-    (2, 'Drehbank Beta', 'Drehbank', 'Halle A', 2021, 'Aktiv'),
-    (3, 'Schweißroboter Gamma', 'Schweißroboter', 'Halle B', 2020, 'Wartung'),
-    (4, 'Lackieranlage Delta', 'Lackieranlage', 'Halle C', 2018, 'Aktiv');
-```
+        ```
+         maschinen_id |         name         |      typ       | standort | anschaffungsjahr | status
+        --------------+----------------------+----------------+----------+------------------+---------
+                    1 | CNC-Fräse Alpha      | CNC-Fräse      | Halle A  |             2019 | Aktiv
+                    2 | Drehbank Beta        | Drehbank       | Halle A  |             2021 | Aktiv
+                    3 | Schweißroboter Gamma | Schweißroboter | Halle B  |             2020 | Wartung
+                    4 | Lackieranlage Delta  | Lackieranlage  | Halle C  |             2018 | Aktiv
+        (4 rows)
+        ```
 
-<div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
-<strong>⚠️ Wichtig:</strong> Textwerte müssen in <strong>einfachen Anführungszeichen</strong> stehen: <code>'Text'</code><br>
-Zahlen stehen <strong>ohne Anführungszeichen</strong>: <code>42</code>
+</div>
+
+???+ info "Der * Operator"
+    Das * (Sternchen) ist ein Platzhalter für "alle Spalten". Es ist praktisch für schnelle Abfragen, aber in der Praxis sollte man die benötigten Spalten explizit angeben da sonnst unötig Daten übertragen werden müssen. 
+
+<div class="grid cards" markdown>
+
+-   __Syntax__
+
+    ---
+
+    ```sql
+    SELECT attribut1, attribut2 FROM tabellenname;
+    ```
+
+
+-   __Output__
+
+    ---
+
+
+    ???+ example "Beispiel"
+        ```sql
+        SELECT name, typ, standort FROM maschinen;
+        ```
+
+
+        ```
+                name         |      typ       | standort
+        ---------------------+----------------+----------
+        CNC-Fräse Alpha      | CNC-Fräse      | Halle A
+        Drehbank Beta        | Drehbank       | Halle A
+        Schweißroboter Gamma | Schweißroboter | Halle B
+        Lackieranlage Delta  | Lackieranlage  | Halle C
+        (4 rows)
+        ```
+
 </div>
 
 ---
 
-## Daten abfragen (SELECT)
+Jetzt geht es darum, das erlernte zu probieren. 
 
-Jetzt haben wir Daten in der Datenbank – wie können wir sie wieder abrufen?
+???+ question "Ersatzteiltabelle"
 
-### Alle Daten anzeigen
+    Erstelle eine Tabelle für **Ersatzteile** des Produktionsbetriebs.
 
-```sql
-SELECT * FROM maschinen;
-```
+    ---
 
-**Ergebnis:**
+    **Aufgabe 1: Tabelle erstellen**
 
-```
- maschinen_id │ name                   │ typ             │ standort │ anschaffungsjahr │ status
-──────────────┼────────────────────────┼─────────────────┼──────────┼──────────────────┼─────────
-            1 │ CNC-Fräse Alpha        │ CNC-Fräse       │ Halle A  │             2019 │ Aktiv
-            2 │ Drehbank Beta          │ Drehbank        │ Halle A  │             2021 │ Aktiv
-            3 │ Schweißroboter Gamma   │ Schweißroboter  │ Halle B  │             2020 │ Wartung
-            4 │ Lackieranlage Delta    │ Lackieranlage   │ Halle C  │             2018 │ Aktiv
-```
+    Erstelle eine Tabelle `ersatzteile` mit folgenden Spalten:
 
-<div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
-<strong>📘 Was bedeutet <code>*</code>?</strong><br>
-Das <code>*</code> (Sternchen) ist ein Platzhalter für "alle Spalten". Es ist praktisch für schnelle Abfragen, aber in der Praxis sollte man die benötigten Spalten explizit angeben.
-</div>
+    - `teil_id` (INTEGER, Primärschlüssel)
+    - `bezeichnung` (VARCHAR(100))
+    - `bestand` (INTEGER)
+    - `mindestbestand` (INTEGER)
+    - `preis` (NUMERIC(10,2))
 
-### Bestimmte Spalten anzeigen
+    ---
 
-```sql
-SELECT name, typ, standort FROM maschinen;
-```
+    **Aufgabe 2: Daten einfügen**
 
-**Ergebnis:**
+    Füge folgende Ersatzteile ein:
 
-```
- name                   │ typ             │ standort
-────────────────────────┼─────────────────┼──────────
- CNC-Fräse Alpha        │ CNC-Fräse       │ Halle A
- Drehbank Beta          │ Drehbank        │ Halle A
- Schweißroboter Gamma   │ Schweißroboter  │ Halle B
- Lackieranlage Delta    │ Lackieranlage   │ Halle C
-```
+    - Teil 201: "Fräskopf Standard", Bestand 15, Mindestbestand 5, Preis 450.00
+    - Teil 202: "Kühlmittelfilter", Bestand 8, Mindestbestand 10, Preis 25.50
+    - Teil 203: "Spannbacken-Set", Bestand 12, Mindestbestand 3, Preis 180.00
 
----
+    ---
 
-## Praktische Übung 🎯
+    **Aufgabe 3: Abfragen**
 
-Jetzt bist du dran! Erstelle eine Tabelle für **Ersatzteile** des Produktionsbetriebs.
-
-### Aufgabe 1: Tabelle erstellen
-
-Erstelle eine Tabelle `ersatzteile` mit folgenden Spalten:
-
-- `teil_id` (INTEGER, Primärschlüssel)
-- `bezeichnung` (VARCHAR(100))
-- `bestand` (INTEGER)
-- `mindestbestand` (INTEGER)
-- `preis` (NUMERIC(10,2))
-
-<details>
-<summary>💡 Lösung anzeigen</summary>
-
-```sql
-CREATE TABLE ersatzteile (
-    teil_id INTEGER PRIMARY KEY,
-    bezeichnung VARCHAR(100),
-    bestand INTEGER,
-    mindestbestand INTEGER,
-    preis NUMERIC(10,2)
-);
-```
-</details>
-
-### Aufgabe 2: Daten einfügen
-
-Füge folgende Ersatzteile ein:
-
-- Teil 201: "Fräskopf Standard", Bestand 15, Mindestbestand 5, Preis 450.00
-- Teil 202: "Kühlmittelfilter", Bestand 8, Mindestbestand 10, Preis 25.50
-- Teil 203: "Spannbacken-Set", Bestand 12, Mindestbestand 3, Preis 180.00
-
-<details>
-<summary>💡 Lösung anzeigen</summary>
-
-```sql
-INSERT INTO ersatzteile (teil_id, bezeichnung, bestand, mindestbestand, preis)
-VALUES
-    (201, 'Fräskopf Standard', 15, 5, 450.00),
-    (202, 'Kühlmittelfilter', 8, 10, 25.50),
-    (203, 'Spannbacken-Set', 12, 3, 180.00);
-```
-</details>
-
-### Aufgabe 3: Abfragen
-
-Zeige alle Ersatzteile mit ihrem Bestand und Preis an.
-
-<details>
-<summary>💡 Lösung anzeigen</summary>
-
-```sql
-SELECT bezeichnung, bestand, preis FROM ersatzteile;
-```
-</details>
+    Zeige alle Ersatzteile mit ihrem Bestand und Preis an.
 
 ---
 
