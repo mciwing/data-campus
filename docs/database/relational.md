@@ -17,8 +17,8 @@ Eine **relationale Datenbank** organisiert Daten in **Tabellen** (auch Relatione
 ???+ defi "Relationale Datenbank"
     Eine Relationale Datenbank wird wiefolgt beschrieben:
 
-    - **Tupel** (auch Zeilen oder Datensätze genannt) – repräsentieren einzelne Objekte oder Einträge
-    - **Attribute** (auch Spalten oder Felder genannt) – beschreiben Eigenschaften dieser Objekte
+    - **Tupel** (auch Zeilen oder Datensätze genannt) - repräsentieren einzelne Objekte oder Einträge
+    - **Attribute** (auch Spalten oder Felder genannt) - beschreiben Eigenschaften dieser Objekte
     - **Relationenschema** - Menge von Attributen. 
     - **Relationenname** - Name der Tabelle
 
@@ -197,9 +197,9 @@ In unserem Beispiel würden wir den beiden CNC-Fräsen unterschiedliche Maschine
 
     **Eigenschaften eines Primärschlüssels:**
 
-    - **Eindeutig** – Kein Wert darf in der Tabelle doppelt vorkommen
-    - **Nicht NULL** – Jeder Datensatz muss einen Wert haben (leere Einträge sind nicht erlaubt)
-    - **Unveränderlich** – Sollte sich idealerweise nie ändern, um Konsistenz zu gewährleisten
+    - **Eindeutig** - Kein Wert darf in der Tabelle doppelt vorkommen
+    - **Nicht NULL** - Jeder Datensatz muss einen Wert haben (leere Einträge sind nicht erlaubt)
+    - **Unveränderlich** - Sollte sich idealerweise nie ändern, um Konsistenz zu gewährleisten
 
     **Beispiele aus der Praxis:**
 
@@ -217,7 +217,7 @@ Ohne Primärschlüssel würde es in der Datenbank schnell zu Chaos kommen. Ohne 
 - **Keine Duplikate** entstehen können
 - **Daten konsistent** bleiben, selbst wenn andere Werte geändert werden
 
-In der Praxis verwendet man häufig eine **fortlaufende Nummer** (1, 2, 3, ...) als Primärschlüssel, da diese automatisch eindeutig ist und sich nie ändert – selbst wenn der Maschinenname oder Standort später angepasst wird.
+In der Praxis verwendet man häufig eine **fortlaufende Nummer** (1, 2, 3, ...) als Primärschlüssel, da diese automatisch eindeutig ist und sich nie ändert - selbst wenn der Maschinenname oder Standort später angepasst wird.
 
 <div style="text-align: center;">
     <img src="https://i.imgflip.com/aadzku.jpg" alt="" style="margin-bottom: 0em;">
@@ -361,7 +361,7 @@ Nachdem wir nun eine befüllte Tabelle vor uns haben, ist die nächste Aufgabe k
     ```
 
 
--   __Output__
+-   __Beispiel__
 
     ---
 
@@ -371,7 +371,7 @@ Nachdem wir nun eine befüllte Tabelle vor uns haben, ist die nächste Aufgabe k
         SELECT * FROM maschinen;
         ```
 
-        ```
+        ```title="Output"
          maschinen_id |         name         |      typ       | standort | anschaffungsjahr | status
         --------------+----------------------+----------------+----------+------------------+---------
                     1 | CNC-Fräse Alpha      | CNC-Fräse      | Halle A  |             2019 | Aktiv
@@ -397,7 +397,7 @@ Nachdem wir nun eine befüllte Tabelle vor uns haben, ist die nächste Aufgabe k
     ```
 
 
--   __Output__
+-   __Beispiel__
 
     ---
 
@@ -408,7 +408,7 @@ Nachdem wir nun eine befüllte Tabelle vor uns haben, ist die nächste Aufgabe k
         ```
 
 
-        ```
+        ```title="Output"
                 name         |      typ       | standort
         ---------------------+----------------+----------
         CNC-Fräse Alpha      | CNC-Fräse      | Halle A
@@ -461,13 +461,13 @@ Jetzt geht es darum, das erlernte zu probieren.
 ## Zusammenfassung 📌
 
 - Das **relationale Modell** organisiert Daten in **Tabellen** mit Zeilen und Spalten
-- Jede Spalte hat einen **Datentyp** (TEXT, INTEGER, DATE, BOOLEAN, ...)
+- Jede Spalte hat einen **Datentyp**
 - Ein **Primärschlüssel** identifiziert jeden Datensatz eindeutig und darf nicht NULL sein
-- **CREATE TABLE** erstellt eine neue Tabelle mit definierter Struktur
-- **INSERT INTO** fügt neue Datensätze in eine Tabelle ein
-- **SELECT** fragt Daten aus einer Tabelle ab
-- `SELECT *` zeigt alle Spalten, während `SELECT spalte1, spalte2` nur bestimmte Spalten zeigt
+- `CREATE TABLE` erstellt eine neue Tabelle mit definierter Struktur
+- `INSERT INTO` fügt neue Datensätze in eine Tabelle ein
+- `SELECT` fragt Daten aus einer Tabelle ab
+- `SELECT *` zeigt alle Spalten, während `SELECT attribut1, attribute2` nur bestimmte Spalten zeigt
 
 ---
 
-Im nächsten Kapitel lernen wir, wie wir Daten **gezielt filtern, sortieren und aggregieren** können – die wahre Macht von SQL!
+Im nächsten Kapitel lernen wir, wie wir Daten **gezielt filtern, sortieren und aggregieren** können - die wahre Macht von SQL!
