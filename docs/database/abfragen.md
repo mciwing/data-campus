@@ -10,7 +10,7 @@ SQL ist eine **deklarative Sprache**: Wir beschreiben, **was** wir haben möchte
 
 Im vorigen Kapitel haben wir bereits den `SELECT` Befehl kennengelernt. Doch neben dieser einfachen gezeigten Abfrage können wir auch noch mehr damit machen. Eine SELECT-Abfrage hat folgende Grundstruktur:
 
-```sql
+```sql { .yaml .no-copy }
 SELECT spalten
 FROM tabelle
 WHERE bedingung
@@ -50,11 +50,17 @@ Wir werden uns dies nun Schritt für Schritt ansehen.
 
 Bislang haben wir bei der Abfrage von Daten entweder alles abgefragt (`*`) oder gewisse Spalten ausgewählt. Welche Zeilen / Tuples aber geladen werden sollen, haben wir bisher nicht eingrenzt. Daher wurden zuvor alle Zeilen geladen. 
 
-Mit der **WHERE-Klausel** können wir aber nun Datensätze nach bestimmten Kriterien filtern.
+Mit der **WHERE-Klausel** können wir aber nun Datensätze nach bestimmten Kriterien filtern. Der grundlegende Syntax lautet wiefolgt: 
+
+```sql { .yaml .no-copy }
+SELECT * 
+FROM tabellenname
+WHERE bedingung;
+```
 
 ### Einfache Vergleiche
 
-Wie auch in der Mathematik stehen uns dafür verschiedenste Vergleichsoperatoren zur Verfügung. 
+Wie auch in der Mathematik stehen uns für die Bedingungen verschiedenste Vergleichsoperatoren zur Verfügung. 
 
 <div style="text-align:center; max-width:700px; margin:16px auto;">
 <table role="table" 
@@ -104,54 +110,37 @@ Wie auch in der Mathematik stehen uns dafür verschiedenste Vergleichsoperatoren
 Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfrage der Daten festlegen.
 
 
-<div class="grid cards" markdown>
-
--   __Syntax__
-
-    ---
-
+???+ example "Beispiel"
     ```sql
-    SELECT * FROM tabellenname
-    WHERE bedingung;
+    -- Alle CNC-Fräsen
+    SELECT * FROM maschinen
+    WHERE typ = 'CNC-Fräse';
     ```
 
+    ```title="Output"
+        maschinen_id |       name        |    typ    | standort | anschaffungsjahr | status
+    --------------+-------------------+-----------+----------+------------------+--------
+                1 | CNC-Fräse Alpha   | CNC-Fräse | Halle A  |             2019 | Aktiv
+                5 | CNC-Fräse Epsilon | CNC-Fräse | Halle A  |             2022 | Aktiv
+    (2 rows)
+    ```
 
--   __Beispiel__
-
-    ---
-
-
-    ???+ example "Beispiel"
+    ??? code "weitere Beispiele"
         ```sql
-        -- Alle CNC-Fräsen
-        SELECT * FROM maschinen
-        WHERE typ = 'CNC-Fräse';
+        -- Maschinen ab Anschaffungsjahr 2020
+        SELECT name, typ, anschaffungsjahr
+        FROM maschinen
+        WHERE anschaffungsjahr >= 2020;
         ```
 
-        ```title="Output"
-         maschinen_id |       name        |    typ    | standort | anschaffungsjahr | status
-        --------------+-------------------+-----------+----------+------------------+--------
-                    1 | CNC-Fräse Alpha   | CNC-Fräse | Halle A  |             2019 | Aktiv
-                    5 | CNC-Fräse Epsilon | CNC-Fräse | Halle A  |             2022 | Aktiv
-        (2 rows)
+        ```sql
+        -- Alle außer Maschinen in Halle A
+        SELECT name, typ, standort
+        FROM maschinen
+        WHERE standort != 'Halle A';
         ```
 
-        ??? code "weitere Beispiele"
-            ```sql
-            -- Maschinen ab Anschaffungsjahr 2020
-            SELECT name, typ, anschaffungsjahr
-            FROM maschinen
-            WHERE anschaffungsjahr >= 2020;
-            ```
 
-            ```sql
-            -- Alle außer Maschinen in Halle A
-            SELECT name, typ, standort
-            FROM maschinen
-            WHERE standort != 'Halle A';
-            ```
-
-</div>
 
 ---
 
@@ -505,238 +494,627 @@ Für solche **Mustersuchen** verwenden wir den **LIKE-Operator** zusammen mit **
 
 ---
 
-# XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
+## Sortieren mit `ORDER BY`
 
+Standardmäßig werden Abfrageergebnisse in **keiner bestimmten Reihenfolge** zurückgegeben - die Datenbank entscheidet selbst, wie sie die Daten ausgibt. Wenn wir eine **definierte Sortierung** benötigen (z.B. alphabetisch, nach Datum, nach Zahlen), verwenden wir **ORDER BY**.
 
-## Mehrere Bedingungen kombinieren
+Mit **ORDER BY** können wir Ergebnisse nach einer oder mehreren Spalten sortieren - sowohl **aufsteigend** (A→Z, 0→9, alt→neu) als auch **absteigend** (Z→A, 9→0, neu→alt). Der grundlegende Syntax lautet wiefolgt: 
 
-
-
-## Sortieren mit ORDER BY
-
-Mit **ORDER BY** können wir Ergebnisse sortieren.
-
-### Aufsteigend sortieren (Standard)
-
-```sql
--- Nach Name sortiert (A-Z)
-SELECT name, typ
-FROM maschinen
-ORDER BY name;
+```sql { .yaml .no-copy }
+SELECT * 
+FROM tabellenname
+ORDER BY attribut ASC; -- oder DESC
 ```
 
-oder explizit:
 
-```sql
-ORDER BY name ASC;  -- ASC = ascending (aufsteigend)
-```
+**Sortierrichtungen**
 
-### Absteigend sortieren
-
-```sql
--- Nach Anschaffungsjahr sortiert (neuste zuerst)
-SELECT name, typ, anschaffungsjahr
-FROM maschinen
-ORDER BY anschaffungsjahr DESC;  -- DESC = descending (absteigend)
-```
-
-### Nach mehreren Spalten sortieren
-
-```sql
--- Erst nach Standort, dann nach Anschaffungsjahr
-SELECT name, standort, anschaffungsjahr
-FROM maschinen
-ORDER BY standort ASC, anschaffungsjahr DESC;
-```
-
-Das bedeutet: Gruppiere nach Standort (alphabetisch), und innerhalb jeder Gruppe sortiere nach Anschaffungsjahr (neuste zuerst).
-
----
-
-## Ergebnismenge begrenzen: LIMIT
-
-Mit **LIMIT** können wir die Anzahl der zurückgegebenen Zeilen begrenzen.
-
-```sql
--- Die 3 ältesten Maschinen
-SELECT name, anschaffungsjahr
-FROM maschinen
-ORDER BY anschaffungsjahr ASC
-LIMIT 3;
-```
-
-### Mit OFFSET - Paginierung
-
-```sql
--- Maschinen 4-6 (überspringt die ersten 3)
-SELECT name, anschaffungsjahr
-FROM maschinen
-ORDER BY anschaffungsjahr ASC
-LIMIT 3 OFFSET 3;
-```
-
-<div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
-<strong>📘 Praktischer Einsatz: Paginierung</strong><br>
-<code>LIMIT</code> und <code>OFFSET</code> werden häufig für Paginierung verwendet (z.B. Seite 1, Seite 2, ...). Für Seite <code>n</code> mit <code>x</code> Einträgen pro Seite:<br>
-<code>LIMIT x OFFSET (n-1) * x</code>
-</div>
-
----
-
-## Aggregatfunktionen - Daten zusammenfassen
-
-**Aggregatfunktionen** fassen mehrere Werte zu einem einzigen Wert zusammen.
-
-<div style="text-align:center; max-width:820px; margin:16px auto;">
-<table role="table" 
+<div style="text-align:center; max-width:700px; margin:16px auto;">
+<table role="table"
        style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
     <thead>
     <tr style="background:#009485; color:#fff;">
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Funktion</th>
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:center; padding:12px 14px; font-weight:700;">Schlüsselwort</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
         <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
     </tr>
     </thead>
     <tbody>
     <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>COUNT(*)</code></td>
-        <td style="padding:10px 14px;">Anzahl aller Zeilen</td>
-        <td style="padding:10px 14px;"><code>COUNT(*)</code></td>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>ASC</code></td>
+        <td style="padding:10px 14px;">Aufsteigend (ascending) - <strong>Standard!</strong></td>
+        <td style="padding:10px 14px;">A→Z, 0→9, 2018→2024</td>
     </tr>
     <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>COUNT(spalte)</code></td>
-        <td style="padding:10px 14px;">Anzahl der Nicht-NULL-Werte</td>
-        <td style="padding:10px 14px;"><code>COUNT(status)</code></td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>SUM(spalte)</code></td>
-        <td style="padding:10px 14px;">Summe aller Werte</td>
-        <td style="padding:10px 14px;"><code>SUM(kosten)</code></td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>AVG(spalte)</code></td>
-        <td style="padding:10px 14px;">Durchschnitt</td>
-        <td style="padding:10px 14px;"><code>AVG(anschaffungsjahr)</code></td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>MIN(spalte)</code></td>
-        <td style="padding:10px 14px;">Kleinster Wert</td>
-        <td style="padding:10px 14px;"><code>MIN(anschaffungsjahr)</code></td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>MAX(spalte)</code></td>
-        <td style="padding:10px 14px;">Größter Wert</td>
-        <td style="padding:10px 14px;"><code>MAX(anschaffungsjahr)</code></td>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>DESC</code></td>
+        <td style="padding:10px 14px;">Absteigend (descending)</td>
+        <td style="padding:10px 14px;">Z→A, 9→0, 2024→2018</td>
     </tr>
     </tbody>
 </table>
 </div>
 
-### Beispiele
 
-```sql
--- Wie viele Maschinen gibt es insgesamt?
-SELECT COUNT(*) AS anzahl_maschinen
-FROM maschinen;
-```
+<div class="grid cards" markdown>
 
-**Ergebnis:**
+-   __Aufsteigend (A-Z)__
 
-```
- anzahl_maschinen
-──────────────────
-                8
-```
+    ---
 
-```sql
--- Durchschnittliches Anschaffungsjahr
-SELECT AVG(anschaffungsjahr) AS durchschnitt
-FROM maschinen;
-```
+    ???+ example "Beispiel"
+        ```sql
+        -- Nach Name sortiert (A-Z)
+        SELECT name, typ
+        FROM maschinen
+        ORDER BY name;  -- ASC ist Standard und kann weggelassen werden
+        ```
 
-```sql
--- Älteste und neueste Maschine
-SELECT
-    MIN(anschaffungsjahr) AS aelteste,
-    MAX(anschaffungsjahr) AS neueste
-FROM maschinen;
-```
+        ```title="Output"
+                 name         |      typ
+        ----------------------+----------------
+         CNC-Fräse Alpha      | CNC-Fräse
+         CNC-Fräse Epsilon    | CNC-Fräse
+         Drehbank Beta        | Drehbank
+         Drehbank Zeta        | Drehbank
+         Lackieranlage Delta  | Lackieranlage
+         Schweißroboter Eta   | Schweißroboter
+         Schweißroboter Gamma | Schweißroboter
+         Stanzmaschine Theta  | Stanzmaschine
+        (8 rows)
+        ```
+
+        Oder explizit mit `ASC`:
+        ```sql
+        ORDER BY name ASC;
+        ```
+
+-   __Absteigend (Z-A)__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Nach Anschaffungsjahr sortiert (neueste zuerst)
+        SELECT name, anschaffungsjahr
+        FROM maschinen
+        ORDER BY anschaffungsjahr DESC;
+        ```
+
+        ```title="Output"
+                 name         | anschaffungsjahr
+        ----------------------+------------------
+         Stanzmaschine Theta  |             2023
+         CNC-Fräse Epsilon    |             2022
+         Drehbank Beta        |             2021
+         Schweißroboter Gamma |             2020
+         Schweißroboter Eta   |             2020
+         CNC-Fräse Alpha      |             2019
+         Lackieranlage Delta  |             2018
+         Drehbank Zeta        |             2017
+        (8 rows)
+        ```
+
+-   __Nach mehreren Spalten__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Erst nach Standort (A-Z), dann nach Anschaffungsjahr (neueste zuerst)
+        SELECT name, standort, anschaffungsjahr
+        FROM maschinen
+        ORDER BY standort ASC, anschaffungsjahr DESC;
+        ```
+
+        ```title="Output"
+                 name         | standort | anschaffungsjahr
+        ----------------------+----------+------------------
+         Stanzmaschine Theta  | Halle A  |             2023
+         CNC-Fräse Epsilon    | Halle A  |             2022
+         Drehbank Beta        | Halle A  |             2021
+         CNC-Fräse Alpha      | Halle A  |             2019
+         Schweißroboter Gamma | Halle B  |             2020
+         Schweißroboter Eta   | Halle B  |             2020
+         Drehbank Zeta        | Halle B  |             2017
+         Lackieranlage Delta  | Halle C  |             2018
+        (8 rows)
+        ```
+
+        **Erklärung:** Die Daten werden zuerst nach `standort` alphabetisch sortiert (Halle A, dann B, dann C). Innerhalb jeder Halle werden die Maschinen nach `anschaffungsjahr` absteigend sortiert (neueste zuerst).
+
+-   __Nach Spaltenposition__
+
+    ---
+
+    ???+ example "Beispiel"
+        Alternativ kann man auch die **Position der Spalte** im SELECT angeben:
+
+        ```sql
+        SELECT name, typ, anschaffungsjahr
+        FROM maschinen
+        ORDER BY 3 DESC;  -- Sortiere nach der 3. Spalte (anschaffungsjahr)
+        ```
+
+        ???+ warning "Nicht empfohlen!"
+            Diese Schreibweise ist **weniger lesbar** und sollte nur in Ausnahmefällen verwendet werden. Besser ist es, den Spaltennamen explizit anzugeben: `ORDER BY anschaffungsjahr DESC`
+
+</div>
+
+**Sortierung und NULL-Werte**
+
+Was passiert eigentlich, wenn eine Spalte **NULL-Werte** enthält (leere Einträge)? Das Standardverhalten in PostgreSQL ist:
+
+- Bei `ASC` (aufsteigend): NULL-Werte kommen **am Ende**
+- Bei `DESC` (absteigend): NULL-Werte kommen **am Anfang**
+
+Doch wir können dies auch gezielt steuern
+
+???+ info "Explizite Kontrolle"
+    ```sql
+    -- NULL-Werte zuerst, dann aufsteigend sortieren
+    ORDER BY spalte ASC NULLS FIRST;
+
+    -- NULL-Werte am Ende, dann aufsteigend sortieren
+    ORDER BY spalte ASC NULLS LAST;
+    ```
 
 ---
 
-## Gruppieren mit GROUP BY
+## Ergebnismenge begrenzen mit `LIMIT`
 
-**GROUP BY** fasst Zeilen mit gleichen Werten zusammen und erlaubt Aggregationen pro Gruppe.
+Manchmal möchten wir **nicht alle Datensätze** abrufen, sondern nur eine bestimmte Anzahl - zum Beispiel:
 
-**Syntax:**
+- Die **Top 5** der neuesten Maschinen
+- Die **ersten 10 Einträge** für eine Vorschau
+- **Seitenweise** Ergebnisse anzeigen (Paginierung)
 
-```sql
+Dafür verwenden wir `LIMIT` (und optional `OFFSET`).
+
+### Grundlegende Verwendung
+
+Wir starten mit der einfachen Verwendung von `LIMIT` zur Limitierung der Rückgabeergebnisse. Der grundlegende Syntax kann wiefolgt beschrieben werden: 
+
+```sql { .yaml .no-copy }
+SELECT spalten
+FROM tabelle
+ORDER BY sortierung
+LIMIT anzahl;
+```
+
+Wenn wir diesem Syntax folgen können wir beispielsweise die ersten 3 Ergebnisse zurückgeben lassen.
+
+
+
+???+ example "Beispiel"
+    ```sql
+    -- Die 3 ältesten Maschinen
+    SELECT name, anschaffungsjahr
+    FROM maschinen
+    ORDER BY anschaffungsjahr ASC
+    LIMIT 3;
+    ```
+
+    ```title="Output"
+            name        | anschaffungsjahr
+    --------------------+------------------
+        Drehbank Zeta      |             2017
+        Lackieranlage Delta|             2018
+        CNC-Fräse Alpha    |             2019
+    (3 rows)
+    ```
+
+
+
+???+ warning "LIMIT ohne ORDER BY"
+    Wenn du `LIMIT` ohne `ORDER BY` verwendest, ist das Ergebnis **nicht vorhersehbar** - die Datenbank gibt irgendwelche Zeilen zurück! Verwende daher **immer ORDER BY zusammen mit LIMIT**.
+
+### Zeilen überspringen mit `OFFSET`
+
+Nun kann es vorkommen, dass wir nicht die ersten N Ergebnisse auslesen möchten, sondern erst bei einem gewissen Wert beginnend. Mit `OFFSET` können wir die ersten N Zeilen **überspringen** und erst ab einer bestimmten Position Ergebnisse zurückgeben.
+
+
+```sql { .yaml .no-copy }
+SELECT spalten
+FROM tabelle
+ORDER BY sortierung
+LIMIT anzahl OFFSET überspringen;
+```
+
+
+???+ example "Beispiel"
+    ```sql
+    -- Überspringe die ersten 3, zeige die nächsten 3 Maschinen
+    SELECT name, anschaffungsjahr
+    FROM maschinen
+    ORDER BY anschaffungsjahr ASC
+    LIMIT 3 OFFSET 3;
+    ```
+
+    ```title="Output"
+                name         | anschaffungsjahr
+    ----------------------+------------------
+        Schweißroboter Gamma |             2020
+        Schweißroboter Eta   |             2020
+        Drehbank Beta        |             2021
+    (3 rows)
+    ```
+
+    **Erklärung:** Die ersten 3 Maschinen (2017, 2018, 2019) werden übersprungen, dann werden die nächsten 3 zurückgegeben.
+
+
+
+???+ info "Paginierung"
+
+    `LIMIT` und `OFFSET` werden häufig für **Paginierung** verwendet - z.B. wenn eine Webseite Ergebnisse seitenweise anzeigt.
+
+    Bei sehr großen **OFFSET-Werten** (z.B. `OFFSET 10000`) kann die Performance leiden, da die Datenbank alle übersprungenen Zeilen dennoch laden und durchlaufen muss. Für große Datensätze gibt es bessere Ansätze (z.B. Cursor-basierte Paginierung).
+
+---
+
+## Aggregatfunktionen - Daten zusammenfassen
+
+Bisher haben wir einzelne Datensätze abgefragt - jede Zeile wurde einzeln zurückgegeben. Manchmal interessieren uns aber **zusammengefasste Informationen** über viele Datensätze:
+
+- **Wie viele** Maschinen haben wir insgesamt?
+- Was ist das **durchschnittliche** Anschaffungsjahr?
+- Was ist der **höchste** oder **niedrigste** Wert in einer Spalte?
+- Was ist die **Summe** aller Kosten?
+
+Für solche **statistischen Auswertungen** verwenden wir **Aggregatfunktionen**. Sie **fassen mehrere Zeilen zu einem einzigen Ergebniswert zusammen**. 
+
+```sql { .yaml .no-copy }
+SELECT funktion AS ergebnisname
+FROM tabelle;
+```
+
+Neben der Funktion benötigen wir auch das `AS` zum vergeben eines Alias Namens für das Ergebnis der Berechnung. 
+
+
+
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Funktion</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Anwendungsfall</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>COUNT(*)</code></td>
+        <td style="padding:10px 14px;">Zählt alle Zeilen</td>
+        <td style="padding:10px 14px;">Wie viele Maschinen gibt es?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>COUNT(spalte)</code></td>
+        <td style="padding:10px 14px;">Zählt Nicht-NULL-Werte</td>
+        <td style="padding:10px 14px;">Wie viele Maschinen haben ein Status-Eintrag?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>SUM(spalte)</code></td>
+        <td style="padding:10px 14px;">Summe aller Werte</td>
+        <td style="padding:10px 14px;">Gesamtkosten aller Maschinen?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>AVG(spalte)</code></td>
+        <td style="padding:10px 14px;">Durchschnittswert</td>
+        <td style="padding:10px 14px;">Durchschnittliches Anschaffungsjahr?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>MIN(spalte)</code></td>
+        <td style="padding:10px 14px;">Kleinster Wert</td>
+        <td style="padding:10px 14px;">Älteste Maschine (frühestes Jahr)?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>MAX(spalte)</code></td>
+        <td style="padding:10px 14px;">Größter Wert</td>
+        <td style="padding:10px 14px;">Neueste Maschine (spätestes Jahr)?</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+Nachfolgend sind einige Beispiele angeführt. 
+
+<div class="grid cards" markdown>
+
+-   __COUNT - Zählen__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Wie viele Maschinen gibt es insgesamt?
+        SELECT COUNT(*) AS anzahl_maschinen
+        FROM maschinen;
+        ```
+
+        ```title="Output"
+         anzahl_maschinen
+        ------------------
+                        8
+        (1 row)
+        ```
+
+        **Erklärung:** `COUNT(*)` zählt alle Zeilen in der Tabelle - unabhängig vom Inhalt.
+
+        ??? code "COUNT mit Bedingung"
+            ```sql
+            -- Wie viele Maschinen sind aktiv?
+            SELECT COUNT(*) AS anzahl_aktiv
+            FROM maschinen
+            WHERE status = 'Aktiv';
+            ```
+
+            ```title="Output"
+             anzahl_aktiv
+            --------------
+                        6
+            (1 row)
+            ```
+
+-   __AVG - Durchschnitt__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Durchschnittliches Anschaffungsjahr
+        SELECT AVG(anschaffungsjahr) AS durchschnitt
+        FROM maschinen;
+        ```
+
+        ```title="Output"
+                   durchschnitt
+        ---------------------
+         2020.0000000000000000
+        (1 row)
+        ```
+
+        **Erklärung:** `AVG()` berechnet den arithmetischen Mittelwert aller Anschaffungsjahre.
+
+-   __MIN & MAX - Extremwerte__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Älteste und neueste Maschine
+        SELECT
+            MIN(anschaffungsjahr) AS aelteste,
+            MAX(anschaffungsjahr) AS neueste
+        FROM maschinen;
+        ```
+
+        ```title="Output"
+         aelteste | neueste
+        ----------+---------
+             2017 |    2023
+        (1 row)
+        ```
+
+        **Erklärung:** Wir können mehrere Aggregatfunktionen in einer Abfrage kombinieren.
+
+-   __SUM - Summe__
+
+    ---
+
+    ???+ example "Beispiel"
+        Angenommen, unsere `maschinen`-Tabelle hätte eine Spalte `wartungskosten`:
+
+        ```sql
+        -- Gesamte Wartungskosten aller Maschinen
+        SELECT SUM(wartungskosten) AS gesamtkosten
+        FROM maschinen;
+        ```
+
+        **Hinweis:** `SUM()` funktioniert nur mit numerischen Spalten (INTEGER, NUMERIC, etc.)
+
+</div>
+
+???+ warning "NULL-Werte werden ignoriert"
+    Aggregatfunktionen (außer `COUNT(*)`) **ignorieren NULL-Werte**!
+
+    - `COUNT(spalte)` zählt nur Nicht-NULL-Werte
+    - `AVG(spalte)` berechnet den Durchschnitt nur aus vorhandenen Werten
+    - `SUM(spalte)` summiert nur vorhandene Werte
+
+
+---
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
+
+## Gruppieren mit `GROUP BY`
+
+Mit den Aggregatfunktionen können wir bereits einfache Analysen unseres Datensatzes durchführen.  Doch oft möchten wir **Auswertungen pro Kategorie**:
+
+- Wie viele Maschinen gibt es **pro Typ**?
+- Was ist das durchschnittliche Anschaffungsjahr **pro Standort**?
+- Wie viele Maschinen gibt es **pro Status**?
+
+Dafür verwenden wir **GROUP BY** - es fasst Zeilen mit gleichen Werten zusammen und erlaubt **Aggregationen pro Gruppe**.
+
+```sql { .yaml .no-copy }
 SELECT gruppenspalte, aggregatfunktion(spalte)
 FROM tabelle
 GROUP BY gruppenspalte;
 ```
 
-### Beispiel: Maschinen pro Typ zählen
+<div class="grid cards" markdown>
 
-```sql
-SELECT typ, COUNT(*) AS anzahl
-FROM maschinen
-GROUP BY typ;
-```
+-   __Zählen pro Gruppe__
 
-**Ergebnis:**
+    ---
 
-```
- typ             │ anzahl
-─────────────────┼────────
- CNC-Fräse       │      2
- Drehbank        │      2
- Schweißroboter  │      2
- Lackieranlage   │      1
- Stanzmaschine   │      1
-```
+    ???+ example "Beispiel"
+        ```sql
+        -- Wie viele Maschinen gibt es pro Typ?
+        SELECT typ, COUNT(*) AS anzahl
+        FROM maschinen
+        GROUP BY typ;
+        ```
 
-```mermaid
-graph TD
-    A[Alle Maschinen]:::peach --> B[Gruppe: CNC-Fräse<br>2 Maschinen]:::teal
-    A --> C[Gruppe: Drehbank<br>2 Maschinen]:::teal
-    A --> D[Gruppe: Schweißroboter<br>2 Maschinen]:::teal
-    A --> E[Gruppe: Andere<br>2 Maschinen]:::teal
+        ```title="Output"
+              typ       | anzahl
+        ----------------+--------
+         CNC-Fräse      |      2
+         Drehbank       |      2
+         Schweißroboter |      2
+         Lackieranlage  |      1
+         Stanzmaschine  |      1
+        (5 rows)
+        ```
 
-    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
-    classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
-```
+        **Erklärung:** Die Datenbank gruppiert alle Maschinen nach `typ` und zählt, wie viele Maschinen in jeder Gruppe sind.
 
-### Mehrere Aggregationen
+-   __Durchschnitt pro Gruppe__
 
-```sql
-SELECT
-    standort,
-    COUNT(*) AS anzahl,
-    AVG(anschaffungsjahr) AS durchschnitt_jahr
-FROM maschinen
-GROUP BY standort
-ORDER BY anzahl DESC;
-```
+    ---
 
-**Ergebnis:**
+    ???+ example "Beispiel"
+        ```sql
+        -- Durchschnittliches Anschaffungsjahr pro Standort
+        SELECT standort, AVG(anschaffungsjahr) AS durchschnitt
+        FROM maschinen
+        GROUP BY standort;
+        ```
 
-```
- standort │ anzahl │ durchschnitt_jahr
-──────────┼────────┼───────────────────
- Halle A  │      4 │            2020.75
- Halle B  │      3 │            2019.00
- Halle C  │      1 │            2018.00
-```
+        ```title="Output"
+         standort |     durchschnitt
+        ----------+----------------------
+         Halle A  | 2020.7500000000000000
+         Halle B  | 2019.0000000000000000
+         Halle C  | 2018.0000000000000000
+        (3 rows)
+        ```
 
-<div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
-<strong>⚠️ Wichtige Regel:</strong><br>
-Wenn du <code>GROUP BY</code> verwendest, dürfen im <code>SELECT</code> nur vorkommen:
-<ul style="margin:8px 0 0 0;">
-<li>Spalten, die in <code>GROUP BY</code> stehen</li>
-<li>Aggregatfunktionen</li>
-</ul>
+-   __MIN/MAX pro Gruppe__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Älteste und neueste Maschine pro Standort
+        SELECT
+            standort,
+            MIN(anschaffungsjahr) AS aelteste,
+            MAX(anschaffungsjahr) AS neueste
+        FROM maschinen
+        GROUP BY standort;
+        ```
+
+        ```title="Output"
+         standort | aelteste | neueste
+        ----------+----------+---------
+         Halle A  |     2019 |    2023
+         Halle B  |     2017 |    2020
+         Halle C  |     2018 |    2018
+        (3 rows)
+        ```
+
 </div>
+
+---
+
+### Mehrere Aggregationen kombinieren
+
+Wir können **mehrere Aggregatfunktionen** gleichzeitig auf dieselbe Gruppierung anwenden.
+
+???+ example "Beispiel: Umfassende Statistik pro Standort"
+    ```sql
+    SELECT
+        standort,
+        COUNT(*) AS anzahl,
+        AVG(anschaffungsjahr) AS durchschnitt_jahr,
+        MIN(anschaffungsjahr) AS aelteste,
+        MAX(anschaffungsjahr) AS neueste
+    FROM maschinen
+    GROUP BY standort
+    ORDER BY anzahl DESC;
+    ```
+
+    ```title="Output"
+     standort | anzahl |   durchschnitt_jahr   | aelteste | neueste
+    ----------+--------+-----------------------+----------+---------
+     Halle A  |      4 | 2020.7500000000000000 |     2019 |    2023
+     Halle B  |      3 | 2019.0000000000000000 |     2017 |    2020
+     Halle C  |      1 | 2018.0000000000000000 |     2018 |    2018
+    (3 rows)
+    ```
+
+    **Erklärung:** Für jeden Standort sehen wir die Anzahl der Maschinen, das durchschnittliche Anschaffungsjahr sowie die älteste und neueste Maschine.
+
+---
+
+### Gruppierung nach mehreren Spalten
+
+Wir können auch nach **mehreren Spalten gleichzeitig** gruppieren.
+
+???+ example "Beispiel: Gruppierung nach Standort UND Status"
+    ```sql
+    SELECT
+        standort,
+        status,
+        COUNT(*) AS anzahl
+    FROM maschinen
+    GROUP BY standort, status
+    ORDER BY standort, status;
+    ```
+
+    ```title="Output"
+     standort | status  | anzahl
+    ----------+---------+--------
+     Halle A  | Aktiv   |      4
+     Halle B  | Aktiv   |      1
+     Halle B  | Defekt  |      1
+     Halle B  | Wartung |      1
+     Halle C  | Aktiv   |      1
+    (5 rows)
+    ```
+
+    **Erklärung:** Jede Kombination aus `standort` und `status` bildet eine eigene Gruppe.
+
+---
+
+### Wichtige Regeln für GROUP BY
+
+???+ warning "SELECT-Regel für GROUP BY"
+    Wenn du `GROUP BY` verwendest, dürfen im `SELECT` **nur** vorkommen:
+
+    1. **Spalten, die in GROUP BY stehen**
+    2. **Aggregatfunktionen**
+
+    **Richtig:**
+    ```sql
+    SELECT typ, COUNT(*) AS anzahl
+    FROM maschinen
+    GROUP BY typ;  -- ✓ typ steht in GROUP BY
+    ```
+
+    **Falsch:**
+    ```sql
+    SELECT typ, name, COUNT(*) AS anzahl  -- ✗ name steht nicht in GROUP BY!
+    FROM maschinen
+    GROUP BY typ;
+    ```
+
+    **Warum?** Wenn wir nach `typ` gruppieren, gibt es in der Gruppe "CNC-Fräse" zwei verschiedene Namen ("CNC-Fräse Alpha" und "CNC-Fräse Epsilon"). Die Datenbank weiß nicht, welchen sie anzeigen soll!
+
+???+ info "ORDER BY mit GROUP BY"
+    Nach der Gruppierung können wir das Ergebnis mit `ORDER BY` sortieren:
+
+    ```sql
+    SELECT typ, COUNT(*) AS anzahl
+    FROM maschinen
+    GROUP BY typ
+    ORDER BY anzahl DESC;  -- Sortiere nach Anzahl (absteigend)
+    ```
+
+    Wir können nach:
+    - Der **Gruppenspalte** sortieren: `ORDER BY typ`
+    - Einem **Aggregat-Ergebnis** sortieren: `ORDER BY anzahl DESC`
 
 ---
 
