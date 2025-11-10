@@ -1,6 +1,6 @@
 # Grundlagen des Relationalen Modells
 
-Im vorherigen Kapitel haben wir Datenbanken als Lösung für strukturierte Datenhaltung kennengelernt und PostgreSQL installiert. Jetzt wird es konkret: Wie werden Daten in einer relationalen Datenbank organisiert?
+Nachdem wir im vorherigen Kapitel Datenbanken als Lösung für strukturierte Datenhaltung kennengelernt und PostgreSQL installiert haben, wird es jetzt konkret: Wie werden Daten in einer relationalen Datenbank organisiert?
 
 Die Antwort: In **Tabellen**!
 
@@ -27,7 +27,7 @@ Eine **relationale Datenbank** organisiert Daten in **Tabellen** (auch Relatione
 
 ## Datentypen in PostgreSQL
 
-Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von Daten gespeichert werden kann. PostgreSQL bietet eine Vielzahl von Datentypen (siehe [Dokumentation](https://www.postgresql.org/docs/current/datatype.html))- wir konzentrieren uns zunächst auf die wichtigsten:
+Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von Daten gespeichert werden kann. PostgreSQL bietet eine Vielzahl von Datentypen (siehe [Dokumentation](https://www.postgresql.org/docs/current/datatype.html)) - wir konzentrieren uns zunächst auf die wichtigsten:
 
 ### Textdaten
 

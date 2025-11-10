@@ -13,6 +13,7 @@ Im vorigen Kapitel haben wir bereits den `SELECT` Befehl kennengelernt. Doch neb
 ```sql { .yaml .no-copy }
 SELECT spalten
 FROM tabelle
+-- ↓↓ Weitere Klauseln ↓↓
 WHERE bedingung
 ORDER BY sortierung;
 ```
@@ -21,7 +22,7 @@ ORDER BY sortierung;
 
 > "Wähle diese **Spalten** aus dieser **Tabelle**, aber nur die Zeilen, die diese **Bedingung** erfüllen, und sortiere das Ergebnis nach dieser **Sortierung**."
 
-Wir werden uns dies nun Schritt für Schritt ansehen. 
+Wir werden uns nun in diesem Kapitel ansehen, welche weiteren Möglichkeiten wir haben, um Daten aus einer Datenbank abzufragen und schon einfache Analysen durchführen. 
 
 ---
 
@@ -48,7 +49,7 @@ Wir werden uns dies nun Schritt für Schritt ansehen.
 
 ## Filtern mit `WHERE`
 
-Bislang haben wir bei der Abfrage von Daten entweder alles abgefragt (`*`) oder gewisse Spalten ausgewählt. Welche Zeilen / Tuples aber geladen werden sollen, haben wir bisher nicht eingrenzt. Daher wurden zuvor alle Zeilen geladen. 
+Bislang haben wir bei der Abfrage von Daten entweder alles abgefragt (`*`) oder gewisse **Spalten** ausgewählt. Welche **Zeilen** / Tuples aber geladen werden sollen, haben wir bisher nicht eingrenzt. Daher wurden zuvor alle Zeilen geladen. 
 
 Mit der **WHERE-Klausel** können wir aber nun Datensätze nach bestimmten Kriterien filtern. Der grundlegende Syntax lautet wiefolgt: 
 
@@ -118,7 +119,7 @@ Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfr
     ```
 
     ```title="Output"
-        maschinen_id |       name        |    typ    | standort | anschaffungsjahr | status
+     maschinen_id |       name        |    typ    | standort | anschaffungsjahr | status
     --------------+-------------------+-----------+----------+------------------+--------
                 1 | CNC-Fräse Alpha   | CNC-Fräse | Halle A  |             2019 | Aktiv
                 5 | CNC-Fräse Epsilon | CNC-Fräse | Halle A  |             2022 | Aktiv
@@ -194,124 +195,122 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
     `BETWEEN` ist inklusive - beide Grenzen sind mit eingeschlossen 
 
 
-<div class="grid cards" markdown>
+???+ example "Beispiel"
+    ```sql
+    -- CNC-Fräsen in Halle A
+    SELECT name, typ, standort
+    FROM maschinen
+    WHERE typ = 'CNC-Fräse' AND standort = 'Halle A';
+    ```
 
--   __AND__
+    ```title="Output"
+            name        |    typ    | standort
+    ------------------+-----------+----------
+    CNC-Fräse Alpha   | CNC-Fräse | Halle A
+    CNC-Fräse Epsilon | CNC-Fräse | Halle A
+    (2 rows)
+    ```
 
-    ---
-
-
-    ???+ example "Beispiel"
-        ```sql
-        -- CNC-Fräsen in Halle A
-        SELECT name, typ, standort
-        FROM maschinen
-        WHERE typ = 'CNC-Fräse' AND standort = 'Halle A';
-        ```
-
-        ```title="Output"
-              name        |    typ    | standort
-        ------------------+-----------+----------
-        CNC-Fräse Alpha   | CNC-Fräse | Halle A
-        CNC-Fräse Epsilon | CNC-Fräse | Halle A
-        (2 rows)
-        ```
+    ??? code "weitere Beispiele"
 
 
--   __OR__
-
-    ---
-    
-    ???+ example "Beispiel"
-        ```sql
-        -- Maschinen die in Wartung oder Defekt sind
-        SELECT name, typ, status
-        FROM maschinen
-        WHERE status = 'Wartung' OR status = 'Defekt';
-        ```
-
-        ```title="Output"
-                name         |      typ       | status
-        ---------------------+----------------+---------
-        Schweißroboter Gamma | Schweißroboter | Wartung
-        Drehbank Zeta        | Drehbank       | Defekt
-        (2 rows)
-        ```
-
--   __NOT__
-
-    ---
+        <div class="grid cards" markdown>
 
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Alle außer aktive Maschinen
-        SELECT name, typ, status
-        FROM maschinen
-        WHERE NOT status = 'Aktiv';
-        ```
+        -   __OR__
 
-        ```title="Output"
-                name         |      typ       | status
-        ---------------------+----------------+---------
-        Schweißroboter Gamma | Schweißroboter | Wartung
-        Drehbank Zeta        | Drehbank       | Defekt
-        (2 rows)
-        ```
+            ---
+            
+            ???+ example "Beispiel"
+                ```sql
+                -- Maschinen die in Wartung oder Defekt sind
+                SELECT name, typ, status
+                FROM maschinen
+                WHERE status = 'Wartung' OR status = 'Defekt';
+                ```
+
+                ```title="Output"
+                        name         |      typ       | status
+                ---------------------+----------------+---------
+                Schweißroboter Gamma | Schweißroboter | Wartung
+                Drehbank Zeta        | Drehbank       | Defekt
+                (2 rows)
+                ```
+
+        -   __NOT__
+
+            ---
 
 
--   __BETWEEN__
+            ???+ example "Beispiel"
+                ```sql
+                -- Alle außer aktive Maschinen
+                SELECT name, typ, status
+                FROM maschinen
+                WHERE NOT status = 'Aktiv';
+                ```
 
-    ---
-    
-    ???+ example "Beispiel"
-        ```sql
-        -- Maschinen aus den Jahren 2018 bis 2020
-        SELECT name, typ, anschaffungsjahr
-        FROM maschinen
-        WHERE anschaffungsjahr BETWEEN 2018 AND 2020;
-        ```
+                ```title="Output"
+                        name         |      typ       | status
+                ---------------------+----------------+---------
+                Schweißroboter Gamma | Schweißroboter | Wartung
+                Drehbank Zeta        | Drehbank       | Defekt
+                (2 rows)
+                ```
 
-        ```title="Output"
-                name         |      typ       | anschaffungsjahr
-        ---------------------+----------------+------------------
-        CNC-Fräse Alpha      | CNC-Fräse      |             2019
-        Schweißroboter Gamma | Schweißroboter |             2020
-        Lackieranlage Delta  | Lackieranlage  |             2018
-        Schweißroboter Eta   | Schweißroboter |             2020
-        (4 rows)
-        ```
 
-    
+        -   __BETWEEN__
 
--   __IN__
+            ---
+            
+            ???+ example "Beispiel"
+                ```sql
+                -- Maschinen aus den Jahren 2018 bis 2020
+                SELECT name, typ, anschaffungsjahr
+                FROM maschinen
+                WHERE anschaffungsjahr BETWEEN 2018 AND 2020;
+                ```
 
-    ---
-    
-    ???+ example "Beispiel"
-        ```sql
-        -- Maschinen bestimmter Typen
-        SELECT name, typ, standort
-        FROM maschinen
-        WHERE typ IN ('CNC-Fräse', 'Drehbank');
-        ```
+                ```title="Output"
+                        name         |      typ       | anschaffungsjahr
+                ---------------------+----------------+------------------
+                CNC-Fräse Alpha      | CNC-Fräse      |             2019
+                Schweißroboter Gamma | Schweißroboter |             2020
+                Lackieranlage Delta  | Lackieranlage  |             2018
+                Schweißroboter Eta   | Schweißroboter |             2020
+                (4 rows)
+                ```
 
-        Das ist äquivalent zu:
+            
 
-        ```sql
-        WHERE typ = 'CNC-Fräse' OR typ = 'Drehbank'
-        ```
+        -   __IN__
 
-        ```title="Output"
-              name        |    typ    | standort
-        ------------------+-----------+----------
-        CNC-Fräse Alpha   | CNC-Fräse | Halle A
-        Drehbank Beta     | Drehbank  | Halle A
-        CNC-Fräse Epsilon | CNC-Fräse | Halle A
-        Drehbank Zeta     | Drehbank  | Halle B
-        (4 rows)
-        ```
-</div>
+            ---
+            
+            ???+ example "Beispiel"
+                ```sql
+                -- Maschinen bestimmter Typen
+                SELECT name, typ, standort
+                FROM maschinen
+                WHERE typ IN ('CNC-Fräse', 'Drehbank');
+                ```
+
+                Das ist äquivalent zu:
+
+                ```sql
+                WHERE typ = 'CNC-Fräse' OR typ = 'Drehbank'
+                ```
+
+                ```title="Output"
+                    name        |    typ    | standort
+                ------------------+-----------+----------
+                CNC-Fräse Alpha   | CNC-Fräse | Halle A
+                Drehbank Beta     | Drehbank  | Halle A
+                CNC-Fräse Epsilon | CNC-Fräse | Halle A
+                Drehbank Zeta     | Drehbank  | Halle B
+                (4 rows)
+                ```
+        </div>
 
 
 ---
@@ -324,9 +323,8 @@ Oft wissen wir nicht genau, nach welchem exakten Wert wir suchen. Zum Beispiel:
 - "Alle Maschinen, die 'roboter' im Namen haben"
 - "Alle Maschinen mit einem Namen der Länge 5"
 
-Für solche **Mustersuchen** verwenden wir den **LIKE-Operator** zusammen mit **Platzhaltern**.
+Für solche **Mustersuchen** verwenden wir den **`LIKE`-Operator** zusammen mit **Platzhaltern**. Platzhalter sind spezielle Zeichen, welche für ein beliebiges oder mehrere beliebige Zeichen stehen. Die mag im ersten Moment etwas verwirrend klingen, ist aber in der Praxis durchaus praktisch. Im Grunde gibt es zwei verschiedene Platzhalter:
 
-**Platzhalter**
 
 <div style="text-align:center; max-width:700px; margin:16px auto;">
 <table role="table"
@@ -353,7 +351,7 @@ Für solche **Mustersuchen** verwenden wir den **LIKE-Operator** zusammen mit **
 </table>
 </div>
 
-**Häufige LIKE-Muster**
+Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfragen erstellen. Beispielhaft Muster für `LIKE` Abfragen sind
 
 <div style="text-align:center; max-width:820px; margin:16px auto;">
 <table role="table"
@@ -394,95 +392,93 @@ Für solche **Mustersuchen** verwenden wir den **LIKE-Operator** zusammen mit **
 </div>
 
 
-<div class="grid cards" markdown>
+???+ example "Beispiel"
+    ```sql
+    -- Alle Maschinen mit 'roboter' im Namen (Groß-/Kleinschreibung beachten!)
+    SELECT name, typ
+    FROM maschinen
+    WHERE name LIKE '%roboter%';
+    ```
 
--   __Beginnt mit...__
+    ```title="Output"
+            name         |      typ
+    ---------------------+----------------
+    Schweißroboter Gamma | Schweißroboter
+    Schweißroboter Eta   | Schweißroboter
+    (2 rows)
+    ```
 
-    ---
+    ??? code "weitere Beispiele"
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Alle Maschinen deren Name mit 'CNC' beginnt
-        SELECT name, typ
-        FROM maschinen
-        WHERE name LIKE 'CNC%';
-        ```
+        <div class="grid cards" markdown>
 
-        ```title="Output"
-              name        |    typ
-        ------------------+-----------
-        CNC-Fräse Alpha   | CNC-Fräse
-        CNC-Fräse Epsilon | CNC-Fräse
-        (2 rows)
-        ```
+        -   __Beginnt mit...__
 
--   __Enthält...__
+            ---
 
-    ---
+            ???+ example "Beispiel"
+                ```sql
+                -- Alle Maschinen deren Name mit 'CNC' beginnt
+                SELECT name, typ
+                FROM maschinen
+                WHERE name LIKE 'CNC%';
+                ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Alle Maschinen mit 'roboter' im Namen (Groß-/Kleinschreibung beachten!)
-        SELECT name, typ
-        FROM maschinen
-        WHERE name LIKE '%roboter%';
-        ```
+                ```title="Output"
+                    name        |    typ
+                ------------------+-----------
+                CNC-Fräse Alpha   | CNC-Fräse
+                CNC-Fräse Epsilon | CNC-Fräse
+                (2 rows)
+                ```
 
-        ```title="Output"
-                name         |      typ
-        ---------------------+----------------
-        Schweißroboter Gamma | Schweißroboter
-        Schweißroboter Eta   | Schweißroboter
-        (2 rows)
-        ```
+        -   __Endet mit...__
 
--   __Endet mit...__
+            ---
 
-    ---
+            ???+ example "Beispiel"
+                ```sql
+                -- Alle Maschinen deren Name mit 'Beta' endet
+                SELECT name, typ
+                FROM maschinen
+                WHERE name LIKE '%Beta';
+                ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Alle Maschinen deren Name mit 'Beta' endet
-        SELECT name, typ
-        FROM maschinen
-        WHERE name LIKE '%Beta';
-        ```
+                ```title="Output"
+                    name      |   typ
+                --------------+----------
+                Drehbank Beta | Drehbank
+                (1 row)
+                ```
 
-        ```title="Output"
-            name      |   typ
-        --------------+----------
-        Drehbank Beta | Drehbank
-        (1 row)
-        ```
+        -   __Genaue Länge__
 
--   __Genaue Länge__
+            ---
 
-    ---
+            ???+ example "Beispiel"
+                ```sql
+                -- Maschinennamen mit genau 5 Zeichen
+                SELECT name, status
+                FROM maschinen
+                WHERE status LIKE '_____';  -- 5 Unterstriche
+                ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Maschinennamen mit genau 5 Zeichen
-        SELECT name, status
-        FROM maschinen
-        WHERE status LIKE '_____';  -- 5 Unterstriche
-        ```
+                ```title="Output"
+                    name         | status
+                --------------------+--------
+                CNC-Fräse Alpha     | Aktiv
+                Drehbank Beta       | Aktiv
+                Lackieranlage Delta | Aktiv
+                CNC-Fräse Epsilon   | Aktiv
+                Schweißroboter Eta  | Aktiv
+                Stanzmaschine Theta | Aktiv
+                (6 rows)
+                ```
 
-        ```title="Output"
-               name         | status
-        --------------------+--------
-        CNC-Fräse Alpha     | Aktiv
-        Drehbank Beta       | Aktiv
-        Lackieranlage Delta | Aktiv
-        CNC-Fräse Epsilon   | Aktiv
-        Schweißroboter Eta  | Aktiv
-        Stanzmaschine Theta | Aktiv
-        (6 rows)
-        ```
-
-</div>
+        </div>
 
 ???+ warning "Groß-/Kleinschreibung"
-    **LIKE** ist in PostgreSQL standardmäßig **case-sensitive** (unterscheidet Groß-/Kleinschreibung)!
+    **`LIKE`** ist in PostgreSQL standardmäßig **case-sensitive**. Dies bedeutet, es wird sehr genau zwischen Groß- und Kleinschreibung unterschieden!
 
     - `LIKE 'cnc%'` findet NICHT "CNC-Fräse"
     - `LIKE 'CNC%'` findet "CNC-Fräse"
@@ -496,9 +492,9 @@ Für solche **Mustersuchen** verwenden wir den **LIKE-Operator** zusammen mit **
 
 ## Sortieren mit `ORDER BY`
 
-Standardmäßig werden Abfrageergebnisse in **keiner bestimmten Reihenfolge** zurückgegeben - die Datenbank entscheidet selbst, wie sie die Daten ausgibt. Wenn wir eine **definierte Sortierung** benötigen (z.B. alphabetisch, nach Datum, nach Zahlen), verwenden wir **ORDER BY**.
+Standardmäßig werden Abfrageergebnisse in **keiner bestimmten Reihenfolge** zurückgegeben - die Datenbank entscheidet selbst, wie sie die Daten ausgibt. Wenn wir eine **definierte Sortierung** benötigen (z.B. alphabetisch, nach Datum, nach Zahlen), verwenden wir **`ORDER BY`**.
 
-Mit **ORDER BY** können wir Ergebnisse nach einer oder mehreren Spalten sortieren - sowohl **aufsteigend** (A→Z, 0→9, alt→neu) als auch **absteigend** (Z→A, 9→0, neu→alt). Der grundlegende Syntax lautet wiefolgt: 
+Mit **`ORDER BY`** können wir Ergebnisse nach einer oder mehreren Spalten sortieren - sowohl **aufsteigend** (A→Z, 0→9, alt→neu) als auch **absteigend** (Z→A, 9→0, neu→alt). Der grundlegende Syntax lautet wiefolgt: 
 
 ```sql { .yaml .no-copy }
 SELECT * 
@@ -506,8 +502,7 @@ FROM tabellenname
 ORDER BY attribut ASC; -- oder DESC
 ```
 
-
-**Sortierrichtungen**
+Die zwei verschiedenen Sortierrichtungen können mit Hilfe zweier Schlüsselwörter ausgewählt werden:
 
 <div style="text-align:center; max-width:700px; margin:16px auto;">
 <table role="table"
@@ -535,140 +530,182 @@ ORDER BY attribut ASC; -- oder DESC
 </div>
 
 
-<div class="grid cards" markdown>
+???+ example "Beispiel"
 
--   __Aufsteigend (A-Z)__
+    ```sql
+    -- Erst nach Standort (A-Z), dann nach Anschaffungsjahr (neueste zuerst)
+    SELECT name, standort, anschaffungsjahr
+    FROM maschinen
+    ORDER BY standort ASC, anschaffungsjahr DESC;
+    ```
 
-    ---
+    ```title="Output"
+             name         | standort | anschaffungsjahr
+    ----------------------+----------+------------------
+     Stanzmaschine Theta  | Halle A  |             2023
+     CNC-Fräse Epsilon    | Halle A  |             2022
+     Drehbank Beta        | Halle A  |             2021
+     CNC-Fräse Alpha      | Halle A  |             2019
+     Schweißroboter Gamma | Halle B  |             2020
+     Schweißroboter Eta   | Halle B  |             2020
+     Drehbank Zeta        | Halle B  |             2017
+     Lackieranlage Delta  | Halle C  |             2018
+    (8 rows)
+    ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Nach Name sortiert (A-Z)
-        SELECT name, typ
-        FROM maschinen
-        ORDER BY name;  -- ASC ist Standard und kann weggelassen werden
-        ```
+    **Erklärung:** Die Daten werden zuerst nach `standort` alphabetisch sortiert (Halle A, dann B, dann C). Innerhalb jeder Halle werden die Maschinen nach `anschaffungsjahr` absteigend sortiert (neueste zuerst).
 
-        ```title="Output"
-                 name         |      typ
-        ----------------------+----------------
-         CNC-Fräse Alpha      | CNC-Fräse
-         CNC-Fräse Epsilon    | CNC-Fräse
-         Drehbank Beta        | Drehbank
-         Drehbank Zeta        | Drehbank
-         Lackieranlage Delta  | Lackieranlage
-         Schweißroboter Eta   | Schweißroboter
-         Schweißroboter Gamma | Schweißroboter
-         Stanzmaschine Theta  | Stanzmaschine
-        (8 rows)
-        ```
+    ??? code "weitere Beispiele"
 
-        Oder explizit mit `ASC`:
-        ```sql
-        ORDER BY name ASC;
-        ```
+        <div class="grid cards" markdown>
 
--   __Absteigend (Z-A)__
+        -   __Aufsteigend (A-Z)__
 
-    ---
+            ---
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Nach Anschaffungsjahr sortiert (neueste zuerst)
-        SELECT name, anschaffungsjahr
-        FROM maschinen
-        ORDER BY anschaffungsjahr DESC;
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Nach Name sortiert (A-Z)
+                SELECT name, typ
+                FROM maschinen
+                ORDER BY name;  -- ASC ist Standard und kann weggelassen werden
+                ```
 
-        ```title="Output"
-                 name         | anschaffungsjahr
-        ----------------------+------------------
-         Stanzmaschine Theta  |             2023
-         CNC-Fräse Epsilon    |             2022
-         Drehbank Beta        |             2021
-         Schweißroboter Gamma |             2020
-         Schweißroboter Eta   |             2020
-         CNC-Fräse Alpha      |             2019
-         Lackieranlage Delta  |             2018
-         Drehbank Zeta        |             2017
-        (8 rows)
-        ```
+                ```title="Output"
+                        name         |      typ
+                ----------------------+----------------
+                CNC-Fräse Alpha      | CNC-Fräse
+                CNC-Fräse Epsilon    | CNC-Fräse
+                Drehbank Beta        | Drehbank
+                Drehbank Zeta        | Drehbank
+                Lackieranlage Delta  | Lackieranlage
+                Schweißroboter Eta   | Schweißroboter
+                Schweißroboter Gamma | Schweißroboter
+                Stanzmaschine Theta  | Stanzmaschine
+                (8 rows)
+                ```
 
--   __Nach mehreren Spalten__
+                Oder explizit mit `ASC`:
+                ```sql
+                ORDER BY name ASC;
+                ```
 
-    ---
+        -   __Absteigend (Z-A)__
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Erst nach Standort (A-Z), dann nach Anschaffungsjahr (neueste zuerst)
-        SELECT name, standort, anschaffungsjahr
-        FROM maschinen
-        ORDER BY standort ASC, anschaffungsjahr DESC;
-        ```
+            ---
 
-        ```title="Output"
-                 name         | standort | anschaffungsjahr
-        ----------------------+----------+------------------
-         Stanzmaschine Theta  | Halle A  |             2023
-         CNC-Fräse Epsilon    | Halle A  |             2022
-         Drehbank Beta        | Halle A  |             2021
-         CNC-Fräse Alpha      | Halle A  |             2019
-         Schweißroboter Gamma | Halle B  |             2020
-         Schweißroboter Eta   | Halle B  |             2020
-         Drehbank Zeta        | Halle B  |             2017
-         Lackieranlage Delta  | Halle C  |             2018
-        (8 rows)
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Nach Anschaffungsjahr sortiert (neueste zuerst)
+                SELECT name, anschaffungsjahr
+                FROM maschinen
+                ORDER BY anschaffungsjahr DESC;
+                ```
 
-        **Erklärung:** Die Daten werden zuerst nach `standort` alphabetisch sortiert (Halle A, dann B, dann C). Innerhalb jeder Halle werden die Maschinen nach `anschaffungsjahr` absteigend sortiert (neueste zuerst).
+                ```title="Output"
+                        name         | anschaffungsjahr
+                ----------------------+------------------
+                Stanzmaschine Theta  |             2023
+                CNC-Fräse Epsilon    |             2022
+                Drehbank Beta        |             2021
+                Schweißroboter Gamma |             2020
+                Schweißroboter Eta   |             2020
+                CNC-Fräse Alpha      |             2019
+                Lackieranlage Delta  |             2018
+                Drehbank Zeta        |             2017
+                (8 rows)
+                ```
 
--   __Nach Spaltenposition__
 
-    ---
+        -   __Nach Spaltenposition__
 
-    ???+ example "Beispiel"
-        Alternativ kann man auch die **Position der Spalte** im SELECT angeben:
+            ---
 
-        ```sql
-        SELECT name, typ, anschaffungsjahr
-        FROM maschinen
-        ORDER BY 3 DESC;  -- Sortiere nach der 3. Spalte (anschaffungsjahr)
-        ```
+            ???+ example "Beispiel"
+                Alternativ kann man auch die **Position der Spalte** im SELECT angeben:
 
-        ???+ warning "Nicht empfohlen!"
-            Diese Schreibweise ist **weniger lesbar** und sollte nur in Ausnahmefällen verwendet werden. Besser ist es, den Spaltennamen explizit anzugeben: `ORDER BY anschaffungsjahr DESC`
+                ```sql
+                SELECT name, typ, anschaffungsjahr
+                FROM maschinen
+                ORDER BY 3 DESC;  -- Sortiere nach der 3. Spalte (anschaffungsjahr)
+                ```
 
-</div>
+                ???+ warning "Nicht empfohlen!"
+                    Diese Schreibweise ist **weniger lesbar** und sollte nur in Ausnahmefällen verwendet werden. Besser ist es, den Spaltennamen explizit anzugeben: `ORDER BY anschaffungsjahr DESC`
+
+        </div>
 
 **Sortierung und NULL-Werte**
 
-Was passiert eigentlich, wenn eine Spalte **NULL-Werte** enthält (leere Einträge)? Das Standardverhalten in PostgreSQL ist:
+Was passiert eigentlich, wenn eine Spalte **NULL-Werte** (leere Einträge) enthält? 
 
-- Bei `ASC` (aufsteigend): NULL-Werte kommen **am Ende**
-- Bei `DESC` (absteigend): NULL-Werte kommen **am Anfang**
+<div style="text-align: center;">
+    <img src="https://devhumor.com/content/uploads/images/December2019/null.jpg" alt="NULL" style="max-width: 70%;">
+    <figcaption>Quelle: <a href="https://devhumor.com/content/uploads/images/December2019/null.jpg">devhumor</a></figcaption>
+</div>
 
-Doch wir können dies auch gezielt steuern
 
-???+ info "Explizite Kontrolle"
-    ```sql
-    -- NULL-Werte zuerst, dann aufsteigend sortieren
-    ORDER BY spalte ASC NULLS FIRST;
 
-    -- NULL-Werte am Ende, dann aufsteigend sortieren
-    ORDER BY spalte ASC NULLS LAST;
-    ```
+???+ question "Sortierung von NULL-Werten"
+    Erkunden wir nun, wie PostgreSQL mit NULL Werten bei Sortierungen umgeht. Gehe dabei wiefolgt vor: 
+
+    1. Füge eine neue Zeile mit fehlenden Werten ein
+
+        ```sql
+        INSERT INTO maschinen (maschinen_id, name, typ, standort)
+        VALUES
+            (9, 'CNC-Fräse Dolphine', 'CNC-Fräse', 'Halle b'),
+            (10, 'Drehbank Theta', 'Drehbank', 'Halle B');
+        ```
+    2. Frage alle Daten der Tabelle ab und sortiere Aufsteigend nach `anschaffungsjahr`. Wo werden die fehlenden Werte dargestellt? Ganz am Anfang oder am Ende? 
+    3. Nun machen wir das gleiche und für die Spalte `status` und sortieren Absteigend. Wo werden die fehlenden Werte dargetellt? 
+
+??? info "Lösung"
+    Das Standardverhalten in PostgreSQL ist:
+
+    - Bei `ASC` (aufsteigend): NULL-Werte kommen **am Ende**
+
+        ```sql
+        SELECT * FROM maschinen
+        ORDER BY anschaffungsjahr
+        ```
+
+    - Bei `DESC` (absteigend): NULL-Werte kommen **am Anfang**
+        ```sql
+        SELECT * FROM maschinen
+        ORDER BY status DESC;
+        ```
+
+
+Doch dieses Verhalten ist nicht in Stein gemeiselt. Wir können dies auch gezielt steuern und festlegen. 
+
+
+```sql
+-- NULL-Werte zuerst, dann aufsteigend sortieren
+ORDER BY spalte ASC NULLS FIRST;
+
+-- NULL-Werte am Ende, dann aufsteigend sortieren
+ORDER BY spalte ASC NULLS LAST;
+```
 
 ---
 
 ## Ergebnismenge begrenzen mit `LIMIT`
 
-Manchmal möchten wir **nicht alle Datensätze** abrufen, sondern nur eine bestimmte Anzahl - zum Beispiel:
+Alle bisher kennengelernten Befehle liefern uns als Rückgabe sämtliche Datensätze - sofern diese die geforderten Bedingungen erfüllen. Manchmal möchten wir aber nur eine bestimmte Anzahl - zum Beispiel: *Die Top 5 der neuesten Maschinen*.
 
-- Die **Top 5** der neuesten Maschinen
-- Die **ersten 10 Einträge** für eine Vorschau
-- **Seitenweise** Ergebnisse anzeigen (Paginierung)
 
-Dafür verwenden wir `LIMIT` (und optional `OFFSET`).
+Dafür gibt es die Klausel `LIMIT` und optional dazugehörigt `OFFSET`.
+
+???+ tip "Klausel"
+    Eine Klausel ist ein Teil einer SQL-Anweisung, der eine bestimmte Aufgabe hat. Beispielsweise:
+
+    - `SELECT`-Klausel
+    - `FROM`-Klausel
+    - `WHERE`-Klausel
+    - `GROUP` BY-Klausel
+    - `HAVING`-Klausel
+    - `ORDER` BY-Klausel
 
 ### Grundlegende Verwendung
 
@@ -695,11 +732,11 @@ Wenn wir diesem Syntax folgen können wir beispielsweise die ersten 3 Ergebnisse
     ```
 
     ```title="Output"
-            name        | anschaffungsjahr
-    --------------------+------------------
-        Drehbank Zeta      |             2017
-        Lackieranlage Delta|             2018
-        CNC-Fräse Alpha    |             2019
+            name         | anschaffungsjahr
+    ---------------------+------------------
+     Drehbank Zeta       |             2017
+     Lackieranlage Delta |             2018
+     CNC-Fräse Alpha     |             2019
     (3 rows)
     ```
 
@@ -710,7 +747,7 @@ Wenn wir diesem Syntax folgen können wir beispielsweise die ersten 3 Ergebnisse
 
 ### Zeilen überspringen mit `OFFSET`
 
-Nun kann es vorkommen, dass wir nicht die ersten N Ergebnisse auslesen möchten, sondern erst bei einem gewissen Wert beginnend. Mit `OFFSET` können wir die ersten N Zeilen **überspringen** und erst ab einer bestimmten Position Ergebnisse zurückgeben.
+Nun kann es vorkommen, dass wir nicht die ersten *N* Ergebnisse auslesen möchten, sondern erst bei einem gewissen Wert beginnend. Mit `OFFSET` können wir die ersten *N* Zeilen **überspringen** und erst ab einer bestimmten Position Ergebnisse zurückgeben.
 
 
 ```sql { .yaml .no-copy }
@@ -731,11 +768,11 @@ LIMIT anzahl OFFSET überspringen;
     ```
 
     ```title="Output"
-                name         | anschaffungsjahr
-    ----------------------+------------------
-        Schweißroboter Gamma |             2020
-        Schweißroboter Eta   |             2020
-        Drehbank Beta        |             2021
+            name         | anschaffungsjahr
+    ---------------------+------------------
+    Schweißroboter Gamma |             2020
+    Schweißroboter Eta   |             2020
+    Drehbank Beta        |             2021
     (3 rows)
     ```
 
@@ -767,7 +804,7 @@ SELECT funktion AS ergebnisname
 FROM tabelle;
 ```
 
-Neben der Funktion benötigen wir auch das `AS` zum vergeben eines Alias Namens für das Ergebnis der Berechnung. 
+Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berechnung mittels `AS` zum vergeben. 
 
 
 
@@ -816,103 +853,101 @@ Neben der Funktion benötigen wir auch das `AS` zum vergeben eines Alias Namens 
 </table>
 </div>
 
-Nachfolgend sind einige Beispiele angeführt. 
+???+ example "Beispiel"
 
-<div class="grid cards" markdown>
+    ```sql
+    -- Älteste und neueste Maschine
+    SELECT
+        MIN(anschaffungsjahr) AS aelteste,
+        MAX(anschaffungsjahr) AS neueste
+    FROM maschinen;
+    ```
 
--   __COUNT - Zählen__
+    ```title="Output"
+        aelteste | neueste
+    ----------+---------
+            2017 |    2023
+    (1 row)
+    ```
 
-    ---
+    **Erklärung:** Wir können mehrere Aggregatfunktionen in einer Abfrage kombinieren.
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Wie viele Maschinen gibt es insgesamt?
-        SELECT COUNT(*) AS anzahl_maschinen
-        FROM maschinen;
-        ```
+    ??? code "weitere Beispiele"
 
-        ```title="Output"
-         anzahl_maschinen
-        ------------------
-                        8
-        (1 row)
-        ```
+        <div class="grid cards" markdown>
 
-        **Erklärung:** `COUNT(*)` zählt alle Zeilen in der Tabelle - unabhängig vom Inhalt.
+        -   __COUNT - Zählen__
 
-        ??? code "COUNT mit Bedingung"
-            ```sql
-            -- Wie viele Maschinen sind aktiv?
-            SELECT COUNT(*) AS anzahl_aktiv
-            FROM maschinen
-            WHERE status = 'Aktiv';
-            ```
+            ---
 
-            ```title="Output"
-             anzahl_aktiv
-            --------------
-                        6
-            (1 row)
-            ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Wie viele Maschinen gibt es insgesamt?
+                SELECT COUNT(*) AS anzahl_maschinen
+                FROM maschinen;
+                ```
 
--   __AVG - Durchschnitt__
+                ```title="Output"
+                anzahl_maschinen
+                ------------------
+                                10
+                (1 row)
+                ```
 
-    ---
+                **Erklärung:** `COUNT(*)` zählt alle Zeilen in der Tabelle - unabhängig vom Inhalt.
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Durchschnittliches Anschaffungsjahr
-        SELECT AVG(anschaffungsjahr) AS durchschnitt
-        FROM maschinen;
-        ```
+                ??? code "COUNT mit Bedingung"
+                    ```sql
+                    -- Wie viele Maschinen sind aktiv?
+                    SELECT COUNT(*) AS anzahl_aktiv
+                    FROM maschinen
+                    WHERE status = 'Aktiv';
+                    ```
 
-        ```title="Output"
-                   durchschnitt
-        ---------------------
-         2020.0000000000000000
-        (1 row)
-        ```
+                    ```title="Output"
+                    anzahl_aktiv
+                    --------------
+                                6
+                    (1 row)
+                    ```
 
-        **Erklärung:** `AVG()` berechnet den arithmetischen Mittelwert aller Anschaffungsjahre.
+        -   __AVG - Durchschnitt__
 
--   __MIN & MAX - Extremwerte__
+            ---
 
-    ---
+            ???+ example "Beispiel"
+                ```sql
+                -- Durchschnittliches Anschaffungsjahr
+                SELECT AVG(anschaffungsjahr) AS durchschnitt
+                FROM maschinen;
+                ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Älteste und neueste Maschine
-        SELECT
-            MIN(anschaffungsjahr) AS aelteste,
-            MAX(anschaffungsjahr) AS neueste
-        FROM maschinen;
-        ```
+                ```title="Output"
+                        durchschnitt
+                ---------------------
+                2020.0000000000000000
+                (1 row)
+                ```
 
-        ```title="Output"
-         aelteste | neueste
-        ----------+---------
-             2017 |    2023
-        (1 row)
-        ```
+                **Erklärung:** `AVG()` berechnet den arithmetischen Mittelwert aller Anschaffungsjahre.
 
-        **Erklärung:** Wir können mehrere Aggregatfunktionen in einer Abfrage kombinieren.
 
--   __SUM - Summe__
+        -   __SUM - Summe__
 
-    ---
+            ---
 
-    ???+ example "Beispiel"
-        Angenommen, unsere `maschinen`-Tabelle hätte eine Spalte `wartungskosten`:
+            ???+ example "Beispiel"
+                Angenommen, unsere `maschinen`-Tabelle hätte eine Spalte `wartungskosten`:
 
-        ```sql
-        -- Gesamte Wartungskosten aller Maschinen
-        SELECT SUM(wartungskosten) AS gesamtkosten
-        FROM maschinen;
-        ```
+                ```sql
+                -- Gesamte Wartungskosten aller Maschinen
+                SELECT SUM(wartungskosten) AS gesamtkosten
+                FROM maschinen;
+                ```
 
-        **Hinweis:** `SUM()` funktioniert nur mit numerischen Spalten (INTEGER, NUMERIC, etc.)
+                **Hinweis:** `SUM()` funktioniert nur mit numerischen Spalten (INTEGER, NUMERIC, etc.)
 
-</div>
+        </div>
 
 ???+ warning "NULL-Werte werden ignoriert"
     Aggregatfunktionen (außer `COUNT(*)`) **ignorieren NULL-Werte**!
@@ -924,17 +959,17 @@ Nachfolgend sind einige Beispiele angeführt.
 
 ---
 
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
+
 
 ## Gruppieren mit `GROUP BY`
 
-Mit den Aggregatfunktionen können wir bereits einfache Analysen unseres Datensatzes durchführen.  Doch oft möchten wir **Auswertungen pro Kategorie**:
+Mit den Aggregatfunktionen können wir bereits einfache Analysen unseres Datensatzes durchführen. Wir können Summen bilden, Mittelwerte berechnen oder Werte zählen. Doch häufig kann es sein, dass wir diese Analysen nach gewissen Gruppen unterteilen wollen.:
 
 - Wie viele Maschinen gibt es **pro Typ**?
 - Was ist das durchschnittliche Anschaffungsjahr **pro Standort**?
 - Wie viele Maschinen gibt es **pro Status**?
 
-Dafür verwenden wir **GROUP BY** - es fasst Zeilen mit gleichen Werten zusammen und erlaubt **Aggregationen pro Gruppe**.
+Um diese Fragen zu beantworten, verwenden wir `GROUP BY` - es fasst Zeilen mit gleichen Werten zusammen und erlaubt **Aggregationen pro Gruppe**.
 
 ```sql { .yaml .no-copy }
 SELECT gruppenspalte, aggregatfunktion(spalte)
@@ -942,85 +977,57 @@ FROM tabelle
 GROUP BY gruppenspalte;
 ```
 
-<div class="grid cards" markdown>
 
--   __Zählen pro Gruppe__
 
-    ---
+???+ example "Beispiel"
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Wie viele Maschinen gibt es pro Typ?
-        SELECT typ, COUNT(*) AS anzahl
-        FROM maschinen
-        GROUP BY typ;
-        ```
+    ```sql
+    -- Wie viele Maschinen gibt es pro Typ?
+    SELECT typ, COUNT(*) AS anzahl
+    FROM maschinen
+    GROUP BY typ;
+    ```
 
-        ```title="Output"
-              typ       | anzahl
-        ----------------+--------
-         CNC-Fräse      |      2
-         Drehbank       |      2
-         Schweißroboter |      2
-         Lackieranlage  |      1
-         Stanzmaschine  |      1
-        (5 rows)
-        ```
+    ```title="Output"
+            typ       | anzahl
+    ----------------+--------
+        CNC-Fräse      |      2
+        Drehbank       |      2
+        Schweißroboter |      2
+        Lackieranlage  |      1
+        Stanzmaschine  |      1
+    (5 rows)
+    ```
 
-        **Erklärung:** Die Datenbank gruppiert alle Maschinen nach `typ` und zählt, wie viele Maschinen in jeder Gruppe sind.
+    **Erklärung:** Die Datenbank gruppiert alle Maschinen nach `typ` und zählt, wie viele Maschinen in jeder Gruppe sind.
 
--   __Durchschnitt pro Gruppe__
+    ??? code "weiteres Beispiel"
+        ???+ example "Beispiel"
 
-    ---
+            ```sql
+            -- Älteste und neueste Maschine pro Standort
+            SELECT
+                standort,
+                MIN(anschaffungsjahr) AS aelteste,
+                MAX(anschaffungsjahr) AS neueste
+            FROM maschinen
+            GROUP BY standort;
+            ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Durchschnittliches Anschaffungsjahr pro Standort
-        SELECT standort, AVG(anschaffungsjahr) AS durchschnitt
-        FROM maschinen
-        GROUP BY standort;
-        ```
+            ```title="Output"
+            standort | aelteste | neueste
+            ----------+----------+---------
+            Halle A  |     2019 |    2023
+            Halle B  |     2017 |    2020
+            Halle C  |     2018 |    2018
+            (3 rows)
+            ```
 
-        ```title="Output"
-         standort |     durchschnitt
-        ----------+----------------------
-         Halle A  | 2020.7500000000000000
-         Halle B  | 2019.0000000000000000
-         Halle C  | 2018.0000000000000000
-        (3 rows)
-        ```
-
--   __MIN/MAX pro Gruppe__
-
-    ---
-
-    ???+ example "Beispiel"
-        ```sql
-        -- Älteste und neueste Maschine pro Standort
-        SELECT
-            standort,
-            MIN(anschaffungsjahr) AS aelteste,
-            MAX(anschaffungsjahr) AS neueste
-        FROM maschinen
-        GROUP BY standort;
-        ```
-
-        ```title="Output"
-         standort | aelteste | neueste
-        ----------+----------+---------
-         Halle A  |     2019 |    2023
-         Halle B  |     2017 |    2020
-         Halle C  |     2018 |    2018
-        (3 rows)
-        ```
-
-</div>
+Die `GROUP BY` Klausel wird fast ausschließlich in Kombination mit einer Aggregatfunktion verwendet. Prinzipiell ist es syntaktisch erlaubt ein `GROUP BY` ohne Aggregation zu verwenden - semantisch ist es aber meist sinnnlos. Das Ergebnis wäre ident mit jenem von [`DISTINCT`](#eindeutige-werte-mit-distinct) - es liefert nur die einzigartigen Werte einer Spalte. 
 
 ---
 
-### Mehrere Aggregationen kombinieren
-
-Wir können **mehrere Aggregatfunktionen** gleichzeitig auf dieselbe Gruppierung anwenden.
+Spannend wird es, wenn wir **mehrere Aggregatfunktionen** gleichzeitig auf dieselbe Gruppierung anwenden. Damit können wir umfassendere Statistiken über unseren Datensatz erzeugen. 
 
 ???+ example "Beispiel: Umfassende Statistik pro Standort"
     ```sql
@@ -1047,10 +1054,7 @@ Wir können **mehrere Aggregatfunktionen** gleichzeitig auf dieselbe Gruppierung
     **Erklärung:** Für jeden Standort sehen wir die Anzahl der Maschinen, das durchschnittliche Anschaffungsjahr sowie die älteste und neueste Maschine.
 
 ---
-
-### Gruppierung nach mehreren Spalten
-
-Wir können auch nach **mehreren Spalten gleichzeitig** gruppieren.
+Um unsere Analyse noch weiter zu verfeinern, können wir auch **mehreren Spalten gleichzeitig** gruppieren. Dabei wird jede einzigartige Kombination der Spaltenwerte separat aufgeführt und die entsprechenden Analysen durchgeführt. 
 
 ???+ example "Beispiel: Gruppierung nach Standort UND Status"
     ```sql
@@ -1078,7 +1082,6 @@ Wir können auch nach **mehreren Spalten gleichzeitig** gruppieren.
 
 ---
 
-### Wichtige Regeln für GROUP BY
 
 ???+ warning "SELECT-Regel für GROUP BY"
     Wenn du `GROUP BY` verwendest, dürfen im `SELECT` **nur** vorkommen:
@@ -1113,80 +1116,304 @@ Wir können auch nach **mehreren Spalten gleichzeitig** gruppieren.
     ```
 
     Wir können nach:
+
     - Der **Gruppenspalte** sortieren: `ORDER BY typ`
     - Einem **Aggregat-Ergebnis** sortieren: `ORDER BY anzahl DESC`
 
 ---
 
-## HAVING - Gruppen filtern
 
-**HAVING** filtert Gruppen **nach** der Aggregation - im Gegensatz zu **WHERE**, das **vor** der Aggregation filtert.
 
-**Wann WHERE, wann HAVING?**
+## Gruppen filtern mit `HAVING`
 
-- **WHERE** - Filtert einzelne Zeilen (vor GROUP BY)
-- **HAVING** - Filtert Gruppen (nach GROUP BY)
+Mit `WHERE` können wir **einzelne Zeilen** vor der Gruppierung filtern. Was aber, wenn wir **Gruppen nach ihrer Aggregation** filtern möchten?
 
-### Beispiel
+Zum Beispiel:
 
-```sql
--- Maschinentypen mit mehr als 1 Maschine
-SELECT typ, COUNT(*) AS anzahl
-FROM maschinen
-GROUP BY typ
-HAVING COUNT(*) > 1;
+- Welche Maschinentypen haben **mehr als 2 Maschinen**?
+- Welche Standorte haben ein **durchschnittliches Anschaffungsjahr über 2020**?
+
+Hier kommt `HAVING` ins Spiel - es filtert **Gruppen nach Aggregationsergebnissen**.
+
+```sql { .yaml .no-copy }
+SELECT gruppenspalte, aggregatfunktion(spalte)
+FROM tabelle
+GROUP BY gruppenspalte
+HAVING bedingung_für_aggregat;
 ```
 
-**Ergebnis:**
+Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst werden
 
-```
- typ             │ anzahl
-─────────────────┼────────
- CNC-Fräse       │      2
- Drehbank        │      2
- Schweißroboter  │      2
-```
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Aspekt</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">WHERE</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">HAVING</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Filtert</strong></td>
+        <td style="padding:10px 14px;">Einzelne Zeilen</td>
+        <td style="padding:10px 14px;">Gruppen (nach Aggregation)</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Zeitpunkt</strong></td>
+        <td style="padding:10px 14px;">Vor GROUP BY</td>
+        <td style="padding:10px 14px;">Nach GROUP BY</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Kann verwenden</strong></td>
+        <td style="padding:10px 14px;">Spalten, einfache Vergleiche</td>
+        <td style="padding:10px 14px;">Aggregatfunktionen (COUNT, AVG, etc.)</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Beispiel</strong></td>
+        <td style="padding:10px 14px;"><code>WHERE status = 'Aktiv'</code></td>
+        <td style="padding:10px 14px;"><code>HAVING COUNT(*) > 2</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
-### WHERE vs. HAVING kombiniert
+<div class="grid cards" markdown>
 
-```sql
--- Standorte mit mehr als 1 aktiver Maschine
-SELECT standort, COUNT(*) AS anzahl
-FROM maschinen
-WHERE status = 'Aktiv'  -- Filtert ZEILEN
-GROUP BY standort
-HAVING COUNT(*) > 1;  -- Filtert GRUPPEN
-```
+-   __Einfaches HAVING__
 
-**Ablauf:**
+    ---
 
-1. **WHERE**: Filtere alle Zeilen mit `status = 'Aktiv'`
-2. **GROUP BY**: Gruppiere nach Standort
-3. **HAVING**: Zeige nur Gruppen mit mehr als 1 Maschine
+    ???+ example "Beispiel"
+        ```sql
+        -- Maschinentypen mit mehr als 1 Maschine
+        SELECT typ, COUNT(*) AS anzahl
+        FROM maschinen
+        GROUP BY typ
+        HAVING COUNT(*) > 1;
+        ```
+
+        ```title="Output"
+              typ       | anzahl
+        ----------------+--------
+         CNC-Fräse      |      2
+         Drehbank       |      2
+         Schweißroboter |      2
+        (3 rows)
+        ```
+
+        **Erklärung:** Erst werden die Maschinen nach Typ gruppiert und gezählt. Dann werden nur die Gruppen angezeigt, die mehr als 1 Maschine haben.
+
+-   __HAVING mit AVG__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Standorte mit durchschnittlichem Anschaffungsjahr > 2019
+        SELECT
+            standort,
+            AVG(anschaffungsjahr) AS durchschnitt,
+            COUNT(*) AS anzahl
+        FROM maschinen
+        GROUP BY standort
+        HAVING AVG(anschaffungsjahr) > 2019;
+        ```
+
+        ```title="Output"
+         standort |      durchschnitt      | anzahl
+        ----------+------------------------+--------
+         Halle A  | 2021.2500000000000000  |      4
+        (1 row)
+        ```
+
+        **Erklärung:** Nur Standorte, deren durchschnittliches Anschaffungsjahr über 2019 liegt, werden angezeigt.
+
+-   __WHERE und HAVING kombiniert__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Standorte mit mehr als 1 aktiver Maschine
+        SELECT standort, COUNT(*) AS anzahl_aktiv
+        FROM maschinen
+        WHERE status = 'Aktiv'      -- Filtert Zeilen VOR Gruppierung
+        GROUP BY standort
+        HAVING COUNT(*) > 1;        -- Filtert Gruppen NACH Aggregation
+        ```
+
+        ```title="Output"
+         standort | anzahl_aktiv
+        ----------+--------------
+         Halle A  |            4
+        (1 row)
+        ```
+
+        **Ablauf:**
+
+        1. `WHERE` filtert alle Zeilen → nur Maschinen mit Status "Aktiv"
+        2. `GROUP BY` gruppiert nach Standort
+        3. `COUNT(*)` zählt Maschinen pro Standort
+        4. `HAVING` filtert Gruppen → nur Standorte mit mehr als 1 Maschine
+
+-   __Mehrere HAVING-Bedingungen__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Maschinentypen mit mindestens 2 Maschinen UND alle aktiv
+        SELECT
+            typ,
+            COUNT(*) AS anzahl,
+            COUNT(*) FILTER (WHERE status = 'Aktiv') AS aktiv
+        FROM maschinen
+        GROUP BY typ
+        HAVING COUNT(*) >= 2 AND COUNT(*) FILTER (WHERE status = 'Aktiv') = COUNT(*);
+        ```
+
+        **Erklärung:** Kombiniert mehrere HAVING-Bedingungen mit `AND` - nur Typen mit mindestens 2 Maschinen, bei denen alle aktiv sind.
+
+</div>
+
+???+ warning "HAVING ohne GROUP BY?"
+    Technisch ist `HAVING` ohne `GROUP BY` erlaubt - die gesamte Tabelle wird dann als eine einzige Gruppe behandelt:
+
+    ```sql
+    SELECT COUNT(*) AS anzahl
+    FROM maschinen
+    HAVING COUNT(*) > 5;
+    ```
+
+    Das ist aber **unüblich** - hier würde man normalerweise ein `WHERE` verwenden (wenn es ohne Aggregation geht) oder einfach das Ergebnis im Code prüfen.
 
 ---
 
-## DISTINCT - Duplikate entfernen
+## Eindeutige Werte mit `DISTINCT`
 
-**DISTINCT** entfernt doppelte Zeilen aus dem Ergebnis.
+Manchmal möchten wir wissen, welche **verschiedenen Werte** in einer Spalte vorkommen - ohne Duplikate. Zum Beispiel:
 
-```sql
--- Welche Maschinentypen gibt es? (ohne Duplikate)
-SELECT DISTINCT typ
-FROM maschinen;
+- Welche **verschiedenen Maschinentypen** gibt es?
+- An welchen **Standorten** stehen Maschinen?
+- Welche **Status-Werte** kommen vor?
+
+Dafür verwenden wir **DISTINCT** - es entfernt Duplikate und zeigt jeden Wert nur **einmal**.
+
+```sql { .yaml .no-copy }
+SELECT DISTINCT spalte
+FROM tabelle;
 ```
 
-**Ergebnis:**
+<div class="grid cards" markdown>
 
-```
- typ
-─────────────────
- CNC-Fräse
- Drehbank
- Schweißroboter
- Lackieranlage
- Stanzmaschine
-```
+-   __Eine Spalte__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Welche verschiedenen Maschinentypen gibt es?
+        SELECT DISTINCT typ
+        FROM maschinen;
+        ```
+
+        ```title="Output"
+              typ
+        ----------------
+         CNC-Fräse
+         Drehbank
+         Schweißroboter
+         Lackieranlage
+         Stanzmaschine
+        (5 rows)
+        ```
+
+        **Erklärung:** Obwohl es 8 Maschinen gibt, werden nur die 5 verschiedenen Typen angezeigt (ohne Wiederholungen).
+
+-   __Mehrere Spalten__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Welche einzigartigen Kombinationen von Standort und Status gibt es?
+        SELECT DISTINCT standort, status
+        FROM maschinen
+        ORDER BY standort, status;
+        ```
+
+        ```title="Output"
+         standort | status
+        ----------+---------
+         Halle A  | Aktiv
+         Halle B  | Aktiv
+         Halle B  | Defekt
+         Halle B  | Wartung
+         Halle C  | Aktiv
+        (5 rows)
+        ```
+
+        **Erklärung:** `DISTINCT` arbeitet hier auf der **Kombination** beider Spalten - jede einzigartige Kombination wird nur einmal angezeigt.
+
+-   __Mit ORDER BY__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Alle Standorte alphabetisch sortiert
+        SELECT DISTINCT standort
+        FROM maschinen
+        ORDER BY standort;
+        ```
+
+        ```title="Output"
+         standort
+        ----------
+         Halle A
+         Halle B
+         Halle C
+        (3 rows)
+        ```
+
+        **Erklärung:** `DISTINCT` kann mit `ORDER BY` kombiniert werden, um die eindeutigen Werte sortiert auszugeben.
+
+-   __Mit WHERE__
+
+    ---
+
+    ???+ example "Beispiel"
+        ```sql
+        -- Welche Typen gibt es in Halle B?
+        SELECT DISTINCT typ
+        FROM maschinen
+        WHERE standort = 'Halle B';
+        ```
+
+        ```title="Output"
+              typ
+        ----------------
+         Schweißroboter
+         Drehbank
+        (2 rows)
+        ```
+
+        **Erklärung:** Erst werden die Zeilen mit `WHERE` gefiltert, dann werden die eindeutigen Typen ermittelt.
+
+</div>
+
+
+???+ warning "Performance-Hinweis"
+    `DISTINCT` kann bei großen Tabellen **langsam** sein, da die Datenbank alle Zeilen verarbeiten und Duplikate entfernen muss. Wenn möglich, kombiniere es mit `WHERE`, um die Datenmenge vorher zu reduzieren:
+
+    ```sql
+    -- Besser: Erst filtern, dann DISTINCT
+    SELECT DISTINCT typ
+    FROM maschinen
+    WHERE anschaffungsjahr > 2019;  -- Reduziert Datenmenge
+    ```
 
 ---
 
