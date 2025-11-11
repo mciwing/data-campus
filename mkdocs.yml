@@ -30,21 +30,23 @@ theme:
     - navigation.top  # 'back to top' button on scrolling
     - header.autohide
     - search.highlight
+  copyright:
+    © 2024 - 2025 | Manuel Ferdik & Jakob Klotz
 nav:
   - Home: index.md
 
-  - Data:
+  - Daten:
     - Home: data/index.md
     - Einführung: data/einfuehrung.md
     - Datenerfassung: data/datenerfassung.md
     - Datenverarbeitung: data/zahlensysteme.md
     - Speicherung: data/speicherung.md
 
-  - Database:
+  - Datenbanken:
     - Home: database/index.md
     - Einführung: database/einfuehrung.md
-    - Relational: database/relational.md
-    - Abfragen: database/abfragen.md
+    - Relationale Datenbanken: database/relational.md
+    - Abfragen von Daten: database/abfragen.md
     - Manipulieren: database/manipulieren.md
     - Modellierung: database/modellierung.md
     - Join: database/join.md
@@ -94,3 +96,4 @@ plugins:
   - glightbox:
       auto_caption: true
       caption_position: bottom
+  - search

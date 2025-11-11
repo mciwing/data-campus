@@ -1122,11 +1122,9 @@ Um unsere Analyse noch weiter zu verfeinern, können wir auch **mehreren Spalten
 
 ---
 
-
-
 ## Gruppen filtern mit `HAVING`
 
-Mit `WHERE` können wir **einzelne Zeilen** vor der Gruppierung filtern. Was aber, wenn wir **Gruppen nach ihrer Aggregation** filtern möchten?
+Mit `WHERE` haben wir bis jetzt **einzelne Zeilen** vor der Gruppierung filtern. Was aber, wenn wir **Gruppen nach ihrer Aggregation** filtern möchten?
 
 Zum Beispiel:
 
@@ -1179,107 +1177,107 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
 </table>
 </div>
 
-<div class="grid cards" markdown>
+???+ example "Beispiel"
 
--   __Einfaches HAVING__
+    ```sql
+    -- Standorte mit durchschnittlichem Anschaffungsjahr > 2019
+    SELECT
+        standort,
+        AVG(anschaffungsjahr) AS durchschnitt,
+        COUNT(*) AS anzahl
+    FROM maschinen
+    GROUP BY standort
+    HAVING AVG(anschaffungsjahr) > 2019;
+    ```
 
-    ---
+    ```title="Output"
+        standort |      durchschnitt      | anzahl
+    ----------+------------------------+--------
+        Halle A  | 2021.2500000000000000  |      4
+    (1 row)
+    ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Maschinentypen mit mehr als 1 Maschine
-        SELECT typ, COUNT(*) AS anzahl
-        FROM maschinen
-        GROUP BY typ
-        HAVING COUNT(*) > 1;
-        ```
+    **Erklärung:** Nur Standorte, deren durchschnittliches Anschaffungsjahr über 2019 liegt, werden angezeigt.
 
-        ```title="Output"
-              typ       | anzahl
-        ----------------+--------
-         CNC-Fräse      |      2
-         Drehbank       |      2
-         Schweißroboter |      2
-        (3 rows)
-        ```
+    ??? code "weitere Beispiele"
 
-        **Erklärung:** Erst werden die Maschinen nach Typ gruppiert und gezählt. Dann werden nur die Gruppen angezeigt, die mehr als 1 Maschine haben.
 
--   __HAVING mit AVG__
+        <div class="grid cards" markdown>
 
-    ---
+        -   __Einfaches HAVING__
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Standorte mit durchschnittlichem Anschaffungsjahr > 2019
-        SELECT
-            standort,
-            AVG(anschaffungsjahr) AS durchschnitt,
-            COUNT(*) AS anzahl
-        FROM maschinen
-        GROUP BY standort
-        HAVING AVG(anschaffungsjahr) > 2019;
-        ```
+            ---
 
-        ```title="Output"
-         standort |      durchschnitt      | anzahl
-        ----------+------------------------+--------
-         Halle A  | 2021.2500000000000000  |      4
-        (1 row)
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Maschinentypen mit mehr als 1 Maschine
+                SELECT typ, COUNT(*) AS anzahl
+                FROM maschinen
+                GROUP BY typ
+                HAVING COUNT(*) > 1;
+                ```
 
-        **Erklärung:** Nur Standorte, deren durchschnittliches Anschaffungsjahr über 2019 liegt, werden angezeigt.
+                ```title="Output"
+                    typ       | anzahl
+                ----------------+--------
+                CNC-Fräse      |      2
+                Drehbank       |      2
+                Schweißroboter |      2
+                (3 rows)
+                ```
 
--   __WHERE und HAVING kombiniert__
+                **Erklärung:** Erst werden die Maschinen nach Typ gruppiert und gezählt. Dann werden nur die Gruppen angezeigt, die mehr als 1 Maschine haben.
 
-    ---
+        -   __WHERE und HAVING kombiniert__
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Standorte mit mehr als 1 aktiver Maschine
-        SELECT standort, COUNT(*) AS anzahl_aktiv
-        FROM maschinen
-        WHERE status = 'Aktiv'      -- Filtert Zeilen VOR Gruppierung
-        GROUP BY standort
-        HAVING COUNT(*) > 1;        -- Filtert Gruppen NACH Aggregation
-        ```
+            ---
 
-        ```title="Output"
-         standort | anzahl_aktiv
-        ----------+--------------
-         Halle A  |            4
-        (1 row)
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Standorte mit mehr als 1 aktiver Maschine
+                SELECT standort, COUNT(*) AS anzahl_aktiv
+                FROM maschinen
+                WHERE status = 'Aktiv'      -- Filtert Zeilen VOR Gruppierung
+                GROUP BY standort
+                HAVING COUNT(*) > 1;        -- Filtert Gruppen NACH Aggregation
+                ```
 
-        **Ablauf:**
+                ```title="Output"
+                standort | anzahl_aktiv
+                ----------+--------------
+                Halle A  |            4
+                (1 row)
+                ```
 
-        1. `WHERE` filtert alle Zeilen → nur Maschinen mit Status "Aktiv"
-        2. `GROUP BY` gruppiert nach Standort
-        3. `COUNT(*)` zählt Maschinen pro Standort
-        4. `HAVING` filtert Gruppen → nur Standorte mit mehr als 1 Maschine
+                **Ablauf:**
 
--   __Mehrere HAVING-Bedingungen__
+                1. `WHERE` filtert alle Zeilen → nur Maschinen mit Status "Aktiv"
+                2. `GROUP BY` gruppiert nach Standort
+                3. `COUNT(*)` zählt Maschinen pro Standort
+                4. `HAVING` filtert Gruppen → nur Standorte mit mehr als 1 Maschine
 
-    ---
+        -   __Mehrere HAVING-Bedingungen__
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Maschinentypen mit mindestens 2 Maschinen UND alle aktiv
-        SELECT
-            typ,
-            COUNT(*) AS anzahl,
-            COUNT(*) FILTER (WHERE status = 'Aktiv') AS aktiv
-        FROM maschinen
-        GROUP BY typ
-        HAVING COUNT(*) >= 2 AND COUNT(*) FILTER (WHERE status = 'Aktiv') = COUNT(*);
-        ```
+            ---
 
-        **Erklärung:** Kombiniert mehrere HAVING-Bedingungen mit `AND` - nur Typen mit mindestens 2 Maschinen, bei denen alle aktiv sind.
+            ???+ example "Beispiel"
+                ```sql
+                -- Maschinentypen mit mindestens 2 Maschinen UND alle aktiv
+                SELECT
+                    typ,
+                    COUNT(*) AS anzahl,
+                    COUNT(*) FILTER (WHERE status = 'Aktiv') AS aktiv
+                FROM maschinen
+                GROUP BY typ
+                HAVING COUNT(*) >= 2 AND COUNT(*) FILTER (WHERE status = 'Aktiv') = COUNT(*);
+                ```
 
-</div>
+                **Erklärung:** Kombiniert mehrere HAVING-Bedingungen mit `AND` - nur Typen mit mindestens 2 Maschinen, bei denen alle aktiv sind.
+
+        </div>
 
 ???+ warning "HAVING ohne GROUP BY?"
-    Technisch ist `HAVING` ohne `GROUP BY` erlaubt - die gesamte Tabelle wird dann als eine einzige Gruppe behandelt:
+    Technisch ist `HAVING` ohne `GROUP BY` erlaubt - die gesamte Tabelle wird dann als eine einzige Gruppe behandelt was in den allermeisten Fällen sinnlos ist:
 
     ```sql
     SELECT COUNT(*) AS anzahl
@@ -1287,17 +1285,11 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
     HAVING COUNT(*) > 5;
     ```
 
-    Das ist aber **unüblich** - hier würde man normalerweise ein `WHERE` verwenden (wenn es ohne Aggregation geht) oder einfach das Ergebnis im Code prüfen.
-
 ---
 
 ## Eindeutige Werte mit `DISTINCT`
 
-Manchmal möchten wir wissen, welche **verschiedenen Werte** in einer Spalte vorkommen - ohne Duplikate. Zum Beispiel:
-
-- Welche **verschiedenen Maschinentypen** gibt es?
-- An welchen **Standorten** stehen Maschinen?
-- Welche **Status-Werte** kommen vor?
+Manchmal möchten wir wissen, welche **verschiedenen Werte** in einer Spalte vorkommen - ohne Duplikate. Zum Beispiel: *Welche verschiedenen Maschinentypen gibt es?*
 
 Dafür verwenden wir **DISTINCT** - es entfernt Duplikate und zeigt jeden Wert nur **einmal**.
 
@@ -1306,103 +1298,102 @@ SELECT DISTINCT spalte
 FROM tabelle;
 ```
 
-<div class="grid cards" markdown>
+???+ example "Beispiel"
+    ```sql
+    -- Welche verschiedenen Maschinentypen gibt es?
+    SELECT DISTINCT typ
+    FROM maschinen;
+    ```
 
--   __Eine Spalte__
+    ```title="Output"
+            typ
+    ----------------
+        CNC-Fräse
+        Drehbank
+        Schweißroboter
+        Lackieranlage
+        Stanzmaschine
+    (5 rows)
+    ```
 
-    ---
+    **Erklärung:** Obwohl es 8 Maschinen gibt, werden nur die 5 verschiedenen Typen angezeigt (ohne Wiederholungen).
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Welche verschiedenen Maschinentypen gibt es?
-        SELECT DISTINCT typ
-        FROM maschinen;
-        ```
+    ??? code "weitere Beispiele"
 
-        ```title="Output"
-              typ
-        ----------------
-         CNC-Fräse
-         Drehbank
-         Schweißroboter
-         Lackieranlage
-         Stanzmaschine
-        (5 rows)
-        ```
+        <div class="grid cards" markdown>
 
-        **Erklärung:** Obwohl es 8 Maschinen gibt, werden nur die 5 verschiedenen Typen angezeigt (ohne Wiederholungen).
 
--   __Mehrere Spalten__
+        -   __Mehrere Spalten__
 
-    ---
+            ---
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Welche einzigartigen Kombinationen von Standort und Status gibt es?
-        SELECT DISTINCT standort, status
-        FROM maschinen
-        ORDER BY standort, status;
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Welche einzigartigen Kombinationen von Standort und Status gibt es?
+                SELECT DISTINCT standort, status
+                FROM maschinen
+                ORDER BY standort, status;
+                ```
 
-        ```title="Output"
-         standort | status
-        ----------+---------
-         Halle A  | Aktiv
-         Halle B  | Aktiv
-         Halle B  | Defekt
-         Halle B  | Wartung
-         Halle C  | Aktiv
-        (5 rows)
-        ```
+                ```title="Output"
+                standort | status
+                ----------+---------
+                Halle A  | Aktiv
+                Halle B  | Aktiv
+                Halle B  | Defekt
+                Halle B  | Wartung
+                Halle C  | Aktiv
+                (5 rows)
+                ```
 
-        **Erklärung:** `DISTINCT` arbeitet hier auf der **Kombination** beider Spalten - jede einzigartige Kombination wird nur einmal angezeigt.
+                **Erklärung:** `DISTINCT` arbeitet hier auf der **Kombination** beider Spalten - jede einzigartige Kombination wird nur einmal angezeigt.
 
--   __Mit ORDER BY__
+        -   __Mit ORDER BY__
 
-    ---
+            ---
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Alle Standorte alphabetisch sortiert
-        SELECT DISTINCT standort
-        FROM maschinen
-        ORDER BY standort;
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Alle Standorte alphabetisch sortiert
+                SELECT DISTINCT standort
+                FROM maschinen
+                ORDER BY standort;
+                ```
 
-        ```title="Output"
-         standort
-        ----------
-         Halle A
-         Halle B
-         Halle C
-        (3 rows)
-        ```
+                ```title="Output"
+                standort
+                ----------
+                Halle A
+                Halle B
+                Halle C
+                (3 rows)
+                ```
 
-        **Erklärung:** `DISTINCT` kann mit `ORDER BY` kombiniert werden, um die eindeutigen Werte sortiert auszugeben.
+                **Erklärung:** `DISTINCT` kann mit `ORDER BY` kombiniert werden, um die eindeutigen Werte sortiert auszugeben.
 
--   __Mit WHERE__
+        -   __Mit WHERE__
 
-    ---
+            ---
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Welche Typen gibt es in Halle B?
-        SELECT DISTINCT typ
-        FROM maschinen
-        WHERE standort = 'Halle B';
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                -- Welche Typen gibt es in Halle B?
+                SELECT DISTINCT typ
+                FROM maschinen
+                WHERE standort = 'Halle B';
+                ```
 
-        ```title="Output"
-              typ
-        ----------------
-         Schweißroboter
-         Drehbank
-        (2 rows)
-        ```
+                ```title="Output"
+                    typ
+                ----------------
+                Schweißroboter
+                Drehbank
+                (2 rows)
+                ```
 
-        **Erklärung:** Erst werden die Zeilen mit `WHERE` gefiltert, dann werden die eindeutigen Typen ermittelt.
+                **Erklärung:** Erst werden die Zeilen mit `WHERE` gefiltert, dann werden die eindeutigen Typen ermittelt.
 
-</div>
+        </div>
 
 
 ???+ warning "Performance-Hinweis"
@@ -1417,7 +1408,9 @@ FROM tabelle;
 
 ---
 
-## Praktische Übungen 🎯
+
+
+## Praktische Übungen
 
 Verwende die `maschinen` und `ersatzteile` Tabellen für folgende Aufgaben:
 
@@ -1499,6 +1492,8 @@ Verwende die `maschinen` und `ersatzteile` Tabellen für folgende Aufgaben:
 
 Im nächsten Kapitel lernen wir, wie wir Daten **ändern, aktualisieren und löschen** können - und welche Fallstricke dabei lauern!
 
+
 <div style="text-align: center;">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmR0aWN5OGxwZWt5dHl6cXh5dHl6cXh5dHl6cXh5dHl6cXh5dHl6cXh5ZHMmZXA9djFfZ2lmc19zZWFyY2gmY3Q9Zw/xT9IgzoKnwFNmISR8I/giphy.gif" alt="" style="width:220px; margin-bottom: 1em;">
+    <img src="https://i.imgflip.com/abrhqj.jpg" alt="NULL" style="max-width: 70%;">
+    <figcaption>Quelle: <a href="https://i.imgflip.com/abrhqj.jpg">imgflip</a></figcaption>
 </div>
