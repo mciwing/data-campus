@@ -115,10 +115,10 @@ Bevor wir Tabellen in SQL erstellen, **modellieren** wir die Datenstruktur visue
 
     Im ER-Diagramm als **Rechteck** dargestellt:
 
-    ```
-    ┌───────────┐
-    │ Maschinen │
-    └───────────┘
+    ```mermaid
+    erDiagram
+        MASCHINEN {
+        }
     ```
 
     ➜ Das sind unsere **Tabellen**
@@ -134,16 +134,16 @@ Bevor wir Tabellen in SQL erstellen, **modellieren** wir die Datenstruktur visue
     - typ: "CNC-Fräse"
     - standort: "Halle A"
 
-    Im ER-Diagramm als **Oval** dargestellt:
+    Im ER-Diagramm als **Attribute in der Entität** dargestellt:
 
-    ```
-    ┌───────────┐
-    │ Maschinen │
-    └─────┬─────┘
-          │
-      ┌───┴───┐
-      │  name │
-      └───────┘
+    ```mermaid
+    erDiagram
+        MASCHINEN {
+            int maschinen_id PK
+            string name
+            string typ
+            string standort
+        }
     ```
 
     ➜ Das sind unsere **Spalten**
@@ -159,12 +159,11 @@ Bevor wir Tabellen in SQL erstellen, **modellieren** wir die Datenstruktur visue
     - Maschinen **benötigen** Ersatzteile
     - Techniker **führen durch** Wartungen
 
-    Im ER-Diagramm als **Raute** dargestellt:
+    Im ER-Diagramm als **Verbindungslinie mit Beschriftung** dargestellt:
 
-    ```
-    ┌───────────┐     ┌────────┐     ┌──────────────────┐
-    │ Maschinen ├─────┤  haben ├─────┤ Wartungsprotokolle│
-    └───────────┘     └────────┘     └──────────────────┘
+    ```mermaid
+    erDiagram
+        MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : haben
     ```
 
     ➜ Das werden unsere **Fremdschlüssel**
@@ -199,10 +198,18 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
 
     **Beispiel:** Eine Maschine hat **viele** Wartungen, aber jede Wartung gehört zu **einer** Maschine.
 
-    ```
-    ┌───────────┐   1      n   ┌──────────────────┐
-    │ Maschinen ├──────────────┤ Wartungsprotokolle│
-    └───────────┘               └──────────────────┘
+    ```mermaid
+    erDiagram
+        MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "haben"
+        MASCHINEN {
+            int maschinen_id PK
+            string name
+        }
+        WARTUNGSPROTOKOLLE {
+            int wartungs_id PK
+            date wartungsdatum
+            int maschinen_id FK
+        }
     ```
 
     **Weitere Beispiele:**
@@ -220,10 +227,17 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
 
     **Beispiel:** Eine Maschine benötigt **viele** Ersatzteile, und ein Ersatzteil kann in **vielen** Maschinen verwendet werden.
 
-    ```
-    ┌───────────┐   n      m   ┌─────────────┐
-    │ Maschinen ├──────────────┤ Ersatzteile │
-    └───────────┘               └─────────────┘
+    ```mermaid
+    erDiagram
+        MASCHINEN }o--o{ ERSATZTEILE : "benötigen"
+        MASCHINEN {
+            int maschinen_id PK
+            string name
+        }
+        ERSATZTEILE {
+            int teil_id PK
+            string teilname
+        }
     ```
 
     **Weitere Beispiele:**
@@ -241,10 +255,18 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
 
     **Beispiel:** Jede Maschine hat **ein** Wartungshandbuch-PDF, und jedes Wartungshandbuch-PDF gehört zu **einer** Maschine.
 
-    ```
-    ┌───────────┐   1      1   ┌──────────────────────┐
-    │ Maschinen ├──────────────┤ Wartungshandbuch_PDF │
-    └───────────┘               └──────────────────────┘
+    ```mermaid
+    erDiagram
+        MASCHINEN ||--|| WARTUNGSHANDBUCH_PDF : "hat"
+        MASCHINEN {
+            int maschinen_id PK
+            string name
+        }
+        WARTUNGSHANDBUCH_PDF {
+            int handbuch_id PK
+            int maschinen_id FK
+            string dateipfad
+        }
     ```
 
     **Weitere Beispiele:**
@@ -271,11 +293,18 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
 Ein **Fremdschlüssel** (Foreign Key, FK) ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. Damit stellen wir **Beziehungen zwischen Tabellen** her!
 
 ```mermaid
-graph LR
-    A[Tabelle: wartungsprotokolle<br>wartungs_id PK<br>wartungsdatum<br>maschinen_id FK]:::teal --> B[Tabelle: maschinen<br>maschinen_id PK<br>name<br>typ]:::peach
-
-    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:2px;
-    classDef teal fill:#009485aa,stroke:#333,stroke-width:2px;
+erDiagram
+    MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "hat"
+    MASCHINEN {
+        int maschinen_id PK
+        string name
+        string typ
+    }
+    WARTUNGSPROTOKOLLE {
+        int wartungs_id PK
+        date wartungsdatum
+        int maschinen_id FK "verweist auf maschinen"
+    }
 ```
 
 **Erklärung:** Der Fremdschlüssel `maschinen_id` in der Tabelle `wartungsprotokolle` verweist auf den Primärschlüssel `maschinen_id` in der Tabelle `maschinen`.
@@ -300,8 +329,9 @@ Die 1:n-Beziehung ist die häufigste Beziehungsart in relationalen Datenbanken. 
 
 **ER-Modell:**
 
-```
-Maschinen (1) ───── haben ───── (n) Wartungsprotokolle
+```mermaid
+erDiagram
+    MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "haben"
 ```
 
 ### Schritt 1: Tabellen erstellen
@@ -620,19 +650,36 @@ Betrachten wir ein Beispiel:
 
 **ER-Modell:**
 
-```
-Maschinen (n) ───── benötigen ───── (m) Ersatzteile
+```mermaid
+erDiagram
+    MASCHINEN }o--o{ ERSATZTEILE : "benötigen"
 ```
 
 **SQL-Umsetzung:** Drei Tabellen!
 
 ```mermaid
-graph TD
-    A[maschinen<br>maschinen_id PK]:::teal --> C[maschinen_ersatzteile<br>zuordnung_id PK<br>maschinen_id FK<br>teil_id FK<br>menge]:::peach
-    B[ersatzteile<br>teil_id PK]:::teal --> C
+erDiagram
+    MASCHINEN ||--o{ MASCHINEN_ERSATZTEILE : "hat"
+    ERSATZTEILE ||--o{ MASCHINEN_ERSATZTEILE : "wird_verwendet_in"
 
-    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:2px;
-    classDef teal fill:#009485aa,stroke:#333,stroke-width:2px;
+    MASCHINEN {
+        int maschinen_id PK
+        string name
+        string typ
+    }
+
+    ERSATZTEILE {
+        int teil_id PK
+        string teilname
+        string hersteller
+    }
+
+    MASCHINEN_ERSATZTEILE {
+        int zuordnung_id PK
+        int maschinen_id FK
+        int teil_id FK
+        int menge "Zusätzliches Attribut"
+    }
 ```
 
 ### Schritt 1: Die drei Tabellen erstellen
