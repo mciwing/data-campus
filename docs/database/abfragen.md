@@ -1410,9 +1410,7 @@ FROM tabelle;
 
 
 
-## Praktische Übungen
-
-Verwende die `maschinen` und `ersatzteile` Tabellen für folgende Aufgaben:
+Nun ist es wieder an der Zeit, unser erlerntes Wissen zu testen. Verwende die `maschinen` und `ersatzteile` Tabellen für folgende Aufgaben:
 
 ???+ question "Aufgabe 1: Einfache Abfragen"
 

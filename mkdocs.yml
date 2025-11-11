@@ -47,7 +47,7 @@ nav:
     - Einführung: database/einfuehrung.md
     - Relationale Datenbanken: database/relational.md
     - Abfragen von Daten: database/abfragen.md
-    - Manipulieren: database/manipulieren.md
+    - Daten Manipulieren: database/manipulieren.md
     - Modellierung: database/modellierung.md
     - Join: database/join.md
     - Fortgeschritten: database/fortgeschritten.md
