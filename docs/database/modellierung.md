@@ -511,125 +511,123 @@ Bevor wir mit der Implementierung in SQL beginnen, wollen wir das Erlente schon 
 
 ---
 
-## Implementierung
-### 1:n Beziehungen
+## Implementierung in SQL
 
-Die 1:n-Beziehung ist die häufigste Beziehungsart in relationalen Datenbanken. Schauen wir uns an, wie wir sie umsetzen.
+Nachdem wir nun ER-Diagramme zeichnen können, ist es nun unsere Aufgabe diese Modelle in echte SQL-Tabellen und damit in eine Datenbank umzusetzen!
 
-**Goldene Regel:** Der Fremdschlüssel kommt auf die **n-Seite** (die "viele"-Seite)!
+### 1:n Beziehungen implementieren
 
-Beispiel: Maschinen und Wartungsprotokolle
+Die 1:n-Beziehung ist die häufigste Beziehungsart in relationalen Datenbanken.
 
-**Szenario:** Eine Maschine hat viele Wartungen, jede Wartung gehört zu einer Maschine (1:n)
+???+ tip "Goldene Regel für 1:n"
+    Der Fremdschlüssel kommt **immer** auf die **n-Seite** (die "viele"-Seite)!
 
-**ER-Modell:**
+Wir wollen uns nun die Implementierungen anhand von Beispielen ansehen. Stellen wir uns vor, eine Maschine kann viele Wartungen haben und jede Wartung gehört zu genau einer Maschine (1:n)
 
 ```mermaid
 erDiagram
+    direction LR
     MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "haben"
+    MASCHINEN {
+        int maschinen_id PK
+        string name
+    }
+    WARTUNGSPROTOKOLLE {
+        int wartungs_id PK
+        date wartungsdatum
+        int maschinen_id FK
+    }
 ```
 
-Schritt 1: Tabellen erstellen
+Im ersten Schritt müssen wir nun die benötigten Tabellen erstellen. Wichtig ist dabei, dass wir immer zuerst die referenzierte Tabelle (`maschinen`) erstellen, bevor wir die referenzierende Tabelle (`wartungsprotokolle`) erstellen.
 
-???+ example "SQL-Code"
-    ```sql
-    -- Zuerst die "1"-Seite (Maschinen)
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        typ VARCHAR(50) NOT NULL,
-        standort VARCHAR(50)
-    );
+```sql hl_lines="16"
+-- Zuerst die "1"-Seite (Maschinen)
+CREATE TABLE maschinen (
+    maschinen_id SERIAL PRIMARY KEY, --(1)!
+    name VARCHAR(100) NOT NULL,
+    typ VARCHAR(50) NOT NULL,
+    standort VARCHAR(50)
+);
 
-    -- Dann die "n"-Seite (Wartungsprotokolle) mit Fremdschlüssel
-    CREATE TABLE wartungsprotokolle (
-        wartungs_id SERIAL PRIMARY KEY,
-        wartungsdatum DATE NOT NULL,
-        beschreibung TEXT,
-        kosten NUMERIC(10, 2),
-        maschinen_id INTEGER NOT NULL,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-    );
-    ```
+-- Dann die "n"-Seite (Wartungsprotokolle) mit Fremdschlüssel
+CREATE TABLE wartungsprotokolle (
+    wartungs_id SERIAL PRIMARY KEY,
+    wartungsdatum DATE NOT NULL,
+    beschreibung TEXT,
+    kosten NUMERIC(10, 2),
+    maschinen_id INTEGER NOT NULL,
+    FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+);
+```
 
-    **Wichtig:**
+1. Der Datentyp `SERIAL` ist autoinkrementierend (1,2,3,...)
 
-    - `FOREIGN KEY (maschinen_id)` - Definiert die Spalte als Fremdschlüssel
-    - `REFERENCES maschinen(maschinen_id)` - Verweist auf den Primärschlüssel der `maschinen`-Tabelle
+Wenn wir uns obenstehenden SQL Befehl ansehen, dann erkennen wir zwei neue Dinge
 
-???+ warning "Reihenfolge beachten!"
-    Die referenzierte Tabelle (`maschinen`) muss **vor** der referenzierenden Tabelle (`wartungsprotokolle`) erstellt werden!
+- `FOREIGN KEY (maschinen_id)` - Definiert die Spalte als Fremdschlüssel
+- `REFERENCES maschinen(maschinen_id)` - Verweist auf den Primärschlüssel der `maschinen`-Tabelle
 
-    ```sql
-    -- ✅ Richtig:
-    CREATE TABLE maschinen (...);
-    CREATE TABLE wartungsprotokolle (...);
+Das heißt, die oben hervorgehobene Code Zeile besagt, dass der Wert in `wartungsprotokolle.maschinen_id` in der Tabelle `maschinen` existieren muss.
 
-    -- ❌ Falsch:
-    CREATE TABLE wartungsprotokolle (...);  -- Fehler! maschinen existiert noch nicht
-    CREATE TABLE maschinen (...);
-    ```
+Nun können wir beginnen, Daten in unsere Tabellen zu befüllen.
 
-Schritt 2: Daten einfügen
+```sql
+-- Erst Maschinen einfügen
+INSERT INTO maschinen (name, typ, standort)
+VALUES
+    ('CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A'),
+    ('Drehbank Beta', 'Drehbank', 'Halle A'),
+    ('Schweißroboter Gamma', 'Schweißroboter', 'Halle B');
 
-???+ example "SQL-Code"
-    ```sql
-    -- Erst Maschinen einfügen
-    INSERT INTO maschinen (name, typ, standort)
-    VALUES
-        ('CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A'),
-        ('Drehbank Beta', 'Drehbank', 'Halle A'),
-        ('Schweißroboter Gamma', 'Schweißroboter', 'Halle B');
+-- Dann Wartungsprotokolle mit Verweis auf Maschinen
+INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, kosten, maschinen_id)
+VALUES
+    ('2024-01-15', 'Routinewartung', 450.00, 1),        -- für CNC-Fräse Alpha
+    ('2024-06-20', 'Fräskopf getauscht', 320.00, 1),    -- für CNC-Fräse Alpha
+    ('2024-03-10', 'Ölwechsel', 150.00, 2),             -- für Drehbank Beta
+    ('2024-02-05', 'Schweißkopf kalibriert', 280.00, 3); -- für Schweißroboter
+```
 
-    -- Dann Wartungsprotokolle mit Verweis auf Maschinen
-    INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, kosten, maschinen_id)
-    VALUES
-        ('2024-01-15', 'Routinewartung', 450.00, 1),        -- für CNC-Fräse Alpha
-        ('2024-06-20', 'Fräskopf getauscht', 320.00, 1),    -- für CNC-Fräse Alpha
-        ('2024-03-10', 'Ölwechsel', 150.00, 2),             -- für Drehbank Beta
-        ('2024-02-05', 'Schweißkopf kalibriert', 280.00, 3); -- für Schweißroboter
-    ```
 
-    **Ergebnis:**
+```sql title="Tabelle: maschinen"
+maschinen_id | name                 | typ            | standort
+-------------+----------------------+----------------+-----------
+           1 | CNC-Fräse Alpha      | CNC-Fräse      | Halle A
+           2 | Drehbank Beta        | Drehbank       | Halle A
+           3 | Schweißroboter Gamma | Schweißroboter | Halle B
+```
 
-    ```title="Tabelle: maschinen"
-     maschinen_id │ name                 │ typ            │ standort
-    ──────────────┼──────────────────────┼────────────────┼──────────
-                1 │ CNC-Fräse Alpha      │ CNC-Fräse      │ Halle A
-                2 │ Drehbank Beta        │ Drehbank       │ Halle A
-                3 │ Schweißroboter Gamma │ Schweißroboter │ Halle B
-    ```
+```sql title="Tabelle: wartungsprotokolle"
+ wartungs_id | wartungsdatum |      beschreibung      | kosten  | maschinen_id 
+-------------+---------------+------------------------+---------+--------------
+           1 | 2024-01-15    | Routinewartung         |  450.00 |            1
+           2 | 2024-06-20    | Fräskopf getauscht     |  320.00 |            1
+           3 | 2024-03-10    | Ölwechsel              |  150.00 |            2
+           4 | 2024-02-05    | Schweißkopf kalibriert |  280.00 |            3
+```
 
-    ```title="Tabelle: wartungsprotokolle"
-     wartungs_id │ wartungsdatum │ beschreibung           │ kosten  │ maschinen_id
-    ─────────────┼───────────────┼────────────────────────┼─────────┼──────────────
-               1 │ 2024-01-15    │ Routinewartung         │  450.00 │            1
-               2 │ 2024-06-20    │ Fräskopf getauscht     │  320.00 │            1
-               3 │ 2024-03-10    │ Ölwechsel              │  150.00 │            2
-               4 │ 2024-02-05    │ Schweißkopf kalibriert │  280.00 │            3
-    ```
+🎉 Gratulation! Wir haben unsere erste 1:n-Beziehung erstellt. 
 
-???+ info "Die Beziehung"
-    Die Spalte `maschinen_id` in `wartungsprotokolle` verweist auf `maschinen_id` in `maschinen`:
 
-    - Wartung 1 und 2 gehören zu Maschine 1 (CNC-Fräse Alpha)
-    - Wartung 3 gehört zu Maschine 2 (Drehbank Beta)
-    - Wartung 4 gehört zu Maschine 3 (Schweißroboter Gamma)
+<div style="text-align: center;">
+    <img src="https://www.meme-arsenal.com/memes/12d61ab7d3ea7bb4ef63c2bd481df6d0.jpg" alt="1:N" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://www.meme-arsenal.com/create/meme/14336874">meme-arsenal</a></figcaption>
+</div>
+
 
 ---
 
-
-### n:m Beziehungen
+### n:m Beziehungen implementieren
 
 n:m-Beziehungen (Viele-zu-Viele) sind komplexer als 1:n-Beziehungen.
 
-**Das Problem:** Wir können eine n:m-Beziehung **nicht direkt** mit einem einzigen Fremdschlüssel umsetzen!
+???+ warning "Problem: n:m nicht direkt umsetzbar"
+    Wir können eine n:m-Beziehung **nicht direkt** mit einem einzigen Fremdschlüssel umsetzen!
 
-**Die Lösung:** Eine **Zwischentabelle** (auch **Verbindungstabelle**, **Junction Table** oder **Assoziationstabelle** genannt).
+    **Die Lösung:** Eine **Zwischentabelle** (auch Verbindungstabelle, Junction Table oder Assoziationstabelle genannt).
 
-Warum brauchen wir eine Zwischentabelle?
-
-Betrachten wir ein Beispiel:
+#### Warum brauchen wir eine Zwischentabelle?
 
 **Szenario:** Eine Maschine benötigt viele Ersatzteile, und ein Ersatzteil kann in vielen Maschinen verwendet werden (n:m)
 
@@ -658,16 +656,19 @@ Betrachten wir ein Beispiel:
 
     **Lösung:** Eine Zwischentabelle!
 
-Beispiel: Maschinen und Ersatzteile
+#### Beispiel: Maschinen und Ersatzteile
 
-**ER-Modell:**
+**ER-Modell (konzeptionell):**
 
 ```mermaid
 erDiagram
+    direction LR
     MASCHINEN }o--o{ ERSATZTEILE : "benötigen"
 ```
 
-**SQL-Umsetzung:** Drei Tabellen!
+**SQL-Umsetzung mit Zwischentabelle:**
+
+Die n:m-Beziehung wird in **zwei 1:n-Beziehungen** aufgeteilt!
 
 ```mermaid
 erDiagram
@@ -694,7 +695,11 @@ erDiagram
     }
 ```
 
-Schritt 1: Die drei Tabellen erstellen
+???+ tip "Wichtig: Drei Tabellen für n:m"
+    - **Zwei Entitätstabellen:** `maschinen` und `ersatzteile`
+    - **Eine Zwischentabelle:** `maschinen_ersatzteile` mit **zwei Fremdschlüsseln**
+
+#### Schritt 1: Die drei Tabellen erstellen
 
 ???+ example "SQL-Code"
     ```sql
@@ -740,7 +745,7 @@ Schritt 1: Die drei Tabellen erstellen
     - Verb, das die Beziehung beschreibt (z.B. `benötigt`, `verwendet`)
     - Plural beider Tabellennamen (z.B. `maschinen_ersatzteile`)
 
-Schritt 2: Daten einfügen
+#### Schritt 2: Daten einfügen
 
 ???+ example "SQL-Code"
     ```sql
@@ -799,12 +804,11 @@ Schritt 2: Daten einfügen
 
 ---
 
-
-#### Referenzielle Integrität
+### Referenzielle Integrität
 
 **Referenzielle Integrität** bedeutet: Jeder Fremdschlüssel muss auf einen **existierenden** Primärschlüssel verweisen. Die Datenbank stellt sicher, dass keine "verwaisten" Datensätze entstehen.
 
-Das Problem: Was passiert beim Löschen?
+#### Das Problem: Was passiert beim Löschen?
 
 Versuchen wir, eine Maschine zu löschen, die Wartungen hat:
 
@@ -820,9 +824,12 @@ ERROR: update or delete on table "maschinen" violates foreign key constraint
 DETAIL: Key (maschinen_id)=(1) is still referenced from table "wartungsprotokolle".
 ```
 
-**Was ist das Problem?** Es gibt Wartungsprotokolle, die auf Maschine 1 verweisen. Würden wir die Maschine löschen, würden diese Wartungsprotokolle auf eine nicht existierende Maschine zeigen - sie wären "verwaist"!
+???+ danger "Warum der Fehler?"
+    Es gibt Wartungsprotokolle, die auf Maschine 1 verweisen. Würden wir die Maschine löschen, würden diese Wartungsprotokolle auf eine nicht existierende Maschine zeigen - sie wären "verwaist"!
 
-Die Lösung: `ON DELETE` Optionen
+    Die Datenbank verhindert dies automatisch durch die **referenzielle Integrität**.
+
+#### Die Lösung: `ON DELETE` Optionen
 
 Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passieren soll:
 
@@ -861,7 +868,7 @@ Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passi
 </table>
 </div>
 
-Beispiele für `ON DELETE` Optionen
+#### Beispiele für `ON DELETE` Optionen
 
 <div class="grid cards" markdown>
 
@@ -984,10 +991,11 @@ Beispiele für `ON DELETE` Optionen
 
 ---
 
+## Praktische Übungen
 
-Teste dein Wissen über Datenmodellierung und Beziehungen!
+Jetzt bist du dran! Teste dein Wissen, indem du die erlernten Konzepte in SQL umsetzt.
 
-???+ question "Aufgabe 1: 1:n Beziehung"
+???+ question "Aufgabe 1: 1:n Beziehung implementieren"
 
     Erstelle Tabellen für **Lieferanten** und **Materialien** mit einer 1:n-Beziehung.
 
@@ -1039,7 +1047,7 @@ Teste dein Wissen über Datenmodellierung und Beziehungen!
             ('Reinigungsmittel', 'Liter', 8.40, 2);
         ```
 
-???+ question "Aufgabe 2: n:m Beziehung"
+???+ question "Aufgabe 2: n:m Beziehung implementieren"
 
     Erstelle Tabellen für **Techniker** und **Zertifizierungen** mit einer n:m-Beziehung.
 
@@ -1104,13 +1112,13 @@ Teste dein Wissen über Datenmodellierung und Beziehungen!
             (1, 2, '2021-09-20', '2024-09-20');  -- Thomas hat Schweißfachmann-Zertifizierung
         ```
 
-???+ question "Aufgabe 3: Modellierung verstehen"
+???+ question "Aufgabe 3: Reflexionsfragen"
 
-    Beantworte folgende Fragen:
+    Beantworte die folgenden Fragen zur Datenmodellierung:
 
-    1. Warum ist es sinnvoll, Daten in mehrere Tabellen aufzuteilen?
-    2. Was ist der Unterschied zwischen einer 1:n und einer n:m Beziehung?
-    3. Wann würde man `ON DELETE CASCADE` verwenden und wann `ON DELETE RESTRICT`?
+    1. **Warum ist es sinnvoll, Daten in mehrere Tabellen aufzuteilen?**
+    2. **Was ist der Unterschied zwischen einer 1:n und einer n:m Beziehung?**
+    3. **Wann würde man `ON DELETE CASCADE` verwenden und wann `ON DELETE RESTRICT`?**
 
     ??? tip "Lösungen anzeigen"
 
@@ -1143,33 +1151,94 @@ Teste dein Wissen über Datenmodellierung und Beziehungen!
 
 ## Zusammenfassung
 
-In diesem Kapitel haben wir gelernt, wie man Beziehungen zwischen Tabellen modelliert:
+In diesem Kapitel haben wir gelernt, wie man Beziehungen zwischen Tabellen modelliert und in SQL umsetzt.
 
-**Wichtigste Konzepte:**
+### Wichtigste Konzepte
+
+**Datenmodellierung:**
 
 - **ER-Modell** beschreibt Entitäten, Attribute und Beziehungen visuell
-- **Kardinalitäten** (1:1, 1:n, n:m) beschreiben, wie viele Entitäten miteinander in Beziehung stehen
-- **Fremdschlüssel** (Foreign Key) stellen Beziehungen zwischen Tabellen her
-- **Referenzielle Integrität** stellt sicher, dass Fremdschlüssel auf existierende Primärschlüssel verweisen
+- **Kardinalitäten** (1:1, 1:n, n:m) definieren, wie viele Datensätze miteinander in Beziehung stehen
+- **Krähenfuß-Notation** visualisiert Kardinalitäten und Optionalität
+- **Fremdschlüssel (FK)** stellen Beziehungen zwischen Tabellen her
+- **Referenzielle Integrität** verhindert verwaiste Datensätze
 
-**Umsetzung in SQL:**
+### Umsetzung in SQL
 
-| Beziehungstyp | Umsetzung | Beispiel |
-|---------------|-----------|----------|
-| **1:n** | Fremdschlüssel auf der "n"-Seite | Maschine hat viele Wartungen |
-| **n:m** | Zwischentabelle mit zwei Fremdschlüsseln | Maschine benötigt viele Ersatzteile |
-| **1:1** | Fremdschlüssel auf einer Seite (selten) | Maschine hat ein Handbuch-PDF |
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beziehungstyp</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Umsetzung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>1:n</strong></td>
+        <td style="padding:10px 14px;">Fremdschlüssel auf der "n"-Seite</td>
+        <td style="padding:10px 14px;">Eine Maschine hat viele Wartungen</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>n:m</strong></td>
+        <td style="padding:10px 14px;">Zwischentabelle mit zwei Fremdschlüsseln</td>
+        <td style="padding:10px 14px;">Maschinen benötigen viele Ersatzteile</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>1:1</strong></td>
+        <td style="padding:10px 14px;">Fremdschlüssel auf einer Seite (selten)</td>
+        <td style="padding:10px 14px;">Eine Maschine hat ein Wartungshandbuch</td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
-**ON DELETE Optionen:**
+### ON DELETE Optionen
 
-- `RESTRICT` - Löschen verhindern (Standard, sicher)
-- `CASCADE` - Abhängige Datensätze automatisch mitlöschen (Vorsicht!)
-- `SET NULL` - Fremdschlüssel auf NULL setzen
-- `SET DEFAULT` - Fremdschlüssel auf Standardwert setzen
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Option</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Verhalten</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Wann verwenden?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>RESTRICT</code></td>
+        <td style="padding:10px 14px;">Löschen verhindern (Standard)</td>
+        <td style="padding:10px 14px;">Daten schützen</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>CASCADE</code></td>
+        <td style="padding:10px 14px;">Abhängige Datensätze automatisch mitlöschen</td>
+        <td style="padding:10px 14px;">Wenn abhängige Daten ohne Hauptdaten sinnlos sind</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>SET NULL</code></td>
+        <td style="padding:10px 14px;">Fremdschlüssel auf NULL setzen</td>
+        <td style="padding:10px 14px;">Wenn Beziehung optional ist</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>SET DEFAULT</code></td>
+        <td style="padding:10px 14px;">Fremdschlüssel auf Standardwert setzen</td>
+        <td style="padding:10px 14px;">Selten verwendet</td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
-**Goldene Regel:**
+???+ tip "Goldene Regel"
+    **Modelliere erst mit ER-Diagrammen, dann implementiere in SQL!**
 
-> Modelliere erst mit ER-Diagrammen, dann implementiere in SQL!
+    1. Analysiere die Anforderungen
+    2. Zeichne das ER-Diagramm (auf Papier/Whiteboard)
+    3. Bestimme Kardinalitäten und Fremdschlüssel
+    4. Implementiere die Tabellen in SQL
 
 ---
 
