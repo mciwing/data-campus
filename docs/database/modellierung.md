@@ -220,7 +220,7 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
 
 
 
-**1:n (Eins-zu-Viele)**
+#### 1:n (Eins-zu-Viele)
 
 **Eine** Entität auf der einen Seite steht in Beziehung zu **vielen** Entitäten auf der anderen Seite.
 
@@ -248,9 +248,11 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
     - Ein Techniker führt viele Wartungen durch
     - Eine Abteilung hat viele Mitarbeiter
 
+Bei 1:n-Beziehungen kommt der **Fremdschlüssel** auf die **"n"-Seite** (die "viele"-Seite). Im obigen Beispiel steht `maschinen_id` als Fremdschlüssel in der Tabelle `WARTUNGSPROTOKOLLE`, da eine Maschine viele Wartungen haben kann.
+
 ---
 
-**n:m (Viele-zu-Viele)**
+#### n:m (Viele-zu-Viele)
 
 **Viele** Entitäten auf der einen Seite stehen in Beziehung zu **vielen** Entitäten auf der anderen Seite.
 
@@ -277,9 +279,14 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
     - Autoren schreiben viele Bücher, Bücher haben viele Autoren
     - Wartungen verwenden viele Ersatzteile, Ersatzteile werden in vielen Wartungen verwendet
 
+
+Im ER-Diagramm zeichnen wir die n:m-Beziehung direkt zwischen den beiden Entitäten. In SQL können wir diese Beziehung aber **nicht direkt** umsetzen! Wir benötigen eine **Zwischentabelle** (auch Verbindungstabelle oder Junction Table genannt), die die Beziehung auflöst.
+
+Die Zwischentabelle enthält **zwei Fremdschlüssel**: einen für jede der beiden Tabellen. So wird die n:m-Beziehung in zwei 1:n-Beziehungen aufgeteilt. Mehr dazu lernen wir etwas später.
+
 ---
 
-**1:1 (Eins-zu-Eins)**
+#### 1:1 (Eins-zu-Eins)
 
 **Eine** Entität auf der einen Seite steht in Beziehung zu **genau einer** Entität auf der anderen Seite.
 
@@ -300,19 +307,78 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
             string dateipfad
         }
     ```
+    
 
     Weitere Beispiele:
 
     - Eine Person hat einen Personalausweis, ein Personalausweis gehört zu einer Person
     - Ein Mitarbeiter hat einen Schreibtisch, ein Schreibtisch gehört zu einem Mitarbeiter
 
+Bei 1:1-Beziehungen kommt der **Fremdschlüssel** auf **eine der beiden Seiten**. Im obigen Beispiel steht `maschinen_id` als Fremdschlüssel in der Tabelle `WARTUNGSHANDBUCH_PDF`. Alternativ könnte man beide Tabellen auch zusammenführen.
 
-
-1:1-Beziehungen kommen in der Praxis selten vor. Oft kann man die Informationen auch in einer einzigen Tabelle speichern. Doch wann machen 1:1-Beziehungen Sinn?
+Generell kommen 1:1-Beziehungen in der Praxis selten vor. Oft kann man die Informationen auch in einer einzigen Tabelle speichern. Doch wann machen 1:1-Beziehungen Sinn?
 
 - **Große optionale Daten:** z.B. ein Wartungshandbuch-PDF ist sehr groß und wird selten abgefragt
 - **Zugriffsrechte:** Sensible Daten (z.B. Gehälter) in separater Tabelle mit anderen Zugriffsrechten
 - **Historische Gründe:** Altsysteme, die nicht geändert werden können
+
+
+#### Krähenfuß-Notation
+
+Zur Darstellung von ER-Diagrammen gibt es verschiedenste Möglichkeiten. Eine bekannte Notation ist die sogenannte Krähenfuß-Notation (engl. "Crow's Foot Notation"). Diese wurde auch bei den bereits gezeigten Beispielen verwendet.
+
+<div style="text-align: center;">
+  <div style="width: 70%; margin: 0 auto; height: 300px; overflow: hidden;">
+    <img src="https://images.edrawsoft.com/articles/er-diagram-symbols/crows-foot-notation.png"
+         alt="Krähenfuß"
+         style="width: 100%; object-fit: cover; object-position: 0 -150px;">
+  </div>
+  <figcaption style="margin-top: 0.5em;">
+    Krähenfuß-Notation
+    (Quelle: <a href="https://www.edrawsoft.com/de/er-diagram-symbols.html">edraw</a>)
+  </figcaption>
+</div>
+
+???+ defi "Krähenfuß Notation"
+    Die Notation kombiniert zwei Informationen auf jeder Seite der Beziehungslinie:
+
+    **Am äußeren Ende** (näher zur Entität):
+
+    - **Krähenfuß** `{` → **Viele** (many): Es können mehrere Datensätze/Zeilen teilnehmen
+    - **Einfacher Strich** `|` → **Eins** (one): Genau ein Datensatz/eine Zeile nimmt teil
+
+    **Am inneren Ende** (näher zur Mitte):
+
+    - **Einfacher Strich** `|`→ **Verpflichtend** (mandatory): Mindestens ein Datensatz muss teilnehmen
+    - **Kreis** `o`→ **Optional** (optional): Null Datensätze sind erlaubt (optional)
+
+
+Schauen wir uns ein Beispiel zum besseren Verständnis an:
+
+???+ example "Krähenfuß-Notation"
+
+    ```
+    MASCHINEN   ||-----o{   WARTUNGSPROTOKOLLE
+                ↑↑     ↑↑
+                ││     │└── Krähenfuß = viele
+                ││     └─── Kreis = optional (null ist erlaubt)
+                │└───────── Strich = verpflichtend (mindestens eine)
+                └────────── Strich = genau eins
+    ```
+
+    **Bedeutung:** Eine Maschine (genau eine, verpflichtend) kann null oder mehrere Wartungsprotokolle haben.
+
+    **In Worten:**
+
+    - Von links nach rechts gelesen: "Eine Maschine hat null oder viele Wartungsprotokolle"
+    - Von rechts nach links gelesen: "Jedes Wartungsprotokoll gehört zu genau einer Maschine"
+
+    **Weitere Beispiele aus unserem Kapitel:**
+
+    - `||--||` bei "Maschine hat Wartungshandbuch": Jede Maschine hat genau ein Wartungshandbuch, und jedes Wartungshandbuch gehört zu genau einer Maschine
+    - `}o--o{` bei "Maschinen benötigen Ersatzteile": Null oder mehrere Maschinen können null oder mehrere Ersatzteile haben (n:m-Beziehung)
+
+Diese Notation mag im ersten Moment etwas gewöhnungsbedürftig sein. Mit etwas Übung stellt sie aber überhaupt kein Problem dar und wir können ganz einfach komplexere Strukturen darstellen. 
 
 ---
 
@@ -367,97 +433,81 @@ Ein **Fremdschlüssel** (Foreign Key, FK) ist eine Spalte, die auf den Primärsc
 
 ---
 
-Bevor wir mit der Implementierung in SQL beginnen, wollen wir das Erlente schon einmal üben. 
+Bevor wir mit der Implementierung in SQL beginnen, wollen wir das Erlente schon einmal üben.
 
-???+ question "Aufgabe: ER-Diagramme modellieren"
+???+ question "Aufgabe: ER-Diagramm modellieren"
 
-    Zeichne **auf Papier** ER-Diagramme für die folgenden beiden Szenarien. Achte dabei auf:
+    Zeichne **auf Papier** ein ER-Diagramm für das folgende Szenario. Achte dabei auf:
 
-    - Korrekte Kardinalitäten (1:1, 1:n, n:m)
+    - Korrekte Kardinalitäten (1:1, 1:n)
     - Primärschlüssel (PK) und Fremdschlüssel (FK)
     - Alle relevanten Attribute
+    - Richtige Platzierung der Fremdschlüssel
 
-    **Szenario 1: Lieferanten und Materialien**
+    **Szenario: Standorte, Maschinen und Wartungshandbücher**
 
-    Ein Produktionsunternehmen bezieht Materialien von verschiedenen Lieferanten.
+    Eine Produktionsfirma organisiert ihre Maschinen nach Standorten und verwaltet für jede Maschine ein digitales Wartungshandbuch.
 
-    - Ein **Lieferant** kann viele **Materialien** liefern
-    - Jedes **Material** wird von genau einem **Lieferanten** bezogen
-    - **Lieferant:** Name, Standort
-    - **Material:** Materialname, Einheit (z.B. kg, Liter), Preis
+    **Anforderungen:**
 
-    **Szenario 2: Techniker und Zertifizierungen**
+    - Ein **Standort** hat viele **Maschinen**
+    - Jede **Maschine** steht an genau einem **Standort**
+    - Jede **Maschine** hat genau ein **Wartungshandbuch** 
+    - Jedes **Wartungshandbuch** gehört zu genau einer **Maschine**
 
-    Techniker in einem Unternehmen erwerben verschiedene Zertifizierungen.
+    **Entitäten und Attribute:**
 
-    - Ein **Techniker** kann viele **Zertifizierungen** besitzen
-    - Eine **Zertifizierung** kann von vielen **Technikern** erworben werden
-    - **Techniker:** Name
-    - **Zertifizierung:** Bezeichnung, Gültigkeit in Jahren
-    - Für jede Zertifikatsvergabe soll das **Erwerbsdatum** und **Ablaufdatum** gespeichert werden
+    - **Standort:** Name, Adresse, Ansprechpartner
+    - **Maschine:** Name, Typ, Anschaffungsdatum
+    - **Wartungshandbuch:** Titel, Dateipfad, Version, Letztes Update
 
-    ??? tip "Lösung Szenario 1: Lieferanten und Materialien (1:n)"
+    **Aufgabe:** Zeichne das vollständige ER-Diagramm mit allen drei Entitäten, ihren Attributen, den Beziehungen und den Kardinalitäten!
 
-        Dies ist eine **1:n-Beziehung**, da ein Lieferant viele Materialien liefert, aber jedes Material nur von einem Lieferanten kommt.
-
-        ```mermaid
-        erDiagram
-            LIEFERANTEN ||--o{ MATERIALIEN : "liefert"
-
-            LIEFERANTEN {
-                int lieferant_id PK
-                string name
-                string standort
-            }
-
-            MATERIALIEN {
-                int material_id PK
-                string materialname
-                string einheit
-                decimal preis
-                int lieferant_id FK
-            }
-        ```
-
-        **Wichtig:**
-
-        - Der Fremdschlüssel `lieferant_id` steht in der Tabelle `MATERIALIEN` (die "n"-Seite)
-        - Die Kardinalität ist `||--o{` (eins zu viele)
-
-    ??? tip "Lösung Szenario 2: Techniker und Zertifizierungen (n:m)"
-
-        Dies ist eine **n:m-Beziehung**, da ein Techniker viele Zertifizierungen haben kann und eine Zertifizierung von vielen Technikern erworben werden kann. Daher benötigen wir eine **Zwischentabelle**.
+    ??? tip "Lösung anzeigen"
 
         ```mermaid
         erDiagram
-            TECHNIKER ||--o{ ZERTIFIKATSVERGABEN : "hat"
-            ZERTIFIZIERUNGEN ||--o{ ZERTIFIKATSVERGABEN : "wird_vergeben_an"
+            STANDORTE ||--o{ MASCHINEN : "hat"
+            MASCHINEN ||--|| WARTUNGSHANDBUECHER : "hat"
 
-            TECHNIKER {
-                int techniker_id PK
+            STANDORTE {
+                int standort_id PK
                 string name
+                string adresse
+                string ansprechpartner
             }
 
-            ZERTIFIZIERUNGEN {
-                int zertifizierung_id PK
-                string bezeichnung
-                int gueltigkeit_jahre
+            MASCHINEN {
+                int maschinen_id PK
+                string name
+                string typ
+                date anschaffungsdatum
+                int standort_id FK "verweist auf standorte"
             }
 
-            ZERTIFIKATSVERGABEN {
-                int vergabe_id PK
-                int techniker_id FK
-                int zertifizierung_id FK
-                date erwerbsdatum
-                date ablaufdatum
+            WARTUNGSHANDBUECHER {
+                int handbuch_id PK
+                string titel
+                string dateipfad
+                string version
+                date letztes_update
+                int maschinen_id FK "verweist auf maschinen"
             }
         ```
 
-        **Wichtig:**
+        **Erklärung:**
 
-        - Die Zwischentabelle `ZERTIFIKATSVERGABEN` enthält beide Fremdschlüssel
-        - Zusätzliche Attribute der Beziehung (Erwerbsdatum, Ablaufdatum) werden in der Zwischentabelle gespeichert
-        - Die n:m-Beziehung wird in zwei 1:n-Beziehungen aufgeteilt
+        **1:n-Beziehung (Standorte → Maschinen):**
+
+        - Der Fremdschlüssel `standort_id` steht in der Tabelle `MASCHINEN` (die "n"-Seite)
+        - Kardinalität: `||--o{` (ein Standort hat null oder viele Maschinen)
+        - Damit kann jede Maschine eindeutig einem Standort zugeordnet werden
+
+        **1:1-Beziehung (Maschinen → Wartungshandbücher):**
+
+        - Der Fremdschlüssel `maschinen_id` steht in der Tabelle `WARTUNGSHANDBUECHER`
+        - Kardinalität: `||--||` (eine Maschine hat genau ein Wartungshandbuch)
+        - Alternativ könnte man Wartungshandbuch-Daten auch direkt in die Maschinen-Tabelle integrieren, aber die Trennung macht Sinn, da PDFs groß sein können und nicht bei jeder Maschinen-Abfrage mitgeladen werden müssen
 
 ---
 
