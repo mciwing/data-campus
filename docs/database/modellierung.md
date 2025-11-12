@@ -1,205 +1,235 @@
 # Datenmodellierung & Beziehungen
 
-Bisher haben wir mit **einzelnen Tabellen** gearbeitet. Aber die wahre Stärke relationaler Datenbanken liegt darin, **Beziehungen zwischen Tabellen** zu modellieren!
 
-Stell dir vor:
+Nachdem wir nun wissen, wie wir mit einzelnen Tabellen in Datenbanken umgehen (CRUD) ist es nun an der Zeit, einen Schritt weiter zu gehen. 
+Die wahre Stärke relationaler Datenbanken liegt nämlich darin, **Beziehungen zwischen Tabellen** zu modellieren!
+
+Stellen wir uns vor:
 
 - Eine **Maschine** hat mehrere **Wartungen**
 - Ein **Ersatzteil** wird in mehreren **Maschinen** verwendet
 - Ein **Techniker** führt viele **Wartungen** durch
 
-Wie modellieren wir solche komplexen Zusammenhänge? Genau darum geht es in diesem Kapitel!
+Wie modellieren wir solche Zusammenhänge? Genau darum geht es in diesem Kapitel!
 
 ---
 
-## Warum mehrere Tabellen?
+## Das Problem
 
-Beginnen wir mit einem Problem: Was passiert, wenn wir versuchen, alle Informationen in einer einzigen Tabelle zu speichern?
+Beginnen wir mit einem Gedankenexperiment: Was passiert, wenn wir versuchen, alle Informationen in einer einzigen Tabelle zu speichern?
 
-### Das Problem: Alles in einer Tabelle
 
 Versuchen wir, Maschinen **und** ihre Wartungen in einer einzigen Tabelle zu speichern:
 
-```title="Tabelle: maschinen_mit_wartungen"
- maschinen_id │ name            │ typ      │ wartungsdatum │ techniker    │ kosten
-──────────────┼─────────────────┼──────────┼───────────────┼──────────────┼────────
-            1 │ CNC-Fräse Alpha │ CNC-Fräse│ 2024-01-15    │ M. Schneider │ 450.00
-            1 │ CNC-Fräse Alpha │ CNC-Fräse│ 2024-06-20    │ M. Schneider │ 320.00
-            2 │ Drehbank Beta   │ Drehbank │ 2024-01-15    │ M. Schneider │ 280.00
-            2 │ Drehbank Beta   │ Drehbank │ 2024-03-10    │ L. Weber     │ 150.00
+```sql title="Tabelle: maschinen_mit_wartungen" 
+ maschinen_id |      name        |     typ     | wartungsdatum |   techniker   | kosten
+--------------+------------------+-------------+---------------+---------------+--------
+            1 | CNC-Fräse Alpha  | CNC-Fräse   | 2024-01-15    | M. Schneider  | 450.00
+            1 | CNC-Fräse Alpha  | CNC-Fräse   | 2024-06-20    | M. Schneider  | 320.00
+            2 | Drehbank Beta    | Drehbank    | 2024-01-15    | M. Schneider  | 280.00
+            2 | Drehbank Beta    | Drehbank    | 2024-03-10    | L. Weber      | 150.00
 ```
 
-**Was sind die Probleme hier?**
+Doch wo liegt hier das Problem? 
 
-???+ danger "Probleme mit einer einzigen Tabelle"
-    **1. Redundanz** - Daten werden unnötig wiederholt
 
-    Der Name "CNC-Fräse Alpha" und "CNC-Fräse" stehen mehrfach in der Tabelle - bei jeder Wartung wird die gesamte Maschineninformation wiederholt!
+1. **Redundanz** - Daten werden unnötig wiederholt
+    
+    Beispiel: Der Name "CNC-Fräse Alpha" und "CNC-Fräse" stehen mehrfach in der Tabelle - bei jeder Wartung wird die gesamte Maschineninformation wiederholt!
 
-    **2. Update-Anomalie** - Änderungen müssen mehrfach durchgeführt werden
+2. **Update-Anomalie** - Änderungen müssen mehrfach durchgeführt werden
 
-    Ändert sich der Maschinenname, müssen wir **mehrere Zeilen** ändern. Das ist fehleranfällig und langsam.
+    Ändert sich der Maschinenname, müssen wir mehrere Zeilen ändern. Das ist fehleranfällig und langsam.
 
-    **3. Inkonsistenz** - Widersprüchliche Daten möglich
+3. **Inkonsistenz** - Widersprüchliche Daten möglich
 
     Was, wenn wir den Namen nur in einer Zeile ändern? Dann haben wir widersprüchliche Daten:
-    ```
+    ```sql
     1 │ CNC-Fräse Alpha    │ ...
-    1 │ CNC-Fräse Alpha V2 │ ...  ← Welcher Name stimmt jetzt?
+    1 │ CNC-Fräse Alpha V2 │ ...  -- Welcher Name stimmt jetzt?
     ```
 
-    **4. Speicherverschwendung** - Unnötiger Speicherverbrauch
+4. **Speicherverschwendung** - Unnötiger Speicherverbrauch
 
-    Maschineninformationen werden bei jeder Wartung neu gespeichert.
+    Maschineninformationen wie der Name werden bei jeder Wartung neu gespeichert und benötigen dafür Speicherplatz
 
-### Die Lösung: Aufteilen in mehrere Tabellen
+Doch für unser Problem gibt es eine einfache Lösung: 
 
-Stattdessen teilen wir die Daten in **zwei Tabellen** auf:
+<div style="text-align: center;">
+    <img src="https://i.imgflip.com/abvzer.jpg" alt="NULL" style="max-width: 40%;">
+    <figcaption>Quelle: <a href="https://i.imgflip.com/abvzer.jpg">imgflip</a></figcaption>
+</div>
 
-```title="Tabelle: maschinen"
- maschinen_id │ name            │ typ
-──────────────┼─────────────────┼──────────
-            1 │ CNC-Fräse Alpha │ CNC-Fräse
-            2 │ Drehbank Beta   │ Drehbank
+## Die Lösung
+
+Anstelle aller Daten in einer einzelnen Tabelle zu sammeln, können wir die Informationen verteilt auf mehrere Tabellen speichern:
+
+```sql title="Tabelle: maschinen"
+ maschinen_id | name            | typ       
+--------------+-----------------+-----------
+            1 | CNC-Fräse Alpha | CNC-Fräse
+            2 | Drehbank Beta   | Drehbank  
 ```
 
-```title="Tabelle: wartungsprotokolle"
- wartungs_id │ maschinen_id │ wartungsdatum │ techniker    │ kosten
-─────────────┼──────────────┼───────────────┼──────────────┼────────
-         101 │            1 │ 2024-01-15    │ M. Schneider │ 450.00
-         102 │            1 │ 2024-06-20    │ M. Schneider │ 320.00
-         103 │            2 │ 2024-01-15    │ M. Schneider │ 280.00
-         104 │            2 │ 2024-03-10    │ L. Weber     │ 150.00
+```sql title="Tabelle: wartungsprotokolle"
+ wartungs_id | maschinen_id | wartungsdatum | techniker    | kosten
+-------------+--------------+---------------+--------------+--------
+        101  |      1       | 2024-01-15    | M. Schneider | 450.00
+        102  |      1       | 2024-06-20    | M. Schneider | 320.00
+        103  |      2       | 2024-01-15    | M. Schneider | 280.00
+        104  |      2       | 2024-03-10    | L. Weber     | 150.00
 ```
 
-**Die Vorteile:**
+Alles was wir zuvor als Problem aufgelistet haben können wir nun als Vorteil sehen: 
 
-- ✅ Jede Information nur **einmal** gespeichert
-- ✅ Änderungen nur an **einer Stelle** nötig
-- ✅ **Keine Inkonsistenzen** möglich
-- ✅ Geringerer Speicherverbrauch
+- Jede Information nur **einmal** gespeichert
+- Änderungen nur an **einer Stelle** nötig
+- **Keine Inkonsistenzen** möglich
+- Geringerer Speicherverbrauch
+
+
+Mit dieser Aufteilung in mehrere Tabellen schaffen wir die Grundlage für eine strukturierte Datenorganisation. Doch wie "findet" die Datenbank eigentlich die Zusammenhänge zwischen den Tabellen? 
+
+Diesem Thema wollen wir uns nun widmen. Wir beschäftigen uns mit sogenannten **Schlüsseln** (Primär- und Fremdschlüssel) und dem **Entity-Relationship-Modell (ERM)** die Beziehungen zwischen unseren Daten sauber modellieren. So stellen wir sicher, dass unsere Datenbank nicht nur effizient, sondern auch widerspruchsfrei bleibt!
+
 
 ---
 
 ## Das Entity-Relationship-Modell (ERM)
 
-Bevor wir Tabellen in SQL erstellen, **modellieren** wir die Datenstruktur visuell mit einem **Entity-Relationship-Diagramm** (ER-Diagramm). Das hilft uns, die Struktur zu verstehen und Fehler zu vermeiden.
+Nun können wir direkt mit dem erstellen von vielen Tabellen starten, oder? 
 
-### Die drei Grundkonzepte
-
-<div class="grid cards" markdown>
-
--   __Entität (Entity)__
-
-    ---
-
-    Eine **konkrete Instanz** eines Objekts der realen Welt:
-
-    **Beispiele:**
-    - Eine konkrete Maschine: "CNC-Fräse Alpha"
-    - Ein konkretes Ersatzteil: "Fräskopf Standard"
-    - Eine konkrete Wartung: "Wartung Nr. 101"
-
-    ➜ Das sind die **Zeilen** in unseren Tabellen
-
--   __Entitätstyp (Entity Type)__
-
-    ---
-
-    Eine **Kategorie** gleichartiger Entitäten:
-
-    **Beispiele:**
-    - Maschinen (alle Maschinen)
-    - Ersatzteile (alle Ersatzteile)
-    - Wartungsprotokolle (alle Wartungen)
-
-    Im ER-Diagramm als **Rechteck** dargestellt:
-
-    ```mermaid
-    erDiagram
-        MASCHINEN {
-        }
-    ```
-
-    ➜ Das sind unsere **Tabellen**
-
--   __Attribut__
-
-    ---
-
-    Eine **Eigenschaft** einer Entität:
-
-    **Beispiele für Maschinen:**
-    - name: "CNC-Fräse Alpha"
-    - typ: "CNC-Fräse"
-    - standort: "Halle A"
-
-    Im ER-Diagramm als **Attribute in der Entität** dargestellt:
-
-    ```mermaid
-    erDiagram
-        MASCHINEN {
-            int maschinen_id PK
-            string name
-            string typ
-            string standort
-        }
-    ```
-
-    ➜ Das sind unsere **Spalten**
-
--   __Beziehung (Relationship)__
-
-    ---
-
-    Eine **Verbindung** zwischen Entitätstypen:
-
-    **Beispiele:**
-    - Maschinen **haben** Wartungen
-    - Maschinen **benötigen** Ersatzteile
-    - Techniker **führen durch** Wartungen
-
-    Im ER-Diagramm als **Verbindungslinie mit Beschriftung** dargestellt:
-
-    ```mermaid
-    erDiagram
-        MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : haben
-    ```
-
-    ➜ Das werden unsere **Fremdschlüssel**
-
+<div style="text-align: center;">
+    <img src="https://inf-schule.de/content/3_datenbanksysteme/3_ermodelle/2_miniwelt/schule_komplex.png" alt="NULL" style="max-width: 70%;">
+    <figcaption>Datenbankstrukturen können durchaus komplex werden <br> (Quelle: <a href="https://inf-schule.de/datenbanksysteme/ermodelle/miniwelt">INF-Schule</a>)</figcaption>
 </div>
 
-???+ tip "Von ER-Diagramm zu Datenbank"
-    **Grundprinzip:** Jeder Entitätstyp wird zu einer Tabelle!
 
-    | ER-Konzept | SQL-Umsetzung |
-    |------------|---------------|
-    | Entitätstyp | Tabelle |
-    | Attribut | Spalte |
-    | Entität | Zeile |
-    | Beziehung | Fremdschlüssel |
+Man neigt häufig dazu, überstürzt in die Umsetzung zu gehen. Bevor wir aber loslegen, sollten wir einen wichtigen Schritt nicht überspringen: die **gedankliche Planung der Datenstruktur**. Denn eine gute Datenbank entsteht nicht durch Zufall oder einfaches "Losprogrammieren", sondern durch sorgfältige Überlegung, wie die relevanten Informationen in Beziehung zueinander stehen. 
+
+Zunächst analysieren wir also: Welche "Dinge" (Objekte, Personen, Vorgänge) gibt es in unserem System? Wie hängen sie zusammen? Welche Eigenschaften haben sie?
+
+Genau dafür gibt es das Entity-Relationship-Modell (ERM), mit dem wir unsere Daten **erst auf Papier bzw. am Whiteboard strukturieren**, bevor wir später die Tabellen in SQL anlegen.
+
+
+
+### Die Grundelemente
+
+Zum Modellieren der Beziehungen bzw. zum zeichnen des Entity-Relationship-Diagramms (ER-Diagramm) werden folgende Elemente benötigt:
+
+???+ defi "ER-Diagramm"
+    <div class="grid cards" markdown>
+
+    -   __Entität (Entity)__
+
+        ---
+
+        Eine **konkrete Instanz** eines Objekts der realen Welt:
+
+        **Beispiele:**
+
+        - Eine konkrete Maschine: "CNC-Fräse Alpha"
+        - Ein konkretes Ersatzteil: "Fräskopf Standard"
+        - Eine konkrete Wartung: "Wartung Nr. 101"
+
+        ➜ Das sind die **Zeilen** in unseren Tabellen
+
+    -   __Entitätstyp (Entity Type)__
+
+        ---
+
+        Eine **Kategorie** gleichartiger Entitäten:
+
+        **Beispiele:**
+
+        - Maschinen (alle Maschinen)
+        - Ersatzteile (alle Ersatzteile)
+        - Wartungsprotokolle (alle Wartungen)
+
+        Im ER-Diagramm als **Rechteck** dargestellt:
+
+        ```mermaid
+        erDiagram
+            MASCHINEN {
+            }
+        ```
+
+        ➜ Das sind unsere **Tabellen**
+
+    -   __Attribut__
+
+        ---
+
+        Eine **Eigenschaft** einer Entität:
+
+        **Beispiele für Maschinen:**
+
+        - name: "CNC-Fräse Alpha"
+        - typ: "CNC-Fräse"
+        - standort: "Halle A"
+
+        Im ER-Diagramm als **Attribute in der Entität** dargestellt:
+
+        ```mermaid
+        erDiagram
+            MASCHINEN {
+                int maschinen_id PK
+                string name
+                string typ
+                string standort
+            }
+        ```
+
+        ➜ Das sind unsere **Spalten**
+
+    -   __Beziehung (Relationship)__
+
+        ---
+
+        Eine **Verbindung** zwischen Entitätstypen:
+
+        **Beispiele:**
+
+        - Maschinen **haben** Wartungen
+        - Maschinen **benötigen** Ersatzteile
+        - Techniker **führen durch** Wartungen
+
+        Im ER-Diagramm als **Verbindungslinie mit Beschriftung** dargestellt:
+
+        ```mermaid
+        erDiagram
+            MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : haben
+        ```
+
+        ➜ Das werden unsere **Fremdschlüssel** (mehr dazu später)
+
+    </div>
+
+
+???+ danger "Entität vs. Entitätstyp"
+    Technisch gesehen ist eine Entität eine konkrete Instanz (eine Zeile) eines Entitätstyps (der Tabelle). Da die Modellierung sich aber die abstakte Beziehung zwischen einzelnen Tabellen abbilden soll, wird in der Praxis meist nur von Entität gesprochen, wenngleich man korrekterweise Entitätstyp sagen müsste. 
+
+
+Nun schauen wir uns an, wie wir die Beziehungen zueinander im Detail darstellen können. 
 
 ---
 
-## Kardinalitäten - Wie viele?
+### Kardinalitäten
 
-Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteiligt sein können. Das ist entscheidend für die Datenmodellierung, denn die Kardinalität bestimmt, wie wir die Beziehung in SQL umsetzen!
+Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteiligt sein können. Das ist entscheidend für die Datenmodellierung, denn die Kardinalität bestimmt, wie wir die Beziehung in SQL umsetzen! Dabei verwendet man meist eine der drei nachfolgenden Beziehungstypen: 
 
-### Die drei wichtigsten Beziehungstypen
 
-<div class="grid cards" markdown>
 
--   __1:n (Eins-zu-Viele)__
+**1:n (Eins-zu-Viele)**
 
-    ---
+**Eine** Entität auf der einen Seite steht in Beziehung zu **vielen** Entitäten auf der anderen Seite.
 
-    **Eine** Entität auf der einen Seite steht in Beziehung zu **vielen** Entitäten auf der anderen Seite.
-
-    **Beispiel:** Eine Maschine hat **viele** Wartungen, aber jede Wartung gehört zu **einer** Maschine.
+???+ example "Beispiel n:m"
+    Eine Maschine hat **viele** Wartungen, aber jede Wartung gehört zu **einer** Maschine.
 
     ```mermaid
     erDiagram
+        direction LR
         MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "haben"
         MASCHINEN {
             int maschinen_id PK
@@ -212,23 +242,24 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
         }
     ```
 
-    **Weitere Beispiele:**
-    - Ein Standort hat viele Maschinen (1:n)
-    - Ein Techniker führt viele Wartungen durch (1:n)
-    - Eine Abteilung hat viele Mitarbeiter (1:n)
+    Weitere Beispiele:
 
-    **Umsetzung in SQL:** Fremdschlüssel auf der "n"-Seite
+    - Ein Standort hat viele Maschinen
+    - Ein Techniker führt viele Wartungen durch
+    - Eine Abteilung hat viele Mitarbeiter
 
--   __n:m (Viele-zu-Viele)__
+---
 
-    ---
+**n:m (Viele-zu-Viele)**
 
-    **Viele** Entitäten auf der einen Seite stehen in Beziehung zu **vielen** Entitäten auf der anderen Seite.
+**Viele** Entitäten auf der einen Seite stehen in Beziehung zu **vielen** Entitäten auf der anderen Seite.
 
-    **Beispiel:** Eine Maschine benötigt **viele** Ersatzteile, und ein Ersatzteil kann in **vielen** Maschinen verwendet werden.
+???+ example "Beispiel n:m"
+    Eine Maschine benötigt **viele** Ersatzteile, und ein Ersatzteil kann in **vielen** Maschinen verwendet werden.
 
     ```mermaid
     erDiagram
+        direction LR
         MASCHINEN }o--o{ ERSATZTEILE : "benötigen"
         MASCHINEN {
             int maschinen_id PK
@@ -240,23 +271,24 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
         }
     ```
 
-    **Weitere Beispiele:**
-    - Studenten belegen viele Kurse, Kurse haben viele Studenten (n:m)
-    - Autoren schreiben viele Bücher, Bücher haben viele Autoren (n:m)
-    - Wartungen verwenden viele Ersatzteile, Ersatzteile werden in vielen Wartungen verwendet (n:m)
+    Weitere Beispiele:
 
-    **Umsetzung in SQL:** Zwischentabelle mit zwei Fremdschlüsseln
+    - Studenten belegen viele Kurse, Kurse haben viele Studenten
+    - Autoren schreiben viele Bücher, Bücher haben viele Autoren
+    - Wartungen verwenden viele Ersatzteile, Ersatzteile werden in vielen Wartungen verwendet
 
--   __1:1 (Eins-zu-Eins)__
+---
 
-    ---
+**1:1 (Eins-zu-Eins)**
 
-    **Eine** Entität auf der einen Seite steht in Beziehung zu **genau einer** Entität auf der anderen Seite.
+**Eine** Entität auf der einen Seite steht in Beziehung zu **genau einer** Entität auf der anderen Seite.
 
-    **Beispiel:** Jede Maschine hat **ein** Wartungshandbuch-PDF, und jedes Wartungshandbuch-PDF gehört zu **einer** Maschine.
+???+ example "Beispiel 1:1"
+    Jede Maschine hat **ein** Wartungshandbuch-PDF, und jedes Wartungshandbuch-PDF gehört zu **einer** Maschine.
 
     ```mermaid
     erDiagram
+        direction LR
         MASCHINEN ||--|| WARTUNGSHANDBUCH_PDF : "hat"
         MASCHINEN {
             int maschinen_id PK
@@ -269,61 +301,174 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
         }
     ```
 
-    **Weitere Beispiele:**
-    - Eine Person hat einen Personalausweis, ein Personalausweis gehört zu einer Person (1:1)
-    - Ein Mitarbeiter hat einen Schreibtisch, ein Schreibtisch gehört zu einem Mitarbeiter (1:1)
+    Weitere Beispiele:
 
-    **Umsetzung in SQL:** Fremdschlüssel auf einer Seite (oder beide Tabellen zusammenführen)
+    - Eine Person hat einen Personalausweis, ein Personalausweis gehört zu einer Person
+    - Ein Mitarbeiter hat einen Schreibtisch, ein Schreibtisch gehört zu einem Mitarbeiter
 
-</div>
 
-???+ info "1:1-Beziehungen sind selten"
-    1:1-Beziehungen kommen in der Praxis selten vor. Oft kann man die Informationen auch in einer einzigen Tabelle speichern.
 
-    **Wann macht 1:1 Sinn?**
+1:1-Beziehungen kommen in der Praxis selten vor. Oft kann man die Informationen auch in einer einzigen Tabelle speichern. Doch wann machen 1:1-Beziehungen Sinn?
 
-    - **Große optionale Daten:** z.B. ein Wartungshandbuch-PDF ist sehr groß und wird selten abgefragt
-    - **Zugriffsrechte:** Sensible Daten (z.B. Gehälter) in separater Tabelle mit anderen Zugriffsrechten
-    - **Historische Gründe:** Altsysteme, die nicht geändert werden können
+- **Große optionale Daten:** z.B. ein Wartungshandbuch-PDF ist sehr groß und wird selten abgefragt
+- **Zugriffsrechte:** Sensible Daten (z.B. Gehälter) in separater Tabelle mit anderen Zugriffsrechten
+- **Historische Gründe:** Altsysteme, die nicht geändert werden können
 
 ---
 
-## Fremdschlüssel (Foreign Key)
+### Fremdschlüssel
 
 Ein **Fremdschlüssel** (Foreign Key, FK) ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. Damit stellen wir **Beziehungen zwischen Tabellen** her!
 
-```mermaid
-erDiagram
-    MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "hat"
-    MASCHINEN {
-        int maschinen_id PK
-        string name
-        string typ
-    }
-    WARTUNGSPROTOKOLLE {
-        int wartungs_id PK
-        date wartungsdatum
-        int maschinen_id FK "verweist auf maschinen"
-    }
-```
+???+ example "Beispiel"
 
-**Erklärung:** Der Fremdschlüssel `maschinen_id` in der Tabelle `wartungsprotokolle` verweist auf den Primärschlüssel `maschinen_id` in der Tabelle `maschinen`.
+    ```mermaid
+    erDiagram
+        direction LR
+        MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "hat"
+        MASCHINEN {
+            int maschinen_id PK
+            string name
+            string typ
+        }
+        WARTUNGSPROTOKOLLE {
+            int wartungs_id PK
+            date wartungsdatum
+            int maschinen_id FK "verweist auf maschinen"
+        }
+    ```
 
-???+ tip "Primär- vs. Fremdschlüssel"
-    | Schlüsseltyp | Beschreibung | Beispiel |
-    |--------------|--------------|----------|
-    | **Primärschlüssel (PK)** | Identifiziert **eindeutig** eine Zeile in der eigenen Tabelle | `maschinen_id` in `maschinen` |
-    | **Fremdschlüssel (FK)** | Verweist auf einen Primärschlüssel in einer **anderen** Tabelle | `maschinen_id` in `wartungsprotokolle` |
+    **Erklärung:** Der Fremdschlüssel `maschinen_id` in der Tabelle `wartungsprotokolle` verweist auf den Primärschlüssel `maschinen_id` in der Tabelle `maschinen`.
+
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Schlüsseltyp</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Primärschlüssel (PK)</strong></td>
+        <td style="padding:10px 14px;">Identifiziert <strong>eindeutig</strong> eine Zeile in der eigenen Tabelle</td>
+        <td style="padding:10px 14px;"><code>maschinen_id</code> in <code>maschinen</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Fremdschlüssel (FK)</strong></td>
+        <td style="padding:10px 14px;">Verweist auf einen Primärschlüssel in einer <strong>anderen</strong> Tabelle</td>
+        <td style="padding:10px 14px;"><code>maschinen_id</code> in <code>wartungsprotokolle</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
 ---
 
-## 1:n Beziehungen implementieren
+Bevor wir mit der Implementierung in SQL beginnen, wollen wir das Erlente schon einmal üben. 
+
+???+ question "Aufgabe: ER-Diagramme modellieren"
+
+    Zeichne **auf Papier** ER-Diagramme für die folgenden beiden Szenarien. Achte dabei auf:
+
+    - Korrekte Kardinalitäten (1:1, 1:n, n:m)
+    - Primärschlüssel (PK) und Fremdschlüssel (FK)
+    - Alle relevanten Attribute
+
+    **Szenario 1: Lieferanten und Materialien**
+
+    Ein Produktionsunternehmen bezieht Materialien von verschiedenen Lieferanten.
+
+    - Ein **Lieferant** kann viele **Materialien** liefern
+    - Jedes **Material** wird von genau einem **Lieferanten** bezogen
+    - **Lieferant:** Name, Standort
+    - **Material:** Materialname, Einheit (z.B. kg, Liter), Preis
+
+    **Szenario 2: Techniker und Zertifizierungen**
+
+    Techniker in einem Unternehmen erwerben verschiedene Zertifizierungen.
+
+    - Ein **Techniker** kann viele **Zertifizierungen** besitzen
+    - Eine **Zertifizierung** kann von vielen **Technikern** erworben werden
+    - **Techniker:** Name
+    - **Zertifizierung:** Bezeichnung, Gültigkeit in Jahren
+    - Für jede Zertifikatsvergabe soll das **Erwerbsdatum** und **Ablaufdatum** gespeichert werden
+
+    ??? tip "Lösung Szenario 1: Lieferanten und Materialien (1:n)"
+
+        Dies ist eine **1:n-Beziehung**, da ein Lieferant viele Materialien liefert, aber jedes Material nur von einem Lieferanten kommt.
+
+        ```mermaid
+        erDiagram
+            LIEFERANTEN ||--o{ MATERIALIEN : "liefert"
+
+            LIEFERANTEN {
+                int lieferant_id PK
+                string name
+                string standort
+            }
+
+            MATERIALIEN {
+                int material_id PK
+                string materialname
+                string einheit
+                decimal preis
+                int lieferant_id FK
+            }
+        ```
+
+        **Wichtig:**
+
+        - Der Fremdschlüssel `lieferant_id` steht in der Tabelle `MATERIALIEN` (die "n"-Seite)
+        - Die Kardinalität ist `||--o{` (eins zu viele)
+
+    ??? tip "Lösung Szenario 2: Techniker und Zertifizierungen (n:m)"
+
+        Dies ist eine **n:m-Beziehung**, da ein Techniker viele Zertifizierungen haben kann und eine Zertifizierung von vielen Technikern erworben werden kann. Daher benötigen wir eine **Zwischentabelle**.
+
+        ```mermaid
+        erDiagram
+            TECHNIKER ||--o{ ZERTIFIKATSVERGABEN : "hat"
+            ZERTIFIZIERUNGEN ||--o{ ZERTIFIKATSVERGABEN : "wird_vergeben_an"
+
+            TECHNIKER {
+                int techniker_id PK
+                string name
+            }
+
+            ZERTIFIZIERUNGEN {
+                int zertifizierung_id PK
+                string bezeichnung
+                int gueltigkeit_jahre
+            }
+
+            ZERTIFIKATSVERGABEN {
+                int vergabe_id PK
+                int techniker_id FK
+                int zertifizierung_id FK
+                date erwerbsdatum
+                date ablaufdatum
+            }
+        ```
+
+        **Wichtig:**
+
+        - Die Zwischentabelle `ZERTIFIKATSVERGABEN` enthält beide Fremdschlüssel
+        - Zusätzliche Attribute der Beziehung (Erwerbsdatum, Ablaufdatum) werden in der Zwischentabelle gespeichert
+        - Die n:m-Beziehung wird in zwei 1:n-Beziehungen aufgeteilt
+
+---
+
+## Implementierung
+### 1:n Beziehungen
 
 Die 1:n-Beziehung ist die häufigste Beziehungsart in relationalen Datenbanken. Schauen wir uns an, wie wir sie umsetzen.
 
 **Goldene Regel:** Der Fremdschlüssel kommt auf die **n-Seite** (die "viele"-Seite)!
 
-### Beispiel: Maschinen und Wartungsprotokolle
+Beispiel: Maschinen und Wartungsprotokolle
 
 **Szenario:** Eine Maschine hat viele Wartungen, jede Wartung gehört zu einer Maschine (1:n)
 
@@ -334,7 +479,7 @@ erDiagram
     MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "haben"
 ```
 
-### Schritt 1: Tabellen erstellen
+Schritt 1: Tabellen erstellen
 
 ???+ example "SQL-Code"
     ```sql
@@ -375,7 +520,7 @@ erDiagram
     CREATE TABLE maschinen (...);
     ```
 
-### Schritt 2: Daten einfügen
+Schritt 2: Daten einfügen
 
 ???+ example "SQL-Code"
     ```sql
@@ -423,11 +568,193 @@ erDiagram
 
 ---
 
-## Referenzielle Integrität
+
+### n:m Beziehungen
+
+n:m-Beziehungen (Viele-zu-Viele) sind komplexer als 1:n-Beziehungen.
+
+**Das Problem:** Wir können eine n:m-Beziehung **nicht direkt** mit einem einzigen Fremdschlüssel umsetzen!
+
+**Die Lösung:** Eine **Zwischentabelle** (auch **Verbindungstabelle**, **Junction Table** oder **Assoziationstabelle** genannt).
+
+Warum brauchen wir eine Zwischentabelle?
+
+Betrachten wir ein Beispiel:
+
+**Szenario:** Eine Maschine benötigt viele Ersatzteile, und ein Ersatzteil kann in vielen Maschinen verwendet werden (n:m)
+
+???+ question "Gedankenexperiment"
+    **Versuch 1:** Fremdschlüssel in `maschinen`?
+
+    ```
+    maschinen:
+    maschinen_id │ name            │ ersatzteil_id
+    ─────────────┼─────────────────┼──────────────
+               1 │ CNC-Fräse Alpha │ ???  -- Mehrere Ersatzteile?
+    ```
+
+    ❌ Problem: Eine Maschine braucht **mehrere** Ersatzteile, aber wir können nur **einen** Fremdschlüssel speichern!
+
+    **Versuch 2:** Fremdschlüssel in `ersatzteile`?
+
+    ```
+    ersatzteile:
+    teil_id │ teilname        │ maschinen_id
+    ────────┼─────────────────┼──────────────
+          1 │ Spindelmotor    │ ???  -- In mehreren Maschinen?
+    ```
+
+    ❌ Problem: Ein Ersatzteil wird in **mehreren** Maschinen verwendet, aber wir können nur **eine** Maschine speichern!
+
+    **Lösung:** Eine Zwischentabelle!
+
+Beispiel: Maschinen und Ersatzteile
+
+**ER-Modell:**
+
+```mermaid
+erDiagram
+    MASCHINEN }o--o{ ERSATZTEILE : "benötigen"
+```
+
+**SQL-Umsetzung:** Drei Tabellen!
+
+```mermaid
+erDiagram
+    MASCHINEN ||--o{ MASCHINEN_ERSATZTEILE : "hat"
+    ERSATZTEILE ||--o{ MASCHINEN_ERSATZTEILE : "wird_verwendet_in"
+
+    MASCHINEN {
+        int maschinen_id PK
+        string name
+        string typ
+    }
+
+    ERSATZTEILE {
+        int teil_id PK
+        string teilname
+        string hersteller
+    }
+
+    MASCHINEN_ERSATZTEILE {
+        int zuordnung_id PK
+        int maschinen_id FK
+        int teil_id FK
+        int menge "Zusätzliches Attribut"
+    }
+```
+
+Schritt 1: Die drei Tabellen erstellen
+
+???+ example "SQL-Code"
+    ```sql
+    -- Tabelle 1: Maschinen (die "n"-Seite)
+    CREATE TABLE maschinen (
+        maschinen_id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        typ VARCHAR(50),
+        standort VARCHAR(50)
+    );
+
+    -- Tabelle 2: Ersatzteile (die "m"-Seite)
+    CREATE TABLE ersatzteile (
+        teil_id SERIAL PRIMARY KEY,
+        teilname VARCHAR(100) NOT NULL,
+        hersteller VARCHAR(50),
+        preis NUMERIC(10, 2)
+    );
+
+    -- Tabelle 3: Zwischentabelle (verbindet beide!)
+    CREATE TABLE maschinen_ersatzteile (
+        zuordnung_id SERIAL PRIMARY KEY,
+        maschinen_id INTEGER NOT NULL,
+        teil_id INTEGER NOT NULL,
+        menge INTEGER DEFAULT 1,  -- Zusätzliches Attribut der Beziehung!
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE CASCADE,
+        FOREIGN KEY (teil_id) REFERENCES ersatzteile(teil_id)
+            ON DELETE CASCADE
+    );
+    ```
+
+    **Wichtige Punkte:**
+
+    - Die Zwischentabelle hat **zwei Fremdschlüssel**
+    - Jede Zeile in der Zwischentabelle repräsentiert eine **Zuordnung**
+    - Zusätzliche Attribute (wie `menge`) können in der Zwischentabelle gespeichert werden
+
+???+ tip "Benennung der Zwischentabelle"
+    Typische Namenskonventionen:
+
+    - `tabelle1_tabelle2` (z.B. `maschinen_ersatzteile`)
+    - Verb, das die Beziehung beschreibt (z.B. `benötigt`, `verwendet`)
+    - Plural beider Tabellennamen (z.B. `maschinen_ersatzteile`)
+
+Schritt 2: Daten einfügen
+
+???+ example "SQL-Code"
+    ```sql
+    -- 1. Erst die Maschinen
+    INSERT INTO maschinen (name, typ, standort)
+    VALUES
+        ('CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A'),
+        ('Drehbank Beta', 'Drehbank', 'Halle A'),
+        ('Schweißroboter Gamma', 'Roboter', 'Halle B');
+
+    -- 2. Dann die Ersatzteile
+    INSERT INTO ersatzteile (teilname, hersteller, preis)
+    VALUES
+        ('Spindelmotor', 'MotorTech GmbH', 1250.00),
+        ('Kühlmittelpumpe', 'PumpCo', 380.50),
+        ('Schweißdrahtspule', 'WeldSupply', 45.90);
+
+    -- 3. Zuletzt die Zuordnungen
+    INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, menge)
+    VALUES
+        (1, 1, 1),  -- CNC-Fräse benötigt 1x Spindelmotor
+        (1, 2, 2),  -- CNC-Fräse benötigt 2x Kühlmittelpumpe
+        (2, 1, 1),  -- Drehbank benötigt 1x Spindelmotor
+        (2, 2, 1),  -- Drehbank benötigt 1x Kühlmittelpumpe
+        (3, 2, 1),  -- Schweißroboter benötigt 1x Kühlmittelpumpe
+        (3, 3, 5);  -- Schweißroboter benötigt 5x Schweißdrahtspule
+    ```
+
+    **Visualisierung der Beziehungen:**
+
+    ```
+    CNC-Fräse Alpha benötigt:
+      ├─ Spindelmotor (1x)
+      └─ Kühlmittelpumpe (2x)
+
+    Drehbank Beta benötigt:
+      ├─ Spindelmotor (1x)
+      └─ Kühlmittelpumpe (1x)
+
+    Schweißroboter Gamma benötigt:
+      ├─ Kühlmittelpumpe (1x)
+      └─ Schweißdrahtspule (5x)
+    ```
+
+???+ info "Umgekehrte Sicht"
+    Die Beziehung funktioniert in beide Richtungen:
+
+    **Welche Maschinen verwenden den Spindelmotor?**
+    - CNC-Fräse Alpha (1x)
+    - Drehbank Beta (1x)
+
+    **Welche Maschinen verwenden die Kühlmittelpumpe?**
+    - CNC-Fräse Alpha (2x)
+    - Drehbank Beta (1x)
+    - Schweißroboter Gamma (1x)
+
+---
+
+
+#### Referenzielle Integrität
 
 **Referenzielle Integrität** bedeutet: Jeder Fremdschlüssel muss auf einen **existierenden** Primärschlüssel verweisen. Die Datenbank stellt sicher, dass keine "verwaisten" Datensätze entstehen.
 
-### Das Problem: Was passiert beim Löschen?
+Das Problem: Was passiert beim Löschen?
 
 Versuchen wir, eine Maschine zu löschen, die Wartungen hat:
 
@@ -445,7 +772,7 @@ DETAIL: Key (maschinen_id)=(1) is still referenced from table "wartungsprotokoll
 
 **Was ist das Problem?** Es gibt Wartungsprotokolle, die auf Maschine 1 verweisen. Würden wir die Maschine löschen, würden diese Wartungsprotokolle auf eine nicht existierende Maschine zeigen - sie wären "verwaist"!
 
-### Die Lösung: `ON DELETE` Optionen
+Die Lösung: `ON DELETE` Optionen
 
 Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passieren soll:
 
@@ -484,7 +811,7 @@ Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passi
 </table>
 </div>
 
-### Beispiele für `ON DELETE` Optionen
+Beispiele für `ON DELETE` Optionen
 
 <div class="grid cards" markdown>
 
@@ -607,187 +934,6 @@ Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passi
 
 ---
 
-## n:m Beziehungen implementieren
-
-n:m-Beziehungen (Viele-zu-Viele) sind komplexer als 1:n-Beziehungen.
-
-**Das Problem:** Wir können eine n:m-Beziehung **nicht direkt** mit einem einzigen Fremdschlüssel umsetzen!
-
-**Die Lösung:** Eine **Zwischentabelle** (auch **Verbindungstabelle**, **Junction Table** oder **Assoziationstabelle** genannt).
-
-### Warum brauchen wir eine Zwischentabelle?
-
-Betrachten wir ein Beispiel:
-
-**Szenario:** Eine Maschine benötigt viele Ersatzteile, und ein Ersatzteil kann in vielen Maschinen verwendet werden (n:m)
-
-???+ question "Gedankenexperiment"
-    **Versuch 1:** Fremdschlüssel in `maschinen`?
-
-    ```
-    maschinen:
-    maschinen_id │ name            │ ersatzteil_id
-    ─────────────┼─────────────────┼──────────────
-               1 │ CNC-Fräse Alpha │ ???  -- Mehrere Ersatzteile?
-    ```
-
-    ❌ Problem: Eine Maschine braucht **mehrere** Ersatzteile, aber wir können nur **einen** Fremdschlüssel speichern!
-
-    **Versuch 2:** Fremdschlüssel in `ersatzteile`?
-
-    ```
-    ersatzteile:
-    teil_id │ teilname        │ maschinen_id
-    ────────┼─────────────────┼──────────────
-          1 │ Spindelmotor    │ ???  -- In mehreren Maschinen?
-    ```
-
-    ❌ Problem: Ein Ersatzteil wird in **mehreren** Maschinen verwendet, aber wir können nur **eine** Maschine speichern!
-
-    **Lösung:** Eine Zwischentabelle!
-
-### Beispiel: Maschinen und Ersatzteile
-
-**ER-Modell:**
-
-```mermaid
-erDiagram
-    MASCHINEN }o--o{ ERSATZTEILE : "benötigen"
-```
-
-**SQL-Umsetzung:** Drei Tabellen!
-
-```mermaid
-erDiagram
-    MASCHINEN ||--o{ MASCHINEN_ERSATZTEILE : "hat"
-    ERSATZTEILE ||--o{ MASCHINEN_ERSATZTEILE : "wird_verwendet_in"
-
-    MASCHINEN {
-        int maschinen_id PK
-        string name
-        string typ
-    }
-
-    ERSATZTEILE {
-        int teil_id PK
-        string teilname
-        string hersteller
-    }
-
-    MASCHINEN_ERSATZTEILE {
-        int zuordnung_id PK
-        int maschinen_id FK
-        int teil_id FK
-        int menge "Zusätzliches Attribut"
-    }
-```
-
-### Schritt 1: Die drei Tabellen erstellen
-
-???+ example "SQL-Code"
-    ```sql
-    -- Tabelle 1: Maschinen (die "n"-Seite)
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        typ VARCHAR(50),
-        standort VARCHAR(50)
-    );
-
-    -- Tabelle 2: Ersatzteile (die "m"-Seite)
-    CREATE TABLE ersatzteile (
-        teil_id SERIAL PRIMARY KEY,
-        teilname VARCHAR(100) NOT NULL,
-        hersteller VARCHAR(50),
-        preis NUMERIC(10, 2)
-    );
-
-    -- Tabelle 3: Zwischentabelle (verbindet beide!)
-    CREATE TABLE maschinen_ersatzteile (
-        zuordnung_id SERIAL PRIMARY KEY,
-        maschinen_id INTEGER NOT NULL,
-        teil_id INTEGER NOT NULL,
-        menge INTEGER DEFAULT 1,  -- Zusätzliches Attribut der Beziehung!
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE,
-        FOREIGN KEY (teil_id) REFERENCES ersatzteile(teil_id)
-            ON DELETE CASCADE
-    );
-    ```
-
-    **Wichtige Punkte:**
-
-    - Die Zwischentabelle hat **zwei Fremdschlüssel**
-    - Jede Zeile in der Zwischentabelle repräsentiert eine **Zuordnung**
-    - Zusätzliche Attribute (wie `menge`) können in der Zwischentabelle gespeichert werden
-
-???+ tip "Benennung der Zwischentabelle"
-    Typische Namenskonventionen:
-
-    - `tabelle1_tabelle2` (z.B. `maschinen_ersatzteile`)
-    - Verb, das die Beziehung beschreibt (z.B. `benötigt`, `verwendet`)
-    - Plural beider Tabellennamen (z.B. `maschinen_ersatzteile`)
-
-### Schritt 2: Daten einfügen
-
-???+ example "SQL-Code"
-    ```sql
-    -- 1. Erst die Maschinen
-    INSERT INTO maschinen (name, typ, standort)
-    VALUES
-        ('CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A'),
-        ('Drehbank Beta', 'Drehbank', 'Halle A'),
-        ('Schweißroboter Gamma', 'Roboter', 'Halle B');
-
-    -- 2. Dann die Ersatzteile
-    INSERT INTO ersatzteile (teilname, hersteller, preis)
-    VALUES
-        ('Spindelmotor', 'MotorTech GmbH', 1250.00),
-        ('Kühlmittelpumpe', 'PumpCo', 380.50),
-        ('Schweißdrahtspule', 'WeldSupply', 45.90);
-
-    -- 3. Zuletzt die Zuordnungen
-    INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, menge)
-    VALUES
-        (1, 1, 1),  -- CNC-Fräse benötigt 1x Spindelmotor
-        (1, 2, 2),  -- CNC-Fräse benötigt 2x Kühlmittelpumpe
-        (2, 1, 1),  -- Drehbank benötigt 1x Spindelmotor
-        (2, 2, 1),  -- Drehbank benötigt 1x Kühlmittelpumpe
-        (3, 2, 1),  -- Schweißroboter benötigt 1x Kühlmittelpumpe
-        (3, 3, 5);  -- Schweißroboter benötigt 5x Schweißdrahtspule
-    ```
-
-    **Visualisierung der Beziehungen:**
-
-    ```
-    CNC-Fräse Alpha benötigt:
-      ├─ Spindelmotor (1x)
-      └─ Kühlmittelpumpe (2x)
-
-    Drehbank Beta benötigt:
-      ├─ Spindelmotor (1x)
-      └─ Kühlmittelpumpe (1x)
-
-    Schweißroboter Gamma benötigt:
-      ├─ Kühlmittelpumpe (1x)
-      └─ Schweißdrahtspule (5x)
-    ```
-
-???+ info "Umgekehrte Sicht"
-    Die Beziehung funktioniert in beide Richtungen:
-
-    **Welche Maschinen verwenden den Spindelmotor?**
-    - CNC-Fräse Alpha (1x)
-    - Drehbank Beta (1x)
-
-    **Welche Maschinen verwenden die Kühlmittelpumpe?**
-    - CNC-Fräse Alpha (2x)
-    - Drehbank Beta (1x)
-    - Schweißroboter Gamma (1x)
-
----
-
-## Praktische Übungen
 
 Teste dein Wissen über Datenmodellierung und Beziehungen!
 
