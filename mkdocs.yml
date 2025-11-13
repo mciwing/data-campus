@@ -49,7 +49,7 @@ nav:
     - Abfragen von Daten: database/abfragen.md
     - Daten Manipulieren: database/manipulieren.md
     - Datenmodellierung: database/modellierung.md
-    - Join: database/join.md
+    - Daten Zusammenführen: database/join.md
     - Fortgeschritten: database/fortgeschritten.md
     - Integrität: database/integritaet.md
     - Indizes: database/indizes.md
