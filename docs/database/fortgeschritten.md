@@ -1,8 +1,10 @@
 # Fortgeschrittene Abfragen
 
-Wir haben bereits viel gelernt: Tabellen erstellen, Daten einfügen, filtern, sortieren, JOINs – die Grundlagen sind gelegt! Jetzt wird es Zeit für **fortgeschrittene SQL-Techniken**, die deine Abfragen noch mächtiger machen.
+In den vorangegangenen Kapiteln haben wir die Grundlagen von SQL kennengelernt: Vom [Erstellen von Tabellen](relational.md), über das [Abfragen](abfragen.md) und [Manipulieren von Daten](manipulieren.md), bis hin zur [Modellierung von Beziehungen](modellierung.md) und dem [Verknüpfen mehrerer Tabellen mit JOINs](join.md). Die Grundlagen sind gelegt!
 
-In diesem Kapitel lernst du:
+Jetzt wird es Zeit für **fortgeschrittene SQL-Techniken**, die unsere Abfragen noch mächtiger machen. Diese Techniken werden uns helfen, komplexe Anfragen elegant zu lösen und unsere Daten auf neue Art und Weise zu analysieren.
+
+In diesem Kapitel lernen wir:
 
 - **Unterabfragen (Subqueries)** – Abfragen in Abfragen
 - **String-Funktionen** – Texte manipulieren
@@ -12,11 +14,11 @@ In diesem Kapitel lernst du:
 
 ---
 
-## Unterabfragen (Subqueries)
+## Unterabfragen
 
-Eine **Unterabfrage** (Subquery) ist eine SELECT-Abfrage **innerhalb** einer anderen Abfrage.
+Eine **Unterabfrage** (Subquery) ist eine SELECT-Abfrage **innerhalb** einer anderen Abfrage. Diese Technik erlaubt es uns, komplexe Fragestellungen in einem einzigen SQL-Statement zu lösen, ohne temporäre Ergebnisse manuell weiterverarbeiten zu müssen. Unterabfragen sind besonders nützlich, wenn wir das Ergebnis einer Berechnung direkt in einer anderen Abfrage verwenden möchten.
 
-### Beispiel: Maschinen über dem Durchschnittsanschaffungsjahr
+Beispiel: Maschinen über dem Durchschnittsanschaffungsjahr
 
 **Frage:** Welche Maschinen wurden später angeschafft als im Durchschnitt?
 
@@ -38,13 +40,13 @@ FROM maschinen
 WHERE anschaffungsjahr > (SELECT AVG(anschaffungsjahr) FROM maschinen);
 ```
 
-Die innere Abfrage `(SELECT AVG(anschaffungsjahr) FROM maschinen)` wird **zuerst** ausgeführt und liefert einen Wert (z.B. 2019), der dann in der äußeren Abfrage verwendet wird.
+Die innere Abfrage `(SELECT AVG(anschaffungsjahr) FROM maschinen)` wird **zuerst** ausgeführt und liefert einen Wert (z.B. 2019), der dann in der äußeren Abfrage verwendet wird. Das ist der große Vorteil von Unterabfragen: Wir müssen nicht erst manuell den Durchschnitt berechnen und dann in eine zweite Abfrage einsetzen - SQL erledigt dies automatisch für uns in einem einzigen Schritt.
 
 ---
 
 ## Unterabfragen mit IN
 
-Mit **IN** können wir prüfen, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist.
+Mit **IN** können wir prüfen, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Dies ist besonders nützlich, wenn die Unterabfrage mehrere Ergebniszeilen liefert und wir prüfen wollen, ob unser Wert in dieser Liste vorkommt. Statt eines einzelnen Wertes wie beim einfachen Vergleich, gibt die Unterabfrage hier eine ganze Liste von Werten zurück.
 
 ### Beispiel: Maschinen, die Spindelmotoren verwenden
 
@@ -86,7 +88,7 @@ WHERE maschinen_id NOT IN (
 
 ## EXISTS und NOT EXISTS
 
-**EXISTS** prüft, ob eine Unterabfrage **mindestens ein Ergebnis** liefert.
+**EXISTS** prüft, ob eine Unterabfrage **mindestens ein Ergebnis** liefert. Im Gegensatz zu `IN`, das die gesamte Ergebnisliste der Unterabfrage durchgeht, stoppt `EXISTS` bereits, sobald das erste passende Ergebnis gefunden wurde. Das macht `EXISTS` oft performanter, besonders bei großen Datenmengen. Ein weiterer Vorteil: `EXISTS` hat keine Probleme mit NULL-Werten, die bei `NOT IN` zu unerwartetem Verhalten führen können.
 
 ### Beispiel: Techniker mit zugeordneten Maschinen
 
@@ -129,7 +131,7 @@ WHERE NOT EXISTS (
 
 ## Unterabfragen in FROM (Derived Tables)
 
-Man kann eine Unterabfrage auch in der **FROM-Klausel** verwenden – als wäre sie eine Tabelle!
+Man kann eine Unterabfrage auch in der **FROM-Klausel** verwenden – als wäre sie eine Tabelle! Diese sogenannten "Derived Tables" oder "Inline Views" sind besonders nützlich, wenn wir mit aggregierten Daten weiterarbeiten möchten. Da wir in der WHERE-Klausel keine Aggregatfunktionen direkt verwenden können, erstellen wir eine Unterabfrage, die die Aggregation durchführt, und können dann auf deren Ergebnis filtern.
 
 ```sql
 -- Durchschnittliche Ersatzteilkosten pro Maschine, aber nur für Maschinen mit Kosten > 1000
@@ -152,7 +154,7 @@ WHERE avg_kosten > 1000;
 
 ## String-Funktionen
 
-SQL bietet viele Funktionen zur Textverarbeitung.
+SQL bietet viele Funktionen zur Textverarbeitung. Diese sind besonders nützlich, um Daten zu bereinigen, zu formatieren oder für Reports aufzubereiten. Ob wir Texte zusammenfügen, Groß-/Kleinschreibung ändern oder Teile eines Strings extrahieren möchten - für fast jede Anforderung gibt es eine passende Funktion.
 
 ### Die wichtigsten String-Funktionen
 
@@ -208,6 +210,8 @@ SQL bietet viele Funktionen zur Textverarbeitung.
 
 ### Praktische Beispiele
 
+Schauen wir uns an, wie wir diese String-Funktionen in der Praxis einsetzen können. Die folgenden Beispiele zeigen typische Anwendungsfälle aus dem Alltag:
+
 ```sql
 -- Vollständige Maschinenbezeichnung mit Standort
 SELECT
@@ -259,7 +263,7 @@ FROM maschinen;
 
 ## Datumsfunktionen
 
-PostgreSQL bietet umfangreiche Funktionen für Datum und Zeit.
+PostgreSQL bietet umfangreiche Funktionen für Datum und Zeit. Die Arbeit mit Datums- und Zeitwerten ist in vielen Anwendungen zentral - sei es für Protokolle, Zeitstempel, Berechnungen von Zeiträumen oder für zeitbasierte Analysen. Mit den Datumsfunktionen können wir das aktuelle Datum abrufen, Teile eines Datums extrahieren oder Zeitdifferenzen berechnen.
 
 ### Die wichtigsten Datumsfunktionen
 
@@ -305,6 +309,8 @@ PostgreSQL bietet umfangreiche Funktionen für Datum und Zeit.
 
 ### Beispiele
 
+Schauen wir uns praktische Anwendungsfälle an. Zunächst erweitern wir unsere Tabelle um ein Installationsdatum, damit wir mit echten Datumswerten arbeiten können:
+
 ```sql
 -- Tabelle mit Installationsdatum erweitern
 ALTER TABLE maschinen ADD COLUMN installationsdatum DATE;
@@ -344,11 +350,11 @@ ORDER BY installationsjahr;
 
 ## CASE WHEN - Bedingte Logik
 
-Mit **CASE WHEN** können wir bedingte Logik direkt in SQL einbauen – ähnlich wie `if-else` in Programmiersprachen.
+Mit **CASE WHEN** können wir bedingte Logik direkt in SQL einbauen – ähnlich wie `if-else` in Programmiersprachen. Dies ist besonders nützlich, um Daten zu kategorisieren, Berechnungen basierend auf Bedingungen durchzuführen oder benutzerdefinierte Ausgaben zu erzeugen. Statt die Logik in der Anwendungsschicht zu implementieren, können wir sie direkt in der Datenbankabfrage unterbringen, was oft effizienter und lesbarer ist.
 
 ### Syntax
 
-```sql
+```sql { .yaml .no-copy }
 CASE
     WHEN bedingung1 THEN ergebnis1
     WHEN bedingung2 THEN ergebnis2
@@ -398,6 +404,8 @@ ORDER BY preis;
 
 ### CASE in Aggregationen
 
+CASE WHEN kann auch innerhalb von Aggregatfunktionen verwendet werden, um selektive Zählungen durchzuführen. Dies ist besonders nützlich für Auswertungen und Berichte:
+
 ```sql
 -- Wie viele Ersatzteile sind teurer als 500 Euro?
 SELECT
@@ -411,11 +419,11 @@ FROM ersatzteile;
 
 ## COALESCE - NULL-Werte behandeln
 
-**COALESCE** gibt den ersten **nicht-NULL-Wert** aus einer Liste zurück.
+**COALESCE** gibt den ersten **nicht-NULL-Wert** aus einer Liste zurück. Diese Funktion ist extrem nützlich im Umgang mit NULL-Werten, die in Datenbanken häufig vorkommen. Statt komplizierte CASE-WHEN-Konstrukte zu schreiben oder NULL-Werte in der Anwendung zu behandeln, bietet COALESCE eine elegante und lesbare Lösung, um Standardwerte für fehlende Daten bereitzustellen.
 
 ### Syntax
 
-```sql
+```sql { .yaml .no-copy }
 COALESCE(wert1, wert2, wert3, ..., standard)
 ```
 
@@ -446,6 +454,8 @@ Maschinen ohne Ersatzteile bekommen `0` statt `NULL`.
 ---
 
 ## Mathematische Funktionen
+
+Neben String- und Datumsfunktionen bietet SQL auch eine Vielzahl mathematischer Funktionen. Diese sind besonders nützlich für Berechnungen, Rundungen und statistische Auswertungen direkt in der Datenbank.
 
 <div style="text-align:center; max-width:900px; margin:16px auto;">
 <table role="table" 
@@ -492,6 +502,8 @@ Maschinen ohne Ersatzteile bekommen `0` statt `NULL`.
 </table>
 </div>
 
+Ein häufiger Anwendungsfall für mathematische Funktionen ist das Runden von Berechnungsergebnissen für eine übersichtliche Darstellung:
+
 ```sql
 -- Ersatzteilkosten auf 2 Nachkommastellen runden
 SELECT
@@ -507,112 +519,112 @@ GROUP BY m.name;
 
 ## Praktische Übungen 🎯
 
-### Aufgabe 1: Unterabfragen
+Nun ist es Zeit, die gelernten Techniken zu üben! Die folgenden Aufgaben helfen uns, Unterabfragen, Funktionen und bedingte Logik anzuwenden.
 
-Finde alle Ersatzteile, die teurer sind als der Durchschnittspreis.
+???+ question "Aufgabe 1: Unterabfragen"
 
-<details>
-<summary>💡 Lösung anzeigen</summary>
+    Finde alle Ersatzteile, die teurer sind als der Durchschnittspreis.
 
-```sql
-SELECT teilname, preis
-FROM ersatzteile
-WHERE preis > (SELECT AVG(preis) FROM ersatzteile);
-```
-</details>
+    ??? tip "Lösung anzeigen"
 
-### Aufgabe 2: String-Funktionen
+        ```sql
+        SELECT teilname, preis
+        FROM ersatzteile
+        WHERE preis > (SELECT AVG(preis) FROM ersatzteile);
+        ```
 
-Erstelle für alle Maschinen eine Seriennummer im Format: `TYP-ID-JAHR` (z.B. `CNC-1-2019`)
+???+ question "Aufgabe 2: String-Funktionen"
 
-<details>
-<summary>💡 Lösung anzeigen</summary>
+    Erstelle für alle Maschinen eine Seriennummer im Format: `TYP-ID-JAHR` (z.B. `CNC-1-2019`)
 
-```sql
-SELECT
-    name,
-    CONCAT(
-        UPPER(SUBSTRING(typ, 1, 3)),
-        '-',
-        maschinen_id,
-        '-',
-        anschaffungsjahr
-    ) AS seriennummer
-FROM maschinen;
-```
-</details>
+    ??? tip "Lösung anzeigen"
 
-### Aufgabe 3: CASE WHEN
+        ```sql
+        SELECT
+            name,
+            CONCAT(
+                UPPER(SUBSTRING(typ, 1, 3)),
+                '-',
+                maschinen_id,
+                '-',
+                anschaffungsjahr
+            ) AS seriennummer
+        FROM maschinen;
+        ```
 
-Kategorisiere Maschinen nach Anschaffungsjahr:
-- ab 2022: "Neu"
-- 2018-2021: "Mittel"
-- vor 2018: "Alt"
+???+ question "Aufgabe 3: CASE WHEN"
 
-<details>
-<summary>💡 Lösung anzeigen</summary>
+    Kategorisiere Maschinen nach Anschaffungsjahr:
 
-```sql
-SELECT
-    name,
-    anschaffungsjahr,
-    CASE
-        WHEN anschaffungsjahr >= 2022 THEN 'Neu'
-        WHEN anschaffungsjahr >= 2018 THEN 'Mittel'
-        ELSE 'Alt'
-    END AS altersklasse
-FROM maschinen;
-```
-</details>
+    - ab 2022: "Neu"
+    - 2018-2021: "Mittel"
+    - vor 2018: "Alt"
 
-### Aufgabe 4: Kombiniert
+    ??? tip "Lösung anzeigen"
 
-Finde Maschinen, die überdurchschnittlich hohe Ersatzteilkosten haben.
+        ```sql
+        SELECT
+            name,
+            anschaffungsjahr,
+            CASE
+                WHEN anschaffungsjahr >= 2022 THEN 'Neu'
+                WHEN anschaffungsjahr >= 2018 THEN 'Mittel'
+                ELSE 'Alt'
+            END AS altersklasse
+        FROM maschinen;
+        ```
 
-<details>
-<summary>💡 Lösung anzeigen</summary>
+???+ question "Aufgabe 4: Kombiniert"
 
-```sql
-SELECT
-    m.name,
-    ROUND(SUM(e.preis * me.menge), 2) AS gesamt_kosten
-FROM maschinen m
-INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
-INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
-GROUP BY m.name
-HAVING SUM(e.preis * me.menge) > (
-    SELECT AVG(kosten)
-    FROM (
-        SELECT SUM(e.preis * me.menge) AS kosten
+    Finde Maschinen, die überdurchschnittlich hohe Ersatzteilkosten haben.
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        SELECT
+            m.name,
+            ROUND(SUM(e.preis * me.menge), 2) AS gesamt_kosten
         FROM maschinen m
         INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
         INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
-        GROUP BY m.maschinen_id
-    ) AS durchschnitt
-);
-```
-</details>
+        GROUP BY m.name
+        HAVING SUM(e.preis * me.menge) > (
+            SELECT AVG(kosten)
+            FROM (
+                SELECT SUM(e.preis * me.menge) AS kosten
+                FROM maschinen m
+                INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+                INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+                GROUP BY m.maschinen_id
+            ) AS durchschnitt
+        );
+        ```
 
 ---
 
 ## Zusammenfassung 📌
 
-- **Unterabfragen** erlauben Abfragen innerhalb von Abfragen
-- **IN / NOT IN** prüft Mitgliedschaft in einer Menge
-- **EXISTS / NOT EXISTS** prüft, ob eine Unterabfrage Ergebnisse liefert (oft schneller als IN)
-- **String-Funktionen**: CONCAT, UPPER, LOWER, SUBSTRING, LENGTH, TRIM, REPLACE
-- **Datumsfunktionen**: CURRENT_DATE, NOW, EXTRACT, AGE
-- **CASE WHEN** bringt if-else-Logik nach SQL
-- **COALESCE** behandelt NULL-Werte elegant
-- **Mathematische Funktionen**: ROUND, CEIL, FLOOR, ABS, POWER, SQRT
+Mit den fortgeschrittenen SQL-Techniken aus diesem Kapitel haben wir unser Werkzeugkasten deutlich erweitert. Diese Techniken erlauben es uns, komplexe Abfragen elegant zu formulieren und Daten direkt in der Datenbank zu transformieren und zu analysieren, ohne auf Anwendungslogik zurückgreifen zu müssen.
+
+Die wichtigsten Erkenntnisse:
+
+- **Unterabfragen** erlauben Abfragen innerhalb von Abfragen und machen komplexe Fragestellungen in einem Statement lösbar
+- **IN / NOT IN** prüft Mitgliedschaft in einer Menge, aber Achtung bei NULL-Werten
+- **EXISTS / NOT EXISTS** prüft, ob eine Unterabfrage Ergebnisse liefert - oft schneller als IN und ohne NULL-Probleme
+- **String-Funktionen** (CONCAT, UPPER, LOWER, SUBSTRING, LENGTH, TRIM, REPLACE) zur Textverarbeitung
+- **Datumsfunktionen** (CURRENT_DATE, NOW, EXTRACT, AGE) für zeitbasierte Analysen
+- **CASE WHEN** bringt if-else-Logik nach SQL und ermöglicht Kategorisierungen
+- **COALESCE** behandelt NULL-Werte elegant ohne komplizierte Konstrukte
+- **Mathematische Funktionen** (ROUND, CEIL, FLOOR, ABS, POWER, SQRT) für Berechnungen
 
 **Best Practices:**
 
-✅ EXISTS ist meist schneller als IN  
-✅ String-Funktionen für konsistente Formatierung  
-✅ CASE WHEN für lesbare kategorisierte Ausgaben  
-✅ COALESCE statt komplizierter NULL-Behandlung
+✅ EXISTS ist meist schneller als IN und hat keine NULL-Probleme
+✅ String-Funktionen für konsistente Formatierung nutzen
+✅ CASE WHEN für lesbare kategorisierte Ausgaben verwenden
+✅ COALESCE statt komplizierter NULL-Behandlung einsetzen
+✅ Unterabfragen sparsam einsetzen - manchmal ist ein JOIN übersichtlicher
 
 ---
 
-Im nächsten Kapitel lernen wir über **Datenintegrität & Constraints** – wie wir sicherstellen, dass nur gültige Daten in unsere Datenbank gelangen!
+Im nächsten Kapitel lernen wir über **Datenintegrität & Constraints** – wie wir sicherstellen, dass nur gültige Daten in unsere Datenbank gelangen! Mit den hier gelernten Techniken können wir nun auch komplexe Abfragen formulieren, doch die Qualität unserer Daten ist ebenso wichtig wie unsere Fähigkeit, sie abzufragen.
