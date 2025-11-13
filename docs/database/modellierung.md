@@ -515,7 +515,7 @@ Bevor wir mit der Implementierung in SQL beginnen, wollen wir das Erlente schon 
 
 Nachdem wir nun ER-Diagramme zeichnen können, ist es nun unsere Aufgabe diese Modelle in echte SQL-Tabellen und damit in eine Datenbank umzusetzen!
 
-### 1:n Beziehungen implementieren
+### 1:n Beziehungen
 
 Die 1:n-Beziehung ist die häufigste Beziehungsart in relationalen Datenbanken.
 
@@ -618,47 +618,42 @@ maschinen_id | name                 | typ            | standort
 
 ---
 
-### n:m Beziehungen implementieren
+### n:m Beziehungen
 
-n:m-Beziehungen (Viele-zu-Viele) sind komplexer als 1:n-Beziehungen.
+Die Implementierung der 1:n Beziehung in einer Datenbank ist - wie wir gesehen haben - relativ einfach.
+Die n:m-Beziehungen (Viele-zu-Viele) sind leider etwas komplexer.
 
 ???+ warning "Problem: n:m nicht direkt umsetzbar"
-    Wir können eine n:m-Beziehung **nicht direkt** mit einem einzigen Fremdschlüssel umsetzen!
+    Eine n:m-Beziehung lässt sich nicht einfach durch einen einzigen Fremdschlüssel abbilden. Um dieses Problem zu lösen, verwendet man eine sogenannte Zwischentabelle – auch Verbindungstabelle, Junction Table oder Assoziationstabelle genannt –, die die Verknüpfung zwischen den beiden Tabellen herstellt.
 
-    **Die Lösung:** Eine **Zwischentabelle** (auch Verbindungstabelle, Junction Table oder Assoziationstabelle genannt).
+Doch wieso brauchen wir diese Zwischentabelle?
 
-#### Warum brauchen wir eine Zwischentabelle?
+Stellen wir uns folgendes Szenario vor: Eine Maschine benötigt viele Ersatzteile, und ein Ersatzteil kann in vielen Maschinen verwendet werden. Dies kann mit einer n:m-Beziehung modelliert werden.
 
-**Szenario:** Eine Maschine benötigt viele Ersatzteile, und ein Ersatzteil kann in vielen Maschinen verwendet werden (n:m)
-
-???+ question "Gedankenexperiment"
+???+ example "Gedankenexperiment"
     **Versuch 1:** Fremdschlüssel in `maschinen`?
 
-    ```
-    maschinen:
-    maschinen_id │ name            │ ersatzteil_id
-    ─────────────┼─────────────────┼──────────────
-               1 │ CNC-Fräse Alpha │ ???  -- Mehrere Ersatzteile?
+    ```sql title="Tabelle: wartungsprotokolle"
+    maschinen_id | name            | ersatzteil_id
+    -------------+-----------------+--------------
+              1  | CNC-Fräse Alpha | ???  -- Mehrere Ersatzteile?
     ```
 
     ❌ Problem: Eine Maschine braucht **mehrere** Ersatzteile, aber wir können nur **einen** Fremdschlüssel speichern!
 
     **Versuch 2:** Fremdschlüssel in `ersatzteile`?
 
-    ```
-    ersatzteile:
-    teil_id │ teilname        │ maschinen_id
-    ────────┼─────────────────┼──────────────
-          1 │ Spindelmotor    │ ???  -- In mehreren Maschinen?
+    ```sql title="Tabelle: ersatzteile"
+    ersatzteil_id | bezeichnung      | maschinen_id
+    --------------+------------------+--------------
+                1 | Spindelmotor     | ???  -- In mehreren Maschinen?
     ```
 
     ❌ Problem: Ein Ersatzteil wird in **mehreren** Maschinen verwendet, aber wir können nur **eine** Maschine speichern!
 
-    **Lösung:** Eine Zwischentabelle!
+Wir sehen also, dass wir eine n:m-Beziehung nicht einfach durch einen einzigen Fremdschlüssel abbilden können. Doch wie können wir nun in der Praxis vorgehen?
 
-#### Beispiel: Maschinen und Ersatzteile
-
-**ER-Modell (konzeptionell):**
+Betrachten wir zunächst einmal das zugehörige konzeptionelle ER-Diagramm.
 
 ```mermaid
 erDiagram
@@ -666,9 +661,8 @@ erDiagram
     MASCHINEN }o--o{ ERSATZTEILE : "benötigen"
 ```
 
-**SQL-Umsetzung mit Zwischentabelle:**
-
-Die n:m-Beziehung wird in **zwei 1:n-Beziehungen** aufgeteilt!
+???+ tip "n:m wird zu 1:n in SQL"
+    Für die reale Umsetzung in SQL benötigen wir aber - wie bereits erwähnt - eine Zwischentabelle. Der Trick ist dabei, dass wir die n:m-Beziehung in zwei 1:n-Beziehungen aufteilen. Diese Zwischentabelle wird dabei durch zwei Fremdschlüssel verknüpft, die auf die Primärschlüssel der beiden Entitäten verweisen.
 
 ```mermaid
 erDiagram
@@ -695,13 +689,10 @@ erDiagram
     }
 ```
 
-???+ tip "Wichtig: Drei Tabellen für n:m"
-    - **Zwei Entitätstabellen:** `maschinen` und `ersatzteile`
-    - **Eine Zwischentabelle:** `maschinen_ersatzteile` mit **zwei Fremdschlüsseln**
+Wir sehen also, dass wir die n:m-Beziehung in zwei 1:n-Beziehungen aufteilen können. Nun können wir beginnen, die Tabellen zu erstellen. Zuerst erstellen wir die beiden Entitäten Tabellen, dann die Zwischentabelle.
 
-#### Schritt 1: Die drei Tabellen erstellen
 
-???+ example "SQL-Code"
+???+ example "SQL-Code: n:m Beziehung"
     ```sql
     -- Tabelle 1: Maschinen (die "n"-Seite)
     CREATE TABLE maschinen (
@@ -738,16 +729,10 @@ erDiagram
     - Jede Zeile in der Zwischentabelle repräsentiert eine **Zuordnung**
     - Zusätzliche Attribute (wie `menge`) können in der Zwischentabelle gespeichert werden
 
-???+ tip "Benennung der Zwischentabelle"
-    Typische Namenskonventionen:
 
-    - `tabelle1_tabelle2` (z.B. `maschinen_ersatzteile`)
-    - Verb, das die Beziehung beschreibt (z.B. `benötigt`, `verwendet`)
-    - Plural beider Tabellennamen (z.B. `maschinen_ersatzteile`)
+Nun können wir beginnen, Daten in unsere Tabellen zu befüllen. Zuerst füllen wir die beiden Entitäten Tabellen, dann die Zwischentabelle.
 
-#### Schritt 2: Daten einfügen
-
-???+ example "SQL-Code"
+???+ example "SQL-Code: Daten einfügen"
     ```sql
     -- 1. Erst die Maschinen
     INSERT INTO maschinen (name, typ, standort)
@@ -774,62 +759,40 @@ erDiagram
         (3, 3, 5);  -- Schweißroboter benötigt 5x Schweißdrahtspule
     ```
 
-    **Visualisierung der Beziehungen:**
-
-    ```
-    CNC-Fräse Alpha benötigt:
-      ├─ Spindelmotor (1x)
-      └─ Kühlmittelpumpe (2x)
-
-    Drehbank Beta benötigt:
-      ├─ Spindelmotor (1x)
-      └─ Kühlmittelpumpe (1x)
-
-    Schweißroboter Gamma benötigt:
-      ├─ Kühlmittelpumpe (1x)
-      └─ Schweißdrahtspule (5x)
-    ```
-
-???+ info "Umgekehrte Sicht"
-    Die Beziehung funktioniert in beide Richtungen:
-
-    **Welche Maschinen verwenden den Spindelmotor?**
-    - CNC-Fräse Alpha (1x)
-    - Drehbank Beta (1x)
-
-    **Welche Maschinen verwenden die Kühlmittelpumpe?**
-    - CNC-Fräse Alpha (2x)
-    - Drehbank Beta (1x)
-    - Schweißroboter Gamma (1x)
+Und das war's auch schon. Die Umsetzung einer n:m Beziehung ist leider nicht so einfach wie die der 1:n Beziehung. Aber mit etwas Überlegung und dem Trick, die n:m Beziehung in zwei 1:n Beziehungen aufzuteilen, können wir diese Beziehung in der Datenbank abbilden.
 
 ---
 
 ### Referenzielle Integrität
 
-**Referenzielle Integrität** bedeutet: Jeder Fremdschlüssel muss auf einen **existierenden** Primärschlüssel verweisen. Die Datenbank stellt sicher, dass keine "verwaisten" Datensätze entstehen.
+Nachdem wir nun mühevoll versucht haben Beziehungen in der Datenbank zu modellieren müssen wir uns nun noch die FRage stellen: Was passiert eigentlich, wenn ich etwas Lösche, was von etwas anderem abhängt?
 
-#### Das Problem: Was passiert beim Löschen?
+???+ example "Beispiel: Maschine löschen"
+    Versuchen wir beispielsweise, eine Maschine zu löschen, die Wartungen hat:
 
-Versuchen wir, eine Maschine zu löschen, die Wartungen hat:
+    ```sql
+    -- Versuch, Maschine 1 (CNC-Fräse Alpha) zu löschen
+    DELETE FROM maschinen WHERE maschinen_id = 1;
+    ```
 
-```sql
--- Versuch, Maschine 1 (CNC-Fräse Alpha) zu löschen
-DELETE FROM maschinen WHERE maschinen_id = 1;
-```
+    ❌ **Fehler!**
 
-❌ **Fehler!**
-
-```
-ERROR: update or delete on table "maschinen" violates foreign key constraint
-DETAIL: Key (maschinen_id)=(1) is still referenced from table "wartungsprotokolle".
-```
+    ```
+    ERROR: update or delete on table "maschinen" violates foreign key constraint
+    DETAIL: Key (maschinen_id)=(1) is still referenced from table "wartungsprotokolle".
+    ```
 
 ???+ danger "Warum der Fehler?"
     Es gibt Wartungsprotokolle, die auf Maschine 1 verweisen. Würden wir die Maschine löschen, würden diese Wartungsprotokolle auf eine nicht existierende Maschine zeigen - sie wären "verwaist"!
 
     Die Datenbank verhindert dies automatisch durch die **referenzielle Integrität**.
 
-#### Die Lösung: `ON DELETE` Optionen
+
+**Referenzielle Integrität** bedeutet also, dass jeder Fremdschlüssel auf einen **existierenden** Primärschlüssel verweisen muss. 
+Zum Glück stellt das DBMS sicher, dass keine "verwaisten" Datensätze entstehen und gibt uns eine Fehlermeldung. 
+
+Doch was ist, wenn wir einen Eintrag wirklich löschen möchten, obwohl er von etwas anderem abhängt? Dazu gibt es die sogenannten `ON DELETE` Optionen.
+
 
 Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passieren soll:
 
@@ -868,130 +831,119 @@ Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passi
 </table>
 </div>
 
-#### Beispiele für `ON DELETE` Optionen
+Schauen wir uns dazu ein Beispiel an. 
 
-<div class="grid cards" markdown>
+???+ example "Beispiel: Kaskadierende Löschung"
 
--   __RESTRICT - Löschen verhindern__
+    ```sql
+    CREATE TABLE wartungsprotokolle (
+        wartungs_id SERIAL PRIMARY KEY,
+        wartungsdatum DATE,
+        maschinen_id INTEGER,
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE CASCADE  -- Löscht Wartungen automatisch mit
+    );
+    ```
 
-    ---
+    **Verhalten:**
+    ```sql
+    DELETE FROM maschinen WHERE maschinen_id = 1;
+    -- ✅ Maschine UND alle ihre Wartungen werden gelöscht
+    ```
 
-    ???+ example "Beispiel"
-        ```sql
-        CREATE TABLE wartungsprotokolle (
-            wartungs_id SERIAL PRIMARY KEY,
-            wartungsdatum DATE,
-            maschinen_id INTEGER,
-            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-                ON DELETE RESTRICT  -- Standard, kann auch weggelassen werden
-        );
-        ```
+    **Wann verwenden?**
 
-        **Verhalten:**
-        ```sql
-        DELETE FROM maschinen WHERE maschinen_id = 1;
-        -- ❌ Fehler! Wartungsprotokolle existieren noch
-        ```
+    - Wenn abhängige Daten **ohne Hauptdaten sinnlos** sind
+    - Beispiel: Wartungen ohne Maschine haben keine Bedeutung
 
-        **Wann verwenden?**
+    ??? code "weitere Beispiele"
 
-        - Wenn Daten **nicht versehentlich** gelöscht werden sollen
-        - Wenn man **bewusst zuerst** abhängige Daten löschen möchte
+        <div class="grid cards" markdown>
 
--   __CASCADE - Kaskadierende Löschung__
+        -   __RESTRICT - Löschen verhindern__
 
-    ---
+            ---
 
-    ???+ example "Beispiel"
-        ```sql
-        CREATE TABLE wartungsprotokolle (
-            wartungs_id SERIAL PRIMARY KEY,
-            wartungsdatum DATE,
-            maschinen_id INTEGER,
-            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-                ON DELETE CASCADE  -- Löscht Wartungen automatisch mit
-        );
-        ```
+            ???+ example "Beispiel"
+                ```sql
+                CREATE TABLE wartungsprotokolle (
+                    wartungs_id SERIAL PRIMARY KEY,
+                    wartungsdatum DATE,
+                    maschinen_id INTEGER,
+                    FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                        ON DELETE RESTRICT  -- Standard, kann auch weggelassen werden
+                );
+                ```
 
-        **Verhalten:**
-        ```sql
-        DELETE FROM maschinen WHERE maschinen_id = 1;
-        -- ✅ Maschine UND alle ihre Wartungen werden gelöscht
-        ```
+                **Verhalten:**
+                ```sql
+                DELETE FROM maschinen WHERE maschinen_id = 1;
+                -- ❌ Fehler! Wartungsprotokolle existieren noch
+                ```
 
-        **Wann verwenden?**
+                **Wann verwenden?**
 
-        - Wenn abhängige Daten **ohne Hauptdaten sinnlos** sind
-        - Beispiel: Wartungen ohne Maschine haben keine Bedeutung
+                - Wenn Daten **nicht versehentlich** gelöscht werden sollen
+                - Wenn man **bewusst zuerst** abhängige Daten löschen möchte
 
-    ???+ danger "Vorsicht mit CASCADE!"
-        Kaskadierende Löschungen können **viele Daten auf einmal** löschen!
+        -   __SET NULL - Beziehung auflösen__
 
-        ```sql
-        DELETE FROM abteilungen WHERE abteilung_id = 1;
-        -- Löscht die Abteilung UND alle Mitarbeiter UND alle deren Projekte...
-        ```
+            ---
 
--   __SET NULL - Beziehung auflösen__
+            ???+ example "Beispiel"
+                ```sql
+                CREATE TABLE wartungsprotokolle (
+                    wartungs_id SERIAL PRIMARY KEY,
+                    wartungsdatum DATE,
+                    maschinen_id INTEGER,  -- Muss NULL erlauben!
+                    FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                        ON DELETE SET NULL
+                );
+                ```
 
-    ---
+                **Verhalten:**
+                ```sql
+                DELETE FROM maschinen WHERE maschinen_id = 1;
+                -- ✅ Maschine gelöscht, Wartungen bleiben mit maschinen_id = NULL
+                ```
 
-    ???+ example "Beispiel"
-        ```sql
-        CREATE TABLE wartungsprotokolle (
-            wartungs_id SERIAL PRIMARY KEY,
-            wartungsdatum DATE,
-            maschinen_id INTEGER,  -- Muss NULL erlauben!
-            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-                ON DELETE SET NULL
-        );
-        ```
+                **Wann verwenden?**
 
-        **Verhalten:**
-        ```sql
-        DELETE FROM maschinen WHERE maschinen_id = 1;
-        -- ✅ Maschine gelöscht, Wartungen bleiben mit maschinen_id = NULL
-        ```
+                - Wenn die Beziehung **optional** ist
+                - Beispiel: Mitarbeiter ohne Abteilung (z.B. ausgeschieden, aber Daten bleiben)
 
-        **Wann verwenden?**
+            ???+ warning "NULL muss erlaubt sein!"
+                Die Fremdschlüssel-Spalte darf **nicht** `NOT NULL` sein, sonst funktioniert `SET NULL` nicht!
 
-        - Wenn die Beziehung **optional** ist
-        - Beispiel: Mitarbeiter ohne Abteilung (z.B. ausgeschieden, aber Daten bleiben)
+        -   __SET DEFAULT - Auf Standardwert setzen__
 
-    ???+ warning "NULL muss erlaubt sein!"
-        Die Fremdschlüssel-Spalte darf **nicht** `NOT NULL` sein, sonst funktioniert `SET NULL` nicht!
+            ---
 
--   __SET DEFAULT - Auf Standardwert setzen__
+            ???+ example "Beispiel"
+                ```sql
+                CREATE TABLE wartungsprotokolle (
+                    wartungs_id SERIAL PRIMARY KEY,
+                    wartungsdatum DATE,
+                    maschinen_id INTEGER DEFAULT 999,  -- Standard: "Unbekannt"
+                    FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                        ON DELETE SET DEFAULT
+                );
+                ```
 
-    ---
+                **Verhalten:**
+                ```sql
+                DELETE FROM maschinen WHERE maschinen_id = 1;
+                -- ✅ maschinen_id wird auf 999 gesetzt ("Unbekannte Maschine")
+                ```
 
-    ???+ example "Beispiel"
-        ```sql
-        CREATE TABLE wartungsprotokolle (
-            wartungs_id SERIAL PRIMARY KEY,
-            wartungsdatum DATE,
-            maschinen_id INTEGER DEFAULT 999,  -- Standard: "Unbekannt"
-            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-                ON DELETE SET DEFAULT
-        );
-        ```
+                **Wann verwenden?**
 
-        **Verhalten:**
-        ```sql
-        DELETE FROM maschinen WHERE maschinen_id = 1;
-        -- ✅ maschinen_id wird auf 999 gesetzt ("Unbekannte Maschine")
-        ```
+                - Selten verwendet
+                - Wenn ein "Fallback"-Wert sinnvoll ist
 
-        **Wann verwenden?**
-
-        - Selten verwendet
-        - Wenn ein "Fallback"-Wert sinnvoll ist
-
-</div>
+        </div>
 
 ---
-
-## Praktische Übungen
 
 Jetzt bist du dran! Teste dein Wissen, indem du die erlernten Konzepte in SQL umsetzt.
 
@@ -1112,48 +1064,11 @@ Jetzt bist du dran! Teste dein Wissen, indem du die erlernten Konzepte in SQL um
             (1, 2, '2021-09-20', '2024-09-20');  -- Thomas hat Schweißfachmann-Zertifizierung
         ```
 
-???+ question "Aufgabe 3: Reflexionsfragen"
-
-    Beantworte die folgenden Fragen zur Datenmodellierung:
-
-    1. **Warum ist es sinnvoll, Daten in mehrere Tabellen aufzuteilen?**
-    2. **Was ist der Unterschied zwischen einer 1:n und einer n:m Beziehung?**
-    3. **Wann würde man `ON DELETE CASCADE` verwenden und wann `ON DELETE RESTRICT`?**
-
-    ??? tip "Lösungen anzeigen"
-
-        **1. Warum mehrere Tabellen?**
-
-        - **Redundanz vermeiden:** Daten werden nur einmal gespeichert
-        - **Konsistenz:** Änderungen nur an einer Stelle nötig
-        - **Datenintegrität:** Keine widersprüchlichen Daten
-        - **Speichereffizienz:** Weniger Speicherplatz benötigt
-
-        **2. Unterschied 1:n vs. n:m:**
-
-        - **1:n:** Eine Entität auf der einen Seite, viele auf der anderen
-          - Beispiel: Ein Kunde hat viele Bestellungen
-          - Umsetzung: Fremdschlüssel auf der "n"-Seite
-
-        - **n:m:** Viele Entitäten auf beiden Seiten
-          - Beispiel: Studenten belegen viele Kurse, Kurse haben viele Studenten
-          - Umsetzung: Zwischentabelle mit zwei Fremdschlüsseln
-
-        **3. CASCADE vs. RESTRICT:**
-
-        - **`ON DELETE CASCADE`** - Wenn abhängige Daten ohne Hauptdaten sinnlos sind
-          - Beispiel: Bestellpositionen ohne Bestellung haben keine Bedeutung
-
-        - **`ON DELETE RESTRICT`** - Wenn Daten geschützt werden sollen
-          - Beispiel: Kunde kann nicht gelöscht werden, wenn noch Bestellungen existieren
-
 ---
 
-## Zusammenfassung
+## Zusammenfassung 📌
 
-In diesem Kapitel haben wir gelernt, wie man Beziehungen zwischen Tabellen modelliert und in SQL umsetzt.
-
-### Wichtigste Konzepte
+In diesem Kapitel haben wir gelernt, wie man Beziehungen zwischen Tabellen modelliert und in SQL umsetzt. Das wichtigste wird hier nochmals kurz zusammengefasst.
 
 **Datenmodellierung:**
 
@@ -1162,8 +1077,9 @@ In diesem Kapitel haben wir gelernt, wie man Beziehungen zwischen Tabellen model
 - **Krähenfuß-Notation** visualisiert Kardinalitäten und Optionalität
 - **Fremdschlüssel (FK)** stellen Beziehungen zwischen Tabellen her
 - **Referenzielle Integrität** verhindert verwaiste Datensätze
+- **ON DELETE** Optionen legen fest, was passiert, wenn eine Zeile gelöscht wird
 
-### Umsetzung in SQL
+**Umsetzung in SQL**
 
 <div style="text-align:center; max-width:900px; margin:16px auto;">
 <table role="table"
@@ -1195,42 +1111,6 @@ In diesem Kapitel haben wir gelernt, wie man Beziehungen zwischen Tabellen model
 </table>
 </div>
 
-### ON DELETE Optionen
-
-<div style="text-align:center; max-width:900px; margin:16px auto;">
-<table role="table"
-       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
-    <thead>
-    <tr style="background:#009485; color:#fff;">
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Option</th>
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Verhalten</th>
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Wann verwenden?</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>RESTRICT</code></td>
-        <td style="padding:10px 14px;">Löschen verhindern (Standard)</td>
-        <td style="padding:10px 14px;">Daten schützen</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>CASCADE</code></td>
-        <td style="padding:10px 14px;">Abhängige Datensätze automatisch mitlöschen</td>
-        <td style="padding:10px 14px;">Wenn abhängige Daten ohne Hauptdaten sinnlos sind</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>SET NULL</code></td>
-        <td style="padding:10px 14px;">Fremdschlüssel auf NULL setzen</td>
-        <td style="padding:10px 14px;">Wenn Beziehung optional ist</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>SET DEFAULT</code></td>
-        <td style="padding:10px 14px;">Fremdschlüssel auf Standardwert setzen</td>
-        <td style="padding:10px 14px;">Selten verwendet</td>
-    </tr>
-    </tbody>
-</table>
-</div>
 
 ???+ tip "Goldene Regel"
     **Modelliere erst mit ER-Diagrammen, dann implementiere in SQL!**
@@ -1245,5 +1125,6 @@ In diesem Kapitel haben wir gelernt, wie man Beziehungen zwischen Tabellen model
 Im nächsten Kapitel lernen wir **JOINs** kennen – wie man Daten aus mehreren verknüpften Tabellen abfragt!
 
 <div style="text-align: center;">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXFxZ3V5dWxsZWwyOHJrOGdvZmtvZjR6dGZoZ2JoZmpoZmpoZmpoZmpoZGwmZXA9djFfZ2lmc19zZWFyY2gmY3Q9Zw/xT9IgzoKnwFNmISR8I/giphy.gif" alt="Success" style="width:220px; margin-bottom: 1em;">
+    <img src="https://a.pinatafarm.com/500x384/9fc054e39f/join-us.jpg" alt="Join" style="width:50%; margin-bottom: 1em;">
+        <figcaption>Quelle: <a href="https://a.pinatafarm.com/500x384/9fc054e39f/join-us.jpg">Pinata Farms</a></figcaption>
 </div>
