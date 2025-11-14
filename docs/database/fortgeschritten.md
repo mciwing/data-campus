@@ -18,21 +18,23 @@ In diesem Kapitel lernen wir:
 
 Eine **Unterabfrage** (Subquery) ist eine SELECT-Abfrage **innerhalb** einer anderen Abfrage. Diese Technik erlaubt es uns, komplexe Fragestellungen in einem einzigen SQL-Statement zu lösen, ohne temporäre Ergebnisse manuell weiterverarbeiten zu müssen. Unterabfragen sind besonders nützlich, wenn wir das Ergebnis einer Berechnung direkt in einer anderen Abfrage verwenden möchten.
 
-Beispiel: Maschinen über dem Durchschnittsanschaffungsjahr
+Um uns dies etwas besser vorstellen zu können, betrachten wir folgendes Beispiel. Stellen wir uns vor, wir haben folgende Frage: 
 
-**Frage:** Welche Maschinen wurden später angeschafft als im Durchschnitt?
+*Welche Maschinen wurden später angeschafft als im Durchschnitt?*
 
-**Ohne Unterabfrage:**
+Die Frage an sich ist relativ einfach zu benatworten. Wir können den Durchschnitt der Anschaffungsjahre berechnen und dann die Maschinen filtern, die nach dem Durchschnitt angeschafft wurden. In einem **zweistufigen Vorgehen** könnte dies so aussehen: 
 
 ```sql
 -- 1. Durchschnitt berechnen
 SELECT AVG(anschaffungsjahr) FROM maschinen;  -- Ergebnis: 2019
 
--- 2. Dann manuell verwenden
+-- 2. Dann das Ergebnis manuell verwenden
 SELECT name FROM maschinen WHERE anschaffungsjahr > 2019;
 ```
+Sow würden wir in der ersten Abfrage das Durchschnittsanschaffungsjahr berechnen und in einer zweiten Abfrage schlussendlich das eigentliche Ergebnis erhalten - die Maschinen, die nach dem Durchschnitt angeschafft wurden. 
 
-**Mit Unterabfrage (in einer Abfrage!):**
+Da Programmierer von Haus aus faul sind, wollen wir diese Aufgabe natürlich in einem Schritt lösen. Dazu verwenden wir eine **Unterabfrage**.
+
 
 ```sql
 SELECT name, anschaffungsjahr
@@ -44,11 +46,17 @@ Die innere Abfrage `(SELECT AVG(anschaffungsjahr) FROM maschinen)` wird **zuerst
 
 ---
 
-## Unterabfragen mit IN
+### `IN` und `NOT IN`
 
-Mit **IN** können wir prüfen, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Dies ist besonders nützlich, wenn die Unterabfrage mehrere Ergebniszeilen liefert und wir prüfen wollen, ob unser Wert in dieser Liste vorkommt. Statt eines einzelnen Wertes wie beim einfachen Vergleich, gibt die Unterabfrage hier eine ganze Liste von Werten zurück.
+<div style="text-align: center;">
+    <img src="https://i.imgflip.com/ac45wn.jpg" alt="IN und NOT IN" style="width:50%; margin-bottom: 1em;">
+        <figcaption>Quelle: <a href="https://i.imgflip.com/ac45wn.jpg">imgflip</a></figcaption>
+</div>
 
-### Beispiel: Maschinen, die Spindelmotoren verwenden
+Eine besondere Art von Unterabfrage sind die **`IN`- und `NOT IN`-Operatoren**. Diese Operatoren erlauben es uns, prüfen zu können, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Dies ist besonders nützlich, wenn die Unterabfrage mehrere Ergebniszeilen liefert und wir prüfen wollen, ob unser Wert in dieser Liste vorkommt. Statt eines einzelnen Wertes wie beim einfachen Vergleich, gibt die Unterabfrage hier unter Umständen eine ganze Liste von Werten zurück.
+
+Schauen wir uns das ganze wieder anhand eines Beispiels an. Wir möchten gerne wissen, welche Maschinen Spindelmotoren verwenden.
+
 
 ```sql
 -- Welche Maschinen benötigen Spindelmotoren?
@@ -61,77 +69,78 @@ WHERE maschinen_id IN (
     WHERE e.teilname LIKE '%Spindelmotor%'
 );
 ```
+Der Ablauf dieser Abfrage kann man wie folgt beschreiben:
 
-**Ablauf:**
+1. Innere Abfrage 
+    - verknüpft die Tabellen `maschinen_ersatzteile` und `ersatzteile` über die `teil_id`
+    - filtert die Ergebnisse nach `teilname` mit `LIKE '%Spindelmotor%'`
+    - liefert eine Liste von `maschinen_id` zurück
+2. Äußere Abfrage 
+    - filtert die Maschinen, deren `maschinen_id` in der Liste der der inneren Abfrage ist
+    - liefert die Namen der Maschinen zurück
 
-1. Innere Abfrage findet alle `maschinen_id` von Maschinen mit Spindelmotoren
-2. Äußere Abfrage filtert Maschinen, deren `maschinen_id` in dieser Liste ist
 
-### NOT IN
-
-```sql
--- Maschinen, die KEINE Ersatzteile zugeordnet haben
-SELECT name
-FROM maschinen
-WHERE maschinen_id NOT IN (
-    SELECT DISTINCT maschinen_id
-    FROM maschinen_ersatzteile
-);
-```
-
-<div style="background:#FFB48211; border-left:4px solid #FFB482; padding:12px 16px; margin:16px 0;">
-<strong>⚠️ Achtung bei NULL!</strong><br>
-<code>NOT IN</code> kann bei NULL-Werten unerwartete Ergebnisse liefern. Verwende in solchen Fällen besser <code>NOT EXISTS</code> (siehe unten).
-</div>
+Neben dem `IN`-Operator gibt es auch den `NOT IN`-Operator. Dieser Operator überprüft, ob ein Wert ==NICHT== in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Das Vorgehen und deren Verwendung ist analog. 
 
 ---
 
-## EXISTS und NOT EXISTS
+### EXISTS und NOT EXISTS
 
-**EXISTS** prüft, ob eine Unterabfrage **mindestens ein Ergebnis** liefert. Im Gegensatz zu `IN`, das die gesamte Ergebnisliste der Unterabfrage durchgeht, stoppt `EXISTS` bereits, sobald das erste passende Ergebnis gefunden wurde. Das macht `EXISTS` oft performanter, besonders bei großen Datenmengen. Ein weiterer Vorteil: `EXISTS` hat keine Probleme mit NULL-Werten, die bei `NOT IN` zu unerwartetem Verhalten führen können.
+**EXISTS** prüft, ob eine Unterabfrage **mindestens ein Ergebnis** liefert. Im Gegensatz zu `IN`, das die gesamte Ergebnisliste der Unterabfrage durchgeht, stoppt `EXISTS` bereits, sobald das erste passende Ergebnis gefunden wurde. Das macht `EXISTS` oft performanter, besonders bei großen Datenmengen. 
 
-### Beispiel: Techniker mit zugeordneten Maschinen
+???+ tip "`EXISTS` vs `NOT IN`"
+    Ein weiterer Vorteil: `EXISTS` hat keine Probleme mit `NULL`-Werten, die bei `NOT IN` zu unerwartetem Verhalten führen können.
 
-```sql
--- Welche Techniker haben mindestens eine zugeordnete Maschine?
-SELECT name
-FROM techniker t
-WHERE EXISTS (
-    SELECT 1
-    FROM maschinen m
-    WHERE m.techniker_id = t.techniker_id
-);
-```
+Betrachten wir die Operatoren wieder anhand von Beispielen: 
 
-**Erklärung:** Für jeden Techniker prüft die Unterabfrage, ob es zugeordnete Maschinen gibt. `EXISTS` ist wahr, sobald **mindestens eine Zeile** gefunden wird.
+<div class="grid cards" markdown>
 
-### NOT EXISTS
+-   __EXISTS__
 
-```sql
--- Techniker OHNE zugeordnete Maschinen
-SELECT name
-FROM techniker t
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM maschinen m
-    WHERE m.techniker_id = t.techniker_id
-);
-```
+    ---
 
-<div style="background:#00948511; border-left:4px solid #009485; padding:12px 16px; margin:16px 0;">
-<strong>💡 EXISTS vs. IN:</strong><br>
-<ul style="margin:8px 0 0 0;">
-<li><code>EXISTS</code> ist oft <strong>schneller</strong>, besonders bei großen Datenmengen</li>
-<li><code>EXISTS</code> stoppt, sobald ein Treffer gefunden wird</li>
-<li><code>EXISTS</code> hat keine Probleme mit NULL-Werten</li>
-</ul>
+    ???+ example "Beispiel"
+        ```sql
+        -- Welche Techniker haben mindestens eine zugeordnete Maschine?
+        SELECT name
+        FROM techniker t
+        WHERE EXISTS (
+        SELECT 1
+            FROM maschinen m
+            WHERE m.techniker_id = t.techniker_id
+        );
+        ```
+        
+        **Erklärung:** Für jeden Techniker prüft die Unterabfrage, ob es zugeordnete Maschinen gibt. `EXISTS` ist wahr, sobald **mindestens eine Zeile** gefunden wird.
+
+-   __NOT EXISTS__
+
+    ---
+
+    ???+ example "Beispiel"
+
+        ```sql
+        -- Techniker OHNE zugeordnete Maschinen
+        SELECT name
+        FROM techniker t
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM maschinen m
+            WHERE m.techniker_id = t.techniker_id
+        );
+        ```
+
+        **Erklärung:** Für jeden Techniker prüft die Unterabfrage, ob es keine zugeordnete Maschinen gibt. `NOT EXISTS` ist wahr, sobald **keine Zeile** gefunden wird.
+
+
 </div>
+
 
 ---
 
-## Unterabfragen in FROM (Derived Tables)
+### Unterabfragen in FROM
 
-Man kann eine Unterabfrage auch in der **FROM-Klausel** verwenden – als wäre sie eine Tabelle! Diese sogenannten "Derived Tables" oder "Inline Views" sind besonders nützlich, wenn wir mit aggregierten Daten weiterarbeiten möchten. Da wir in der WHERE-Klausel keine Aggregatfunktionen direkt verwenden können, erstellen wir eine Unterabfrage, die die Aggregation durchführt, und können dann auf deren Ergebnis filtern.
+Man kann eine Unterabfrage auch in der **`FROM`-Klausel** verwenden – als wäre sie eine Tabelle! Diese sogenannten "Derived Tables" oder "Inline Views" sind besonders nützlich, wenn wir mit aggregierten Daten weiterarbeiten möchten. Da wir in der `WHERE`-Klausel keine Aggregatfunktionen direkt verwenden können, erstellen wir eine Unterabfrage, die die Aggregation durchführt, und können dann auf deren Ergebnis filtern.
 
 ```sql
 -- Durchschnittliche Ersatzteilkosten pro Maschine, aber nur für Maschinen mit Kosten > 1000
@@ -148,7 +157,8 @@ FROM (
 WHERE avg_kosten > 1000;
 ```
 
-**Wichtig:** Die Unterabfrage **muss einen Alias** haben (hier: `AS maschinen_kosten`)!
+???+ warning "Wichtig"
+    Die Unterabfrage **muss einen Alias** haben (hier: `AS maschinen_kosten`)!
 
 ---
 
@@ -156,7 +166,7 @@ WHERE avg_kosten > 1000;
 
 SQL bietet viele Funktionen zur Textverarbeitung. Diese sind besonders nützlich, um Daten zu bereinigen, zu formatieren oder für Reports aufzubereiten. Ob wir Texte zusammenfügen, Groß-/Kleinschreibung ändern oder Teile eines Strings extrahieren möchten - für fast jede Anforderung gibt es eine passende Funktion.
 
-### Die wichtigsten String-Funktionen
+Die wichtigsten String-Funktionen sind nachfolgend aufgelistet:
 
 <div style="text-align:center; max-width:900px; margin:16px auto;">
 <table role="table" 
