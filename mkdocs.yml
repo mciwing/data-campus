@@ -2,6 +2,7 @@ site_name: Data Campus
 # site_url:
 theme:
   name: material
+  custom_dir: overrides
   logo: assets/logo1.png
   favicon: assets/icon.png
   palette:
@@ -66,6 +67,7 @@ extra_css:
   - stylesheets/slideshow.css
 
 markdown_extensions:
+  - meta
   - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji

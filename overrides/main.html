@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block announce %}
+  For updates follow us <strong>@mciwing</strong> on
+  <a rel="me" href="https://github.com/mciwing">
+    <span class="twemoji github">
+      {% include ".icons/fontawesome/brands/github.svg" %}
+    </span>
+    <strong>GitHub</strong>
+  </a>
+{% endblock %}
+
+{% block tabs %}
+  {% if page and page.file.src_uri == "index.md" %}
+    {% include "home-content.html" %}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if page and page.file.src_uri == "index.md" %}
+    {# Leerer Content Block für die Homepage #}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
