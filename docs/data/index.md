@@ -6,17 +6,9 @@
 
 <div class="welcome-section" markdown="1">
 
-## Willkommen im Daten-Modul! 👋
+## Willkommen im Modul `Daten`! 👋
 
-In diesem Kurs lernst du die **Grundlagen der Datenverarbeitung** – von der Erfassung über die Verarbeitung bis zur Speicherung. Du verstehst, wie Daten entstehen, wie Computer sie verarbeiten und wie sie dauerhaft gespeichert werden.
-
-<div class="course-blocks" markdown="1">
-
-- **Von Daten zu Wissen** – Verstehe die Wissenspyramide und den Unterschied zwischen Daten, Information und Wissen
-- **Datenerfassung** – Wie biologische und technische Systeme Daten aus der Umwelt erfassen
-- **Datenverarbeitung** – Warum Computer binär rechnen und wie Zahlensysteme funktionieren
-- **Datenspeicherung** – Von Festplatten bis Cloud: Wie Daten dauerhaft gespeichert werden
-</div>
+In diesem Kurs lernst du die **Grundlagen von Daten** – von der Erfassung über die Verarbeitung bis zur Speicherung. Du verstehst, wie Daten entstehen, wie Computer sie verarbeiten und wie sie dauerhaft gespeichert werden.
 
 </div>
 
@@ -32,51 +24,36 @@ Der Kurs ist in vier aufeinander aufbauende Kapitel strukturiert:
 
     ---
 
-    Lerne die Grundlagen: Was sind Daten? Wie unterscheiden sie sich von Information und Wissen? Verstehe die Wissenspyramide und verschiedene Datentypen.
-
-    **Themen:**
-
     - Daten vs. Information vs. Wissen
-    - Wissenspyramide
-    - Datenklassifikation
+    - Big Data vs. klassische Daten
+    - Qualitative vs. quantitative Daten
+    - Attribute und Skalenniveaus
 
 - :material-target: **Datenerfassung**
 
     ---
 
-    Entdecke, wie Daten erfasst werden – von biologischen Sinnesorganen bis zu technischen Sensoren. Verstehe den A/D-Wandler und Sampling.
-
-    **Themen:**
-
     - Biologische vs. technische Datenerfassung
-    - Sensoren und A/D-Wandler
-    - Sampling und Quantisierung
+    - Messkette
 
 
 - :material-laptop: **Datenverarbeitung**
 
     ---
 
-    Verstehe, warum Computer binär rechnen und wie verschiedene Zahlensysteme funktionieren. Lerne die Grundlagen der Informatik.
-
-    **Themen:**
-
     - Binärsystem und Bits
     - Zahlensysteme (Binär, Oktal, Hexadezimal)
-    - Umrechnung zwischen Zahlensystemen
+    - Festkommaarithmetik
+    - Negative Zahlen in Binärform
 
 
 - :material-database: **Datenspeicherung**
 
     ---
 
-    Erfahre, wie Daten dauerhaft gespeichert werden – von magnetischen Festplatten bis zu modernen SSDs und der Cloud.
-
-    **Themen:**
-
+    - Speichern von Bildern und Texten
+    - Datentypen
     - Speichermedien (HDD, SSD, Cloud)
-    - Speicherhierarchie
-    - Datenpersistenz
 
 </div>
 
@@ -107,7 +84,7 @@ Bereit, in die Welt der Daten einzutauchen? Starte mit der [Einführung](einfueh
 
     Dieser Kurs basiert auf folgenden Quellen:
 
-    - [Datenbanken - Andreas de Vries; FH Südwestfalen](https://www.fh-swf.de/media/neu_np/fb_tbw_1/dozentinnen_2/professorinnen_5/devries_1/Datenbanken.pdf) (CC BY 4.0)
+    - [Datenbanken - Andreas de Vries; FH Südwestfalen](https://www.fh-swf.de/media/neu_np/fb_tbw_1/dozentinnen_2/professorinnen_5/devries_1/Datenbanken.pdf)
     - [Datenbanken 1 - Nikolaus Augsten; Universität Salzburg](https://dbresearch.uni-salzburg.at/teaching/)
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.

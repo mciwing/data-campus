@@ -218,64 +218,81 @@ Die wichtigsten String-Funktionen sind nachfolgend aufgelistet:
 </table>
 </div>
 
-### Praktische Beispiele
+Nun schauen wir uns an, wie wir diese String-Funktionen in der Praxis einsetzen können. Die folgenden Beispiele zeigen typische Anwendungsfälle aus dem Alltag:
 
-Schauen wir uns an, wie wir diese String-Funktionen in der Praxis einsetzen können. Die folgenden Beispiele zeigen typische Anwendungsfälle aus dem Alltag:
+<div class="grid cards" markdown>
 
-```sql
--- Vollständige Maschinenbezeichnung mit Standort
-SELECT
-    CONCAT(name, ' (', typ, ')') AS vollstaendige_bezeichnung
-FROM maschinen;
-```
+-   __CONCAT__
 
-```sql
--- Alle Maschinennamen in Großbuchstaben
-SELECT
-    UPPER(name) AS name_gross,
-    typ
-FROM maschinen
-ORDER BY name_gross;
-```
+    ---
 
-```sql
--- Erste 3 Buchstaben des Maschinentyps als Kurzform
-SELECT
-    name,
-    SUBSTRING(typ, 1, 3) AS typ_kurz
-FROM maschinen;
-```
+    ???+ example "Beispiel"
+        ```sql
+        -- Vollständige Maschinenbezeichnung mit Standort
+        SELECT
+            CONCAT(name, ' (', typ, ')') AS vollstaendige_bezeichnung
+        FROM maschinen;
+        ```
+        
+        ```sql title="Tabelle: vollstaendige_bezeichnung" 
+               vollstaendige_bezeichnung
+        ---------------------------------------
+         CNC-Fräse Alpha (CNC-Fräse)
+         Drehbank Beta (Drehbank)
+         Schweißroboter Gamma (Schweißroboter)
+         Lackieranlage Delta (Lackieranlage)
+         CNC-Fräse Epsilon (CNC-Fräse)
+         Drehbank Zeta (Drehbank)
+         Schweißroboter Eta (Schweißroboter)
+         Stanzmaschine Theta (Stanzmaschine)
+        (8 rows)
+        ```
 
-```sql
--- Seriennummern generieren
-SELECT
-    CONCAT(
-        UPPER(SUBSTRING(typ, 1, 3)),
-        '-',
-        maschinen_id,
-        '-',
-        anschaffungsjahr
-    ) AS seriennummer
-FROM maschinen;
-```
+        **Erklärung:** Wir fügen den Typ in Klammern zur Maschinenbezeichnung hinzu.
 
-**Ergebnis:**
+-   __Kombination mehrerer Funktionen__
 
-```
- seriennummer
-──────────────
- CNC-1-2019
- DRE-2-2021
- ROB-3-2020
-```
+    ---
+
+    ???+ example "Beispiel"
+
+        ```sql
+        -- Seriennummern generieren
+        SELECT
+            CONCAT(
+                UPPER(SUBSTRING(typ, 1, 3)),
+                '-',
+                maschinen_id,
+                '-',
+                anschaffungsjahr
+            ) AS seriennummer
+        FROM maschinen;
+        ```
+        ```sql title="Tabelle: seriennummer" 
+         seriennummer
+        --------------
+         CNC-1-2019
+         DRE-2-2021
+         SCH-3-2020
+         LAC-4-2018
+         CNC-5-2022
+         DRE-6-2017
+         SCH-7-2020
+         STA-8-2023
+        (8 rows)
+        ``` 
+
+
+        **Erklärung:** Wir generieren eine Seriennummer für jede Maschine. Die ersten 3 Buchstaben des Maschinentyps werden in Großbuchstaben umgewandelt, die Maschinen-ID und das Anschaffungsjahr werden angehängt.
+</div>
+
+Mit diesen String-Funktionen können wir also sehr einfach und effizient Texte verarbeiten und formatieren und müssen dies nicht in der Anwendungsschicht tun. 
 
 ---
 
 ## Datumsfunktionen
 
-PostgreSQL bietet umfangreiche Funktionen für Datum und Zeit. Die Arbeit mit Datums- und Zeitwerten ist in vielen Anwendungen zentral - sei es für Protokolle, Zeitstempel, Berechnungen von Zeiträumen oder für zeitbasierte Analysen. Mit den Datumsfunktionen können wir das aktuelle Datum abrufen, Teile eines Datums extrahieren oder Zeitdifferenzen berechnen.
-
-### Die wichtigsten Datumsfunktionen
+PostgreSQL bietet auch - neben den String-Funktionen - umfangreiche Funktionen für Datum und Zeit. Die Arbeit mit Datums- und Zeitwerten ist in vielen Anwendungen zentral - sei es für Protokolle, Zeitstempel, Berechnungen von Zeiträumen oder für zeitbasierte Analysen. Mit den Datumsfunktionen können wir das aktuelle Datum abrufen, Teile eines Datums extrahieren oder Zeitdifferenzen berechnen. Die wichtigsten Datumsfunktionen sind nachfolgend aufgelistet:
 
 <div style="text-align:center; max-width:900px; margin:16px auto;">
 <table role="table" 
@@ -317,52 +334,95 @@ PostgreSQL bietet umfangreiche Funktionen für Datum und Zeit. Die Arbeit mit Da
 </table>
 </div>
 
-### Beispiele
+Wieder wollen wir uns nun praktische Anwendungsfälle ansehen. Zunächst erweitern wir unsere Tabelle um ein Installationsdatum, damit wir mit echten Datumswerten arbeiten können.
 
-Schauen wir uns praktische Anwendungsfälle an. Zunächst erweitern wir unsere Tabelle um ein Installationsdatum, damit wir mit echten Datumswerten arbeiten können:
+???+ tip "Erweitern einer Tabelle (ALTER TABLE)"
 
-```sql
--- Tabelle mit Installationsdatum erweitern
-ALTER TABLE maschinen ADD COLUMN installationsdatum DATE;
+    Zum erweitern einer Tabelle gibt es den `ALTER TABLE` Befehl. Mit diesem Befehl können wir Spalten zu einer bestehenden Tabelle hinzufügen, ändern oder löschen. Der Syntax ist wie folgt:
 
-UPDATE maschinen SET installationsdatum = '2019-03-15' WHERE maschinen_id = 1;
-UPDATE maschinen SET installationsdatum = '2021-06-10' WHERE maschinen_id = 2;
-UPDATE maschinen SET installationsdatum = '2020-09-20' WHERE maschinen_id = 3;
-```
+    ```sql
+    ALTER TABLE tabellenname ADD COLUMN spaltenname typ;
+    ```
 
-```sql
--- Betriebsdauer in Jahren berechnen
-SELECT
-    name,
-    installationsdatum,
-    EXTRACT(YEAR FROM AGE(installationsdatum)) AS betriebsjahre
-FROM maschinen;
-```
+Um bei unserem Beispiel eine weitere Spalte hinzuzufügen, können wir den folgenden Befehl verwenden:
 
-```sql
--- Maschinen, die diesen Monat installiert wurden (Jahrestag)
-SELECT name, installationsdatum
-FROM maschinen
-WHERE EXTRACT(MONTH FROM installationsdatum) = EXTRACT(MONTH FROM CURRENT_DATE);
-```
+???+ example "Beispiel"
+    ```sql
+    -- Tabelle mit Installationsdatum erweitern
+    ALTER TABLE maschinen ADD COLUMN installationsdatum DATE;
 
-```sql
--- Maschinen nach Installationsjahr gruppieren
-SELECT
-    EXTRACT(YEAR FROM installationsdatum) AS installationsjahr,
-    COUNT(*) AS anzahl
-FROM maschinen
-GROUP BY EXTRACT(YEAR FROM installationsdatum)
-ORDER BY installationsjahr;
-```
+    UPDATE maschinen SET installationsdatum = '2019-03-15' WHERE maschinen_id = 1;
+    UPDATE maschinen SET installationsdatum = '2021-06-10' WHERE maschinen_id = 2;
+    UPDATE maschinen SET installationsdatum = '2020-09-20' WHERE maschinen_id = 3;
+    ```
+
+    Damit haben wir eine neue Spalte hinzugefügt und drei bestehende Einträge mit einem Installationsdatum erweitert. 
+
+Nun wollen wir uns wieder zwei praktische Anwendungsfälle ansehen. 
+
+<div class="grid cards" markdown>
+
+-   __EXTRACT__
+
+    ---
+
+    ???+ example "Beispiel"
+
+        ```sql
+        -- Betriebsdauer in Jahren berechnen
+        SELECT
+            name,
+            installationsdatum,
+            EXTRACT(YEAR FROM AGE(installationsdatum)) AS betriebsjahre
+        FROM maschinen;
+        ```
+        
+        ```sql title="Tabelle: Betriebsdauer" 
+                 name         | installationsdatum | betriebsjahre
+        ----------------------+--------------------+---------------
+         Lackieranlage Delta  |                    |
+         CNC-Fräse Epsilon    |                    |
+         Drehbank Zeta        |                    |
+         Schweißroboter Eta   |                    |
+         Stanzmaschine Theta  |                    |
+         CNC-Fräse Alpha      | 2019-03-15         |             6
+         Drehbank Beta        | 2021-06-10         |             4
+         Schweißroboter Gamma | 2020-09-20         |             5
+        (8 rows)       
+        ```
+
+        **Erklärung:** Wir berechnen die Betriebsdauer in Jahren, indem wir das Installationsdatum mit dem aktuellen Datum vergleichen und die Differenz in Jahren berechnen. Ohne Angabe eines Referenzdatums für `AGE` bewirkt, dass das aktuelle Datum als Referenzdatum verwendet wird.
+
+-   __Kombination mehrerer Funktionen__
+
+    ---
+
+    ???+ example "Beispiel"
+
+        ```sql
+        -- Maschinen, die diesen Monat installiert wurden (Jahrestag)
+        SELECT name, installationsdatum
+        FROM maschinen
+        WHERE EXTRACT(MONTH FROM installationsdatum) = EXTRACT(MONTH FROM CURRENT_DATE);
+        ```
+
+        ```sql title="Tabelle: Neue Maschinen" 
+         name | installationsdatum
+        ------+--------------------
+        (0 rows)
+        ``` 
+
+
+        **Erklärung:** Wir filtern die Maschinen, die in diesem Monat (Jahrestag) installiert wurden, indem wir das Installationsdatum mit dem aktuellen Datum vergleichen.
+</div>
+
 
 ---
 
 ## CASE WHEN - Bedingte Logik
 
 Mit **CASE WHEN** können wir bedingte Logik direkt in SQL einbauen – ähnlich wie `if-else` in Programmiersprachen. Dies ist besonders nützlich, um Daten zu kategorisieren, Berechnungen basierend auf Bedingungen durchzuführen oder benutzerdefinierte Ausgaben zu erzeugen. Statt die Logik in der Anwendungsschicht zu implementieren, können wir sie direkt in der Datenbankabfrage unterbringen, was oft effizienter und lesbarer ist.
-
-### Syntax
+Der allgemeine Syntax ist wie folgt:
 
 ```sql { .yaml .no-copy }
 CASE
@@ -372,100 +432,109 @@ CASE
 END
 ```
 
-### Beispiel: Wartungs-Prioritätskategorien
+Bei der Verwendung von `CASE` können wir beliebig viele Bedingungen angeben und ein Standardergebnis festlegen, das verwendet wird, wenn keine der Bedingungen erfüllt ist. Betrachten wir das wieder anhand eines praktischen Beispiels.
 
-```sql
-SELECT
-    name,
-    anschaffungsjahr,
-    CASE
-        WHEN anschaffungsjahr >= 2022 THEN 'Neu - Niedrige Priorität'
-        WHEN anschaffungsjahr >= 2020 THEN 'Mittel'
-        WHEN anschaffungsjahr >= 2015 THEN 'Alt - Hohe Priorität'
-        ELSE 'Sehr alt - Kritisch'
-    END AS wartungspriorität
-FROM maschinen;
-```
+???+ example "Wartungs-Priorität"
+    ```sql
+    SELECT
+        name,
+        anschaffungsjahr,
+        CASE
+            WHEN anschaffungsjahr >= 2022 THEN 'Neu - Niedrige Priorität'
+            WHEN anschaffungsjahr >= 2020 THEN 'Mittel'
+            WHEN anschaffungsjahr >= 2015 THEN 'Alt - Hohe Priorität'
+            ELSE 'Sehr alt - Kritisch'
+        END AS wartungspriorität
+    FROM maschinen;
+    ```
 
-**Ergebnis:**
+    ```sql title="Tabelle: Wartungs-Priorität" 
+             name         | anschaffungsjahr |    wartungspriorität
+    ----------------------+------------------+--------------------------
+     Lackieranlage Delta  |             2018 | Alt - Hohe Priorität
+     CNC-Fräse Epsilon    |             2022 | Neu - Niedrige Priorität
+     Drehbank Zeta        |             2017 | Alt - Hohe Priorität
+     Schweißroboter Eta   |             2020 | Mittel
+     Stanzmaschine Theta  |             2023 | Neu - Niedrige Priorität
+     CNC-Fräse Alpha      |             2019 | Alt - Hohe Priorität
+     Drehbank Beta        |             2021 | Mittel
+     Schweißroboter Gamma |             2020 | Mittel
+    (8 rows)
+    ``` 
 
-```
- name                 │ anschaffungsjahr │ wartungspriorität
-──────────────────────┼──────────────────┼───────────────────────
- CNC-Fräse Alpha      │             2019 │ Mittel
- Drehbank Beta        │             2021 │ Mittel
- Schweißroboter Gamma │             2020 │ Mittel
-```
+    **Erklärung:** Wir kategorisieren die Maschinen nach ihrem Anschaffungsjahr in die Kategorien "Neu - Niedrige Priorität", "Mittel" und "Alt - Hohe Priorität". Wenn das Anschaffungsjahr vor 2015 liegt, wird die Kategorie "Sehr alt - Kritisch" verwendet.
 
-### Beispiel: Ersatzteil-Kostenkategorien
-
-```sql
-SELECT
-    teilname,
-    preis,
-    CASE
-        WHEN preis < 100 THEN 'Günstig'
-        WHEN preis < 500 THEN 'Mittel'
-        ELSE 'Teuer'
-    END AS preiskategorie
-FROM ersatzteile
-ORDER BY preis;
-```
 
 ### CASE in Aggregationen
 
-CASE WHEN kann auch innerhalb von Aggregatfunktionen verwendet werden, um selektive Zählungen durchzuführen. Dies ist besonders nützlich für Auswertungen und Berichte:
+CASE WHEN kann auch innerhalb von [Aggregatfunktionen](abfragen.md#aggregatfunktionen-daten-zusammenfassen) verwendet werden, um selektive Zählungen durchzuführen. Dies ist besonders nützlich für Auswertungen und Berichte:
 
-```sql
--- Wie viele Ersatzteile sind teurer als 500 Euro?
-SELECT
-    COUNT(CASE WHEN preis <= 500 THEN 1 END) AS guenstig_bis_mittel,
-    COUNT(CASE WHEN preis > 500 THEN 1 END) AS teuer,
-    COUNT(*) AS gesamt
-FROM ersatzteile;
-```
+???+ example "Beispiel"
 
+    ```sql
+    -- Wie viele Maschinen sind alt und wie viele neu?
+    SELECT
+        COUNT(CASE WHEN anschaffungsjahr <= 2020 THEN 1 END) AS alt,
+        COUNT(CASE WHEN anschaffungsjahr > 2020 THEN 1 END) AS neu,
+        COUNT(*) AS gesamt
+    FROM maschinen;
+    ```
+
+    ```sql title="Tabelle: Alt und Neu" 
+     alt | neu | gesamt
+    -----+-----+--------
+       5 |   3 |      8
+    (1 row)
+    ``` 
+
+    **Erklärung:** Wir zählen die Maschinen, die vor 2020 angeschafft wurden und die Maschinen, die nach 2020 angeschafft wurden.
 ---
 
 ## COALESCE - NULL-Werte behandeln
 
-**COALESCE** gibt den ersten **nicht-NULL-Wert** aus einer Liste zurück. Diese Funktion ist extrem nützlich im Umgang mit NULL-Werten, die in Datenbanken häufig vorkommen. Statt komplizierte CASE-WHEN-Konstrukte zu schreiben oder NULL-Werte in der Anwendung zu behandeln, bietet COALESCE eine elegante und lesbare Lösung, um Standardwerte für fehlende Daten bereitzustellen.
-
-### Syntax
+**COALESCE** gibt den ersten **nicht-NULL-Wert** aus einer Liste zurück. Diese Funktion ist extrem nützlich im Umgang mit NULL-Werten, die in Datenbanken häufig vorkommen. Statt komplizierte CASE-WHEN-Konstrukte zu schreiben oder NULL-Werte in der Anwendung zu behandeln, bietet COALESCE eine elegante und lesbare Lösung, um Standardwerte für fehlende Daten bereitzustellen. Der Allgemeine Syntax ist wie folgt:
 
 ```sql { .yaml .no-copy }
 COALESCE(wert1, wert2, wert3, ..., standard)
 ```
 
-### Beispiel: Standardwerte für NULL
+Wir sehen, dass wir mehrere Werte (im Normalfall Funktionen oder andere Spaltenwerte) angeben können und der erste nicht-NULL-Wert wird zurückgegeben. Wenn alle Werte NULL sind, wird der Standardwert zurückgegeben. Betrachten wir wieder ein praktisches Beispiel. 
 
-```sql
--- Wenn kein Techniker zugeordnet: "Nicht zugeordnet"
-SELECT
-    name,
-    COALESCE(techniker_id::TEXT, 'Nicht zugeordnet') AS techniker
-FROM maschinen;
-```
+???+ example "Beispiel"
+    ```sql
+    -- Wenn die Maschine defekt ist, wird der Name der Maschine nicht angezeigt
+    SELECT 
+        name,
+        status,
+    COALESCE(
+        CASE WHEN 
+            status = 'Defekt' 
+            THEN NULL 
+            ELSE name 
+            END, 
+        'ERROR') AS maschinen_name
+    FROM maschinen;
+    ```
 
-### Beispiel: Durchschnittskosten mit Standardwert
-
-```sql
-SELECT
-    m.name,
-    COALESCE(AVG(e.preis * me.menge), 0) AS durchschnitt_kosten
-FROM maschinen m
-LEFT JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
-LEFT JOIN ersatzteile e ON me.teil_id = e.teil_id
-GROUP BY m.name;
-```
-
-Maschinen ohne Ersatzteile bekommen `0` statt `NULL`.
+    ```sql title="Tabelle: Alt und Neu"  hl_lines="5"
+             name         | status  |    maschinen_name
+    ----------------------+---------+----------------------
+     Lackieranlage Delta  | Aktiv   | Lackieranlage Delta
+     CNC-Fräse Epsilon    | Aktiv   | CNC-Fräse Epsilon
+     Drehbank Zeta        | Defekt  | ERROR
+     Schweißroboter Eta   | Aktiv   | Schweißroboter Eta
+     Stanzmaschine Theta  | Aktiv   | Stanzmaschine Theta
+     CNC-Fräse Alpha      | Aktiv   | CNC-Fräse Alpha
+     Drehbank Beta        | Aktiv   | Drehbank Beta
+     Schweißroboter Gamma | Wartung | Schweißroboter Gamma
+    (8 rows)
+    ``` 
 
 ---
 
 ## Mathematische Funktionen
 
-Neben String- und Datumsfunktionen bietet SQL auch eine Vielzahl mathematischer Funktionen. Diese sind besonders nützlich für Berechnungen, Rundungen und statistische Auswertungen direkt in der Datenbank.
+Neben String- und Datumsfunktionen bietet SQL auch eine Vielzahl mathematischer Funktionen für numerische Werte. Diese sind besonders nützlich für Berechnungen, Rundungen und statistische Auswertungen direkt in der Datenbank.
 
 <div style="text-align:center; max-width:900px; margin:16px auto;">
 <table role="table" 
@@ -514,20 +583,29 @@ Neben String- und Datumsfunktionen bietet SQL auch eine Vielzahl mathematischer 
 
 Ein häufiger Anwendungsfall für mathematische Funktionen ist das Runden von Berechnungsergebnissen für eine übersichtliche Darstellung:
 
-```sql
--- Ersatzteilkosten auf 2 Nachkommastellen runden
-SELECT
-    m.name,
-    ROUND(AVG(e.preis * me.menge), 2) AS durchschnitt_kosten
-FROM maschinen m
-INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
-INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
-GROUP BY m.name;
-```
+???+ example "Beispiel"
+
+    ```sql
+    -- Ersatzteilkosten auf 2 Nachkommastellen runden
+    SELECT
+        m.name,
+        ROUND(AVG(e.preis * me.menge), 2) AS durchschnitt_kosten
+    FROM maschinen m
+    INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+    INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+    GROUP BY m.name;
+    ```
+
+    ```sql title="Tabelle: Durchschnittskosten"
+             name         | durchschnitt_kosten
+    ----------------------+---------------------
+     Drehbank Beta        |              815.25
+     CNC-Fräse Alpha      |             1005.50
+     Schweißroboter Gamma |              305.00
+    (3 rows)
+    ``` 
 
 ---
-
-## Praktische Übungen 🎯
 
 Nun ist es Zeit, die gelernten Techniken zu üben! Die folgenden Aufgaben helfen uns, Unterabfragen, Funktionen und bedingte Logik anzuwenden.
 
@@ -626,14 +704,6 @@ Die wichtigsten Erkenntnisse:
 - **CASE WHEN** bringt if-else-Logik nach SQL und ermöglicht Kategorisierungen
 - **COALESCE** behandelt NULL-Werte elegant ohne komplizierte Konstrukte
 - **Mathematische Funktionen** (ROUND, CEIL, FLOOR, ABS, POWER, SQRT) für Berechnungen
-
-**Best Practices:**
-
-✅ EXISTS ist meist schneller als IN und hat keine NULL-Probleme
-✅ String-Funktionen für konsistente Formatierung nutzen
-✅ CASE WHEN für lesbare kategorisierte Ausgaben verwenden
-✅ COALESCE statt komplizierter NULL-Behandlung einsetzen
-✅ Unterabfragen sparsam einsetzen - manchmal ist ein JOIN übersichtlicher
 
 ---
 
