@@ -506,4 +506,4 @@ Es gibt auch die Möglichkeit, Constraints zu bestehenden Tabellen nachträglich
 
 ---
 
-Im nächsten Kapitel lernen wir über **Indizes & Performance** – wie wir Abfragen schneller machen!
+Im nächsten Kapitel lernen wir über **Transaktionen & ACID** – wie wir Datenintegrität bei gleichzeitigen Zugriffen sicherstellen!

@@ -51,9 +51,8 @@ nav:
     - Daten Manipulieren: database/manipulieren.md
     - Datenmodellierung: database/modellierung.md
     - Daten Zusammenführen: database/join.md
-    - Fortgeschritten: database/fortgeschritten.md
-    - Integrität: database/integritaet.md
-    - Indizes: database/indizes.md
+    - Fortgeschrittene Techniken: database/fortgeschritten.md
+    - Datenintegrität: database/integritaet.md
     - Transaktionen: database/transaktionen.md
     - Projekt: database/projekt.md
     - Ausblick: database/ausblick.md
