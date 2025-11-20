@@ -54,7 +54,6 @@ nav:
     - Fortgeschrittene Techniken: database/fortgeschritten.md
     - Datenintegrität: database/integritaet.md
     - Transaktionen: database/transaktionen.md
-    - Projekt: database/projekt.md
     - Ausblick: database/ausblick.md
 
   - Excel:

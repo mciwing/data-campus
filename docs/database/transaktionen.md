@@ -4,9 +4,9 @@ In den vorherigen Kapiteln haben wir gelernt, wie wir Daten in PostgreSQL strukt
 
 Doch was passiert, wenn:
 
-- ❌ Ein **Fehler während einer Reihe von Änderungen** auftritt?
-- ❌ Mehrere **Benutzer gleichzeitig** auf dieselben Daten zugreifen?
-- ❌ Das **System abstürzt**, während eine Operation läuft?
+- Ein **Fehler während einer Reihe von Änderungen** auftritt?
+- Mehrere **Benutzer gleichzeitig** auf dieselben Daten zugreifen?
+- Das **System abstürzt**, während eine Operation läuft?
 
 In solchen Situationen reicht es nicht aus, einfach SQL-Befehle auszuführen. Wir benötigen einen Mechanismus, der sicherstellt, dass unsere Daten **konsistent und zuverlässig** bleiben. Dieser Mechanismus heißt **Transaktion**.
 
@@ -260,33 +260,48 @@ PostgreSQL führt **automatisch ein ROLLBACK** durch, wenn während einer Transa
 
     ```title="Output"
     FEHLER:  neue Zeile für Relation »lager« verletzt Check-Constraint »lager_bestand_check«
-    DETAIL:  Fehlgeschlagene Zeile enthält (PROD01, Produktionslager Halle B, -100)
+    DETAIL:  Fehlgeschlagene Zeile enthält (PROD01, Produktionslager Halle B, -50)
     ```
 
-    PostgreSQL führt automatisch `ROLLBACK` durch – **beide Updates** werden rückgängig gemacht!
+    Wenn wir nun in weiterer Folge einen Befehl eingeben - egal welchen - wird uns das System folgendes zurückmelden: 
 
     ```sql
     SELECT * FROM lager;
     ```
 
     ```title="Output"
+    FEHLER:  aktuelle Transaktion wurde abgebrochen, Befehle werden bis zum Ende der Transaktion ignoriert
+    ```
+
+    Was nun passiert ist, dass egal ob wir `COMMIT` oder `ROLLBACK` ausführen, PostgreSQL automatisch einen `ROLLBACK` durchführen wird. Dabei werden **alle Änderungen** rückgängig gemacht!
+    Wir testen dies, indem wir ein `COMMIT ausführen und anschließend nochmals die Daten überprüfen. 
+
+    ```sql
+    COMMIT;
+
+    SELECT * FROM lager;
+    ```
+
+    ```title="Output"
     lager_id |          standort           | bestand
     ---------+-----------------------------+---------
-    HAUPT01  | Hauptlager Halle A          |     200
-    PROD01   | Produktionslager Halle B    |     100
+    HAUPT01  | Hauptlager Halle A          |     150
+    PROD01   | Produktionslager Halle B    |     150
     ```
 
     ✅ Beide Lager haben ihre **ursprünglichen Bestände** behalten!
 
-???+ tip "Wichtig: Atomarität"
 
-    Sobald ein Fehler auftritt, ist die **gesamte Transaktion ungültig**. Alle Änderungen werden verworfen – das ist das **Atomaritätsprinzip** (siehe ACID weiter unten).
+???+ tip "Verwendet PostgreSQL automatisch Transaktionen?"
 
+    Ja! Jeder einzelne SQL-Befehl wird **implizit in einer eigenen Transaktion** ausgeführt. Wenn du nur einen `UPDATE`-Befehl ausführst, wird automatisch ein `BEGIN` davor und ein `COMMIT` danach gesetzt.
+
+    Explizite Transaktionen mit `BEGIN` und `COMMIT` brauchst du nur, wenn du **mehrere Befehle** zu einer logischen Einheit zusammenfassen möchtest.
 ---
 
 ## ACID-Prinzipien
 
-Transaktionen folgen den sogenannten **ACID-Prinzipien**. ACID ist ein Akronym und steht für:
+Transaktionen folgen den sogenannten **ACID-Prinzipien**. ACID ist ein Akronym für vier Eigenschaften, die jede zuverlässige Datenbank-Transaktion erfüllen muss:
 
 <div style="text-align:center; max-width:900px; margin:16px auto;">
 <table role="table"
@@ -327,146 +342,66 @@ Schauen wir uns die einzelnen Prinzipien genauer an:
 
 ---
 
-### A – Atomicity (Atomarität)
+<div class="grid cards" markdown>
 
-**Eine Transaktion ist unteilbar (atomar)**
+-   __A - Atomicity__
 
-- ✅ Entweder werden **alle Operationen** ausgeführt
-- ❌ Oder **keine einzige Operation** wird übernommen
-- ⚠️ Es gibt **kein "teilweise erfolgreich"**
+    ---
 
-???+ example "Beispiel: Atomarität beim Lagertransfer"
+    Entweder werden **alle Operationen** ausgeführt, oder **keine einzige Operation** wird übernommen. Es gibt **kein "teilweise erfolgreich"**
 
-    ```sql
+
+-   __C - Consistency__
+
+    ---
+
+    Alle **Integritätsbedingungen** (Constraints) müssen erfüllt sein. Dies bedeutet, dass **vor** und **nach** der Transaktion die Datenbank in einem gültigen Zustand ist
+
+-   __I - Isolation__
+
+    ---
+
+    Jede Transaktion läuft **isoliert**, als wäre sie die einzige. Änderungen einer Transaktion sind für andere **erst nach COMMIT sichtbar**
+
+-   __D - Durability__
+
+    ---
+
+    Nach einem **COMMIT** sind die Änderungen **permanent gespeichert**. Auch bei **Systemabstürzen** oder **Stromausfällen** gehen die Daten nicht verloren
+
+</div>
+
+???+ info "Zwei Transaktionen gleichzeitig"
+    Wenn man die ACID Regeln betrachtet, mag dem ein oder anderen die Frage aufkommen: Was passiert wenn es zwei Transaktionen gleichzeitig gibt? Speziell das Isolationsprinzip würde ja bedeuten, dass gleichzeitig auf den gleichen Daten etwas geändert werden kann. Hier verwendet PostgreSQL standardmäßig ein sogenannntes **Row-Level Locking**. Dies bedeutet, dass wenn in einer Transaktion eine Änderung an einer Zeile vorgenommen wird, diese für Änderungen in einer anderen Transaktion gesperrt wird. Das bedeutet, dass PostgreSQL nie zwei `UPDATE` Befehle gleichzeitig auf die selbe Zeile zulässt. 
+
+---
+
+## `SAVEPOINT`: Teilweiser Rollback
+
+Ein `SAVEPOINT` ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du kannst zu einem `SAVEPOINT` zurückrollen, ohne die gesamte Transaktion abzubrechen.
+
+???+ example "`SAVEPOINT` verwenden"
+
+    ```sql hl_lines="3 7"
     BEGIN;
 
-    -- Operation 1
     UPDATE lager SET bestand = bestand - 50 WHERE lager_id = 'HAUPT01';
 
-    -- Operation 2
+    SAVEPOINT mein_savepoint;
+
     UPDATE lager SET bestand = bestand + 50 WHERE lager_id = 'PROD01';
 
+    -- Ups, Fehler beim zweiten Update! Nur diesen rückgängig machen:
+    ROLLBACK TO SAVEPOINT mein_savepoint;
+
+    -- Der erste UPDATE bleibt erhalten, der zweite wurde rückgängig gemacht
     COMMIT;
     ```
 
-    **Atomarität garantiert:** Entweder werden **beide Updates** durchgeführt oder **keines von beiden**.
+    Beim oben gezeigten Beispiel wird das erste Update (`HAUPT01`) durchgeführt, das zweite (`PROD01`) aber verworfen.
 
 ---
 
-### C – Consistency (Konsistenz)
-
-**Eine Transaktion führt die Datenbank von einem konsistenten Zustand in einen anderen konsistenten Zustand**
-
-- ✅ Alle **Integritätsbedingungen** (Constraints) müssen erfüllt sein
-- ✅ **Vor** und **nach** der Transaktion ist die Datenbank in einem gültigen Zustand
-
-???+ example "Beispiel: Konsistenz bei Lagertransfer"
-
-    Die Gesamtsumme aller Lagerbestände bleibt bei einem Transfer gleich:
-
-    ```sql
-    -- Vor dem Transfer
-    SELECT SUM(bestand) FROM lager;
-    ```
-
-    ```title="Output"
-     sum
-    -----
-     300
-    ```
-
-    ```sql
-    BEGIN;
-    UPDATE lager SET bestand = bestand - 50 WHERE lager_id = 'HAUPT01';
-    UPDATE lager SET bestand = bestand + 50 WHERE lager_id = 'PROD01';
-    COMMIT;
-
-    -- Nach dem Transfer
-    SELECT SUM(bestand) FROM lager;
-    ```
-
-    ```title="Output"
-     sum
-    -----
-     300
-    ```
-
-    ✅ Die Gesamtsumme bleibt **konsistent** bei 300!
-
----
-
-### I – Isolation (Isolation)
-
-**Gleichzeitig laufende Transaktionen beeinflussen sich nicht gegenseitig**
-
-- ✅ Jede Transaktion läuft **isoliert**, als wäre sie die einzige
-- ✅ Änderungen einer Transaktion sind für andere **erst nach COMMIT sichtbar**
-
-???+ example "Beispiel: Isolation bei parallelen Zugriffen"
-
-    **Session 1** (Benutzer A):
-    ```sql
-    BEGIN;
-    UPDATE lager SET bestand = bestand - 20 WHERE lager_id = 'HAUPT01';
-    -- Noch kein COMMIT!
-    ```
-
-    **Session 2** (Benutzer B):
-    ```sql
-    SELECT bestand FROM lager WHERE lager_id = 'HAUPT01';
-    ```
-
-    ```title="Output"
-    bestand
-    -------
-        200
-    ```
-
-    ℹ️ Benutzer B sieht immer noch **200** (den alten Wert), weil Benutzer A noch nicht committed hat!
-
-    **Session 1** (Benutzer A):
-    ```sql
-    COMMIT;
-    ```
-
-    **Session 2** (Benutzer B):
-    ```sql
-    SELECT bestand FROM lager WHERE lager_id = 'HAUPT01';
-    ```
-
-    ```title="Output"
-    bestand
-    -------
-        180
-    ```
-
-    ✅ Jetzt sieht Benutzer B den **neuen Wert** (180)!
-
----
-
-### D – Durability (Dauerhaftigkeit)
-
-**Einmal bestätigte Änderungen bleiben dauerhaft erhalten**
-
-- ✅ Nach einem **COMMIT** sind die Änderungen **permanent gespeichert**
-- ✅ Auch bei **Systemabstürzen** oder **Stromausfällen** gehen die Daten nicht verloren
-
-???+ example "Beispiel: Dauerhaftigkeit"
-
-    ```sql
-    BEGIN;
-    UPDATE lager SET bestand = bestand - 50 WHERE lager_id = 'HAUPT01';
-    UPDATE lager SET bestand = bestand + 50 WHERE lager_id = 'PROD01';
-    COMMIT;
-    ```
-
-    Nach dem `COMMIT` ist der Lagertransfer **dauerhaft gespeichert** – selbst wenn der Server sofort danach abstürzt, sind die Änderungen erhalten!
-
-    PostgreSQL schreibt die Daten in das **Write-Ahead Log (WAL)**, um Dauerhaftigkeit zu garantieren.
-
----
-
-## Übungen
 
 ???+ question "Aufgabe 1: Einfache Transaktion"
 
@@ -649,42 +584,6 @@ Schauen wir uns die einzelnen Prinzipien genauer an:
 
 ---
 
-## Erweiterte Konzepte
-
-### SAVEPOINT: Teilweiser Rollback
-
-Ein **SAVEPOINT** ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du kannst zu einem SAVEPOINT zurückrollen, ohne die gesamte Transaktion abzubrechen.
-
-???+ example "SAVEPOINT verwenden"
-
-    ```sql hl_lines="3 7"
-    BEGIN;
-
-    UPDATE lager SET bestand = bestand - 50 WHERE lager_id = 'HAUPT01';
-
-    SAVEPOINT mein_savepoint;
-
-    UPDATE lager SET bestand = bestand + 50 WHERE lager_id = 'PROD01';
-
-    -- Ups, Fehler beim zweiten Update! Nur diesen rückgängig machen:
-    ROLLBACK TO SAVEPOINT mein_savepoint;
-
-    -- Der erste UPDATE bleibt erhalten, der zweite wurde rückgängig gemacht
-    COMMIT;
-    ```
-
-    ✅ Das erste Update (HAUPT01) wurde durchgeführt, das zweite (PROD01) wurde verworfen.
-
-???+ tip "Wann SAVEPOINT verwenden?"
-
-    SAVEPOINT ist nützlich für:
-
-    - ✅ Komplexe Transaktionen mit mehreren Schritten
-    - ✅ Wenn du nur Teile einer Transaktion rückgängig machen möchtest
-    - ✅ Verschachtelte Transaktionslogik
-    - ✅ Fehlerbehandlung in Stored Procedures
-
----
 
 ## Zusammenfassung 📌
 
@@ -703,31 +602,4 @@ Ein **SAVEPOINT** ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du 
 
 ---
 
-## Weiterführende Informationen
-
-???+ question "Verwendet PostgreSQL automatisch Transaktionen?"
-
-    Ja! Jeder einzelne SQL-Befehl wird **implizit in einer eigenen Transaktion** ausgeführt. Wenn du nur einen `UPDATE`-Befehl ausführst, wird automatisch ein `BEGIN` davor und ein `COMMIT` danach gesetzt.
-
-    Explizite Transaktionen mit `BEGIN` und `COMMIT` brauchst du nur, wenn du **mehrere Befehle** zu einer logischen Einheit zusammenfassen möchtest.
-
-???+ question "Was sind Isolation Levels?"
-
-    PostgreSQL bietet verschiedene **Isolation Levels**, die bestimmen, wie streng Transaktionen voneinander isoliert werden:
-
-    - `READ UNCOMMITTED` (in PostgreSQL wie READ COMMITTED)
-    - `READ COMMITTED` (Standard in PostgreSQL)
-    - `REPEATABLE READ`
-    - `SERIALIZABLE`
-
-    Je höher der Level, desto stärker die Isolation – aber auch potenziell langsamer die Performance.
-
-    ```sql
-    BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;
-    -- Transaktionsbefehle
-    COMMIT;
-    ```
-
----
-
-Im nächsten Kapitel werden wir ein **praktisches Projekt** durchführen, in dem wir alle bisher gelernten Konzepte zusammenführen – von der Modellierung über Beziehungen bis hin zu komplexen Abfragen und Transaktionen!
+Im nächsten und letzten Kapitel werfen wir einen **Ausblick auf weiterführende Themen** wie Views, Stored Procedures und NoSQL-Datenbanken.
