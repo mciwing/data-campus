@@ -19,9 +19,8 @@ Eine **relationale Datenbank** organisiert Daten in **Tabellen** (auch Relatione
 
     - **Tupel** (auch Zeilen oder Datensätze genannt) - repräsentieren einzelne Objekte oder Einträge
     - **Attribute** (auch Spalten oder Felder genannt) - beschreiben Eigenschaften dieser Objekte
-    - **Relationenschema** - Menge von Attributen. 
+    - **Relationenschema** - Menge von Attributen
     - **Relationenname** - Name der Tabelle
-
 
 ---
 
@@ -32,7 +31,7 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
 ### Textdaten
 
 <div style="text-align:center; max-width:820px; margin:16px auto;">
-<table role="table" 
+<table role="table"
        style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
     <thead>
     <tr style="background:#009485; color:#fff;">
@@ -45,7 +44,7 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>VARCHAR(n)</code></td>
         <td style="padding:10px 14px;">Zeichenkette mit max. <code>n</code> Zeichen</td>
-        <td style="padding:10px 14px;"><code>'CNC-Fräse Alpha'</code></td>
+        <td style="padding:10px 14px;"><code>'Hydraulikzylinder'</code></td>
     </tr>
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>TEXT</code></td>
@@ -55,7 +54,7 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
     <tr>
         <td style="background:#00948511; padding:10px 14px;"><code>CHAR(n)</code></td>
         <td style="padding:10px 14px;">Zeichenkette mit fixer Länge <code>n</code></td>
-        <td style="padding:10px 14px;"><code>'AT'</code> (Länderkürzel)</td>
+        <td style="padding:10px 14px;"><code>'DE'</code> (Länderkürzel)</td>
     </tr>
     </tbody>
 </table>
@@ -64,7 +63,7 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
 ### Zahlen
 
 <div style="text-align:center; max-width:820px; margin:16px auto;">
-<table role="table" 
+<table role="table"
        style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
     <thead>
     <tr style="background:#009485; color:#fff;">
@@ -116,14 +115,13 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
 
     - Kann **nur positive** Zahlen speichern (inkl. 0)
     - Würde bei `INTEGER` theoretisch 0 bis 4.294.967.295 ermöglichen
-    
-    **Wichtig:** PostgreSQL unterstützt standardmäßig **keine unsigned-Typen**!
 
+    **Wichtig:** PostgreSQL unterstützt standardmäßig **keine unsigned-Typen**!
 
 ### Datum & Zeit
 
 <div style="text-align:center; max-width:820px; margin:16px auto;">
-<table role="table" 
+<table role="table"
        style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
     <thead>
     <tr style="background:#009485; color:#fff;">
@@ -155,7 +153,7 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
 ### Sonstige
 
 <div style="text-align:center; max-width:820px; margin:16px auto;">
-<table role="table" 
+<table role="table"
        style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
     <thead>
     <tr style="background:#009485; color:#fff;">
@@ -179,18 +177,17 @@ Jede Spalte einer Tabelle hat einen **Datentyp**, der festlegt, welche Art von D
 </table>
 </div>
 
-
 ---
 
 ## Der Primärschlüssel
 
-Stellen wir uns vor, unser Produktionsbetrieb hat zwei CNC-Fräsen mit dem Namen "CNC-Fräse Alpha". Beide stehen in Halle A, beide wurden im Jahr 2019 angeschafft. Wie können wir diese beiden Maschinen in unserer Datenbank eindeutig voneinander unterscheiden? Was passiert, wenn wir eine Wartung für die erste Fräse dokumentieren wollen - wie weiß die Datenbank, welche der beiden gemeint ist?
+Stellen wir uns vor, ein Maschinenbau-Zulieferer hat zwei Produkte mit der Bezeichnung "Hydraulikzylinder Standard". Beide kosten 450 Euro und gehören zur Kategorie "Hydraulik". Wie können wir diese beiden Produkte in unserer Datenbank eindeutig voneinander unterscheiden? Was passiert, wenn wir eine Bestellung für das erste Produkt erfassen wollen - wie weiß die Datenbank, welches der beiden gemeint ist?
 
 Genau hier kommt der **Primärschlüssel** (engl. Primary Key) ins Spiel!
 
-Ein **Primärschlüssel** ist eine Spalte (oder eine Kombination mehrerer Spalten), die jeden Datensatz in einer Tabelle **eindeutig identifiziert**. Er funktioniert wie eine Seriennummer oder Personalausweisnummer: Jede Maschine, jeder Auftrag, jedes Ersatzteil erhält einen einzigartigen Wert, über den es jederzeit zweifelsfrei identifiziert werden kann.
+Ein **Primärschlüssel** ist eine Spalte (oder eine Kombination mehrerer Spalten), die jeden Datensatz in einer Tabelle **eindeutig identifiziert**. Er funktioniert wie eine Artikelnummer oder Seriennummer: Jedes Produkt, jeder Auftrag, jede Bestellung erhält einen einzigartigen Wert, über den es jederzeit zweifelsfrei identifiziert werden kann.
 
-In unserem Beispiel würden wir den beiden CNC-Fräsen unterschiedliche Maschinen-IDs zuweisen - etwa `maschinen_id = 1` für die erste und `maschinen_id = 5` für die zweite Fräse. Selbst wenn beide denselben Namen, Typ und Standort haben, sind sie durch ihre ID eindeutig unterscheidbar.
+In unserem Beispiel würden wir den beiden Hydraulikzylindern unterschiedliche Produkt-IDs zuweisen - etwa `produkt_id = 101` für das erste und `produkt_id = 105` für das zweite Produkt. Selbst wenn beide dieselbe Bezeichnung, Kategorie und denselben Preis haben, sind sie durch ihre ID eindeutig unterscheidbar.
 
 ???+ defi "Primärschlüssel (Primary Key)"
     Ein **Primärschlüssel** ist ein Attribut (oder eine Kombination von Attributen), das jeden Datensatz in einer Tabelle eindeutig identifiziert.
@@ -203,10 +200,10 @@ In unserem Beispiel würden wir den beiden CNC-Fräsen unterschiedliche Maschine
 
     **Beispiele aus der Praxis:**
 
-    - **Maschinen-ID** für Produktionsmaschinen (z.B. `M001`, `M002`, ...)
-    - **Auftragsnummer** für Produktionsaufträge (z.B. `AUF-2024-00123`)
-    - **Artikel-Nr.** für Ersatzteile (z.B. `201`, `202`, ...)
-    - **Mitarbeiter-ID** für Techniker (z.B. `T42`)
+    - **Produkt-ID** für Artikel (z.B. `101`, `102`, ...)
+    - **Auftragsnummer** für Bestellungen (z.B. `AUF-2024-00123`)
+    - **Artikelnummer** für Lagerteile (z.B. `HYD-001`, `PNE-042`)
+    - **Kunden-ID** für Geschäftspartner (z.B. `K1042`)
 
 ### Warum sind Primärschlüssel wichtig?
 
@@ -217,7 +214,7 @@ Ohne Primärschlüssel würde es in der Datenbank schnell zu Chaos kommen. Ohne 
 - **Keine Duplikate** entstehen können
 - **Daten konsistent** bleiben, selbst wenn andere Werte geändert werden
 
-In der Praxis verwendet man häufig eine **fortlaufende Nummer** (1, 2, 3, ...) als Primärschlüssel, da diese automatisch eindeutig ist und sich nie ändert - selbst wenn der Maschinenname oder Standort später angepasst wird.
+In der Praxis verwendet man häufig eine **fortlaufende Nummer** (1, 2, 3, ...) als Primärschlüssel, da diese automatisch eindeutig ist und sich nie ändert - selbst wenn die Produktbezeichnung oder der Preis später angepasst wird.
 
 <div style="text-align: center;">
     <img src="https://i.imgflip.com/aadzku.jpg" alt="" style="margin-bottom: 0em;">
@@ -228,245 +225,292 @@ In der Praxis verwendet man häufig eine **fortlaufende Nummer** (1, 2, 3, ...) 
 
 ## Erstellen einer Tabelle
 
-Nun wollen wir wieder in den praktischen Teil zurückkehren und eine Tabelle erstellen. Diese soll die Maschinen unseres Produktionsbetriebs speichern. 
+Nun wollen wir in die Praxis einsteigen und unsere erste Tabelle erstellen. In diesem Kapitel verwenden wir als Beispiel einen **Produktkatalog eines Maschinenbau-Zulieferers**.
 
-### Verbindung zur Datenbank
+### Datenbankgrundlage erstellen
 
-Wir wechseln daher wieder zu pgAdmin in the *PSQL Tool Workspace* und wählen unsere bereits zuvor erzeugte Datenbank `produktions_db` aus.
+Bevor wir starten, erstellen wir eine neue Datenbank für unser Beispiel. Dazu verbinden wir uns zuerst zu einer bereits bestehenden Datenbank unseres Servers. Dafür sollten wir bereits die Datenbanken `produktions_db` (aus dem vorigen Kapitel) und `postgres` (standardmäßig vorhanden) haben:
 
-<div style="text-align: center;">
-    <img src="/assets/database/relationen/connect.png" alt="" style="width: 70%; margin-bottom: 0em;">
-</div>
+???+ info "Verbindung zur Datenbank"
 
-???+ info "Dankenbank nicht gefunden?"
-    Wenn die Datenbank nicht gefunden wird, kann es daran liegen, dass die Darstellung noch nicht aktualisiert wurde. Enfernen Sie die Auswahl des Servers im *PSQL Tool Workspace* und wählen anschließend erneut 'PostgreSQL 18' aus. Nun sollte unter 'Database' unsere Datenbank `produktions_db` zu sehen sein.
+    **Option 1: pgAdmin**
 
-Alternativ können wir auch über den Windows Terminal (cmd) die Verbindung zur Datenbank herstellen und dort direkt die SQL-Befehle ausführen:
-```cmd
-psql -h localhost -p 5432 -U postgres -d produktions_db
-```
+    Wechsle zu pgAdmin in das *PSQL Tool Workspace* und wähle die Datenbank `produktions_db` oder `postgres` aus.
+
+    <div style="text-align: center;">
+        <img src="/assets/database/relationen/connect.png" alt="" style="width: 70%; margin-bottom: 0em;">
+    </div>
+
+    **Option 2: Terminal (cmd)**
+
+    Alternativ kannst du über das Windows Terminal die Verbindung herstellen:
+
+    ```cmd
+    psql -h localhost -p 5432 -U postgres -d produktions_db
+    ```
+
+Anschließend erstellen wir eine neue Datenbank für unser Beispiel in diesem Kapitel: 
+
+???+ example "Beispiel: Zulieferer Datenbank erstellen"
+    ```sql
+    -- Datenbank erstellen
+    CREATE DATABASE zulieferer_db;
+
+    -- Mit der Datenbank verbinden
+    \c zulieferer_db
+    ```
+
+    ``` title="Output"
+    You are now connected to database "zulieferer_db" as user "postgres"
+    ``` 
+
+    Der Befehl `\c` ist ein psql-Befehl, der uns zur angegebenen Datenbank wechselt.
+
 
 ### Erstellen (CREATE TABLE)
 
-Beim **erstellen der Tabelle** verwenden wir - wie beim erstellen einer Datenbank - den Befehl `CREATE`. Dieses mal müssen wir aber noch den Befehl `TABLE` anstelle von `DATABASE` hinzufügen.
+Beim **Erstellen der Tabelle** verwenden wir den Befehl `CREATE TABLE`. Nach dem Befehl folgt der Name der Tabelle und anschließend die **Attribute** der Tabelle in Klammern. Jedes Attribut hat einen Namen und einen Datentyp und wird durch ein Komma getrennt. 
 
-Nach dem Befehl `CREATE TABLE` folgt der Name der Tabelle und anschließend die **Attribute** der Tabelle in einer Klammern. Jedes Attribut hat einen Namen und einen Datentyp und wird durch ein Komma getrennt. Wenn wir bei unserem Beispiel von zuvor beleiben, müssen wir die Tabelle `maschinen` wiefolgt erstellen:
+```sql { .yaml .no-copy }
+CREATE TABLE tabellenname (
+    attribut1 typ,
+    attribut2 typ,
+    ...
+);
+```
 
-<div class="grid cards" markdown>
+???+ example "Beispiel: Produktkatalog"
 
--   __Syntax__
-
-    ---
-
-    ```sql { .yaml .no-copy }
-    CREATE TABLE tabellenname (
-        attribut1 typ,
-        attribut2 typ,
-        ...
+    ```sql { .annotate }
+    CREATE TABLE produkte ( --(1)!
+        produkt_id INTEGER PRIMARY KEY, --(2)!
+        produktname VARCHAR(100), --(3)!
+        kategorie VARCHAR(50), --(4)!
+        preis NUMERIC(10,2), --(5)!
+        lagerbestand INTEGER, --(6)!
+        lieferant VARCHAR(100) --(7)!
     );
     ```
 
+    1. Erstelle eine Tabelle mit dem Namen "produkte"
+    2. Spalte für die Produkt-ID (Primärschlüssel = eindeutig!)
+    3. Produktname (max. 100 Zeichen)
+    4. Produktkategorie (z.B. "Hydraulik", "Pneumatik", max 50 Zeichen)
+    5. Preis (10 Gesamtstellen, 2 Nachkommastellen)
+    6. Aktueller Lagerbestand (ganze Zahl)
+    7. Name des Lieferanten (max 100 Zeichen)
 
--   __Beispiel__
-
-    ---
-
-    ???+ example "Beispiel"
-
-        ```sql { .annotate }
-        CREATE TABLE maschinen ( --(1)!
-            maschinen_id INTEGER PRIMARY KEY, --(2)!
-            name VARCHAR(100), --(3)!
-            typ VARCHAR(50), --(4)!
-            standort VARCHAR(50), --(5)!
-            anschaffungsjahr INTEGER, --(6)!
-            status VARCHAR(20) --(7)!
-        );
-        ```
-
-        1. Erstelle eine Tabelle mit dem Namen "maschinen"
-        2. Spalte für die Maschinen-ID (Primärschlüssel = eindeutig!)
-        3. Maschinenname (max. 100 Zeichen)
-        4. Maschinentyp (z.B. "CNC-Fräse", "Drehbank", max 50 Zeichen)
-        5. Standort (z.B. "Halle A", max 50 Zeichen)
-        6. Jahr der Anschaffung (ganze Zahl)
-        7. Status (z.B. "Aktiv", "Wartung", "Defekt", max 20 Zeichen)
-
-</div>
-
-
-
-
-
-
-
-
-Den **Primärschlüssel** haben wir dabei mit Hilfe des Befehls `PRIMARY KEY` auf das Attribut `maschinen_id` gesetzt.
-
-Wenn der Befehl erfolgreich ausgeführt wurde, sollte die Tabelle in der Datenbank angezeigt werden (*Default Workspace* > ... > *produktions_db* > *Schemas* > *public* > *Tables*).
-
-### Daten einfügen (INSERT)
-
-Eine leere Tabelle ist meist nicht das Ziel. Daher müssen wir uns nun ansehen, wie wir Daten (Zeilen / Tuple) in unsere nun bestehende Tabelle einfügen können. Dazu gibt es in SQL den `INSERT` Befehl. 
-
-
-<div class="grid cards" markdown>
-
--   __Syntax__
-
-    ---
-
-    ```sql
-    INSERT INTO tabellenname (attribut1, attribut2, ...)
-    VALUES (wert1, wert2, ...);
+    ``` title="Output"
+    CREATE TABLE
     ```
 
 
--   __Beispiel__
+Den **Primärschlüssel** haben wir dabei mit Hilfe des Befehls `PRIMARY KEY` auf das Attribut `produkt_id` gesetzt.
 
-    ---
+Wenn der Befehl erfolgreich ausgeführt wurde, sollte die Tabelle in der Datenbank angezeigt werden (*Default Workspace* > ... > *zulieferer_db* > *Schemas* > *public* > *Tables*).
 
-
-    ???+ example "Beispiel"
-
-        ```sql
-        INSERT INTO maschinen (
-            maschinen_id, name, typ, standort, anschaffungsjahr, status
-        )
-        VALUES
-        (1, 'CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A', 2019, 'Aktiv'),
-        (2, 'Drehbank Beta', 'Drehbank', 'Halle A', 2021, 'Aktiv'),
-        (3, 'Schweißroboter Gamma', 'Schweißroboter', 'Halle B', 2020, 'Wartung'),
-        (4, 'Lackieranlage Delta', 'Lackieranlage', 'Halle C', 2018, 'Aktiv');
-        ```
-
+<div style="text-align: center;">
+    <img src="/assets/database/relationen/check_db.png" alt="" style="width: 70%; margin-bottom: 0em;">
 </div>
 
-???+ info "Datentyp"
+### Daten einfügen (INSERT)
+
+Eine leere Tabelle ist meist nicht das Ziel. Daher müssen wir uns nun ansehen, wie wir Daten (Zeilen / Tupel) in unsere nun bestehende Tabelle einfügen können. Dazu gibt es in SQL den `INSERT` Befehl.
+
+```sql { .yaml .no-copy }
+INSERT INTO tabellenname (attribut1, attribut2, ...)
+VALUES (wert1, wert2, ...);
+```
+
+???+ example "Beispiel: Produkte einfügen"
+
+    ```sql
+    INSERT INTO produkte (
+        produkt_id, produktname, kategorie, preis, lagerbestand, lieferant
+    )
+    VALUES
+    (101, 'Hydraulikzylinder Standard', 'Hydraulik', 450.00, 25, 'Bosch Rexroth'),
+    (102, 'Pneumatikventil 5/2-Wege', 'Pneumatik', 89.50, 50, 'Festo AG'),
+    (103, 'Kugelgewindetriebe KGT40', 'Mechanik', 780.00, 12, 'THK GmbH'),
+    (104, 'Servomotor 3kW', 'Antriebstechnik', 1250.00, 8, 'Siemens AG'),
+    (105, 'Näherungsschalter induktiv', 'Sensorik', 35.90, 100, 'Sick AG');
+    ```
+
+    ``` title="Output"
+    INSERT 0 5
+    ```
+
+
+???+ info "Datentyp beachten"
     - Textwerte müssen in einfachen Anführungszeichen stehen: `'Text'`
-    - Zahlen stehen ohne Anführungszeichen: `42`
+    - Zahlen stehen ohne Anführungszeichen: `42` oder `123.45`
 
 ### Daten abfragen (SELECT)
 
 Nachdem wir nun eine befüllte Tabelle vor uns haben, ist die nächste Aufgabe klar: wir wollen die Daten aus der Datenbank auslesen/abrufen. Dazu verwenden wir den `SELECT` Befehl:
 
-<div class="grid cards" markdown>
 
--   __Syntax__
+```sql { .yaml .no-copy }
+SELECT * FROM tabellenname;
+```
 
-    ---
-
+???+ example "Beispiel: Alle Produkte anzeigen"
     ```sql
-    SELECT * FROM tabellenname;
+    SELECT * FROM produkte;
     ```
 
-
--   __Beispiel__
-
-    ---
-
-
-    ???+ example "Beispiel"
-        ```sql
-        SELECT * FROM maschinen;
-        ```
-
-        ```title="Output"
-         maschinen_id |         name         |      typ       | standort | anschaffungsjahr | status
-        --------------+----------------------+----------------+----------+------------------+---------
-                    1 | CNC-Fräse Alpha      | CNC-Fräse      | Halle A  |             2019 | Aktiv
-                    2 | Drehbank Beta        | Drehbank       | Halle A  |             2021 | Aktiv
-                    3 | Schweißroboter Gamma | Schweißroboter | Halle B  |             2020 | Wartung
-                    4 | Lackieranlage Delta  | Lackieranlage  | Halle C  |             2018 | Aktiv
-        (4 rows)
-        ```
-
-</div>
+    ```title="Output"
+     produkt_id |         produktname          |    kategorie     |  preis  | lagerbestand |   lieferant
+    ------------+------------------------------+------------------+---------+--------------+----------------
+            101 | Hydraulikzylinder Standard   | Hydraulik        | 450.00  |           25 | Bosch Rexroth
+            102 | Pneumatikventil 5/2-Wege     | Pneumatik        |  89.50  |           50 | Festo AG
+            103 | Kugelgewindetriebe KGT40     | Mechanik         | 780.00  |           12 | THK GmbH
+            104 | Servomotor 3kW               | Antriebstechnik  | 1250.00 |            8 | Siemens AG
+            105 | Näherungsschalter induktiv   | Sensorik         |  35.90  |          100 | Sick AG
+    (5 rows)
+    ```
 
 ???+ info "Der * Operator"
-    Das * (Sternchen) ist ein Platzhalter für "alle Spalten". Es ist praktisch für schnelle Abfragen, aber in der Praxis sollte man die benötigten Spalten explizit angeben da sonnst unötig Daten übertragen werden müssen. 
+    Das `*` (Sternchen) ist ein Platzhalter für "alle Spalten". Es ist praktisch für schnelle Abfragen, aber in der Praxis sollte man die benötigten Spalten explizit angeben, da sonst unnötig Daten übertragen werden müssen.
 
-<div class="grid cards" markdown>
 
--   __Syntax__
-
-    ---
-
-    ```sql
+    ```sql { .yaml .no-copy }
     SELECT attribut1, attribut2 FROM tabellenname;
     ```
 
 
--   __Beispiel__
-
-    ---
-
-
-    ???+ example "Beispiel"
+    ???+ example "Beispiel: Bestimmte Spalten anzeigen"
         ```sql
-        SELECT name, typ, standort FROM maschinen;
+        SELECT produktname, kategorie, preis FROM produkte;
         ```
-
 
         ```title="Output"
-                name         |      typ       | standort
-        ---------------------+----------------+----------
-        CNC-Fräse Alpha      | CNC-Fräse      | Halle A
-        Drehbank Beta        | Drehbank       | Halle A
-        Schweißroboter Gamma | Schweißroboter | Halle B
-        Lackieranlage Delta  | Lackieranlage  | Halle C
-        (4 rows)
+                produktname          |    kategorie     | preis
+        -----------------------------+------------------+--------
+        Hydraulikzylinder Standard   | Hydraulik        | 450.00
+        Pneumatikventil 5/2-Wege     | Pneumatik        |  89.50
+        Kugelgewindetriebe KGT40     | Mechanik         | 780.00
+        Servomotor 3kW               | Antriebstechnik  | 1250.00
+        Näherungsschalter induktiv   | Sensorik         |  35.90
+        (5 rows)
         ```
 
-</div>
 
 ---
 
-Jetzt geht es darum, das erlernte zu probieren. 
+## Übung ✍️
 
-???+ question "Ersatzteiltabelle"
+Jetzt geht es darum, das Erlernte in einem **praxisnahen Projekt** anzuwenden. In diesem und den folgenden Kapiteln baust du Schritt für Schritt ein **Produktionsplanungssystem** für einen mittelständischen Fertigungsbetrieb auf.
 
-    Erstelle eine Tabelle für **Ersatzteile** des Produktionsbetriebs.
+Die **TecGuy GmbH** ist ein mittelständisches Fertigungsunternehmen, das Präzisionsteile für die Automobilindustrie herstellt. Das Unternehmen möchte ein digitales System zur Verwaltung seiner Produktionsaufträge aufbauen.
 
-    ---
+In diesem Kapitel startest du mit der **ersten Tabelle**: Produktionsaufträge.
 
-    **Aufgabe 1: Tabelle erstellen**
+---
 
-    Erstelle eine Tabelle `ersatzteile` mit folgenden Spalten:
+???+ question "Aufgabe 1: Datenbank und Tabelle erstellen"
 
-    - `teil_id` (INTEGER, Primärschlüssel)
-    - `bezeichnung` (VARCHAR(100))
-    - `bestand` (INTEGER)
-    - `mindestbestand` (INTEGER)
-    - `preis` (NUMERIC(10,2))
+    **Schritt 1:** Erstelle eine neue Datenbank für das Projekt:
 
-    ---
+    ```sql
+    CREATE DATABASE produktionsplanung_db;
+    \c produktionsplanung_db
+    ```
 
-    **Aufgabe 2: Daten einfügen**
+    **Schritt 2:** Erstelle eine Tabelle `produktionsauftraege` mit folgenden Spalten:
 
-    Füge folgende Ersatzteile ein:
+    - `auftrag_id` (INTEGER, Primärschlüssel)
+    - `auftragsnummer` (VARCHAR(20))
+    - `kunde` (VARCHAR(100))
+    - `produkt` (VARCHAR(100))
+    - `menge` (INTEGER)
+    - `lieferdatum` (DATE)
+    - `status` (VARCHAR(20))
 
-    - Teil 201: "Fräskopf Standard", Bestand 15, Mindestbestand 5, Preis 450.00
-    - Teil 202: "Kühlmittelfilter", Bestand 8, Mindestbestand 10, Preis 25.50
-    - Teil 203: "Spannbacken-Set", Bestand 12, Mindestbestand 3, Preis 180.00
+    ??? info "💡 Lösung anzeigen"
 
-    ---
+        ```sql
+        CREATE TABLE produktionsauftraege (
+            auftrag_id INTEGER PRIMARY KEY,
+            auftragsnummer VARCHAR(20),
+            kunde VARCHAR(100),
+            produkt VARCHAR(100),
+            menge INTEGER,
+            lieferdatum DATE,
+            status VARCHAR(20)
+        );
+        ```
 
-    **Aufgabe 3: Abfragen**
+???+ question "Aufgabe 2: Daten einfügen"
 
-    Zeige alle Ersatzteile mit ihrem Bestand und Preis an.
+    Füge folgende Produktionsaufträge in die Tabelle ein:
+
+    | auftrag_id | auftragsnummer | kunde | produkt | menge | lieferdatum | status |
+    |------------|----------------|-------|---------|-------|-------------|--------|
+    | 1 | AUF-2024-001 | BMW AG | Getriebegehäuse | 500 | 2024-04-15 | In Produktion |
+    | 2 | AUF-2024-002 | Audi AG | Kurbelwelle | 200 | 2024-04-20 | Geplant |
+    | 3 | AUF-2024-003 | Mercedes-Benz | Pleuelstange | 350 | 2024-04-18 | In Produktion |
+    | 4 | AUF-2024-004 | Porsche AG | Kolben | 150 | 2024-04-25 | Geplant |
+
+    ??? info "💡 Lösung anzeigen"
+
+        ```sql
+        INSERT INTO produktionsauftraege (
+            auftrag_id, auftragsnummer, kunde, produkt, menge, lieferdatum, status
+        )
+        VALUES
+        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-15', 'In Produktion'),
+        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-20', 'Geplant'),
+        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-18', 'In Produktion'),
+        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-25', 'Geplant');
+        ```
+
+???+ question "Aufgabe 3: Daten abfragen"
+
+    Führe folgende Abfragen durch:
+
+    1. Zeige alle Produktionsaufträge an.
+    2. Zeige nur Auftragsnummer, Kunde und Produkt an.
+    3. Zeige nur Aufträge mit Status "In Produktion" an.
+
+    ??? info "💡 Lösung anzeigen"
+
+        a. **Alle Produktionsaufträge:**
+        ```sql
+        SELECT * FROM produktionsauftraege;
+        ```
+
+        **b) Nur bestimmte Spalten:**
+        ```sql
+        SELECT auftragsnummer, kunde, produkt FROM produktionsauftraege;
+        ```
+
+        **c) Nur Aufträge in Produktion:**
+        ```sql
+        SELECT * FROM produktionsauftraege WHERE status = 'In Produktion';
+        ```
+
+In den folgenden Kapiteln werden wir:
+
+- **Weitere Tabellen** hinzufügen (Kunden, Produkte, Maschinen)
+- **Beziehungen** zwischen Tabellen erstellen
+- **Komplexe Abfragen** durchführen (Joins, Aggregationen)
+- **Datenintegrität** sicherstellen (Constraints)
+- **Transaktionen** für sichere Buchungen nutzen
+
+Am Ende haben wir ein vollständiges, funktionsfähiges Produktionsplanungssystem!
 
 ---
 
 ## Zusammenfassung 📌
 
 - Das **relationale Modell** organisiert Daten in **Tabellen** mit Zeilen und Spalten
-- Jede Spalte hat einen **Datentyp**
+- Jede Spalte hat einen **Datentyp** (VARCHAR, INTEGER, NUMERIC, DATE, ...)
 - Ein **Primärschlüssel** identifiziert jeden Datensatz eindeutig und darf nicht NULL sein
 - `CREATE TABLE` erstellt eine neue Tabelle mit definierter Struktur
 - `INSERT INTO` fügt neue Datensätze in eine Tabelle ein
 - `SELECT` fragt Daten aus einer Tabelle ab
-- `SELECT *` zeigt alle Spalten, während `SELECT attribut1, attribute2` nur bestimmte Spalten zeigt
+- `SELECT *` zeigt alle Spalten, während `SELECT attribut1, attribut2` nur bestimmte Spalten zeigt
 
 ---
 
