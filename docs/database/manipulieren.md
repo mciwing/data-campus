@@ -131,15 +131,13 @@ Wir haben gesehen, dass in unserem Fall beide Vorgehen zum gleichen Ergebnis fü
 
 Beim Erstellen einer Tabelle können wir für Spalten **Standardwerte** definieren. Diese werden automatisch verwendet, wenn beim `INSERT` kein Wert angegeben wird.
 
-```sql hl_lines="8"
-CREATE TABLE artikel (
-    artikel_id INTEGER PRIMARY KEY,
-    artikelname VARCHAR(100),
-    kategorie VARCHAR(50),
-    bestand INTEGER,
-    mindestbestand INTEGER,
-    preis NUMERIC(10,2),
-    lagerort VARCHAR(50) DEFAULT 'Regal Z9'  -- Standardwert definiert!
+```sql hl_lines="6"
+CREATE TABLE tabellenname (
+    spalte1 typ PRIMARY KEY,
+    spalte2 typ,
+    spalte3 typ,
+    ...
+    spalteN typ DEFAULT 'Wert'  -- Standardwert definiert!
 );
 ```
 
@@ -250,15 +248,14 @@ Doch wenn wir uns ehrlich sind, dann haben wir uns mit der expliziten Angabe von
 Und genau an dieser Stelle kommt die Einschränkung `NOT NULL` ins Spiel. Mit `NOT NULL` können wir festlegen, dass eine Spalte **niemals leer** sein darf. Jede Zeile **muss** einen Wert in dieser Spalte haben.
 Man kann `NOT NULL` und `DEFAULT` auch kombinieren und dies macht in den meisten Fällen auch Sinn.
 
-```sql hl_lines="7 8"
-CREATE TABLE artikel (
-    artikel_id INTEGER PRIMARY KEY,
-    artikelname VARCHAR(100),
-    kategorie VARCHAR(50),
-    bestand INTEGER,
-    mindestbestand INTEGER,
-    preis NUMERIC(10,2) NOT NULL,  -- Pflichtfeld
-    lagerort VARCHAR(50) NOT NULL DEFAULT 'Regal Z9'  -- Pflicht + Standardwert
+```sql hl_lines="6 7" 
+CREATE TABLE tabellenname (
+    spalte1 typ PRIMARY KEY,
+    spalte2 typ,
+    spalte3 typ,
+    ...
+    spalteN-1 typ NOT NULL, -- Pflichtfeld
+    spalteN typ NOT NULL DEFAULT 'Wert'  -- Pflicht + Standardwert
 );
 ```
 
@@ -494,7 +491,7 @@ SQL bietet verschiedene Funktionen zur Bearbeitung von Textwerten. Eine gute Üb
     Mit einer kleinen Abfrage überprüfen wir, ob alle Änderungen richtig durchgeführt wurden.
 
     ```sql
-    SELECT artikel_id, artikelname, lagerort FROM artikel
+    SELECT artikel_id, artikelname, lagerort FROM artikel;
     ```
 
     ```title="Output"
@@ -822,7 +819,7 @@ Nun üben wir wieder an unserem bestehenden Projekt. Die **TecGuy GmbH** baut ih
 
     3. Alle Produktionshallen sollen umbenannt werden: Ersetze `"Halle"` durch `"Produktionshalle"`.
 
-    4. Alle Maschinennamen in Hallen die "Nord" enthalten sollen das Präfix `"Nord-"` bekommen.
+    4. Alle Maschinennamen in Hallen die "West" enthalten sollen das Präfix `"West-"` bekommen.
 
     **Tipp:** Nutze Berechnungen (`+`, `-`) und String-Funktionen (`REPLACE`, `CONCAT`).
 
@@ -845,11 +842,11 @@ Nun üben wir wieder an unserem bestehenden Projekt. Die **TecGuy GmbH** baut ih
         UPDATE maschinen
         SET produktionshalle = REPLACE(produktionshalle, 'Halle', 'Produktionshalle');
 
-        -- 4. Präfix für Maschinen in Nord-Hallen
-        SELECT * FROM maschinen WHERE produktionshalle LIKE '%Nord%';  -- Safety check
+        -- 4. Präfix für Maschinen in West-Hallen
+        SELECT * FROM maschinen WHERE produktionshalle LIKE '%West%';  -- Safety check
         UPDATE maschinen
-        SET maschinenname = CONCAT('Nord-', maschinenname)
-        WHERE produktionshalle LIKE '%Nord%';
+        SET maschinenname = CONCAT('West-', maschinenname)
+        WHERE produktionshalle LIKE '%West%';
 
         -- Ergebnis prüfen
         SELECT * FROM maschinen ORDER BY maschinen_id;

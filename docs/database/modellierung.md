@@ -515,6 +515,20 @@ Bevor wir mit der Implementierung in SQL beginnen, wollen wir das Erlente schon 
 
 Nachdem wir nun ER-Diagramme zeichnen können, ist es nun unsere Aufgabe diese Modelle in echte SQL-Tabellen und damit in eine Datenbank umzusetzen!
 
+
+???+ info "Datenbank-Setup"
+
+    Für die Beispiele in diesem Kapitel verwenden wir eine **Wartungs-Datenbank** (`wartung_db`), die typische Wartungen von Maschinen verwaltet. Diese Datenbank hilft uns, die verschiedenen Manipulationsoperationen praxisnah zu üben.
+
+    ```sql
+    -- Datenbank erstellen
+    CREATE DATABASE wartung_db;
+
+    -- Zur Datenbank wechseln
+    \c wartung_db
+    ``` 
+
+
 ### 1:n Beziehungen
 
 Die 1:n-Beziehung ist die häufigste Beziehungsart in relationalen Datenbanken.
@@ -524,44 +538,46 @@ Die 1:n-Beziehung ist die häufigste Beziehungsart in relationalen Datenbanken.
 
 Wir wollen uns nun die Implementierungen anhand von Beispielen ansehen. Stellen wir uns vor, eine Maschine kann viele Wartungen haben und jede Wartung gehört zu genau einer Maschine (1:n)
 
-```mermaid
-erDiagram
-    direction LR
-    MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "haben"
-    MASCHINEN {
-        int maschinen_id PK
-        string name
-    }
-    WARTUNGSPROTOKOLLE {
-        int wartungs_id PK
-        date wartungsdatum
-        int maschinen_id FK
-    }
-```
+???+ example "1:n Beziehung: Tabellen erstellen"
 
-Im ersten Schritt müssen wir nun die benötigten Tabellen erstellen. Wichtig ist dabei, dass wir immer zuerst die referenzierte Tabelle (`maschinen`) erstellen, bevor wir die referenzierende Tabelle (`wartungsprotokolle`) erstellen.
+    ```mermaid
+    erDiagram
+        direction LR
+        MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "haben"
+        MASCHINEN {
+            int maschinen_id PK
+            string name
+        }
+        WARTUNGSPROTOKOLLE {
+            int wartungs_id PK
+            date wartungsdatum
+            int maschinen_id FK
+        }
+    ```
 
-```sql hl_lines="16"
--- Zuerst die "1"-Seite (Maschinen)
-CREATE TABLE maschinen (
-    maschinen_id SERIAL PRIMARY KEY, --(1)!
-    name VARCHAR(100) NOT NULL,
-    typ VARCHAR(50) NOT NULL,
-    standort VARCHAR(50)
-);
+    Im ersten Schritt müssen wir nun die benötigten Tabellen erstellen. Wichtig ist dabei, dass wir immer zuerst die referenzierte Tabelle (`maschinen`) erstellen, bevor wir die referenzierende Tabelle (`wartungsprotokolle`) erstellen.
 
--- Dann die "n"-Seite (Wartungsprotokolle) mit Fremdschlüssel
-CREATE TABLE wartungsprotokolle (
-    wartungs_id SERIAL PRIMARY KEY,
-    wartungsdatum DATE NOT NULL,
-    beschreibung TEXT,
-    kosten NUMERIC(10, 2),
-    maschinen_id INTEGER NOT NULL,
-    FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-);
-```
+    ```sql hl_lines="16"
+    -- Zuerst die "1"-Seite (Maschinen)
+    CREATE TABLE maschinen (
+        maschinen_id SERIAL PRIMARY KEY, --(1)!
+        name VARCHAR(100) NOT NULL,
+        typ VARCHAR(50) NOT NULL,
+        standort VARCHAR(50)
+    );
 
-1. Der Datentyp `SERIAL` ist autoinkrementierend (1,2,3,...)
+    -- Dann die "n"-Seite (Wartungsprotokolle) mit Fremdschlüssel
+    CREATE TABLE wartungsprotokolle (
+        wartungs_id SERIAL PRIMARY KEY,
+        wartungsdatum DATE NOT NULL,
+        beschreibung TEXT,
+        kosten NUMERIC(10, 2),
+        maschinen_id INTEGER NOT NULL,
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+    );
+    ```
+
+    1. Der Datentyp `SERIAL` ist autoinkrementierend (1,2,3,...)
 
 Wenn wir uns obenstehenden SQL Befehl ansehen, dann erkennen wir zwei neue Dinge
 
@@ -570,42 +586,46 @@ Wenn wir uns obenstehenden SQL Befehl ansehen, dann erkennen wir zwei neue Dinge
 
 Das heißt, die oben hervorgehobene Code Zeile besagt, dass der Wert in `wartungsprotokolle.maschinen_id` in der Tabelle `maschinen` existieren muss.
 
-Nun können wir beginnen, Daten in unsere Tabellen zu befüllen.
+???+ example "1:n Beziehung: Daten einfügen"
 
-```sql
--- Erst Maschinen einfügen
-INSERT INTO maschinen (name, typ, standort)
-VALUES
-    ('CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A'),
-    ('Drehbank Beta', 'Drehbank', 'Halle A'),
-    ('Schweißroboter Gamma', 'Schweißroboter', 'Halle B');
+    Nun können wir beginnen, Daten in unsere Tabellen zu befüllen.
 
--- Dann Wartungsprotokolle mit Verweis auf Maschinen
-INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, kosten, maschinen_id)
-VALUES
-    ('2024-01-15', 'Routinewartung', 450.00, 1),        -- für CNC-Fräse Alpha
-    ('2024-06-20', 'Fräskopf getauscht', 320.00, 1),    -- für CNC-Fräse Alpha
-    ('2024-03-10', 'Ölwechsel', 150.00, 2),             -- für Drehbank Beta
-    ('2024-02-05', 'Schweißkopf kalibriert', 280.00, 3); -- für Schweißroboter
-```
+    ```sql
+    -- Erst Maschinen einfügen
+    INSERT INTO maschinen (name, typ, standort)
+    VALUES
+        ('CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A'),
+        ('Drehbank Beta', 'Drehbank', 'Halle A'),
+        ('Schweißroboter Gamma', 'Schweißroboter', 'Halle B');
+
+    -- Dann Wartungsprotokolle mit Verweis auf Maschinen
+    INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, kosten, maschinen_id)
+    VALUES
+        ('2024-01-15', 'Routinewartung', 450.00, 1),         --  CNC-Fraese Alpha
+        ('2024-06-20', 'Fraeskopf getauscht', 320.00, 1),    --  CNC-Fraese Alpha
+        ('2024-03-10', 'Oelwechsel', 150.00, 2),             --  Drehbank Beta
+        ('2024-02-05', 'Schweißkopf kalibriert', 280.00, 3); --  Schweißroboter
 
 
-```sql title="Tabelle: maschinen"
-maschinen_id | name                 | typ            | standort
--------------+----------------------+----------------+-----------
-           1 | CNC-Fräse Alpha      | CNC-Fräse      | Halle A
-           2 | Drehbank Beta        | Drehbank       | Halle A
-           3 | Schweißroboter Gamma | Schweißroboter | Halle B
-```
+    SELECT * FROM maschinen;
+    SELECT * FROM wartungsprotokolle;
+    ```
 
-```sql title="Tabelle: wartungsprotokolle"
- wartungs_id | wartungsdatum |      beschreibung      | kosten  | maschinen_id 
--------------+---------------+------------------------+---------+--------------
-           1 | 2024-01-15    | Routinewartung         |  450.00 |            1
-           2 | 2024-06-20    | Fräskopf getauscht     |  320.00 |            1
-           3 | 2024-03-10    | Ölwechsel              |  150.00 |            2
-           4 | 2024-02-05    | Schweißkopf kalibriert |  280.00 |            3
-```
+
+    ```sql title="Output"
+    maschinen_id | name                 | typ            | standort
+    -------------+----------------------+----------------+-----------
+               1 | CNC-Fraese Alpha     | CNC-Fraese     | Halle A
+               2 | Drehbank Beta        | Drehbank       | Halle A
+               3 | Schweißroboter Gamma | Schweißroboter | Halle B
+
+     wartungs_id | wartungsdatum |      beschreibung      | kosten  | maschinen_id 
+    -------------+---------------+------------------------+---------+--------------
+               1 | 2024-01-15    | Routinewartung         |  450.00 |            1
+               2 | 2024-06-20    | Fraeskopf getauscht    |  320.00 |            1
+               3 | 2024-03-10    | Öelwechsel             |  150.00 |            2
+               4 | 2024-02-05    | Schweißkopf kalibriert |  280.00 |            3
+    ```
 
 🎉 Gratulation! Wir haben unsere erste 1:n-Beziehung erstellt. 
 
@@ -630,7 +650,7 @@ Doch wieso brauchen wir diese Zwischentabelle?
 
 Stellen wir uns folgendes Szenario vor: Eine Maschine benötigt viele Ersatzteile, und ein Ersatzteil kann in vielen Maschinen verwendet werden. Dies kann mit einer n:m-Beziehung modelliert werden.
 
-???+ example "Gedankenexperiment"
+???+ info "Gedankenexperiment"
     **Versuch 1:** Fremdschlüssel in `maschinen`?
 
     ```sql title="Tabelle: wartungsprotokolle"
@@ -692,15 +712,16 @@ erDiagram
 Wir sehen also, dass wir die n:m-Beziehung in zwei 1:n-Beziehungen aufteilen können. Nun können wir beginnen, die Tabellen zu erstellen. Zuerst erstellen wir die beiden Entitäten Tabellen, dann die Zwischentabelle.
 
 
-???+ example "SQL-Code: n:m Beziehung"
+???+ example "n:m Beziehung: Tabellen erstellen"
     ```sql
+    -- EXISTIERT BEREITS 
     -- Tabelle 1: Maschinen (die "n"-Seite)
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        typ VARCHAR(50),
-        standort VARCHAR(50)
-    );
+    -- CREATE TABLE maschinen (
+    --     maschinen_id SERIAL PRIMARY KEY,
+    --    name VARCHAR(100) NOT NULL,
+    --    typ VARCHAR(50),
+    --    standort VARCHAR(50)
+    -- );
 
     -- Tabelle 2: Ersatzteile (die "m"-Seite)
     CREATE TABLE ersatzteile (
@@ -728,38 +749,42 @@ Wir sehen also, dass wir die n:m-Beziehung in zwei 1:n-Beziehungen aufteilen kö
     - Die Zwischentabelle hat **zwei Fremdschlüssel**
     - Jede Zeile in der Zwischentabelle repräsentiert eine **Zuordnung**
     - Zusätzliche Attribute (wie `menge`) können in der Zwischentabelle gespeichert werden
+    - Die `ON DELETE CASCADE` Option bedeutet, dass wenn eine Maschine oder ein Ersatzteil gelöscht wird, alle zugehörigen Zuordnungen in der Zwischentabelle automatisch gelöscht werden. Weitere Informationen dazu gibt es im nächsten Abschnitt.
 
 
 Nun können wir beginnen, Daten in unsere Tabellen zu befüllen. Zuerst füllen wir die beiden Entitäten Tabellen, dann die Zwischentabelle.
 
 ???+ example "SQL-Code: Daten einfügen"
     ```sql
+    -- EXISTIERT BEREITS 
     -- 1. Erst die Maschinen
-    INSERT INTO maschinen (name, typ, standort)
-    VALUES
-        ('CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A'),
-        ('Drehbank Beta', 'Drehbank', 'Halle A'),
-        ('Schweißroboter Gamma', 'Roboter', 'Halle B');
+    -- INSERT INTO maschinen (name, typ, standort)
+    -- VALUES
+    --     ('CNC-Fräse Alpha', 'CNC-Fräse', 'Halle A'),
+    --     ('Drehbank Beta', 'Drehbank', 'Halle A'),
+    --     ('Schweißroboter Gamma', 'Roboter', 'Halle B');
 
     -- 2. Dann die Ersatzteile
     INSERT INTO ersatzteile (teilname, hersteller, preis)
     VALUES
         ('Spindelmotor', 'MotorTech GmbH', 1250.00),
-        ('Kühlmittelpumpe', 'PumpCo', 380.50),
+        ('Kuehlmittelpumpe', 'PumpCo', 380.50),
         ('Schweißdrahtspule', 'WeldSupply', 45.90);
 
     -- 3. Zuletzt die Zuordnungen
     INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, menge)
     VALUES
-        (1, 1, 1),  -- CNC-Fräse benötigt 1x Spindelmotor
-        (1, 2, 2),  -- CNC-Fräse benötigt 2x Kühlmittelpumpe
+        (1, 1, 1),  -- CNC-Fraese benötigt 1x Spindelmotor
+        (1, 2, 2),  -- CNC-Fraese benötigt 2x Kuehlmittelpumpe
         (2, 1, 1),  -- Drehbank benötigt 1x Spindelmotor
-        (2, 2, 1),  -- Drehbank benötigt 1x Kühlmittelpumpe
-        (3, 2, 1),  -- Schweißroboter benötigt 1x Kühlmittelpumpe
+        (2, 2, 1),  -- Drehbank benötigt 1x Kuehlmittelpumpe
+        (3, 2, 1),  -- Schweißroboter benötigt 1x Kuehlmittelpumpe
         (3, 3, 5);  -- Schweißroboter benötigt 5x Schweißdrahtspule
     ```
 
 Und das war's auch schon. Die Umsetzung einer n:m Beziehung ist leider nicht so einfach wie die der 1:n Beziehung. Aber mit etwas Überlegung und dem Trick, die n:m Beziehung in zwei 1:n Beziehungen aufzuteilen, können wir diese Beziehung in der Datenbank abbilden.
+
+Wie wir nun Auswertungen über mehrere zusammenhängende Tabellen durchführen können erfahren wir im nächsten Kapitel.
 
 ---
 
@@ -778,8 +803,8 @@ Nachdem wir nun mühevoll versucht haben Beziehungen in der Datenbank zu modelli
     ❌ **Fehler!**
 
     ```
-    ERROR: update or delete on table "maschinen" violates foreign key constraint
-    DETAIL: Key (maschinen_id)=(1) is still referenced from table "wartungsprotokolle".
+    FEHLER:  Aktualisieren oder Löschen in Tabelle »maschinen« verletzt Fremdschlüssel-Constraint »wartungsprotokolle_maschinen_id_fkey« von Tabelle »wartungsprotokolle«
+    DETAIL:  Auf Schlüssel (maschinen_id)=(1) wird noch aus Tabelle »wartungsprotokolle« verwiesen.
     ```
 
 ???+ danger "Warum der Fehler?"
@@ -835,21 +860,16 @@ Schauen wir uns dazu ein Beispiel an.
 
 ???+ example "Beispiel: Kaskadierende Löschung"
 
+    Was passiert, wenn wir nun versuchen ein Ersatzteil zu löschen, welches in der Zwischentabelle `maschinen_ersatzteile` verwendet wird. 
+
     ```sql
-    CREATE TABLE wartungsprotokolle (
-        wartungs_id SERIAL PRIMARY KEY,
-        wartungsdatum DATE,
-        maschinen_id INTEGER,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE  -- Löscht Wartungen automatisch mit
-    );
+    DELETE FROM ersatzteile WHERE teil_id = 1;
+    -- ✅ Ersatzteil UND alle zugehörigen Zuordnungen in der Zwischentabelle `maschinen_ersatzteile` werden gelöscht
     ```
 
-    **Verhalten:**
-    ```sql
-    DELETE FROM maschinen WHERE maschinen_id = 1;
-    -- ✅ Maschine UND alle ihre Wartungen werden gelöscht
-    ```
+    Kein Fehler! Doch warum? 
+    
+    Weil wir die `ON DELETE CASCADE` Option bei der Erstellung der Zwischentabelle `maschinen_ersatzteile` definiert haben.
 
     **Wann verwenden?**
 
@@ -945,126 +965,364 @@ Schauen wir uns dazu ein Beispiel an.
 
 ---
 
-Jetzt bist du dran! Teste dein Wissen, indem du die erlernten Konzepte in SQL umsetzt.
+## Übung ✍️
 
-???+ question "Aufgabe 1: 1:n Beziehung implementieren"
+Nun wenden wir das Erlernte auf unser **TecGuy GmbH Produktionsplanungssystem** an! Wir werden die bestehenden Tabellen um Beziehungen erweitern und so ein vollständiges relationales Datenmodell aufbauen.
 
-    Erstelle Tabellen für **Lieferanten** und **Materialien** mit einer 1:n-Beziehung.
+???+ info "Übungsvorbereitung"
+
+    Stelle sicher, dass du zur TecGuy GmbH Datenbank verbunden bist und die Tabellen `maschinen` und `produktionsauftraege` existieren:
+
+    ```sql
+    -- Zur Datenbank wechseln
+    \c produktionsplanung_db
+    ```
+
+    Falls die Tabellen noch nicht existieren, findest du die Setup-Anweisungen in den vorherigen Kapiteln.
+
+???+ question "Aufgabe 1: ER-Diagramm modellieren"
+
+    Bevor wir mit der Implementierung beginnen, modelliere **auf Papier** ein ER-Diagramm für folgendes Szenario:
+
+    **Szenario: Produktionsplanung mit Maschinenzuordnung**
+
+    Die TecGuy GmbH möchte ihre Produktionsplanung verbessern und Produktionsaufträge direkt Maschinen zuordnen.
 
     **Anforderungen:**
 
-    - Ein Lieferant liefert **viele** Materialien
-    - Jedes Material kommt von **einem** Lieferanten
-    - **Lieferanten:** ID, Name, Standort
-    - **Materialien:** ID, Materialname, Einheit, Preis, Lieferant
+    - Ein **Produktionsauftrag** wird von **einer Maschine** produziert
+    - Eine **Maschine** kann **viele Produktionsaufträge** bearbeiten
+    - **Entitäten:**
+        - `maschinen` (bereits vorhanden)
+        - `produktionsauftraege` (bereits vorhanden)
 
-    **Aufgaben:**
+    **Aufgabe:** Zeichne das ER-Diagramm und bestimme:
 
-    1. Erstelle die beiden Tabellen mit geeigneten Datentypen
-    2. Füge mindestens 2 Lieferanten und 4 Materialien ein
-    3. Stelle sicher, dass die Fremdschlüssel-Beziehung korrekt definiert ist
+    - Die **Kardinalität** der Beziehung (1:1, 1:n oder n:m?)
+    - Wo der **Fremdschlüssel** platziert werden muss
+    - Ob `ON DELETE CASCADE` oder `ON DELETE RESTRICT` sinnvoll ist
 
     ??? tip "Lösung anzeigen"
 
-        ```sql
-        -- Tabelle 1: Lieferanten (die "1"-Seite)
-        CREATE TABLE lieferanten (
-            lieferant_id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            standort VARCHAR(100)
-        );
-
-        -- Tabelle 2: Materialien (die "n"-Seite)
-        CREATE TABLE materialien (
-            material_id SERIAL PRIMARY KEY,
-            materialname VARCHAR(100) NOT NULL,
-            einheit VARCHAR(20),  -- z.B. kg, Liter, Stück
-            preis NUMERIC(10, 2),
-            lieferant_id INTEGER NOT NULL,
-            FOREIGN KEY (lieferant_id) REFERENCES lieferanten(lieferant_id)
-                ON DELETE RESTRICT  -- Lieferant kann nicht gelöscht werden, wenn noch Materialien existieren
-        );
-
-        -- Testdaten
-        INSERT INTO lieferanten (name, standort)
-        VALUES
-            ('Stahl-Handel Nord', 'Hamburg'),
-            ('ChemTech Solutions', 'Frankfurt');
-
-        INSERT INTO materialien (materialname, einheit, preis, lieferant_id)
-        VALUES
-            ('Edelstahl 1.4301', 'kg', 8.50, 1),
-            ('Aluminium 6061', 'kg', 12.30, 1),
-            ('Kühlschmierstoff', 'Liter', 12.90, 2),
-            ('Reinigungsmittel', 'Liter', 8.40, 2);
+        ```mermaid
+        erDiagram
+            MASCHINEN ||--o{ PRODUKTIONSAUFTRAEGE : "produziert"
+            MASCHINEN {
+                int maschinen_id PK
+                string maschinenname
+                string maschinentyp
+                string produktionshalle
+            }
+            PRODUKTIONSAUFTRAEGE {
+                int auftrag_id PK
+                string auftragsnummer
+                string kunde
+                string produkt
+                int menge
+                date lieferdatum
+                string status
+                int maschinen_id FK "verweist auf maschinen"
+            }
         ```
 
-???+ question "Aufgabe 2: n:m Beziehung implementieren"
+        **Erklärung:**
 
-    Erstelle Tabellen für **Techniker** und **Zertifizierungen** mit einer n:m-Beziehung.
+        - **Kardinalität: 1:n** - Eine Maschine produziert viele Aufträge, jeder Auftrag wird von einer Maschine produziert
+        - **Fremdschlüssel:** `maschinen_id` in der Tabelle `produktionsauftraege` (die "n"-Seite)
+        - **ON DELETE:** `RESTRICT` ist sinnvoll - eine Maschine sollte nicht gelöscht werden können, wenn sie noch aktive Produktionsaufträge hat
 
-    **Anforderungen:**
+???+ question "Aufgabe 2: 1:n Beziehung implementieren (Maschinen → Produktionsaufträge)"
 
-    - Ein Techniker hat **viele** Zertifizierungen
-    - Eine Zertifizierung wird von **vielen** Technikern gehalten
-    - **Techniker:** ID, Name
-    - **Zertifizierungen:** ID, Bezeichnung, Gültigkeit (Jahre)
-    - **Zertifikatsvergaben** (Zwischentabelle): Welcher Techniker hat welche Zertifizierung + Erwerbs- und Ablaufdatum
+    Implementiere die Beziehung zwischen Maschinen und Produktionsaufträgen in SQL.
 
     **Aufgaben:**
 
-    1. Erstelle alle drei benötigten Tabellen
-    2. Füge mindestens 2 Techniker und 2 Zertifizierungen ein
-    3. Erstelle mindestens 3 Zuordnungen in der Zwischentabelle
+    1. Füge der Tabelle `produktionsauftraege` eine Spalte `maschinen_id` hinzu:
+        ```sql
+        ALTER TABLE produktionsauftraege
+        ADD COLUMN maschinen_id INTEGER;
+        ```
+
+    2. Erstelle die Fremdschlüssel-Beziehung mit `ON DELETE RESTRICT`:
+        ```sql
+        ALTER TABLE produktionsauftraege
+        ADD CONSTRAINT fk_maschinen
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+        ON DELETE RESTRICT;
+        ```
+
+    3. Aktualisiere die Produktionsaufträge und weise ihnen Maschinen zu:
+        - Auftrag 1 (Getriebegehäuse) → Maschine 1 (CNC-Fraese Alpha)
+        - Auftrag 2 (Kurbelwelle) → Maschine 2 (Drehbank Beta)
+        - Auftrag 3 (Pleuelstange) → Maschine 1 (CNC-Fraese Alpha)
+        - Auftrag 5 (Kurbelwelle) → Maschine 2 (Drehbank Beta)
+        - Auftrag 10 (Kolben) → Maschine 1 (CNC-Fraese Alpha)
+
+    4. Teste die referenzielle Integrität:
+        - Versuche, eine Maschine zu löschen, die Produktionsaufträge hat
+        - Was passiert?
 
     ??? tip "Lösung anzeigen"
 
         ```sql
-        -- Tabelle 1: Techniker
-        CREATE TABLE techniker (
-            techniker_id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL
-        );
+        -- 1. Spalte hinzufügen
+        ALTER TABLE produktionsauftraege
+        ADD COLUMN maschinen_id INTEGER;
 
-        -- Tabelle 2: Zertifizierungen
-        CREATE TABLE zertifizierungen (
-            zertifizierung_id SERIAL PRIMARY KEY,
-            bezeichnung VARCHAR(200) NOT NULL,
-            gueltigkeit_jahre INTEGER
-        );
+        -- 2. Fremdschlüssel erstellen
+        ALTER TABLE produktionsauftraege
+        ADD CONSTRAINT fk_maschinen
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+        ON DELETE RESTRICT;
 
-        -- Tabelle 3: Zwischentabelle
-        CREATE TABLE zertifikatsvergaben (
-            vergabe_id SERIAL PRIMARY KEY,
-            techniker_id INTEGER NOT NULL,
-            zertifizierung_id INTEGER NOT NULL,
-            erwerbsdatum DATE NOT NULL,
-            ablaufdatum DATE,
-            FOREIGN KEY (techniker_id) REFERENCES techniker(techniker_id)
-                ON DELETE CASCADE,
-            FOREIGN KEY (zertifizierung_id) REFERENCES zertifizierungen(zertifizierung_id)
+        -- 3. Produktionsaufträge aktualisieren
+        UPDATE produktionsauftraege SET maschinen_id = 1 WHERE auftrag_id = 1;
+        UPDATE produktionsauftraege SET maschinen_id = 2 WHERE auftrag_id = 2;
+        UPDATE produktionsauftraege SET maschinen_id = 1 WHERE auftrag_id = 3;
+        UPDATE produktionsauftraege SET maschinen_id = 2 WHERE auftrag_id = 5;
+        UPDATE produktionsauftraege SET maschinen_id = 1 WHERE auftrag_id = 10;
+
+        -- 4. Referenzielle Integrität testen
+        DELETE FROM maschinen WHERE maschinen_id = 1;
+        -- ❌ FEHLER: update or delete on table "maschinen" violates foreign key constraint
+        -- DETAIL: Key (maschinen_id)=(1) is still referenced from table "produktionsauftraege"
+        ```
+
+        **Erklärung:**
+
+        - Die Fremdschlüssel-Beziehung verhindert das Löschen der Maschine, da sie noch von Produktionsaufträgen referenziert wird
+        - `ON DELETE RESTRICT` schützt vor versehentlichem Datenverlust
+
+???+ question "Aufgabe 3: 1:n Beziehung implementieren (Maschinen → Wartungsprotokolle)"
+
+    Erstelle eine neue Tabelle `wartungsprotokolle` mit einer 1:n-Beziehung zu `maschinen`.
+
+    **Anforderungen:**
+
+    - Eine Maschine hat **viele** Wartungsprotokolle
+    - Jedes Wartungsprotokoll gehört zu **einer** Maschine
+    - **Wartungsprotokolle:** ID, Wartungsdatum, Beschreibung, Techniker, Kosten, Maschinen-ID
+    - Wenn eine Maschine gelöscht wird, sollen auch alle ihre Wartungsprotokolle gelöscht werden (`ON DELETE CASCADE`)
+
+    **Aufgaben:**
+
+    1. Erstelle die Tabelle `wartungsprotokolle` mit geeigneten Datentypen und Fremdschlüssel
+    2. Füge mindestens 4 Wartungsprotokolle für verschiedene Maschinen ein
+    3. Teste `ON DELETE CASCADE`: Lösche eine Maschine und prüfe, ob ihre Wartungsprotokolle ebenfalls gelöscht wurden
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- 1. Tabelle erstellen
+        CREATE TABLE wartungsprotokolle (
+            wartungs_id SERIAL PRIMARY KEY,
+            wartungsdatum DATE NOT NULL,
+            beschreibung TEXT,
+            techniker VARCHAR(100),
+            kosten NUMERIC(10, 2),
+            maschinen_id INTEGER NOT NULL,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
                 ON DELETE CASCADE
         );
 
-        -- Testdaten
-        INSERT INTO techniker (name)
+        -- 2. Wartungsprotokolle einfügen
+        INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id)
         VALUES
-            ('Thomas Müller'),
-            ('Sandra Schmidt');
+            ('2024-01-15', 'Routinewartung - Oelwechsel', 'M. Schneider', 250.00, 1),
+            ('2024-02-10', 'Reparatur Spindelmotor', 'L. Weber', 850.00, 1),
+            ('2024-01-20', 'Routinewartung - Kalibrierung', 'M. Schneider', 180.00, 2),
+            ('2024-03-05', 'Austausch Keilriemen', 'L. Weber', 120.00, 2);
 
-        INSERT INTO zertifizierungen (bezeichnung, gueltigkeit_jahre)
-        VALUES
-            ('CNC-Programmierung Stufe 2', 5),
-            ('Schweißfachmann', 3);
+        -- Alle Wartungen anzeigen
+        SELECT * FROM wartungsprotokolle ORDER BY wartungsdatum;
 
-        INSERT INTO zertifikatsvergaben (techniker_id, zertifizierung_id, erwerbsdatum, ablaufdatum)
-        VALUES
-            (1, 1, '2020-03-15', '2025-03-15'),  -- Thomas hat CNC-Zertifizierung
-            (2, 1, '2022-06-10', '2027-06-10'),  -- Sandra hat CNC-Zertifizierung
-            (1, 2, '2021-09-20', '2024-09-20');  -- Thomas hat Schweißfachmann-Zertifizierung
+        -- 3. ON DELETE CASCADE testen
+        -- Zunächst: Testmaschine erstellen
+        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp)
+        VALUES (99, 'Test-Maschine', 'Test');
+
+        -- Wartung für Testmaschine einfügen
+        INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id)
+        VALUES ('2024-03-10', 'Test-Wartung', 'Test-Techniker', 100.00, 99);
+
+        -- Prüfen, dass Wartung existiert
+        SELECT * FROM wartungsprotokolle WHERE maschinen_id = 99;
+
+        -- Testmaschine löschen
+        DELETE FROM maschinen WHERE maschinen_id = 99;
+        -- ✅ Erfolgreich gelöscht
+
+        -- Prüfen, ob Wartung auch gelöscht wurde
+        SELECT * FROM wartungsprotokolle WHERE maschinen_id = 99;
+        -- (0 rows) - Wartung wurde automatisch mitgelöscht!
         ```
 
+        **Beobachtung:**
+
+        - Durch `ON DELETE CASCADE` werden beim Löschen einer Maschine automatisch alle zugehörigen Wartungsprotokolle mitgelöscht
+        - Dies ist hier sinnvoll, da Wartungsprotokolle ohne Maschine keine Bedeutung haben
+
+???+ question "Aufgabe 4: n:m Beziehung implementieren (Maschinen ↔ Ersatzteile)"
+
+    Erstelle Tabellen für eine n:m-Beziehung zwischen Maschinen und Ersatzteilen.
+
+    **Anforderungen:**
+
+    - Eine Maschine benötigt **viele** Ersatzteile
+    - Ein Ersatzteil kann in **vielen** Maschinen verwendet werden
+    - **Ersatzteile:** ID, Teilename, Hersteller, Preis
+    - **Zwischentabelle:** Zusätzliches Attribut `benoetigte_anzahl` (wie viele Stück dieses Ersatzteil die Maschine benötigt)
+
+    **Aufgaben:**
+
+    1. Erstelle die Tabelle `ersatzteile`
+    2. Erstelle die Zwischentabelle `maschinen_ersatzteile` mit zwei Fremdschlüsseln und `ON DELETE CASCADE`
+    3. Füge mindestens 3 Ersatzteile ein
+    4. Erstelle mindestens 5 Zuordnungen in der Zwischentabelle
+    5. Zeige alle Ersatzteile für eine bestimmte Maschine an (mit JOIN - mehr dazu im nächsten Kapitel!)
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- 1. Tabelle Ersatzteile erstellen
+        CREATE TABLE ersatzteile (
+            teil_id SERIAL PRIMARY KEY,
+            teilename VARCHAR(100) NOT NULL,
+            hersteller VARCHAR(100),
+            preis NUMERIC(10, 2)
+        );
+
+        -- 2. Zwischentabelle erstellen
+        CREATE TABLE maschinen_ersatzteile (
+            zuordnung_id SERIAL PRIMARY KEY,
+            maschinen_id INTEGER NOT NULL,
+            teil_id INTEGER NOT NULL,
+            benoetigte_anzahl INTEGER DEFAULT 1,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE CASCADE,
+            FOREIGN KEY (teil_id) REFERENCES ersatzteile(teil_id)
+                ON DELETE CASCADE
+        );
+
+        -- 3. Ersatzteile einfügen
+        INSERT INTO ersatzteile (teilename, hersteller, preis)
+        VALUES
+            ('Spindelmotor 5kW', 'MotorTech GmbH', 1850.00),
+            ('Kuehlmittelpumpe', 'PumpCo AG', 320.50),
+            ('Linearfuehrung 500mm', 'Precision Parts', 680.00),
+            ('Werkzeughalter ISO40', 'ToolSupply GmbH', 145.00),
+            ('Drehfutter 250mm', 'ChuckMaster', 890.00);
+
+        -- 4. Zuordnungen erstellen
+        INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, benoetigte_anzahl)
+        VALUES
+            (1, 1, 1),  -- CNC-Fraese braucht 1x Spindelmotor
+            (1, 2, 2),  -- CNC-Fraese braucht 2x Kuehlmittelpumpe
+            (1, 3, 4),  -- CNC-Fraese braucht 4x Linearfuehrung
+            (1, 4, 6),  -- CNC-Fraese braucht 6x Werkzeughalter
+            (2, 2, 1),  -- Drehbank braucht 1x Kuehlmittelpumpe
+            (2, 5, 1);  -- Drehbank braucht 1x Drehfutter
+
+        -- 5. Alle Ersatzteile für CNC-Fraese Alpha (Maschine 1) anzeigen
+        SELECT
+            m.maschinenname,
+            e.teilename,
+            me.benoetigte_anzahl,
+            e.preis,
+            (me.benoetigte_anzahl * e.preis) AS gesamtpreis
+        FROM maschinen m
+        JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+        JOIN ersatzteile e ON me.teil_id = e.teil_id
+        WHERE m.maschinen_id = 1
+        ORDER BY e.teilename;
+        ```
+
+        **Erklärung:**
+
+        - Die Zwischentabelle `maschinen_ersatzteile` löst die n:m-Beziehung in zwei 1:n-Beziehungen auf
+        - Das Attribut `benoetigte_anzahl` ist ein typisches Beispiel für ein Attribut, das zur Beziehung selbst gehört (nicht zur Maschine oder zum Ersatzteil)
+        - Mit `JOIN` (nächstes Kapitel!) können wir die verknüpften Daten elegant abfragen
+
+???+ question "Aufgabe 5: ER-Diagramm des Gesamtsystems zeichnen"
+
+    Zeichne **auf Papier** das vollständige ER-Diagramm des TecGuy GmbH Produktionsplanungssystems mit allen Tabellen und Beziehungen:
+
+    **Tabellen:**
+
+    - `maschinen`
+    - `produktionsauftraege`
+    - `wartungsprotokolle`
+    - `ersatzteile`
+    - `maschinen_ersatzteile`
+
+    **Aufgabe:** Zeichne das vollständige ER-Diagramm mit:
+
+    - Allen Entitäten und ihren wichtigsten Attributen
+    - Allen Beziehungen mit korrekten Kardinalitäten
+    - Allen Fremdschlüsseln (FK)
+
+    ??? tip "Lösung anzeigen"
+
+        ```mermaid
+        erDiagram
+            MASCHINEN ||--o{ PRODUKTIONSAUFTRAEGE : "produziert"
+            MASCHINEN ||--o{ WARTUNGSPROTOKOLLE : "hat"
+            MASCHINEN ||--o{ MASCHINEN_ERSATZTEILE : "benoetigt"
+            ERSATZTEILE ||--o{ MASCHINEN_ERSATZTEILE : "wird_verwendet_in"
+
+            MASCHINEN {
+                int maschinen_id PK
+                string maschinenname
+                string maschinentyp
+                string produktionshalle
+                int anschaffungsjahr
+                string maschinenstatus
+                int wartungsintervall_tage
+            }
+
+            PRODUKTIONSAUFTRAEGE {
+                int auftrag_id PK
+                string auftragsnummer
+                string kunde
+                string produkt
+                int menge
+                date lieferdatum
+                string status
+                int maschinen_id FK
+            }
+
+            WARTUNGSPROTOKOLLE {
+                int wartungs_id PK
+                date wartungsdatum
+                text beschreibung
+                string techniker
+                numeric kosten
+                int maschinen_id FK
+            }
+
+            ERSATZTEILE {
+                int teil_id PK
+                string teilename
+                string hersteller
+                numeric preis
+            }
+
+            MASCHINEN_ERSATZTEILE {
+                int zuordnung_id PK
+                int maschinen_id FK
+                int teil_id FK
+                int benoetigte_anzahl
+            }
+        ```
+
+        **Beziehungen im Überblick:**
+
+        - **MASCHINEN → PRODUKTIONSAUFTRAEGE:** 1:n (eine Maschine produziert viele Aufträge)
+        - **MASCHINEN → WARTUNGSPROTOKOLLE:** 1:n (eine Maschine hat viele Wartungen)
+        - **MASCHINEN ↔ ERSATZTEILE:** n:m über Zwischentabelle `MASCHINEN_ERSATZTEILE`
+
 ---
+
 
 ## Zusammenfassung 📌
 
