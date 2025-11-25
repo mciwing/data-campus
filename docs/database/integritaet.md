@@ -83,7 +83,7 @@ Nachfolgende Tabelle gibt einen Überblick über die wichtigsten und gängisten 
 
 Wollen uns nun einige der Constraints genauer ansehen.
 
-Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert werden. Damit wird sichergestellt, dass von Anfang an alle Daten die gewünschten Eigenschaften haben. Es gibt aber auch die Möglichkeit, Constraints nachträglich zu einer bestehenden Tabelle hinzuzufügen. Wir werden uns dies später noch genauer ansehen.
+Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert werden. Damit wird sichergestellt, dass von Anfang an alle Daten die gewünschten Eigenschaften haben. Es gibt aber auch die Möglichkeit, Constraints nachträglich zu einer bestehenden Tabelle hinzuzufügen. Wir werden uns dies später noch genauer ansehen. Die zwei Constraints `NOT NULL` und `DEFAULT` haben wir bereits im Kapitel [Daten Manipulieren](manipulieren.md) kennengelernt. Daher werden wir uns in diesem Kapitel auf die anderen Constraints konzentrieren.
 
 ---
 
@@ -144,50 +144,6 @@ Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert w
     (4, '2025-11-05', 91, 'bestanden', 22.3, 47, 'Anna Schmidt'),
     (5, '2025-11-10', NULL, 'ausstehend', NULL, NULL, 'Thomas Weber');
     ```
-
----
-
-### Pflichtfelder (`NOT NULL`)
-
-Die `NOT NULL` Bedingung stellt sicher, dass eine Spalte **niemals leer** sein darf. Der allgemeine Syntax ist wiefolgt:
-
-```sql { .yaml .no-copy }
-CREATE TABLE tabellenname (
-    spalte DATENTYP NOT NULL
-);
-```
-
-???+ example "Beispiel"
-
-    Zuerst erstellen wir eine neue Tabelle mit gewissen Pflichtspalten.
-
-    ```sql hl_lines="3 4 6"
-    CREATE TABLE qualitaetspruefungen (
-        pruefung_id SERIAL PRIMARY KEY,
-        produkt_id INTEGER NOT NULL,         -- Muss ausgefuellt sein!
-        pruefdatum DATE NOT NULL,            -- Muss ausgefuellt sein!
-        pruefername VARCHAR(100),            -- Darf leer sein
-        pruefergebnis INTEGER NOT NULL       -- Muss ausgefuellt sein!
-    );
-    ```
-
-    Was passiert nun, wenn wir versuchen, eine Prüfung ohne Prüfdatum zu erstellen?
-
-    ```sql
-    -- Fehler: pruefdatum ist NOT NULL!
-    INSERT INTO qualitaetspruefungen (produkt_id, pruefergebnis)
-    VALUES (1, 95);
-    ```
-
-    ```title="Output"
-    FEHLER:  NULL-Wert in Spalte »pruefdatum« von Relation »qualitaetspruefungen« verletzt Not-Null-Constraint
-    DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, null, null, 95).
-    ```
-
-    Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Prüfung ohne Datum zu erstellen.
-
-???+ tip "Best Practice"
-    Verwende NOT NULL für alle Spalten, die **immer** einen Wert haben müssen. Das verhindert unvollständige Daten.
 
 ---
 
@@ -319,60 +275,6 @@ CREATE TABLE tabellenname (
     FEHLER:  neue Zeile für Relation »pruefungen_mit_status« verletzt Check-Constraint »pruefungen_mit_status_status_check«
     DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, null, pending)
     ```
-
----
-
-### Standardwerte (`DEFAULT`)
-
-Die `DEFAULT` Bedingung setzt einen **Standardwert**, wenn beim Einfügen kein Wert angegeben wird. Der Syntax ist wiefolgt aufgebaut:
-
-```sql { .yaml .no-copy }
-CREATE TABLE tabellenname (
-    spalte DATENTYP DEFAULT wert
-);
-```
-
-???+ example "Beispiel"
-
-    Zuerst erstellen wir eine neue Tabelle mit einer oder mehreren Spalten, die einen Standardwert haben müssen.
-
-    ```sql hl_lines="5 6 7"
-    CREATE TABLE pruefungen_mit_defaults (
-        pruefung_id SERIAL PRIMARY KEY,
-        produkt_id INTEGER NOT NULL,
-        pruefdatum DATE NOT NULL,
-        status VARCHAR(20) DEFAULT 'ausstehend',       -- Standard: ausstehend
-        erfassungsdatum DATE DEFAULT CURRENT_DATE,     -- Standard: Heute
-        freigegeben BOOLEAN DEFAULT FALSE              -- Standard: nicht freigegeben
-    );
-    ```
-
-    Nun fügen wir neue Prüfungen ein, ohne einen Status anzugeben.
-
-    ```sql
-    -- Ohne status: wird automatisch 'ausstehend'
-    INSERT INTO pruefungen_mit_defaults (produkt_id, pruefdatum)
-    VALUES (1, '2025-11-25');
-    ```
-
-    Lasst uns überprüfen, ob der Status automatisch auf 'ausstehend' gesetzt wurde.
-
-    ```sql
-    SELECT * FROM pruefungen_mit_defaults;
-    ```
-
-    ```title="Output"
-     pruefung_id | produkt_id | pruefdatum | status      | erfassungsdatum | freigegeben
-    -------------+------------+------------+-------------+-----------------+-------------
-               1 |          1 | 2025-11-25 | ausstehend  | 2025-11-25      | false
-    ```
-
-    Wir sehen also folgendes:
-
-    - `pruefung_id`: 1 (automatisch durch SERIAL)
-    - `status`: 'ausstehend' (DEFAULT)
-    - `erfassungsdatum`: 2025-11-25 (CURRENT_DATE)
-    - `freigegeben`: FALSE (DEFAULT)
 
 ---
 

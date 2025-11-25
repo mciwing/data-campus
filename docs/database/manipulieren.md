@@ -797,11 +797,14 @@ ALTER COLUMN spaltenname TYPE neuer_datentyp;
     ALTER TABLE
     ```
 
+???+ warning "Datenkonvertierung"
+    Wenn bereits Daten in der Spalte vorhanden sind, versucht die Datenbank, diese in den neuen Datentyp zu konvertieren. Dies kann zu Fehlern führen, wenn die Daten nicht kompatibel sind (z.B. Text in eine Integer-Spalte umwandeln). Im Erfolgsfall werden die Daten entsprechend dem neuen Typ angepasst. Sei hier besonders vorsichtig und teste solche Änderungen immer zuerst in einer Testumgebung!
+
 ---
 
-### NOT NULL hinzufügen/entfernen
+### Beschränkungen ändern
 
-Mit `ALTER TABLE ... ALTER COLUMN ... SET NOT NULL` bzw. `DROP NOT NULL` können wir die NOT NULL-Einschränkung ändern.
+Neben dem Datentyp können wir auch Beschränkungen welche wir in diesem Kapitel kennengelernt haben (`DEFAULT`, `NOT NULL`) ändern.
 
 ```sql { .yaml .no-copy }
 -- NOT NULL hinzufügen
@@ -811,7 +814,17 @@ ALTER COLUMN spaltenname SET NOT NULL;
 -- NOT NULL entfernen
 ALTER TABLE tabellenname
 ALTER COLUMN spaltenname DROP NOT NULL;
+
+-- DEFAULT hinzufügen/ändern
+ALTER TABLE tabellenname
+ALTER COLUMN spaltenname SET DEFAULT wert;
+
+-- DEFAULT entfernen
+ALTER TABLE tabellenname
+ALTER COLUMN spaltenname DROP DEFAULT;
 ```
+
+Hierbei ist zu beachten, dass wenn wir ein `DEFAULT` hinzufügen oder ändern, dieser nur für neue Zeilen gilt. Bestehende Zeilen werden nicht geändert. Bei Änderungen von `NOT NULL` müssen wir zuerst die NULL-Werte beheben. Ansonsten wird ein Fehler beim Hinzufügen der NOT NULL-Einschränkung auftreten.
 
 ???+ example "Beispiel: NOT NULL hinzufügen"
 
@@ -836,68 +849,44 @@ ALTER COLUMN spaltenname DROP NOT NULL;
     ALTER COLUMN kategorie SET NOT NULL;
     ```
 
-    **Wichtig:** Wenn noch NULL-Werte in der Spalte existieren, gibt es einen Fehler!
+    ??? code "weitere Beispiele"
 
-    ```sql
-    -- Zuerst NULL-Werte füllen:
-    UPDATE artikel SET kategorie = 'Allgemein' WHERE kategorie IS NULL;
+        ???+ example "Beispiel: DEFAULT hinzufügen"
 
-    -- Dann NOT NULL hinzufügen:
-    ALTER TABLE artikel ALTER COLUMN kategorie SET NOT NULL;
-    ```
+            ```sql
+            -- DEFAULT-Wert für mindestbestand setzen
+            ALTER TABLE artikel
+            ALTER COLUMN mindestbestand SET DEFAULT 100;
+            ```
 
----
+            **Wichtig:** Der DEFAULT gilt **nur für neue Zeilen**! Bestehende Zeilen werden **nicht** geändert.
 
-### DEFAULT ändern
+            ```sql
+            -- Bestehende Zeilen behalten ihre Werte
+            SELECT artikel_id, mindestbestand FROM artikel LIMIT 3;
+            ```
 
-Mit `ALTER TABLE ... ALTER COLUMN ... SET DEFAULT` bzw. `DROP DEFAULT` können wir Standardwerte ändern oder entfernen.
+            ```title="Output"
+            artikel_id | mindestbestand
+            ------------+----------------
+                    1 |           1000
+                    2 |           1000
+                    3 |             50
+            ```
 
-```sql { .yaml .no-copy }
--- DEFAULT hinzufügen/ändern
-ALTER TABLE tabellenname
-ALTER COLUMN spaltenname SET DEFAULT wert;
+            ```sql
+            -- Neue Zeile bekommt DEFAULT-Wert
+            INSERT INTO artikel (artikel_id, produktbezeichnung, kategorie, bestand, preis, lagerort)
+            VALUES (20, 'Testprodukt', 'Test', 50, 10.00, 'Regal Z1');
 
--- DEFAULT entfernen
-ALTER TABLE tabellenname
-ALTER COLUMN spaltenname DROP DEFAULT;
-```
+            SELECT artikel_id, mindestbestand FROM artikel WHERE artikel_id = 20;
+            ```
 
-???+ example "Beispiel: DEFAULT hinzufügen"
-
-    ```sql
-    -- DEFAULT-Wert für mindestbestand setzen
-    ALTER TABLE artikel
-    ALTER COLUMN mindestbestand SET DEFAULT 100;
-    ```
-
-    **Wichtig:** Der DEFAULT gilt **nur für neue Zeilen**! Bestehende Zeilen werden **nicht** geändert.
-
-    ```sql
-    -- Bestehende Zeilen behalten ihre Werte
-    SELECT artikel_id, mindestbestand FROM artikel LIMIT 3;
-    ```
-
-    ```title="Output"
-     artikel_id | mindestbestand
-    ------------+----------------
-              1 |           1000
-              2 |           1000
-              3 |             50
-    ```
-
-    ```sql
-    -- Neue Zeile bekommt DEFAULT-Wert
-    INSERT INTO artikel (artikel_id, produktbezeichnung, kategorie, bestand, preis, lagerort)
-    VALUES (20, 'Testprodukt', 'Test', 50, 10.00, 'Regal Z1');
-
-    SELECT artikel_id, mindestbestand FROM artikel WHERE artikel_id = 20;
-    ```
-
-    ```title="Output"
-     artikel_id | mindestbestand
-    ------------+----------------
-             20 |            100
-    ```
+            ```title="Output"
+            artikel_id | mindestbestand
+            ------------+----------------
+                    20 |            100
+            ```
 
 ---
 
@@ -925,17 +914,15 @@ RENAME TO neuer_tabellenname;
     Ab jetzt müssen alle Abfragen den neuen Namen verwenden:
 
     ```sql
-    SELECT * FROM lagerartikel;  -- ✅
-    SELECT * FROM artikel;        -- ❌ FEHLER
+    SELECT * FROM lagerartikel;  
+    SELECT * FROM artikel;       --  FEHLER: heißt jetzt lagerartikel
     ```
 
 ---
 
-### Mehrere Änderungen kombinieren
+???+ info "Mehrere Änderungen kombinieren"
 
-Mehrere ALTER-Befehle können **nicht** in einem Statement kombiniert werden. Jede Änderung benötigt ein eigenes `ALTER TABLE`.
-
-???+ example "Beispiel: Mehrere Änderungen"
+    Mehrere ALTER-Befehle können **nicht** in einem Statement kombiniert werden. Jede Änderung benötigt ein eigenes `ALTER TABLE`.
 
     ```sql
     -- FALSCH: Funktioniert nicht!
@@ -950,7 +937,7 @@ Mehrere ALTER-Befehle können **nicht** in einem Statement kombiniert werden. Je
 
 ---
 
-### Zusammenfassung ALTER-Befehle
+In nachfolgender Tabelle findest du eine Übersicht gängiger ALTER-Befehle.
 
 <div style="text-align:center; max-width:900px; margin:16px auto;">
 <table role="table"
