@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_fortgeschritten.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Fortgeschrittene Abfragen
 
 In den vorangegangenen Kapiteln haben wir die Grundlagen von SQL kennengelernt: Vom [Erstellen von Tabellen](relational.md), über das [Abfragen](abfragen.md) und [Manipulieren von Daten](manipulieren.md), bis hin zur [Modellierung von Beziehungen](modellierung.md) und dem [Verknüpfen mehrerer Tabellen mit JOINs](join.md). Die Grundlagen sind gelegt!
@@ -14,13 +10,13 @@ In diesem Kapitel lernen wir:
 - **String-Funktionen** – Texte manipulieren
 - **Datumsfunktionen** – Mit Datum und Zeit arbeiten
 - **CASE-WHEN** – Bedingte Logik in SQL
-- **COALESCE** – NULL-Werte elegant behandeln
+- **COALESCE** – `NULL`-Werte elegant behandeln
 
 ---
 
 ## Unterabfragen
 
-Eine **Unterabfrage** (Subquery) ist eine SELECT-Abfrage **innerhalb** einer anderen Abfrage. Diese Technik erlaubt es uns, komplexe Fragestellungen in einem einzigen SQL-Statement zu lösen, ohne temporäre Ergebnisse manuell weiterverarbeiten zu müssen. Unterabfragen sind besonders nützlich, wenn wir das Ergebnis einer Berechnung direkt in einer anderen Abfrage verwenden möchten.
+Eine **Unterabfrage** (Subquery) ist eine `SELECT`-Abfrage **innerhalb** einer anderen Abfrage. Diese Technik erlaubt es uns, komplexe Fragestellungen in einem einzigen SQL-Statement zu lösen, ohne temporäre Ergebnisse manuell weiterverarbeiten zu müssen. Unterabfragen sind besonders nützlich, wenn wir das Ergebnis einer Berechnung direkt in einer anderen Abfrage verwenden möchten.
 
 ???+ info "Datenbank-Setup"
 
@@ -85,44 +81,60 @@ Eine **Unterabfrage** (Subquery) ist eine SELECT-Abfrage **innerhalb** einer and
 
 Um uns Unterabfragen besser vorstellen zu können, betrachten wir folgendes Beispiel. Stellen wir uns vor, wir haben folgende Frage:
 
-*Welche Mitarbeiter verdienen mehr als das durchschnittliche Gehalt?*
+> Welche Mitarbeiter verdienen mehr als das durchschnittliche Gehalt?
 
 Die Frage an sich ist relativ einfach zu beantworten. Wir können den Durchschnitt der Gehälter berechnen und dann die Mitarbeiter filtern, die mehr verdienen. In einem **zweistufigen Vorgehen** könnte dies so aussehen:
 
-```sql
--- 1. Durchschnitt berechnen
-SELECT AVG(gehalt) FROM mitarbeiter;  -- Ergebnis: 61500.00
+???+ example "Beispiel: Zweistufiges Vorgehen"
 
--- 2. Dann das Ergebnis manuell verwenden
-SELECT vorname, nachname, gehalt
-FROM mitarbeiter
-WHERE gehalt > 61500.00;
-```
+    ```sql
+    -- 1. Durchschnitt berechnen
+    SELECT AVG(gehalt) FROM mitarbeiter;  -- Ergebnis: 61500.00
+
+    -- 2. Dann das Ergebnis manuell verwenden
+    SELECT vorname, nachname, gehalt
+    FROM mitarbeiter
+    WHERE gehalt > 61500.00;
+    ```
+
+    ```{.cmd .no-copy title="Output"}
+     vorname |  nachname  |  gehalt
+    ---------+------------+----------
+     Thomas  | Mueller    | 65000.00
+     Sandra  | Schmidt    | 72000.00
+     Anna    | Fischer    | 68000.00
+     Julia   | Wagner     | 62000.00
+     Lisa    | Schulz     | 70000.00
+     Sarah   | Zimmermann | 66000.00
+    (6 rows)
+    ```
 
 So würden wir in der ersten Abfrage das Durchschnittsgehalt berechnen und in einer zweiten Abfrage schlussendlich das eigentliche Ergebnis erhalten - die Mitarbeiter, die überdurchschnittlich verdienen.
 
 Da Programmierer von Haus aus faul sind, wollen wir diese Aufgabe natürlich in einem Schritt lösen. Dazu verwenden wir eine **Unterabfrage**.
 
-```sql
-SELECT vorname, nachname, gehalt
-FROM mitarbeiter
-WHERE gehalt > (SELECT AVG(gehalt) FROM mitarbeiter)
-ORDER BY gehalt DESC;
-```
+???+ example "Beispiel: Unterabfrage"
 
-```sql title="Output"
- vorname |  nachname  | gehalt
----------+------------+---------
- Sandra  | Schmidt    | 72000.00
- Lisa    | Schulz     | 70000.00
- Anna    | Fischer    | 68000.00
- Sarah   | Zimmermann | 66000.00
- Thomas  | Mueller    | 65000.00
- Julia   | Wagner     | 62000.00
-(6 rows)
-```
+    ```sql
+    SELECT vorname, nachname, gehalt
+    FROM mitarbeiter
+    WHERE gehalt > (SELECT AVG(gehalt) FROM mitarbeiter)
+    ORDER BY gehalt DESC;
+    ```
 
-Die innere Abfrage `(SELECT AVG(gehalt) FROM mitarbeiter)` wird **zuerst** ausgeführt und liefert einen Wert (61500.00), der dann in der äußeren Abfrage verwendet wird. Das ist der große Vorteil von Unterabfragen: Wir müssen nicht erst manuell den Durchschnitt berechnen und dann in eine zweite Abfrage einsetzen - SQL erledigt dies automatisch für uns in einem einzigen Schritt.
+    ```{.cmd .no-copy title="Output"}
+     vorname |  nachname  |  gehalt
+    ---------+------------+----------
+     Sandra  | Schmidt    | 72000.00
+     Lisa    | Schulz     | 70000.00
+     Anna    | Fischer    | 68000.00
+     Sarah   | Zimmermann | 66000.00
+     Thomas  | Mueller    | 65000.00
+     Julia   | Wagner     | 62000.00
+    (6 rows)
+    ```
+
+    Die innere Abfrage `(SELECT AVG(gehalt) FROM mitarbeiter)` wird **zuerst** ausgeführt und liefert einen Wert (61500.00), der dann in der äußeren Abfrage verwendet wird. Das ist der große Vorteil von Unterabfragen: Wir müssen nicht erst manuell den Durchschnitt berechnen und dann in eine zweite Abfrage einsetzen - SQL erledigt dies automatisch für uns in einem einzigen Schritt.
 
 ---
 
@@ -135,40 +147,41 @@ Die innere Abfrage `(SELECT AVG(gehalt) FROM mitarbeiter)` wird **zuerst** ausge
 
 Eine besondere Art von Unterabfrage sind die **`IN`- und `NOT IN`-Operatoren**. Diese Operatoren erlauben es uns, zu prüfen, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Dies ist besonders nützlich, wenn die Unterabfrage mehrere Ergebniszeilen liefert und wir prüfen wollen, ob unser Wert in dieser Liste vorkommt. Statt eines einzelnen Wertes wie beim einfachen Vergleich, gibt die Unterabfrage hier unter Umständen eine ganze Liste von Werten zurück.
 
-Schauen wir uns das Ganze wieder anhand eines Beispiels an. Wir möchten gerne wissen, welche Mitarbeiter in den technischen Abteilungen (Produktion, Entwicklung, Qualitätssicherung) arbeiten.
+???+ example "Beispiel: `IN` und `NOT IN`"
+    Schauen wir uns das Ganze wieder anhand eines Beispiels an. Wir möchten gerne wissen, welche Mitarbeiter in den technischen Abteilungen (Produktion, Entwicklung, Qualitätssicherung) arbeiten.
 
-```sql
--- Mitarbeiter in technischen Abteilungen
-SELECT vorname, nachname
-FROM mitarbeiter
-WHERE abteilung_id IN (
-    SELECT abteilung_id
-    FROM abteilungen
-    WHERE abteilungsname IN ('Produktion', 'Entwicklung', 'Qualitaetssicherung')
-);
-```
+    ```sql
+    -- Mitarbeiter in technischen Abteilungen
+    SELECT vorname, nachname
+    FROM mitarbeiter
+    WHERE abteilung_id IN (
+        SELECT abteilung_id
+        FROM abteilungen
+        WHERE abteilungsname IN ('Produktion', 'Entwicklung', 'Qualitaetssicherung')
+    );
+    ```
 
-```sql title="Output"
- vorname |  nachname
----------+------------
- Thomas  | Mueller
- Sandra  | Schmidt
- Klaus   | Weber
- Anna    | Fischer
- Lisa    | Schulz
- Martin  | Koch
- Sarah   | Zimmermann
-(7 rows)
-```
+    ```{.cmd .no-copy title="Output"}
+     vorname |  nachname
+    ---------+------------
+     Thomas  | Mueller
+     Sandra  | Schmidt
+     Klaus   | Weber
+     Anna    | Fischer
+     Lisa    | Schulz
+     Martin  | Koch
+     Sarah   | Zimmermann
+    (7 rows)
+    ```
 
-Der Ablauf dieser Abfrage kann man wie folgt beschreiben:
+    Der Ablauf dieser Abfrage kann man wie folgt beschreiben:
 
-1. **Innere Abfrage:**
-    - filtert die Abteilungen nach Namen (Produktion, Entwicklung, Qualitätssicherung)
-    - liefert eine Liste von `abteilung_id` zurück (z.B. 1, 2, 5)
-2. **Äußere Abfrage:**
-    - filtert die Mitarbeiter, deren `abteilung_id` in der Liste der inneren Abfrage ist
-    - liefert Vor- und Nachnamen der Mitarbeiter zurück
+    1. **Innere Abfrage:**
+        - filtert die Abteilungen nach Namen (Produktion, Entwicklung, Qualitätssicherung)
+        - liefert eine Liste von `abteilung_id` zurück (z.B. 1, 2, 5)
+    2. **Äußere Abfrage:**
+        - filtert die Mitarbeiter, deren `abteilung_id` in der Liste der inneren Abfrage ist
+        - liefert Vor- und Nachnamen der Mitarbeiter zurück
 
 Neben dem `IN`-Operator gibt es auch den `NOT IN`-Operator. Dieser Operator überprüft, ob ein Wert **NICHT** in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Das Vorgehen und deren Verwendung ist analog.
 
@@ -185,9 +198,9 @@ Neben dem `IN`-Operator gibt es auch den `NOT IN`-Operator. Dieser Operator übe
     );
     ```
 
-    ```sql title="Output"
-     vorname |  nachname
-    ---------+------------
+    ```{.cmd .no-copy title="Output"}
+     vorname | nachname
+    ---------+----------
      Michael | Becker
      Julia   | Wagner
      Peter   | Hoffmann
@@ -223,9 +236,9 @@ Betrachten wir die Operatoren wieder anhand von Beispielen:
         );
         ```
 
-        ```sql title="Output"
-         abteilungsname      |     standort
-        ---------------------+------------------
+        ```{.cmd .no-copy title="Output"}
+           abteilungsname    |   standort
+        ---------------------+---------------
          Produktion          | Halle A
          Entwicklung         | Gebaeude Nord
          Vertrieb            | Gebaeude Sued
@@ -259,8 +272,8 @@ Betrachten wir die Operatoren wieder anhand von Beispielen:
         ```
 
         ```sql title="Output"
-         abteilungsname | standort
-        ----------------+--------------
+         abteilungsname |   standort
+        ----------------+---------------
          Forschung      | Gebaeude West
         (1 row)
         ```
@@ -273,33 +286,35 @@ Betrachten wir die Operatoren wieder anhand von Beispielen:
 
 ---
 
-### Unterabfragen in FROM
+### Unterabfragen in `FROM`
 
 Man kann eine Unterabfrage auch in der **`FROM`-Klausel** verwenden – als wäre sie eine Tabelle! Diese sogenannten "Derived Tables" oder "Inline Views" sind besonders nützlich, wenn wir mit aggregierten Daten weiterarbeiten möchten. Da wir in der `WHERE`-Klausel keine Aggregatfunktionen direkt verwenden können, erstellen wir eine Unterabfrage, die die Aggregation durchführt, und können dann auf deren Ergebnis filtern.
 
-```sql
--- Durchschnittliches Gehalt pro Abteilung, aber nur Abteilungen mit Durchschnitt > 60000
-SELECT abteilung, avg_gehalt
-FROM (
-    SELECT
-        a.abteilungsname AS abteilung,
-        AVG(m.gehalt) AS avg_gehalt
-    FROM mitarbeiter m
-    INNER JOIN abteilungen a ON m.abteilung_id = a.abteilung_id
-    GROUP BY a.abteilungsname
-) AS abteilungs_gehaelter
-WHERE avg_gehalt > 60000
-ORDER BY avg_gehalt DESC;
-```
+???+ example "Beispiel: Unterabfragen in `FROM`"
 
-```sql title="Output"
-   abteilung    | avg_gehalt
-----------------+------------
- Qualitaetssicherung | 70000.00
- Entwicklung         | 68666.67
- Produktion          | 63666.67
-(3 rows)
-```
+    ```sql
+    -- Durchschnittliches Gehalt pro Abteilung, aber nur Abteilungen mit Durchschnitt > 60000
+    SELECT abteilung, avg_gehalt
+    FROM (
+        SELECT
+            a.abteilungsname AS abteilung,
+            AVG(m.gehalt) AS avg_gehalt
+        FROM mitarbeiter m
+        INNER JOIN abteilungen a ON m.abteilung_id = a.abteilung_id
+        GROUP BY a.abteilungsname
+    ) AS abteilungs_gehaelter
+    WHERE avg_gehalt > 60000
+    ORDER BY avg_gehalt DESC;
+    ```
+
+    ```{.cmd .no-copy title="Output"}
+          abteilung      |     avg_gehalt
+    ---------------------+--------------------
+     Qualitaetssicherung | 70000.000000000000
+     Entwicklung         | 68666.666666666667
+     Verwaltung          | 62000.00000000000
+    (3 rows)
+    ```
 
 ???+ warning "Wichtig"
     Die Unterabfrage **muss einen Alias** haben (hier: `AS abteilungs_gehaelter`)!
@@ -364,81 +379,74 @@ Die wichtigsten String-Funktionen sind nachfolgend aufgelistet:
 
 Nun schauen wir uns an, wie wir diese String-Funktionen in der Praxis einsetzen können. Die folgenden Beispiele zeigen typische Anwendungsfälle aus dem Alltag:
 
-<div class="grid cards" markdown>
 
--   __CONCAT - Vollständiger Name__
+???+ example "Beispiel: Vollständiger Name"
+    ```sql
+    -- Vollständiger Name aus Vor- und Nachname
+    SELECT
+        CONCAT(vorname, ' ', nachname) AS vollstaendiger_name,
+        email
+    FROM mitarbeiter;
+    ```
 
-    ---
+    ```{.cmd .no-copy title="Output"}
+     vollstaendiger_name |           email
+    ---------------------+---------------------------
+     Thomas Mueller      | thomas.mueller@firma.de
+     Sandra Schmidt      | sandra.schmidt@firma.de
+     Klaus Weber         | klaus.weber@firma.de
+     Anna Fischer        | anna.fischer@firma.de
+     Michael Becker      | michael.becker@firma.de
+     Julia Wagner        | julia.wagner@firma.de
+     Peter Hoffmann      | peter.hoffmann@firma.de
+     Lisa Schulz         | lisa.schulz@firma.de
+     Martin Koch         | martin.koch@firma.de
+     Sarah Zimmermann    | sarah.zimmermann@firma.de
+    (10 rows)
+    ```
 
-    ???+ example "Beispiel"
-        ```sql
-        -- Vollständiger Name aus Vor- und Nachname
-        SELECT
-            CONCAT(vorname, ' ', nachname) AS vollstaendiger_name,
-            email
-        FROM mitarbeiter;
-        ```
+    **Erklärung:** Wir fügen Vor- und Nachname mit einem Leerzeichen zusammen zu einem vollständigen Namen.
 
-        ```sql title="Output"
-           vollstaendiger_name  |           email
-        ------------------------+---------------------------
-         Thomas Mueller          | thomas.mueller@firma.de
-         Sandra Schmidt          | sandra.schmidt@firma.de
-         Klaus Weber             | klaus.weber@firma.de
-         Anna Fischer            | anna.fischer@firma.de
-         Michael Becker          | michael.becker@firma.de
-         Julia Wagner            | julia.wagner@firma.de
-         Peter Hoffmann          | peter.hoffmann@firma.de
-         Lisa Schulz             | lisa.schulz@firma.de
-         Martin Koch             | martin.koch@firma.de
-         Sarah Zimmermann        | sarah.zimmermann@firma.de
-        (10 rows)
-        ```
+    ??? code "Weitere Beispiele"
 
-        **Erklärung:** Wir fügen Vor- und Nachname mit einem Leerzeichen zusammen zu einem vollständigen Namen.
+        ???+ example "Beispiel: Kombination mehrerer Funktionen"
 
--   __Kombination mehrerer Funktionen__
+            ```sql
+            -- Mitarbeiter-Codes generieren (Format: INITIALEN-JAHR-ID)
+            SELECT
+                vorname,
+                nachname,
+                CONCAT(
+                    UPPER(SUBSTRING(vorname, 1, 1)),
+                    UPPER(SUBSTRING(nachname, 1, 1)),
+                    '-',
+                    EXTRACT(YEAR FROM eintrittsdatum),
+                    '-',
+                    LPAD(mitarbeiter_id::TEXT, 3, '0')
+                ) AS mitarbeitercode
+            FROM mitarbeiter
+            ORDER BY mitarbeiter_id;
+            ```
 
-    ---
+            ```{.cmd .no-copy title="Output"}
+             vorname |  nachname  | mitarbeitercode
+            ---------+------------+-----------------
+             Thomas  | Mueller    | TM-2018-001
+             Sandra  | Schmidt    | SS-2019-002
+             Klaus   | Weber      | KW-2015-003
+             Anna    | Fischer    | AF-2020-004
+             Michael | Becker     | MB-2021-005
+             Julia   | Wagner     | JW-2017-006
+             Peter   | Hoffmann   | PH-2022-007
+             Lisa    | Schulz     | LS-2016-008
+             Martin  | Koch       | MK-2023-009
+             Sarah   | Zimmermann | SZ-2019-010
+            (10 rows)
+            ```
 
-    ???+ example "Beispiel"
+            **Erklärung:** Wir generieren einen Mitarbeitercode. Die Initialen (erster Buchstabe von Vor- und Nachname) werden in Großbuchstaben umgewandelt, das Eintrittsjahr und die ID (mit Nullen aufgefüllt auf 3 Stellen) werden angehängt.
 
-        ```sql
-        -- Mitarbeiter-Codes generieren (Format: INITIALEN-JAHR-ID)
-        SELECT
-            vorname,
-            nachname,
-            CONCAT(
-                UPPER(SUBSTRING(vorname, 1, 1)),
-                UPPER(SUBSTRING(nachname, 1, 1)),
-                '-',
-                EXTRACT(YEAR FROM eintrittsdatum),
-                '-',
-                LPAD(mitarbeiter_id::TEXT, 3, '0')
-            ) AS mitarbeitercode
-        FROM mitarbeiter
-        ORDER BY mitarbeiter_id;
-        ```
-        ```sql title="Output"
-         vorname |  nachname  | mitarbeitercode
-        ---------+------------+-----------------
-         Thomas  | Mueller    | TM-2018-001
-         Sandra  | Schmidt    | SS-2019-002
-         Klaus   | Weber      | KW-2015-003
-         Anna    | Fischer    | AF-2020-004
-         Michael | Becker     | MB-2021-005
-         Julia   | Wagner     | JW-2017-006
-         Peter   | Hoffmann   | PH-2022-007
-         Lisa    | Schulz     | LS-2016-008
-         Martin  | Koch       | MK-2023-009
-         Sarah   | Zimmermann | SZ-2019-010
-        (10 rows)
-        ```
-
-        **Erklärung:** Wir generieren einen Mitarbeitercode. Die Initialen (erster Buchstabe von Vor- und Nachname) werden in Großbuchstaben umgewandelt, das Eintrittsjahr und die ID (mit Nullen aufgefüllt auf 3 Stellen) werden angehängt.
-</div>
-
-Mit diesen String-Funktionen können wir also sehr einfach und effizient Texte verarbeiten und formatieren und müssen dies nicht in der Anwendungsschicht tun. 
+Mit diesen String-Funktionen können wir also sehr einfach und effizient Texte verarbeiten und formatieren und müssen dies nicht in der Anwendungsschicht tun. Und wie sieht es bei Daten im Datumsformat aus?
 
 ---
 
@@ -488,77 +496,68 @@ PostgreSQL bietet auch - neben den String-Funktionen - umfangreiche Funktionen f
 
 Nun wollen wir uns praktische Anwendungsfälle ansehen. Unsere Mitarbeitertabelle enthält bereits die Felder `eintrittsdatum` und `geburtstag`, mit denen wir arbeiten können. 
 
-<div class="grid cards" markdown>
+???+ example "Beispiel: EXTRACT & AGE - Betriebszugehörigkeit"
 
--   __EXTRACT & AGE - Betriebszugehörigkeit__
+    ```sql
+    -- Betriebszugehörigkeit in Jahren berechnen
+    SELECT
+        vorname,
+        nachname,
+        eintrittsdatum,
+        EXTRACT(YEAR FROM AGE(CURRENT_DATE, eintrittsdatum)) AS jahre_im_unternehmen
+    FROM mitarbeiter
+    ORDER BY jahre_im_unternehmen DESC;
+    ```
 
-    ---
+    ```{.cmd .no-copy title="Output"}
+     vorname |  nachname  | eintrittsdatum | jahre_im_unternehmen
+    ---------+------------+----------------+----------------------
+     Klaus   | Weber      | 2015-01-10     |                   10
+     Lisa    | Schulz     | 2016-08-12     |                    9
+     Julia   | Wagner     | 2017-11-20     |                    8
+     Thomas  | Mueller    | 2018-03-15     |                    7
+     Sandra  | Schmidt    | 2019-07-01     |                    6
+     Sarah   | Zimmermann | 2019-04-20     |                    6
+     Anna    | Fischer    | 2020-09-01     |                    5
+     Michael | Becker     | 2021-02-15     |                    4
+     Peter   | Hoffmann   | 2022-05-01     |                    3
+     Martin  | Koch       | 2023-01-15     |                    2
+    (10 rows)
+    ```
 
-    ???+ example "Beispiel"
+    **Erklärung:** Wir berechnen die Betriebszugehörigkeit in Jahren, indem wir die Differenz zwischen dem aktuellen Datum und dem Eintrittsdatum berechnen. `AGE` gibt die Zeitdifferenz zurück, aus der wir mit `EXTRACT(YEAR ...)` die Jahre extrahieren.
 
-        ```sql
-        -- Betriebszugehörigkeit in Jahren berechnen
-        SELECT
-            vorname,
-            nachname,
-            eintrittsdatum,
-            EXTRACT(YEAR FROM AGE(CURRENT_DATE, eintrittsdatum)) AS jahre_im_unternehmen
-        FROM mitarbeiter
-        ORDER BY jahre_im_unternehmen DESC;
-        ```
+    ??? code "Weitere Beispiele"
 
-        ```sql title="Output"
-         vorname |  nachname  | eintrittsdatum | jahre_im_unternehmen
-        ---------+------------+----------------+----------------------
-         Klaus   | Weber      | 2015-01-10     |                   10
-         Lisa    | Schulz     | 2016-08-12     |                    9
-         Julia   | Wagner     | 2017-11-20     |                    8
-         Thomas  | Mueller    | 2018-03-15     |                    7
-         Sandra  | Schmidt    | 2019-07-01     |                    6
-         Sarah   | Zimmermann | 2019-04-20     |                    6
-         Anna    | Fischer    | 2020-09-01     |                    5
-         Michael | Becker     | 2021-02-15     |                    4
-         Peter   | Hoffmann   | 2022-05-01     |                    3
-         Martin  | Koch       | 2023-01-15     |                    2
-        (10 rows)
-        ```
+        ???+ example "Beispiel: Mitarbeiter, die diesen Monat Geburtstag haben"
 
-        **Erklärung:** Wir berechnen die Betriebszugehörigkeit in Jahren, indem wir die Differenz zwischen dem aktuellen Datum und dem Eintrittsdatum berechnen. `AGE` gibt die Zeitdifferenz zurück, aus der wir mit `EXTRACT(YEAR ...)` die Jahre extrahieren.
+            ```sql
+            -- Mitarbeiter, die diesen Monat Geburtstag haben
+            SELECT
+                vorname,
+                nachname,
+                geburtstag,
+                EXTRACT(YEAR FROM AGE(CURRENT_DATE, geburtstag)) AS alter
+            FROM mitarbeiter
+            WHERE EXTRACT(MONTH FROM geburtstag) = EXTRACT(MONTH FROM CURRENT_DATE)
+            ORDER BY EXTRACT(DAY FROM geburtstag);
+            ```
 
--   __Kombination mehrerer Funktionen - Geburtstage__
+            ```{.cmd .no-copy title="Output"}
+            vorname |  nachname  | geburtstag | alter
+            ---------+------------+------------+-------
+            Sandra  | Schmidt    | 1987-11-12 |    38
+            (1 row)
+            ```
 
-    ---
-
-    ???+ example "Beispiel"
-
-        ```sql
-        -- Mitarbeiter, die diesen Monat Geburtstag haben
-        SELECT
-            vorname,
-            nachname,
-            geburtstag,
-            EXTRACT(YEAR FROM AGE(CURRENT_DATE, geburtstag)) AS alter
-        FROM mitarbeiter
-        WHERE EXTRACT(MONTH FROM geburtstag) = EXTRACT(MONTH FROM CURRENT_DATE)
-        ORDER BY EXTRACT(DAY FROM geburtstag);
-        ```
-
-        ```sql title="Output (Beispiel für Monat November)"
-         vorname |  nachname  | geburtstag | alter
-        ---------+------------+------------+-------
-         Sandra  | Schmidt    | 1987-11-12 |    38
-        (1 row)
-        ```
-
-        **Erklärung:** Wir filtern Mitarbeiter, deren Geburtsmonat mit dem aktuellen Monat übereinstimmt. Zusätzlich berechnen wir das Alter und sortieren nach dem Geburtstag im Monat.
-</div>
+            **Erklärung:** Wir filtern Mitarbeiter, deren Geburtsmonat mit dem aktuellen Monat übereinstimmt. Zusätzlich berechnen wir das Alter und sortieren nach dem Geburtstag im Monat.
 
 
 ---
 
-## CASE WHEN - Bedingte Logik
+## `CASE WHEN` - Bedingte Logik
 
-Mit **CASE WHEN** können wir bedingte Logik direkt in SQL einbauen – ähnlich wie `if-else` in Programmiersprachen. Dies ist besonders nützlich, um Daten zu kategorisieren, Berechnungen basierend auf Bedingungen durchzuführen oder benutzerdefinierte Ausgaben zu erzeugen. Statt die Logik in der Anwendungsschicht zu implementieren, können wir sie direkt in der Datenbankabfrage unterbringen, was oft effizienter und lesbarer ist.
+Mit `CASE WHEN` können wir bedingte Logik direkt in SQL einbauen – ähnlich wie `if-else` in Programmiersprachen. Dies ist besonders nützlich, um Daten zu kategorisieren, Berechnungen basierend auf Bedingungen durchzuführen oder benutzerdefinierte Ausgaben zu erzeugen. Statt die Logik in der Anwendungsschicht zu implementieren, können wir sie direkt in der Datenbankabfrage unterbringen, was oft effizienter und lesbarer ist.
 Der allgemeine Syntax ist wie folgt:
 
 ```sql { .yaml .no-copy }
@@ -587,8 +586,8 @@ Bei der Verwendung von `CASE` können wir beliebig viele Bedingungen angeben und
     ORDER BY gehalt DESC;
     ```
 
-    ```sql title="Output"
-     vorname |  nachname  | gehalt   | gehaltsstufe
+    ```{.cmd .no-copy title="Output"}
+     vorname |  nachname  |  gehalt  | gehaltsstufe
     ---------+------------+----------+--------------
      Sandra  | Schmidt    | 72000.00 | Senior
      Lisa    | Schulz     | 70000.00 | Senior
@@ -623,7 +622,7 @@ CASE WHEN kann auch innerhalb von [Aggregatfunktionen](abfragen.md#aggregatfunkt
     FROM mitarbeiter;
     ```
 
-    ```sql title="Output"
+    ```{.cmd .no-copy title="Output"}
      senior | mid_level | junior | einsteiger | gesamt
     --------+-----------+--------+------------+--------
           2 |         4 |      3 |          1 |     10
@@ -657,19 +656,19 @@ Wir sehen, dass wir mehrere Werte (im Normalfall Funktionen oder andere Spaltenw
     ORDER BY gesamtverguetung DESC;
     ```
 
-    ```sql title="Output"
-     vorname |  nachname  | gehalt   | bonus   | bonus_bereinigt | gesamtverguetung
+    ```{.cmd .no-copy title="Output"}
+     vorname |  nachname  |  gehalt  |  bonus  | bonus_bereinigt | gesamtverguetung
     ---------+------------+----------+---------+-----------------+------------------
-     Sandra  | Schmidt    | 72000.00 | 6000.00 |         6000.00 |          78000.00
-     Lisa    | Schulz     | 70000.00 | 7000.00 |         7000.00 |          77000.00
-     Anna    | Fischer    | 68000.00 | 4500.00 |         4500.00 |          72500.00
-     Sarah   | Zimmermann | 66000.00 | 5500.00 |         5500.00 |          71500.00
-     Thomas  | Mueller    | 65000.00 | 5000.00 |         5000.00 |          70000.00
-     Julia   | Wagner     | 62000.00 |    NULL |            0.00 |          62000.00
-     Klaus   | Weber      | 58000.00 |    NULL |            0.00 |          58000.00
-     Michael | Becker     | 55000.00 | 3000.00 |         3000.00 |          58000.00
-     Peter   | Hoffmann   | 51000.00 | 2000.00 |         2000.00 |          53000.00
-     Martin  | Koch       | 48000.00 |    NULL |            0.00 |          48000.00
+     Sandra  | Schmidt    | 72000.00 | 6000.00 |         6000.00 |         78000.00
+     Lisa    | Schulz     | 70000.00 | 7000.00 |         7000.00 |         77000.00
+     Anna    | Fischer    | 68000.00 | 4500.00 |         4500.00 |         72500.00
+     Sarah   | Zimmermann | 66000.00 | 5500.00 |         5500.00 |         71500.00
+     Thomas  | Mueller    | 65000.00 | 5000.00 |         5000.00 |         70000.00
+     Julia   | Wagner     | 62000.00 |         |               0 |         62000.00
+     Michael | Becker     | 55000.00 | 3000.00 |         3000.00 |         58000.00
+     Klaus   | Weber      | 58000.00 |         |               0 |         58000.00
+     Peter   | Hoffmann   | 51000.00 | 2000.00 |         2000.00 |         53000.00
+     Martin  | Koch       | 48000.00 |         |               0 |         48000.00
     (10 rows)
     ```
 
@@ -744,15 +743,15 @@ Ein häufiger Anwendungsfall für mathematische Funktionen ist das Runden von Be
     ORDER BY durchschnittsgehalt DESC;
     ```
 
-    ```sql title="Output"
-         abteilungsname      | anzahl_mitarbeiter | durchschnittsgehalt | min_gehalt | max_gehalt
-    -------------------------+--------------------+---------------------+------------+------------
-     Qualitaetssicherung     |                  1 |            70000.00 |   70000.00 |   70000.00
-     Entwicklung             |                  3 |            68666.67 |   66000.00 |   72000.00
-     Produktion              |                  3 |            57000.00 |   48000.00 |   65000.00
-     Vertrieb                |                  2 |            53000.00 |   51000.00 |   55000.00
-     Verwaltung              |                  1 |            62000.00 |   62000.00 |   62000.00
-     Forschung               |                  0 |                NULL |       NULL |       NULL
+    ```{.cmd .no-copy title="Output"}
+       abteilungsname    | anzahl_mitarbeiter | durchschnittsgehalt | min_gehalt | max_gehalt
+    ---------------------+--------------------+---------------------+------------+------------
+     Forschung           |                  0 |                     |            |
+     Qualitaetssicherung |                  1 |            70000.00 |   70000.00 |   70000.00
+     Entwicklung         |                  3 |            68666.67 |   66000.00 |   72000.00
+     Verwaltung          |                  1 |            62000.00 |   62000.00 |   62000.00
+     Produktion          |                  3 |            57000.00 |   48000.00 |   65000.00
+     Vertrieb            |                  2 |            53000.00 |   51000.00 |   55000.00
     (6 rows)
     ```
 

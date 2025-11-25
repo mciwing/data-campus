@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_integritaet.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Datenintegrität & Constraints
 
 Stell dir vor, jemand gibt in deine Datenbank ein: `pruefergebnis = 150` (bei einer Skala von 0-100) oder `temperatur = -500`. Dies wären offensichtlich unsinnige Daten! Wie können wir solche **Datenfehler verhindern**?
@@ -91,16 +87,13 @@ Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert w
 
     Für die folgenden Beispiele erstellen wir eine **Qualitätskontroll-Datenbank**. In dieser Datenbank werden Produkte und ihre Prüfungen verwaltet.
 
-    **Datenbank erstellen und verbinden:**
-
     ```sql
+    -- Datenbank erstellen
     CREATE DATABASE qualitaetskontrolle_db;
+
+    -- Zur Datenbank wechseln
     \c qualitaetskontrolle_db
-    ```
 
-    **Tabellen erstellen:**
-
-    ```sql
     -- Tabelle: Produkte
     CREATE TABLE produkte (
         produkt_id SERIAL PRIMARY KEY,
@@ -122,12 +115,8 @@ Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert w
         pruefername VARCHAR(100),
         FOREIGN KEY (produkt_id) REFERENCES produkte(produkt_id) ON DELETE CASCADE
     );
-    ```
 
-    **Testdaten einfügen:**
-
-    ```sql
-    -- Produkte einfügen
+    -- Testdaten: Produkte
     INSERT INTO produkte (produktname, produktcode, kategorie, mindestqualitaet) VALUES
     ('Smartphone X500', 'SP-X500', 'Elektronik', 95),
     ('Laptop Pro 15', 'LP-PRO15', 'Elektronik', 90),
@@ -135,7 +124,7 @@ Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert w
     ('Gaming Monitor', 'GM-4K', 'Elektronik', 88),
     ('Mechanische Tastatur', 'KB-MECH', 'Peripherie', 85);
 
-    -- Prüfungen einfügen
+    -- Testdaten: Prüfungen
     INSERT INTO pruefungen (produkt_id, pruefdatum, pruefergebnis, status, temperatur, luftfeuchtigkeit, pruefername) VALUES
     (1, '2025-11-01', 98, 'bestanden', 22.5, 45, 'Anna Schmidt'),
     (1, '2025-11-15', 96, 'bestanden', 23.0, 48, 'Thomas Weber'),
@@ -183,7 +172,7 @@ CREATE TABLE tabellenname (
     VALUES ('Smartphone Beta', 'SP-2025-001', 'Elektronik');
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »produkte_test_produktcode_key«
     DETAIL:  Schlüssel »(produktcode)=(SP-2025-001)« existiert bereits.
     ```
@@ -219,6 +208,8 @@ CREATE TABLE tabellenname (
 );
 ```
 
+Wie man erkennt, wird lediglich eine Bedingung nach dem `CHECK` Schlüsselwort definiert. Schauen wir uns wieder ein Beispiel an. 
+
 ???+ example "Beispiel: Wertebereich prüfen"
 
     Wir erstellen eine neue Tabelle mit einer oder mehreren Spalten, die einen Wertebereich prüfen müssen.
@@ -242,39 +233,41 @@ CREATE TABLE tabellenname (
     VALUES (1, '2025-11-25', 150, 22.0, 50);
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     FEHLER:  neue Zeile für Relation »qualitaetsmessungen« verletzt Check-Constraint »qualitaetsmessungen_pruefergebnis_check«
-    DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, 150, 22.0, 50)
+    DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, 150, 22.0, 50).
     ```
 
     Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Messung mit einem Prüfergebnis von 150 zu erstellen.
 
-???+ example "CHECK mit Status-Werten"
+    ??? code "Weitere Beispiele"
 
-    CHECK kann auch verwendet werden, um nur bestimmte Werte zuzulassen:
+        ???+ example "CHECK mit Status-Werten"
 
-    ```sql hl_lines="6"
-    CREATE TABLE pruefungen_mit_status (
-        pruefung_id SERIAL PRIMARY KEY,
-        produkt_id INTEGER NOT NULL,
-        pruefdatum DATE NOT NULL,
-        pruefergebnis INTEGER,
-        status VARCHAR(20) CHECK (status IN ('ausstehend', 'bestanden', 'durchgefallen', 'nachpruefung'))
-    );
-    ```
+            CHECK kann auch verwendet werden, um nur bestimmte Werte zuzulassen:
 
-    Versuchen wir nun einen ungültigen Status einzufügen:
+            ```sql hl_lines="6"
+            CREATE TABLE pruefungen_mit_status (
+                pruefung_id SERIAL PRIMARY KEY,
+                produkt_id INTEGER NOT NULL,
+                pruefdatum DATE NOT NULL,
+                pruefergebnis INTEGER,
+                status VARCHAR(20) CHECK (status IN ('ausstehend', 'bestanden', 'durchgefallen', 'nachpruefung'))
+            );
+            ```
 
-    ```sql
-    -- Fehler: 'pending' ist kein gültiger Status
-    INSERT INTO pruefungen_mit_status (produkt_id, pruefdatum, status)
-    VALUES (1, '2025-11-25', 'pending');
-    ```
+            Versuchen wir nun einen ungültigen Status einzufügen:
 
-    ```title="Output"
-    FEHLER:  neue Zeile für Relation »pruefungen_mit_status« verletzt Check-Constraint »pruefungen_mit_status_status_check«
-    DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, null, pending)
-    ```
+            ```sql
+            -- Fehler: 'pending' ist kein gültiger Status
+            INSERT INTO pruefungen_mit_status (produkt_id, pruefdatum, status)
+            VALUES (1, '2025-11-25', 'pending');
+            ```
+
+            ```{.cmd .no-copy title="Output"}
+            FEHLER:  neue Zeile für Relation »pruefungen_mit_status« verletzt Check-Constraint »pruefungen_mit_status_status_check«
+            DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, null, pending).
+            ```
 
 ---
 
@@ -302,19 +295,7 @@ Generell hat man bei `CHECK`-Constraints (und auch anderen) **zwei Möglichkeite
 
 ???+ example "Variante 2: Tabellen-Constraint (separate Zeile)"
 
-    Der Constraint wird **am Ende der Tabelle** als eigene Zeile definiert:
-
-    ```sql hl_lines="6"
-    CREATE TABLE messungen (
-        messung_id SERIAL PRIMARY KEY,
-        produkt_id INTEGER NOT NULL,
-        pruefergebnis INTEGER,
-        temperatur NUMERIC(4,1),
-        CHECK (pruefergebnis >= 0 AND pruefergebnis <= 100)
-    );
-    ```
-
-    **Vorteil:** Du kannst **mehrere Spalten gleichzeitig** prüfen:
+    Der Constraint wird **am Ende der Tabelle** als eigene Zeile definiert. Der Vorteil ist, dass man mehrere Spalten gleichzeitig prüfen kann.
 
     ```sql hl_lines="7"
     CREATE TABLE pruefperioden (
@@ -370,7 +351,7 @@ Constraints können von uns auch einen eigenen **Namen bekommen**, um sie späte
     VALUES (1, 'SP-2025-001', 150);
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     FEHLER:  neue Zeile für Relation »produkte_benannt« verletzt Check-Constraint »ck_mindestqualitaet«
     DETAIL:  Fehlgeschlagene Zeile enthält (1, SP-2025-001, 150).
     ```
@@ -383,7 +364,7 @@ Constraints können von uns auch einen eigenen **Namen bekommen**, um sie späte
 
 Wie bereits erwähnt, sollten wir Constraints bereits bei der Erstellung der Tabelle definieren. Doch was passiert, wenn wir später feststellen, dass wir ein Constraint benötigen?
 
-Es gibt auch die Möglichkeit, Constraints zu bestehenden Tabellen nachträglich hinzuzufügen. Dies passiert allemein mit dem `ALTER TABLE` Befehl.
+Es gibt auch die Möglichkeit, Constraints zu bestehenden Tabellen nachträglich hinzuzufügen. Dies passiert allemein mit dem `ALTER TABLE` Befehl welchen wir bereits im Kapitel [Datenbanken manipulieren](./manipulieren.md#exkurs-alter-tabellen-nachtraglich-andern) kennengelernt haben.
 
 ???+ example "Constraints mit ALTER TABLE"
 

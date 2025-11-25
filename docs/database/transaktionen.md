@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_transaktionen.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Transaktionen & ACID
 
 In den vorherigen Kapiteln haben wir gelernt, wie wir Daten in PostgreSQL strukturieren, abfragen und manipulieren können. Dabei haben wir immer angenommen, dass unsere Operationen erfolgreich ausgeführt werden und die Datenbank in einem konsistenten Zustand bleibt.
@@ -27,21 +23,18 @@ In diesem Kapitel lernen wir, was Transaktionen sind, warum sie wichtig sind und
 
     Für die folgenden Beispiele erstellen wir eine **Banking-Datenbank**. In dieser Datenbank werden Bankkonten und Geldtransfers verwaltet.
 
-    **Datenbank erstellen und verbinden:**
-
     ```sql
+    -- Datenbank erstellen
     CREATE DATABASE banking_db;
+
+    -- Zur Datenbank wechseln
     \c banking_db
-    ```
 
-    **Tabellen erstellen:**
-
-    ```sql
     -- Tabelle: Konten
     CREATE TABLE konten (
         konto_id SERIAL PRIMARY KEY,
         kontoinhaber VARCHAR(100) NOT NULL,
-        kontonummer VARCHAR(20) UNIQUE NOT NULL,
+        kontonummer VARCHAR(22) UNIQUE NOT NULL,
         saldo NUMERIC(12, 2) NOT NULL CHECK (saldo >= 0),
         kontotyp VARCHAR(20) DEFAULT 'Girokonto'
     );
@@ -56,17 +49,13 @@ In diesem Kapitel lernen wir, was Transaktionen sind, warum sie wichtig sind und
         beschreibung TEXT,
         status VARCHAR(20) DEFAULT 'abgeschlossen'
     );
-    ```
 
-    **Testdaten einfügen:**
-
-    ```sql
-    -- Konten einfügen
+    -- Testdaten: Konten
     INSERT INTO konten (kontoinhaber, kontonummer, saldo, kontotyp) VALUES
     ('Max Mustermann', 'DE89370400440532013000', 5000.00, 'Girokonto'),
     ('Anna Schmidt', 'DE89370400440532013001', 3000.00, 'Girokonto'),
     ('Thomas Weber', 'DE89370400440532013002', 10000.00, 'Sparkonto'),
-    ('Lisa Müller', 'DE89370400440532013003', 1500.00, 'Girokonto'),
+    ('Lisa Miller', 'DE89370400440532013003', 1500.00, 'Girokonto'),
     ('Peter Klein', 'DE89370400440532013004', 8000.00, 'Sparkonto');
     ```
 
@@ -189,11 +178,12 @@ Betrachten wir zum besseren Verständnis wieder ein praktisches Beispiel.
     WHERE kontoinhaber IN ('Max Mustermann', 'Anna Schmidt');
     ```
 
-    ```title="Output"
-     kontoinhaber    |     kontonummer      |  saldo
-    -----------------+----------------------+---------
-     Max Mustermann  | DE89370400440532013000 | 5000.00
-     Anna Schmidt    | DE89370400440532013001 | 3000.00
+    ```{.cmd .no-copy title="Output"}
+      kontoinhaber  |      kontonummer       |  saldo
+    ----------------+------------------------+---------
+     Max Mustermann | DE89370400440532013000 | 4500.00
+     Anna Schmidt   | DE89370400440532013001 | 3500.00
+    (2 rows)
     ```
 
     Jetzt führen wir die Überweisung **mit einer Transaktion** durch:
@@ -221,10 +211,11 @@ Betrachten wir zum besseren Verständnis wieder ein praktisches Beispiel.
     ```
 
     ```title="Output"
-     kontoinhaber    |  saldo
-    -----------------+---------
-     Max Mustermann  | 4500.00
-     Anna Schmidt    | 3500.00
+      kontoinhaber  |  saldo
+    ----------------+---------
+     Max Mustermann | 4000.00
+     Anna Schmidt   | 4000.00
+    (2 rows)
     ```
 
     Sollte alles wie gewünscht funktioniert haben, können wir die Transaktion abschließen:
@@ -272,13 +263,14 @@ Was passiert aber, wenn wir einen **Fehler bemerken** oder die Transaktion **abb
     WHERE kontoinhaber = 'Max Mustermann';
     ```
 
-    ```title="Output"
-     kontoinhaber    |  saldo
-    -----------------+---------
-     Max Mustermann  | 4500.00
+    ```{.cmd .no-copy title="Output"}
+      kontoinhaber  |  saldo
+    ----------------+---------
+     Max Mustermann | 4000.00
+    (1 row)
     ```
 
-    Die Änderung wurde **NICHT gespeichert**! Der Kontostand ist immer noch bei 4500€.
+    Die Änderung wurde **NICHT gespeichert**! Der Kontostand ist immer noch bei 4000€.
 
 Mit `ROLLBACK` werden also **alle Änderungen seit BEGIN** verworfen, als hätten sie nie stattgefunden.
 
@@ -305,9 +297,9 @@ PostgreSQL führt **automatisch ein ROLLBACK** durch, wenn während einer Transa
     WHERE kontoinhaber = 'Max Mustermann';  -- Fehler! Saldo würde negativ werden (-700)
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     FEHLER:  neue Zeile für Relation »konten« verletzt Check-Constraint »konten_saldo_check«
-    DETAIL:  Fehlgeschlagene Zeile enthält (1, Max Mustermann, DE89370400440532013000, -700.00, Girokonto)
+    DETAIL:  Fehlgeschlagene Zeile enthält (1, Max Mustermann, DE89370400440532013000, -1200.00, Girokonto)
     ```
 
     Wenn wir nun in weiterer Folge einen Befehl eingeben - egal welchen - wird uns das System folgendes zurückmelden:
@@ -316,7 +308,7 @@ PostgreSQL führt **automatisch ein ROLLBACK** durch, wenn während einer Transa
     SELECT * FROM konten;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     FEHLER:  aktuelle Transaktion wurde abgebrochen, Befehle werden bis zum Ende der Transaktion ignoriert
     ```
 
@@ -331,10 +323,11 @@ PostgreSQL führt **automatisch ein ROLLBACK** durch, wenn während einer Transa
     WHERE kontoinhaber = 'Max Mustermann';
     ```
 
-    ```title="Output"
-     kontoinhaber    |  saldo
-    -----------------+---------
-     Max Mustermann  | 4500.00
+    ```{.cmd .no-copy title="Output"}
+      kontoinhaber  |  saldo
+    ----------------+---------
+     Max Mustermann | 4000.00
+    (1 row)
     ```
 
     ✅ Das Konto hat seinen **ursprünglichen Kontostand** behalten!

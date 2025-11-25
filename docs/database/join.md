@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_join.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Joins - Daten aus mehreren Tabellen kombinieren
 
 Im vorherigen Kapitel über [Datenmodellierung](modellierung.md) haben wir gelernt, wie man **Beziehungen zwischen Tabellen** modelliert. Jetzt kommt der spannende Teil: Wie fragen wir Daten aus **mehreren verknüpften Tabellen** ab?
@@ -20,35 +16,38 @@ In diesem Kapitel lernen wir die verschiedenen JOIN-Typen kennen und verstehen, 
 
 ---
 
-Um zu verstehen, warum JOINs so wichtig sind, betrachten wir ein konkretes Problem aus dem Beschaffungsmanagement:
+???+ example "Beispiel: JOINs"
 
-```sql title="Ausgangssituation: zwei getrennte Tabellen"
--- Tabelle: lieferanten
- lieferant_id | firmenname        | land        | bewertung
---------------+-------------------+-------------+-----------
-            1 | Stahl GmbH        | Deutschland |       4.5
-            2 | MetalCorp         | Frankreich  |       4.2
-            3 | SteelWorld Inc    | USA         |       3.8
+    Um zu verstehen, warum JOINs so wichtig sind, betrachten wir ein konkretes Problem aus dem Beschaffungsmanagement:
 
--- Tabelle: bestellungen
- bestell_id | bestelldatum | lieferant_id | gesamtwert | status
-------------+--------------+--------------+------------+-----------
-        101 | 2024-01-15   |            1 |   12500.00 | Geliefert
-        102 | 2024-01-20   |            2 |    8300.00 | In Transit
-        103 | 2024-01-22   |            1 |   15600.00 | Geliefert
-```
+    ```{ .cmd .no-copy title="Ausgangssituation: zwei getrennte Tabellen"}
+    -- Tabelle: lieferanten
+     lieferant_id | firmenname        | land        | bewertung
+    --------------+-------------------+-------------+-----------
+                1 | Stahl GmbH        | Deutschland |       4.5
+                2 | MetalCorp         | Frankreich  |       4.2
+                3 | SteelWorld Inc    | USA         |       3.8
 
-**Problem:** Wir wissen aus der Bestelltabelle nur die `lieferant_id`, aber nicht den **Firmennamen**. Wie zeigen wir Bestellungen **mit** den Lieferantennamen an?
+    -- Tabelle: bestellungen
+     bestell_id | bestelldatum | lieferant_id | gesamtwert | status
+    ------------+--------------+--------------+------------+-----------
+            101 | 2024-01-15   |            1 |   12500.00 | Geliefert
+            102 | 2024-01-20   |            2 |    8300.00 | In Transit
+            103 | 2024-01-22   |            1 |   15600.00 | Geliefert
+    ``` 
+    
 
-```sql title="Gewünschtes Ergebnis: Gemeinsame Darstellung"
- bestell_id | bestelldatum | firmenname   | gesamtwert | status
-------------+--------------+--------------+------------+-----------
-        101 | 2024-01-15   | Stahl GmbH   |   12500.00 | Geliefert
-        102 | 2024-01-20   | MetalCorp    |    8300.00 | In Transit
-        103 | 2024-01-22   | Stahl GmbH   |   15600.00 | Geliefert
-```
+    **Problem:** Wir wissen aus der Bestelltabelle nur die `lieferant_id`, aber nicht den **Firmennamen**. Wie zeigen wir Bestellungen **mit** den Lieferantennamen an?
 
-Dafür brauchen wir einen **`JOIN`**! Ein `JOIN` ermöglicht es uns, die verstreuten Informationen aus beiden Tabellen wieder zusammenzuführen und in einer einzigen Ergebniszeile darzustellen. Die Verknüpfung erfolgt dabei über den Fremdschlüssel `lieferant_id` in der Bestellungen-Tabelle, der auf den Primärschlüssel `lieferant_id` in der Lieferanten-Tabelle verweist.
+    ```{ .cmd .no-copy title="Gewünschtes Ergebnis: Gemeinsame Darstellung"}
+     bestell_id | bestelldatum | firmenname   | gesamtwert | status
+    ------------+--------------+--------------+------------+-----------
+            101 | 2024-01-15   | Stahl GmbH   |   12500.00 | Geliefert
+            102 | 2024-01-20   | MetalCorp    |    8300.00 | In Transit
+            103 | 2024-01-22   | Stahl GmbH   |   15600.00 | Geliefert
+    ```
+
+    Dafür brauchen wir einen **`JOIN`**! Ein `JOIN` ermöglicht es uns, die verstreuten Informationen aus beiden Tabellen wieder zusammenzuführen und in einer einzigen Ergebniszeile darzustellen. Die Verknüpfung erfolgt dabei über den Fremdschlüssel `lieferant_id` in der Bestellungen-Tabelle, der auf den Primärschlüssel `lieferant_id` in der Lieferanten-Tabelle verweist.
 
 ---
 
@@ -56,7 +55,7 @@ Dafür brauchen wir einen **`JOIN`**! Ein `JOIN` ermöglicht es uns, die verstre
 
 Bevor wir uns die verschiedenen JOIN-Typen im Detail ansehen, schauen wir uns die grundlegende Syntax an. Ein JOIN besteht immer aus mehreren Komponenten: der Auswahl der Tabellen (`FROM` und `JOIN`), der Verknüpfungsbedingung (`ON`) und optional weiteren Filterbedingungen (`WHERE`).
 
-```sql { .yaml .no-copy }
+```{ .sql .no-copy hl_lines="3 4" }
 SELECT spalten
 FROM haupttabelle
 [INNER|LEFT|RIGHT] JOIN andere_tabelle
@@ -65,17 +64,6 @@ WHERE filter_bedingung;
 ```
 
 Bei der Spaltenauswahl im `SELECT` können wir auf **alle Spalten aus beiden Tabellen** zugreifen. Um eindeutig zu machen, von welcher Tabelle eine Spalte stammt, verwenden wir die Notation `tabellenname.spaltenname`. Das ist besonders wichtig, wenn beide Tabellen Spalten mit dem gleichen Namen haben (wie z.B. `lieferant_id` in beiden Tabellen).
-
-```sql
-SELECT
-    bestellungen.bestell_id,
-    bestellungen.bestelldatum,
-    lieferanten.firmenname,      -- Spalte aus der Lieferanten-Tabelle
-    bestellungen.gesamtwert,     -- Spalte aus der Bestellungen-Tabelle
-    bestellungen.status
-FROM bestellungen
-JOIN lieferanten ON bestellungen.lieferant_id = lieferanten.lieferant_id;
-```
 
 Ohne die explizite Angabe der Tabelle würde die Datenbank bei gleichnamigen Spalten (wie `lieferant_id`) einen Fehler werfen, da sie nicht weiß, welche Spalte gemeint ist. Daher ist die Notation `tabellenname.spaltenname` bei JOINs nicht nur guter Stil, sondern oft auch notwendig. Später werden wir sehen, wie **Aliasse** diese Schreibweise deutlich verkürzen.
 
@@ -128,21 +116,6 @@ In der Praxis ist der **INNER JOIN** der am häufigsten verwendete JOIN-Typ, da 
 
 ---
 
-## JOIN-Typen
-### INNER JOIN
-
-Der **INNER JOIN** ist der Standard-JOIN und bildet die Schnittmenge zweier Tabellen. Er gibt nur Datensätze zurück, die in **beiden** Tabellen eine Übereinstimmung haben. Stellen Sie sich zwei Kreise vor, die sich überschneiden - der INNER JOIN liefert genau den Bereich, in dem sich beide Kreise treffen.
-
-Syntax
-
-```sql { .yaml .no-copy }
-SELECT spalten
-FROM tabelle1
-INNER JOIN tabelle2 ON tabelle1.fremdschlüssel = tabelle2.primärschlüssel
-WHERE bedingung;
-```
-
----
 
 ???+ info "Datenbank-Setup"
 
@@ -229,28 +202,47 @@ WHERE bedingung;
 
 ---
 
-Nun führen wir unseren ersten JOIN aus. Wir wollen alle Bestellungen mit den zugehörigen Lieferantennamen anzeigen. Die `ON`-Klausel verbindet die beiden Tabellen über die Lieferanten-IDs:
+## JOIN-Typen
+### `INNER JOIN`
 
-```sql
-SELECT
-    bestellungen.bestell_id,
-    bestellungen.bestelldatum,
-    lieferanten.firmenname,
-    bestellungen.status
-FROM bestellungen
-INNER JOIN lieferanten ON bestellungen.lieferant_id = lieferanten.lieferant_id;
+Der `INNER JOIN` ist der Standard-JOIN und bildet die Schnittmenge zweier Tabellen. Er gibt nur Datensätze zurück, die in **beiden** Tabellen eine Übereinstimmung haben. Stellen Sie sich zwei Kreise vor, die sich überschneiden - der `INNER JOIN` liefert genau den Bereich, in dem sich beide Kreise treffen. Der Syntax für einen `INNER JOIN` ist wie folgt:
+
+```sql { .yaml .no-copy }
+SELECT spalten
+FROM tabelle1
+INNER JOIN tabelle2 ON tabelle1.fremdschlüssel = tabelle2.primärschlüssel
+WHERE bedingung;
 ```
 
-```sql title="Output"
- bestell_id | bestelldatum | firmenname     | status
-------------+--------------+----------------+-----------
-        101 | 2024-01-15   | Stahl GmbH     | Geliefert
-        102 | 2024-01-20   | MetalCorp      | In Transit
-        103 | 2024-01-22   | Stahl GmbH     | Geliefert
-        104 | 2024-01-25   | SteelWorld Inc | Bestellt
-```
+---
 
-Wir erkennen nun, dass die **Bestellung Nr. 5** (Entwurf ohne Lieferant) und der Lieferant **IronWorks AG** (ohne Bestellungen) **fehlen!** Warum? Beide haben in der jeweils anderen Tabelle keinen passenden Datensatz gefunden. Da der `INNER JOIN` nur Zeilen zurückgibt, bei denen in beiden Tabellen ein passender Datensatz existiert, werden diese Einträge ignoriert. Dies ist ein wichtiges Verhalten: `INNER JOIN` ist restriktiv und zeigt nur vollständige Verknüpfungen.
+Nun führen wir unseren ersten JOIN aus. 
+
+???+ example "Beispiel: `INNER JOIN`"
+
+    Wir wollen alle Bestellungen mit den zugehörigen Lieferantennamen anzeigen. Die `ON`-Klausel verbindet die beiden Tabellen über die Lieferanten-IDs:
+
+    ```sql
+    SELECT
+        bestellungen.bestell_id,
+        bestellungen.bestelldatum,
+        lieferanten.firmenname,
+        bestellungen.status
+    FROM bestellungen
+    INNER JOIN lieferanten ON bestellungen.lieferant_id = lieferanten.lieferant_id;
+    ```
+
+    ```{.cmd .no-copy title="Output"}
+     bestell_id | bestelldatum |   firmenname   |   status
+    ------------+--------------+----------------+------------
+              1 | 2024-01-15   | Stahl GmbH     | Geliefert
+              2 | 2024-01-20   | MetalCorp      | In Transit
+              3 | 2024-01-22   | Stahl GmbH     | Geliefert
+              4 | 2024-01-25   | SteelWorld Inc | Bestellt
+    (4 rows)
+    ```
+
+    Wir erkennen nun, dass die **Bestellung Nr. 5** (Entwurf ohne Lieferant) und der Lieferant **IronWorks AG** (ohne Bestellungen) **fehlen!** Warum? Beide haben in der jeweils anderen Tabelle keinen passenden Datensatz gefunden. Da der `INNER JOIN` nur Zeilen zurückgibt, bei denen in beiden Tabellen ein passender Datensatz existiert, werden diese Einträge ignoriert. Dies ist ein wichtiges Verhalten: `INNER JOIN` ist restriktiv und zeigt nur vollständige Verknüpfungen.
 
 ???+ defi "Definition: `INNER JOIN`"
     `INNER JOIN` zeigt nur Datensätze, die in **beiden** Tabellen verknüpft sind. Datensätze ohne Übereinstimmung werden weggelassen.
@@ -266,30 +258,32 @@ Wir haben Aliasse bereits im Kapitel [Abfragen von Daten](abfragen.md#aggregatfu
 
 Je komplexer unsere Abfragen werden, desto unübersichtlicher werden lange Tabellennamen wie `bestellungen.bestelldatum` und `lieferanten.firmenname`. Hier kommen Aliasse ins Spiel.
 Bei JOINs schreiben wir oft lange Tabellennamen - **Aliasse** (Abkürzungen) machen das übersichtlicher und sind in der Praxis absolut üblich.
-Fast jede JOIN-Abfrage, die Sie in der Realität sehen werden, verwendet Aliasse:
+Fast jede JOIN-Abfrage, die Sie in der Realität sehen werden, verwendet Aliasse.
 
-```sql
-SELECT
-    b.bestell_id,
-    b.bestelldatum,
-    l.firmenname,
-    l.land,
-    b.status
-FROM bestellungen AS b
-INNER JOIN lieferanten AS l ON b.lieferant_id = l.lieferant_id;
-```
+???+ example "Beispiel: Aliasse"
 
-oder noch kürzer (ohne `AS`):
+    ```sql
+    SELECT
+        b.bestell_id,
+        b.bestelldatum,
+        l.firmenname,
+        l.land,
+        b.status
+    FROM bestellungen AS b
+    INNER JOIN lieferanten AS l ON b.lieferant_id = l.lieferant_id;
+    ```
 
-```sql
-SELECT
-    b.bestell_id,
-    b.bestelldatum,
-    l.firmenname,
-    b.status
-FROM bestellungen b
-INNER JOIN lieferanten l ON b.lieferant_id = l.lieferant_id;
-```
+    oder noch kürzer (ohne `AS`):
+
+    ```sql
+    SELECT
+        b.bestell_id,
+        b.bestelldatum,
+        l.firmenname,
+        b.status
+    FROM bestellungen b
+    INNER JOIN lieferanten l ON b.lieferant_id = l.lieferant_id;
+    ```
 
 ???+ tip "Best Practice"
     Verwende immer kurze, aussagekräftige Aliasse (z.B. `m`, `t`) bei JOINs – das macht die Abfrage viel lesbarer!
@@ -297,38 +291,41 @@ INNER JOIN lieferanten l ON b.lieferant_id = l.lieferant_id;
 
 ---
 
-### LEFT JOIN
+### `LEFT JOIN`
 
-Was aber, wenn wir **alle** Bestellungen sehen wollen, unabhängig davon, ob sie bereits einem Lieferanten zugeordnet sind oder nicht? Hier kommt der **LEFT JOIN** (auch **LEFT OUTER JOIN**) ins Spiel. Er gibt **alle Datensätze der linken Tabelle** zurück, auch wenn sie keine Übereinstimmung in der rechten Tabelle haben.
+Was aber, wenn wir **alle** Bestellungen sehen wollen, unabhängig davon, ob sie bereits einem Lieferanten zugeordnet sind oder nicht? Hier kommt der `LEFT JOIN` (auch `LEFT OUTER JOIN`) ins Spiel. Er gibt **alle Datensätze der linken Tabelle** zurück, auch wenn sie keine Übereinstimmung in der rechten Tabelle haben.
 
-Der Unterschied zum INNER JOIN ist subtil aber wichtig: Beim LEFT JOIN ist die linke Tabelle (in unserem Fall `bestellungen`) die "dominante" Tabelle - alle ihre Zeilen erscheinen im Ergebnis. Gibt es für eine Bestellung keinen passenden Lieferanten, werden die Spalten aus der Lieferanten-Tabelle einfach mit `NULL` gefüllt.
+Der Unterschied zum `INNER JOIN` ist subtil aber wichtig: Beim LEFT JOIN ist die linke Tabelle (in unserem Fall `bestellungen`) die "dominante" Tabelle - alle ihre Zeilen erscheinen im Ergebnis. Gibt es für eine Bestellung keinen passenden Lieferanten, werden die Spalten aus der Lieferanten-Tabelle einfach mit `NULL` gefüllt.
 
-```sql
-SELECT
-    b.bestell_id,
-    b.bestelldatum,
-    l.firmenname,
-    l.land,
-    b.status
-FROM bestellungen b
-LEFT JOIN lieferanten l ON b.lieferant_id = l.lieferant_id;
-```
+???+ example "Beispiel: `LEFT JOIN`"
 
-```sql title="Output"
- bestell_id | bestelldatum | firmenname     | land        | status
-------------+--------------+----------------+-------------+-----------
-        101 | 2024-01-15   | Stahl GmbH     | Deutschland | Geliefert
-        102 | 2024-01-20   | MetalCorp      | Frankreich  | In Transit
-        103 | 2024-01-22   | Stahl GmbH     | Deutschland | Geliefert
-        104 | 2024-01-25   | SteelWorld Inc | USA         | Bestellt
-        105 | 2024-01-28   | NULL           | NULL        | Entwurf
-```
+    ```sql
+    SELECT
+        b.bestell_id,
+        b.bestelldatum,
+        l.firmenname,
+        l.land,
+        b.status
+    FROM bestellungen b
+    LEFT JOIN lieferanten l ON b.lieferant_id = l.lieferant_id;
+    ```
 
-Und nun sehen wir, dass **Bestellung Nr. 5** dabei ist, obwohl kein Lieferant zugeordnet ist! An der Stelle, wo der Lieferantenname und das Land stehen sollten, steht `NULL`. Dies ist besonders nützlich, wenn wir beispielsweise alle Bestellungen auflisten wollen, die noch keinen Lieferanten zugewiesen haben, oder wenn wir eine Übersicht aller Bestellungen brauchen, unabhängig von ihrem Bearbeitungsstatus.
+    ```{.cmd .no-copy title="Output"}
+     bestell_id | bestelldatum |   firmenname   |    land     |   status
+    ------------+--------------+----------------+-------------+------------
+              1 | 2024-01-15   | Stahl GmbH     | Deutschland | Geliefert
+              2 | 2024-01-20   | MetalCorp      | Frankreich  | In Transit
+              3 | 2024-01-22   | Stahl GmbH     | Deutschland | Geliefert
+              4 | 2024-01-25   | SteelWorld Inc | USA         | Bestellt
+              5 | 2024-01-28   |                |             | Entwurf
+    (5 rows)
+    ```
+
+    Und nun sehen wir, dass **Bestellung Nr. 5** dabei ist, obwohl kein Lieferant zugeordnet ist! An der Stelle, wo der Lieferantenname und das Land stehen sollten, steht `NULL`. Dies ist besonders nützlich, wenn wir beispielsweise alle Bestellungen auflisten wollen, die noch keinen Lieferanten zugewiesen haben, oder wenn wir eine Übersicht aller Bestellungen brauchen, unabhängig von ihrem Bearbeitungsstatus.
 
 `LEFT JOIN` wird in der Praxis oft verwendet, da es wichtig sein kann, auch "unvollständige" Datensätze zu sehen. Denken wir an Berichte oder Übersichten, wo wir nicht versehentlich Datensätze verschweigen wollen, nur weil eine Verknüpfung fehlt.
 
-???+ example "LEFT JOIN: Lieferanten ohne Bestellungen finden"
+???+ example "`LEFT JOIN`: Lieferanten ohne Bestellungen finden"
 
     Ein weiterer häufiger Anwendungsfall: Welche Lieferanten haben noch **keine** Bestellungen erhalten?
 
@@ -343,23 +340,24 @@ Und nun sehen wir, dass **Bestellung Nr. 5** dabei ist, obwohl kein Lieferant zu
     HAVING COUNT(b.bestell_id) = 0;
     ```
 
-    ```sql title="Output"
-     firmenname    | land        | anzahl_bestellungen
-    ---------------+-------------+---------------------
-     IronWorks AG  | Deutschland |                   0
+    ```{.cmd .no-copy title="Output"}
+      firmenname  |    land     | anzahl_bestellungen
+    --------------+-------------+---------------------
+     IronWorks AG | Deutschland |                   0
+    (1 row)
     ```
 
     Mit LEFT JOIN und Aggregation können wir leicht herausfinden, welche Lieferanten noch nie eine Bestellung erhalten haben.
 
 ---
 
-### RIGHT & FULL OUTER JOIN
+### `RIGHT` & `FULL OUTER JOIN`
 
-Der **RIGHT JOIN** (auch **RIGHT OUTER JOIN**) ist das Spiegelbild des LEFT JOIN: Alle Datensätze der **rechten** Tabelle werden zurückgegeben. Anstatt dass die linke Tabelle dominant ist, ist nun die rechte Tabelle die führende - alle ihre Zeilen erscheinen im Ergebnis, auch wenn es keine Übereinstimmung in der linken Tabelle gibt.
+Der `RIGHT JOIN` (auch `RIGHT OUTER JOIN`) ist das Spiegelbild des `LEFT JOIN`: Alle Datensätze der **rechten** Tabelle werden zurückgegeben. Anstatt dass die linke Tabelle dominant ist, ist nun die rechte Tabelle die führende - alle ihre Zeilen erscheinen im Ergebnis, auch wenn es keine Übereinstimmung in der linken Tabelle gibt.
 
 In der Praxis wird `RIGHT JOIN` jedoch sehr selten verwendet, da man das gleiche Ergebnis durch Vertauschen der Tabellen und Verwendung eines `LEFT JOIN` erreichen kann. Die meisten Entwickler bevorzugen `LEFT JOIN`, weil es intuitiver ist: Man liest von links nach rechts und die "Haupttabelle" steht links. Aus diesem Grund werden Sie in professionellem Code kaum RIGHT JOINs finden - es ist einfach eine Konventionsfrage, und die Konvention hat sich klar für LEFT JOIN entschieden.
 
-Der **FULL OUTER JOIN** vereint LEFT und RIGHT JOIN: Er gibt **alle** Datensätze aus **beiden** Tabellen zurück, unabhängig davon, ob eine Verknüpfung existiert oder nicht. Fehlende Werte werden mit `NULL` gefüllt. Dieser JOIN-Typ ist noch seltener als RIGHT JOIN und wird nur in sehr spezifischen Szenarien benötigt - beispielsweise wenn man alle Datensätze aus beiden Tabellen sehen möchte, um Inkonsistenzen oder fehlende Verknüpfungen zu identifizieren.
+Der `FULL OUTER JOIN` vereint `LEFT` und `RIGHT JOIN`: Er gibt **alle** Datensätze aus **beiden** Tabellen zurück, unabhängig davon, ob eine Verknüpfung existiert oder nicht. Fehlende Werte werden mit `NULL` gefüllt. Dieser JOIN-Typ ist noch seltener als `RIGHT JOIN` und wird nur in sehr spezifischen Szenarien benötigt - beispielsweise wenn man alle Datensätze aus beiden Tabellen sehen möchte, um Inkonsistenzen oder fehlende Verknüpfungen zu identifizieren.
 
 Für die allermeisten Anwendungsfälle reichen `INNER JOIN` und `LEFT JOIN` vollkommen aus. Diese beiden sollten wir gut beherrschen, während `RIGHT JOIN` und `FULL OUTER JOIN` eher Randerscheinungen sind, die wir kennen, aber selten verwenden werden.
 
@@ -373,72 +371,74 @@ Bisher haben wir in unseren Beispielen immer nur zwei Tabellen miteinander verkn
 
 Dies ist besonders bei komplexen Geschäftsprozessen wichtig. In unserem Beschaffungsszenario müssen wir beispielsweise Bestellungen, Lieferanten, Artikel und Bestellpositionen zusammenführen, um eine vollständige Übersicht zu erhalten.
 
+???+ example "Beispiel: Verbinde mehrere Tabellen"
+    Stellen wir uns vor, wir möchten eine vollständige Übersicht aller Bestellpositionen mit Lieferant, Artikel und Gesamtkosten:
+
+    ```sql
+    -- Welche Artikel wurden von welchem Lieferanten bestellt?
+    SELECT
+        l.firmenname AS lieferant,
+        b.bestelldatum,
+        a.artikelname,
+        bp.menge,
+        bp.einzelpreis,
+        (bp.menge * bp.einzelpreis) AS positionswert
+    FROM bestellpositionen bp
+    INNER JOIN bestellungen b ON bp.bestell_id = b.bestell_id
+    INNER JOIN lieferanten l ON b.lieferant_id = l.lieferant_id
+    INNER JOIN artikel a ON bp.artikel_id = a.artikel_id
+    ORDER BY b.bestelldatum, l.firmenname;
+    ```
+
+    ```{.cmd .no-copy title="Output"}
+       lieferant    | bestelldatum |   artikelname    | menge | einzelpreis | positionswert
+    ----------------+--------------+------------------+-------+-------------+---------------
+     Stahl GmbH     | 2024-01-15   | Stahlblech 2mm   |   500 |       12.50 |       6250.00
+     Stahl GmbH     | 2024-01-15   | Schrauben M8     |  5000 |        0.15 |        750.00
+     MetalCorp      | 2024-01-20   | Aluminiumprofile |   200 |       25.00 |       5000.00
+     Stahl GmbH     | 2024-01-22   | Stahlblech 2mm   |   300 |       12.50 |       3750.00
+     Stahl GmbH     | 2024-01-22   | Muttern M8       |  5000 |        0.08 |        400.00
+     SteelWorld Inc | 2024-01-25   | Dichtungsringe   |   800 |        1.20 |        960.00
+    (6 rows)
+    ```
+
+    Die Datenbank führt die JOINs sequenziell aus - erst wird das erste JOIN-Paar verarbeitet, dann das Ergebnis mit der nächsten Tabelle verknüpft:
+
+    1. `bestellpositionen` mit `bestellungen` joinen (über `bestell_id`)
+    2. Das Zwischenergebnis mit `lieferanten` joinen (über `lieferant_id`)
+    3. Das Zwischenergebnis mit `artikel` joinen (über `artikel_id`)
+
+    In diesem Beispiel nutzen wir ausschließlich `INNER JOINs`, weil wir nur vollständige Datensätze sehen wollen. Würden wir auch Bestellungen ohne Lieferanten oder Positionen ohne Artikel sehen wollen, müssten wir `LEFT JOINs` verwenden.
+
 ---
 
-Stellen wir uns vor, wir möchten eine vollständige Übersicht aller Bestellpositionen mit Lieferant, Artikel und Gesamtkosten:
+???+ example "Beispiel: Kombination aus mehreren JOINs und Aggregationen"
+    Besonders mächtig wird die Kombination aus mehreren JOINs und Aggregationen. Zum Beispiel: Welcher Lieferant hat das größte Bestellvolumen?
 
-```sql
--- Welche Artikel wurden von welchem Lieferanten bestellt?
-SELECT
-    l.firmenname AS lieferant,
-    b.bestelldatum,
-    a.artikelname,
-    bp.menge,
-    bp.einzelpreis,
-    (bp.menge * bp.einzelpreis) AS positionswert
-FROM bestellpositionen bp
-INNER JOIN bestellungen b ON bp.bestell_id = b.bestell_id
-INNER JOIN lieferanten l ON b.lieferant_id = l.lieferant_id
-INNER JOIN artikel a ON bp.artikel_id = a.artikel_id
-ORDER BY b.bestelldatum, l.firmenname;
-```
+    ```sql
+    SELECT
+        l.firmenname,
+        l.land,
+        COUNT(DISTINCT b.bestell_id) AS anzahl_bestellungen,
+        SUM(bp.menge * bp.einzelpreis) AS gesamtumsatz
+    FROM lieferanten l
+    LEFT JOIN bestellungen b ON l.lieferant_id = b.lieferant_id
+    LEFT JOIN bestellpositionen bp ON b.bestell_id = bp.bestell_id
+    GROUP BY l.firmenname, l.land
+    ORDER BY gesamtumsatz DESC NULLS LAST;
+    ```
 
-```sql title="Output"
- lieferant      | bestelldatum | artikelname       | menge | einzelpreis | positionswert
-----------------+--------------+-------------------+-------+-------------+---------------
- Stahl GmbH     | 2024-01-15   | Stahlblech 2mm    |   500 |       12.50 |       6250.00
- Stahl GmbH     | 2024-01-15   | Schrauben M8      |  5000 |        0.15 |        750.00
- MetalCorp      | 2024-01-20   | Aluminiumprofile  |   200 |       25.00 |       5000.00
- Stahl GmbH     | 2024-01-22   | Stahlblech 2mm    |   300 |       12.50 |       3750.00
- Stahl GmbH     | 2024-01-22   | Muttern M8        |  5000 |        0.08 |        400.00
- SteelWorld Inc | 2024-01-25   | Dichtungsringe    |   800 |        1.20 |        960.00
-```
+    ```{.cmd .no-copy title="Output"}
+       firmenname   |    land     | anzahl_bestellungen | gesamtumsatz
+    ----------------+-------------+---------------------+--------------
+     Stahl GmbH     | Deutschland |                   2 |     11150.00
+     MetalCorp      | Frankreich  |                   1 |      5000.00
+     SteelWorld Inc | USA         |                   1 |       960.00
+     IronWorks AG   | Deutschland |                   0 |
+    (4 rows)
+    ```
 
-Die Datenbank führt die JOINs sequenziell aus - erst wird das erste JOIN-Paar verarbeitet, dann das Ergebnis mit der nächsten Tabelle verknüpft:
-
-1. `bestellpositionen` mit `bestellungen` joinen (über `bestell_id`)
-2. Das Zwischenergebnis mit `lieferanten` joinen (über `lieferant_id`)
-3. Das Zwischenergebnis mit `artikel` joinen (über `artikel_id`)
-
-In diesem Beispiel nutzen wir ausschließlich `INNER JOINs`, weil wir nur vollständige Datensätze sehen wollen. Würden wir auch Bestellungen ohne Lieferanten oder Positionen ohne Artikel sehen wollen, müssten wir `LEFT JOINs` verwenden.
-
----
-
-Besonders mächtig wird die Kombination aus mehreren JOINs und Aggregationen. Zum Beispiel: Welcher Lieferant hat das größte Bestellvolumen?
-
-```sql
-SELECT
-    l.firmenname,
-    l.land,
-    COUNT(DISTINCT b.bestell_id) AS anzahl_bestellungen,
-    SUM(bp.menge * bp.einzelpreis) AS gesamtumsatz
-FROM lieferanten l
-LEFT JOIN bestellungen b ON l.lieferant_id = b.lieferant_id
-LEFT JOIN bestellpositionen bp ON b.bestell_id = bp.bestell_id
-GROUP BY l.firmenname, l.land
-ORDER BY gesamtumsatz DESC NULLS LAST;
-```
-
-```sql title="Output"
- firmenname     | land        | anzahl_bestellungen | gesamtumsatz
-----------------+-------------+---------------------+--------------
- Stahl GmbH     | Deutschland |                   2 |     11150.00
- MetalCorp      | Frankreich  |                   1 |      5000.00
- SteelWorld Inc | USA         |                   1 |       960.00
- IronWorks AG   | Deutschland |                   0 |         NULL
-```
-
-Hier verwenden wir `LEFT JOIN`, um auch Lieferanten ohne Bestellungen (wie IronWorks AG) anzuzeigen. Die Aggregation zeigt uns dann, welche Lieferanten am wichtigsten sind.
+    Hier verwenden wir `LEFT JOIN`, um auch Lieferanten ohne Bestellungen (wie IronWorks AG) anzuzeigen. Die Aggregation zeigt uns dann, welche Lieferanten am wichtigsten sind.
 
 ---
 
