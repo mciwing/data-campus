@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_modellierung.png" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Datenmodellierung & Beziehungen
 
 
@@ -978,7 +982,37 @@ Nun wenden wir das Erlernte auf unser **TecGuy GmbH Produktionsplanungssystem** 
     \c produktionsplanung_db
     ```
 
-    Falls die Tabellen noch nicht existieren, findest du die Setup-Anweisungen in den vorherigen Kapiteln.
+    Da wir im vorigen Kapitel die Tabellen `maschinen` und `produktionsauftraege` bearbeitet und auch Einträge gelöscht haben, kontrollieren wir nochmals, ob beide Tabellen noch existieren und ob sie wie nachfolgendes aussehen: 
+
+    ```sql
+    SELECT * FROM maschinen;
+    SELECT * FROM produktionsauftraege;
+    ```
+
+    ```sql title="Output"
+     maschinen_id |     maschinenname     |  maschinentyp   |   produktionshalle    | anschaffungsjahr | maschinenstatus | wartungsintervall_tage
+    --------------+-----------------------+-----------------+-----------------------+------------------+-----------------+------------------------
+                1 | CNC-Fraese Alpha      | CNC-Fraese      | Halle Zentral         |             2024 | Aktiv           |    90
+                2 | Drehbank Beta         | Drehbank        | Halle Nord            |             2024 | Aktiv           |    90
+                3 | Schweissroboter Gamma | Schweissroboter | Produktionshalle Sued |             2020 | Aktiv           |    60
+                4 | Lackieranlage Delta   | Lackieranlage   | Halle Zentral         |             2024 | Aktiv           |
+
+
+
+     auftrag_id | auftragsnummer |     kunde     |     produkt     | menge | lieferdatum |    status
+    ------------+----------------+---------------+-----------------+-------+-------------+---------------
+              1 | AUF-2024-001   | BMW AG        | Getriebegehäuse |   500 | 2024-04-15  | In Produktion
+              2 | AUF-2024-002   | Audi AG       | Kurbelwelle     |   200 | 2024-04-20  | Geplant
+              3 | AUF-2024-003   | Mercedes-Benz | Pleuelstange    |   350 | 2024-04-18  | In Produktion
+              4 | AUF-2024-004   | Porsche AG    | Kolben          |   150 | 2024-04-25  | Geplant
+              5 | AUF-2024-005   | BMW AG        | Kurbelwelle     |   300 | 2024-04-22  | In Produktion
+              6 | AUF-2024-006   | Volkswagen AG | Kolben          |   400 | 2024-04-28  | Geplant
+              7 | AUF-2024-007   | Mercedes-Benz | Getriebegehäuse |   250 | 2024-04-30  | Abgeschlossen
+              8 | AUF-2024-008   | Audi AG       | Pleuelstange    |   180 | 2024-04-16  | Abgeschlossen
+              9 | AUF-2024-009   | Porsche AG    | Kurbelwelle     |   120 | 2024-05-05  | Geplant
+             10 | AUF-2024-010   | BMW AG        | Kolben          |   350 | 2024-04-19  | In Produktion
+    (10 rows)
+    ```
 
 ???+ question "Aufgabe 1: ER-Diagramm modellieren"
 

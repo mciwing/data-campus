@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_join.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Joins - Daten aus mehreren Tabellen kombinieren
 
 Im vorherigen Kapitel über [Datenmodellierung](modellierung.md) haben wir gelernt, wie man **Beziehungen zwischen Tabellen** modelliert. Jetzt kommt der spannende Teil: Wie fragen wir Daten aus **mehreren verknüpften Tabellen** ab?
@@ -16,36 +20,35 @@ In diesem Kapitel lernen wir die verschiedenen JOIN-Typen kennen und verstehen, 
 
 ---
 
-Um zu verstehen, warum JOINs so wichtig sind, betrachten wir ein konkretes Problem. Erinnern wir uns an unser Beispiel aus dem [Kapitel Datenmodellierung](modellierung.md):
+Um zu verstehen, warum JOINs so wichtig sind, betrachten wir ein konkretes Problem aus dem Beschaffungsmanagement:
 
-```sql title="Ausgangssituation: zwei Tabellen"
--- Tabelle: maschinen
- maschinen_id |    name    | tech_id 
---------------+------------+---------
-            1 | CNC Alpha  |       1
-            2 | Drehbank   |       2
-            3 | Roboter    |       1
+```sql title="Ausgangssituation: zwei getrennte Tabellen"
+-- Tabelle: lieferanten
+ lieferant_id | firmenname        | land        | bewertung
+--------------+-------------------+-------------+-----------
+            1 | Stahl GmbH        | Deutschland |       4.5
+            2 | MetalCorp         | Frankreich  |       4.2
+            3 | SteelWorld Inc    | USA         |       3.8
 
--- Tabelle: techniker
- techniker_id |     name       |  abteilung   
---------------+----------------+-------------
-            1 | Thomas Müller  | Wartung
-            2 | Sandra Schmidt | Fertigung
-            3 | Klaus Weber    | Instandh.
+-- Tabelle: bestellungen
+ bestell_id | bestelldatum | lieferant_id | gesamtwert | status
+------------+--------------+--------------+------------+-----------
+        101 | 2024-01-15   |            1 |   12500.00 | Geliefert
+        102 | 2024-01-20   |            2 |    8300.00 | In Transit
+        103 | 2024-01-22   |            1 |   15600.00 | Geliefert
 ```
 
-
-Doch wie zeigen wir die Maschinen **mit** ihren zuständigen Technikern an?
+**Problem:** Wir wissen aus der Bestelltabelle nur die `lieferant_id`, aber nicht den **Firmennamen**. Wie zeigen wir Bestellungen **mit** den Lieferantennamen an?
 
 ```sql title="Gewünschtes Ergebnis: Gemeinsame Darstellung"
- maschine  | techniker      | abteilung
------------+----------------+-------------
- CNC Alpha | Thomas Müller  | Wartung
- Drehbank  | Sandra Schmidt | Fertigung
- Roboter   | Thomas Müller  | Wartung
+ bestell_id | bestelldatum | firmenname   | gesamtwert | status
+------------+--------------+--------------+------------+-----------
+        101 | 2024-01-15   | Stahl GmbH   |   12500.00 | Geliefert
+        102 | 2024-01-20   | MetalCorp    |    8300.00 | In Transit
+        103 | 2024-01-22   | Stahl GmbH   |   15600.00 | Geliefert
 ```
 
-Dafür brauchen wir einen **`JOIN`**! Ein `JOIN` ermöglicht es uns, die verstreuten Informationen aus beiden Tabellen wieder zusammenzuführen und in einer einzigen Ergebniszeile darzustellen. Die Verknüpfung erfolgt dabei über den Fremdschlüssel `tech_id` in der Maschinen-Tabelle, der auf den Primärschlüssel `techniker_id` in der Techniker-Tabelle verweist.
+Dafür brauchen wir einen **`JOIN`**! Ein `JOIN` ermöglicht es uns, die verstreuten Informationen aus beiden Tabellen wieder zusammenzuführen und in einer einzigen Ergebniszeile darzustellen. Die Verknüpfung erfolgt dabei über den Fremdschlüssel `lieferant_id` in der Bestellungen-Tabelle, der auf den Primärschlüssel `lieferant_id` in der Lieferanten-Tabelle verweist.
 
 ---
 
@@ -61,18 +64,20 @@ FROM haupttabelle
 WHERE filter_bedingung;
 ```
 
-Bei der Spaltenauswahl im `SELECT` können wir auf **alle Spalten aus beiden Tabellen** zugreifen. Um eindeutig zu machen, von welcher Tabelle eine Spalte stammt, verwenden wir die Notation `tabellenname.spaltenname`. Das ist besonders wichtig, wenn beide Tabellen Spalten mit dem gleichen Namen haben (wie z.B. `name` in unseren Tabellen `maschinen` und `techniker`).
+Bei der Spaltenauswahl im `SELECT` können wir auf **alle Spalten aus beiden Tabellen** zugreifen. Um eindeutig zu machen, von welcher Tabelle eine Spalte stammt, verwenden wir die Notation `tabellenname.spaltenname`. Das ist besonders wichtig, wenn beide Tabellen Spalten mit dem gleichen Namen haben (wie z.B. `lieferant_id` in beiden Tabellen).
 
 ```sql
 SELECT
-    maschinen.name,           -- Spalte aus der Maschinen-Tabelle
-    techniker.name,           -- Spalte aus der Techniker-Tabelle
-    techniker.abteilung       -- Spalte aus der Techniker-Tabelle
-FROM maschinen
-JOIN techniker ON maschinen.techniker_id = techniker.techniker_id;
+    bestellungen.bestell_id,
+    bestellungen.bestelldatum,
+    lieferanten.firmenname,      -- Spalte aus der Lieferanten-Tabelle
+    bestellungen.gesamtwert,     -- Spalte aus der Bestellungen-Tabelle
+    bestellungen.status
+FROM bestellungen
+JOIN lieferanten ON bestellungen.lieferant_id = lieferanten.lieferant_id;
 ```
 
-Ohne die explizite Angabe der Tabelle würde die Datenbank bei gleichnamigen Spalten einen Fehler werfen, da sie nicht weiß, welche `name`-Spalte gemeint ist. Daher ist die Notation `tabellenname.spaltenname` bei JOINs nicht nur guter Stil, sondern oft auch notwendig. Später werden wir sehen, wie **Aliasse** diese Schreibweise deutlich verkürzen.
+Ohne die explizite Angabe der Tabelle würde die Datenbank bei gleichnamigen Spalten (wie `lieferant_id`) einen Fehler werfen, da sie nicht weiß, welche Spalte gemeint ist. Daher ist die Notation `tabellenname.spaltenname` bei JOINs nicht nur guter Stil, sondern oft auch notwendig. Später werden wir sehen, wie **Aliasse** diese Schreibweise deutlich verkürzen.
 
 --- 
 
@@ -139,63 +144,113 @@ WHERE bedingung;
 
 ---
 
-Um die verschiedenen JOIN-Typen praktisch auszuprobieren, erstellen wir zunächst zwei Beispieltabellen mit Testdaten. Wichtig ist dabei, dass wir auch einen Sonderfall berücksichtigen: eine Maschine ohne zuständigen Techniker. So können wir später sehen, wie sich verschiedene JOIN-Typen bei fehlenden Verknüpfungen verhalten.
+???+ info "Datenbank-Setup"
 
-Vorbereitung: Tabellen erstellen
+    Für die Beispiele in diesem Kapitel verwenden wir eine **Beschaffungs-Datenbank** (`beschaffung_db`), die typische Einkaufsprozesse eines produzierenden Unternehmens abbildet. Diese Datenbank hilft uns, JOINs praxisnah zu üben.
 
-```sql
-CREATE TABLE techniker (
-    techniker_id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    abteilung VARCHAR(50)
-);
+    ```sql
+    -- Datenbank erstellen
+    CREATE DATABASE beschaffung_db;
 
-CREATE TABLE maschinen (
-    maschinen_id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    techniker_id INTEGER,
-    anschaffungsjahr INTEGER,
-    FOREIGN KEY (techniker_id) REFERENCES techniker(techniker_id)
-);
+    -- Zur Datenbank wechseln
+    \c beschaffung_db
 
-INSERT INTO techniker (name, abteilung)
-VALUES
-    ('Thomas Müller', 'Wartung'),
-    ('Sandra Schmidt', 'Fertigung'),
-    ('Klaus Weber', 'Instandhaltung');
+    -- Tabelle 1: Lieferanten
+    CREATE TABLE lieferanten (
+        lieferant_id SERIAL PRIMARY KEY,
+        firmenname VARCHAR(100) NOT NULL,
+        land VARCHAR(50),
+        bewertung NUMERIC(2,1)
+    );
 
-INSERT INTO maschinen (name, techniker_id, anschaffungsjahr)
-VALUES
-    ('CNC-Fräse Alpha', 1, 2019),
-    ('Drehbank Beta', 2, 2021),
-    ('Schweißroboter Gamma', 1, 2020),
-    ('Stanzmaschine Delta', NULL, 2018);  -- Kein zuständiger Techniker!
-```
+    -- Tabelle 2: Artikel
+    CREATE TABLE artikel (
+        artikel_id SERIAL PRIMARY KEY,
+        artikelname VARCHAR(100) NOT NULL,
+        kategorie VARCHAR(50),
+        einkaufspreis NUMERIC(10,2)
+    );
 
-???+ info "Hinweis"
-    Beachten Sie, dass die Stanzmaschine Delta bewusst keinen zuständigen Techniker hat (`techniker_id = NULL`) und der Techniker Klaus Weber keine Maschinen zugeordnet hat. Dies wird uns später helfen zu verstehen, wie sich INNER JOIN von LEFT JOIN unterscheidet.
+    -- Tabelle 3: Bestellungen
+    CREATE TABLE bestellungen (
+        bestell_id SERIAL PRIMARY KEY,
+        bestelldatum DATE NOT NULL,
+        lieferant_id INTEGER,
+        status VARCHAR(20),
+        FOREIGN KEY (lieferant_id) REFERENCES lieferanten(lieferant_id)
+    );
 
+    -- Tabelle 4: Bestellpositionen (Zwischentabelle für Bestellungen und Artikel)
+    CREATE TABLE bestellpositionen (
+        position_id SERIAL PRIMARY KEY,
+        bestell_id INTEGER NOT NULL,
+        artikel_id INTEGER NOT NULL,
+        menge INTEGER NOT NULL,
+        einzelpreis NUMERIC(10,2),
+        FOREIGN KEY (bestell_id) REFERENCES bestellungen(bestell_id),
+        FOREIGN KEY (artikel_id) REFERENCES artikel(artikel_id)
+    );
 
-Nun führen wir unseren ersten JOIN aus. Die `ON`-Klausel verbindet die beiden Tabellen über die Techniker-IDs. Die Datenbank sucht für jede Maschine den passenden Techniker und kombiniert die Zeilen zu einem gemeinsamen Ergebnis:
+    -- Testdaten einfügen
+    INSERT INTO lieferanten (firmenname, land, bewertung)
+    VALUES
+        ('Stahl GmbH', 'Deutschland', 4.5),
+        ('MetalCorp', 'Frankreich', 4.2),
+        ('SteelWorld Inc', 'USA', 3.8),
+        ('IronWorks AG', 'Deutschland', NULL);  -- Neuer Lieferant, noch keine Bewertung
+
+    INSERT INTO artikel (artikelname, kategorie, einkaufspreis)
+    VALUES
+        ('Stahlblech 2mm', 'Rohmaterial', 12.50),
+        ('Aluminiumprofile', 'Rohmaterial', 25.00),
+        ('Schrauben M8', 'Befestigung', 0.15),
+        ('Muttern M8', 'Befestigung', 0.08),
+        ('Dichtungsringe', 'Zubehoer', 1.20);
+
+    INSERT INTO bestellungen (bestelldatum, lieferant_id, status)
+    VALUES
+        ('2024-01-15', 1, 'Geliefert'),
+        ('2024-01-20', 2, 'In Transit'),
+        ('2024-01-22', 1, 'Geliefert'),
+        ('2024-01-25', 3, 'Bestellt'),
+        ('2024-01-28', NULL, 'Entwurf');  -- Bestellung ohne Lieferant (noch in Planung)
+
+    INSERT INTO bestellpositionen (bestell_id, artikel_id, menge, einzelpreis)
+    VALUES
+        (1, 1, 500, 12.50),   -- Bestell. 1: 500x Stahlblech
+        (1, 3, 5000, 0.15),   -- Bestell. 1: 5000x Schrauben
+        (2, 2, 200, 25.00),   -- Bestell. 2: 200x Aluminiumprofile
+        (3, 1, 300, 12.50),   -- Bestell. 3: 300x Stahlblech
+        (3, 4, 5000, 0.08),   -- Bestell. 3: 5000x Muttern
+        (4, 5, 800, 1.20);    -- Bestell. 4: 800x Dichtungsringe
+    ```
+
+    **Hinweis:** Beachte, dass die Bestellung mit ID 5 bewusst keinen Lieferanten hat (`lieferant_id = NULL`) und der Lieferant "IronWorks AG" noch keine Bestellungen hat. Dies wird uns helfen, die Unterschiede zwischen INNER JOIN und LEFT JOIN zu verstehen.
+
+---
+
+Nun führen wir unseren ersten JOIN aus. Wir wollen alle Bestellungen mit den zugehörigen Lieferantennamen anzeigen. Die `ON`-Klausel verbindet die beiden Tabellen über die Lieferanten-IDs:
 
 ```sql
 SELECT
-    maschinen.name AS maschine,
-    techniker.name AS techniker,
-    techniker.abteilung
-FROM maschinen
-INNER JOIN techniker ON maschinen.techniker_id = techniker.techniker_id;
+    bestellungen.bestell_id,
+    bestellungen.bestelldatum,
+    lieferanten.firmenname,
+    bestellungen.status
+FROM bestellungen
+INNER JOIN lieferanten ON bestellungen.lieferant_id = lieferanten.lieferant_id;
 ```
 
 ```sql title="Output"
- maschine             |   techniker    | abteilung
-----------------------|----------------|------------
- CNC-Fräse Alpha      | Thomas Müller  | Wartung
- Drehbank Beta        | Sandra Schmidt | Fertigung
- Schweißroboter Gamma | Thomas Müller  | Wartung
+ bestell_id | bestelldatum | firmenname     | status
+------------+--------------+----------------+-----------
+        101 | 2024-01-15   | Stahl GmbH     | Geliefert
+        102 | 2024-01-20   | MetalCorp      | In Transit
+        103 | 2024-01-22   | Stahl GmbH     | Geliefert
+        104 | 2024-01-25   | SteelWorld Inc | Bestellt
 ```
 
-Wir erkennen nun, dass **Stanzmaschine Delta** und der Techniker **Klaus Weber** **fehlen!** Warum? Beide haben in der jeweils anderen Tabelle keinen passenden Datensatz gefunden. Da der `INNER JOIN` nur Zeilen zurückgibt, bei denen in beiden Tabellen ein passender Datensatz existiert, werden die beiden Einträge einfach ignoriert. Dies ist ein wichtiges Verhalten, das man verstehen muss: `INNER JOIN` ist restriktiv und zeigt nur vollständige Verknüpfungen.
+Wir erkennen nun, dass die **Bestellung Nr. 5** (Entwurf ohne Lieferant) und der Lieferant **IronWorks AG** (ohne Bestellungen) **fehlen!** Warum? Beide haben in der jeweils anderen Tabelle keinen passenden Datensatz gefunden. Da der `INNER JOIN` nur Zeilen zurückgibt, bei denen in beiden Tabellen ein passender Datensatz existiert, werden diese Einträge ignoriert. Dies ist ein wichtiges Verhalten: `INNER JOIN` ist restriktiv und zeigt nur vollständige Verknüpfungen.
 
 ???+ defi "Definition: `INNER JOIN`"
     `INNER JOIN` zeigt nur Datensätze, die in **beiden** Tabellen verknüpft sind. Datensätze ohne Übereinstimmung werden weggelassen.
@@ -209,28 +264,31 @@ Bevor wir uns die weiteren JOIN-Typen ansehen, nehmen wir einen kleinen Exkurs u
 Wir haben Aliasse bereits im Kapitel [Abfragen von Daten](abfragen.md#aggregatfunktionen-daten-zusammenfassen) kennengelernt.
 
 
-Je komplexer unsere Abfragen werden, desto unübersichtlicher werden lange Tabellennamen wie `maschinen.name` und `techniker.name`. Hier kommen Aliasse ins Spiel. 
-Bei JOINs schreiben wir oft lange Tabellennamen - **Aliasse** (Abkürzungen) machen das übersichtlicher und sind in der Praxis absolut üblich. 
+Je komplexer unsere Abfragen werden, desto unübersichtlicher werden lange Tabellennamen wie `bestellungen.bestelldatum` und `lieferanten.firmenname`. Hier kommen Aliasse ins Spiel.
+Bei JOINs schreiben wir oft lange Tabellennamen - **Aliasse** (Abkürzungen) machen das übersichtlicher und sind in der Praxis absolut üblich.
 Fast jede JOIN-Abfrage, die Sie in der Realität sehen werden, verwendet Aliasse:
 
 ```sql
 SELECT
-    m.name AS maschine,
-    t.name AS techniker,
-    t.abteilung,
-    m.anschaffungsjahr
-FROM maschinen AS m
-INNER JOIN techniker AS t ON m.techniker_id = t.techniker_id;
+    b.bestell_id,
+    b.bestelldatum,
+    l.firmenname,
+    l.land,
+    b.status
+FROM bestellungen AS b
+INNER JOIN lieferanten AS l ON b.lieferant_id = l.lieferant_id;
 ```
 
 oder noch kürzer (ohne `AS`):
 
 ```sql
 SELECT
-    m.name AS maschine,
-    t.name AS techniker
-FROM maschinen m
-INNER JOIN techniker t ON m.techniker_id = t.techniker_id;
+    b.bestell_id,
+    b.bestelldatum,
+    l.firmenname,
+    b.status
+FROM bestellungen b
+INNER JOIN lieferanten l ON b.lieferant_id = l.lieferant_id;
 ```
 
 ???+ tip "Best Practice"
@@ -241,33 +299,57 @@ INNER JOIN techniker t ON m.techniker_id = t.techniker_id;
 
 ### LEFT JOIN
 
-Was aber, wenn wir **alle** Maschinen sehen wollen, unabhängig davon, ob sie einen zuständigen Techniker haben oder nicht? Hier kommt der **LEFT JOIN** (auch **LEFT OUTER JOIN**) ins Spiel. Er gibt **alle Datensätze der linken Tabelle** zurück, auch wenn sie keine Übereinstimmung in der rechten Tabelle haben.
+Was aber, wenn wir **alle** Bestellungen sehen wollen, unabhängig davon, ob sie bereits einem Lieferanten zugeordnet sind oder nicht? Hier kommt der **LEFT JOIN** (auch **LEFT OUTER JOIN**) ins Spiel. Er gibt **alle Datensätze der linken Tabelle** zurück, auch wenn sie keine Übereinstimmung in der rechten Tabelle haben.
 
-Der Unterschied zum INNER JOIN ist subtil aber wichtig: Beim LEFT JOIN ist die linke Tabelle (in unserem Fall `maschinen`) die "dominante" Tabelle - alle ihre Zeilen erscheinen im Ergebnis. Gibt es für eine Maschine keinen passenden Techniker, werden die Spalten aus der Techniker-Tabelle einfach mit `NULL` gefüllt.
-
+Der Unterschied zum INNER JOIN ist subtil aber wichtig: Beim LEFT JOIN ist die linke Tabelle (in unserem Fall `bestellungen`) die "dominante" Tabelle - alle ihre Zeilen erscheinen im Ergebnis. Gibt es für eine Bestellung keinen passenden Lieferanten, werden die Spalten aus der Lieferanten-Tabelle einfach mit `NULL` gefüllt.
 
 ```sql
 SELECT
-    m.name AS maschine,
-    t.name AS techniker,
-    t.abteilung
-FROM maschinen m
-LEFT JOIN techniker t ON m.techniker_id = t.techniker_id;
+    b.bestell_id,
+    b.bestelldatum,
+    l.firmenname,
+    l.land,
+    b.status
+FROM bestellungen b
+LEFT JOIN lieferanten l ON b.lieferant_id = l.lieferant_id;
 ```
-
 
 ```sql title="Output"
- maschine             | techniker      | abteilung
-----------------------|----------------|------------
- CNC-Fräse Alpha      | Thomas Müller  | Wartung
- Drehbank Beta        | Sandra Schmidt | Fertigung
- Schweißroboter Gamma | Thomas Müller  | Wartung
- Stanzmaschine Delta  | NULL           | NULL
+ bestell_id | bestelldatum | firmenname     | land        | status
+------------+--------------+----------------+-------------+-----------
+        101 | 2024-01-15   | Stahl GmbH     | Deutschland | Geliefert
+        102 | 2024-01-20   | MetalCorp      | Frankreich  | In Transit
+        103 | 2024-01-22   | Stahl GmbH     | Deutschland | Geliefert
+        104 | 2024-01-25   | SteelWorld Inc | USA         | Bestellt
+        105 | 2024-01-28   | NULL           | NULL        | Entwurf
 ```
 
-Und nun sehen wir, dass **Stanzmaschine Delta dabei ist!** obwohl kein Techniker zuständig ist. An der Stelle, wo der Techniker und die Abteilung stehen sollte, steht `NULL`. Dies ist besonders nützlich, wenn wir beispielsweise alle Maschinen auflisten wollen, die noch keinen Techniker zugewiesen haben, oder wenn wir eine Übersicht aller Maschinen brauchen, unabhängig von ihrem Wartungsstatus.
+Und nun sehen wir, dass **Bestellung Nr. 5** dabei ist, obwohl kein Lieferant zugeordnet ist! An der Stelle, wo der Lieferantenname und das Land stehen sollten, steht `NULL`. Dies ist besonders nützlich, wenn wir beispielsweise alle Bestellungen auflisten wollen, die noch keinen Lieferanten zugewiesen haben, oder wenn wir eine Übersicht aller Bestellungen brauchen, unabhängig von ihrem Bearbeitungsstatus.
 
-`LEFT JOIN` wird in der Praxis auch oft verwendet, da es wichtig sein kann, auch "unvollständige" Datensätze zu sehen. Denken wir an Berichte oder Übersichten, wo wir nicht versehentlich Datensätze verschweigen wollen, nur weil eine Verknüpfung fehlt.
+`LEFT JOIN` wird in der Praxis oft verwendet, da es wichtig sein kann, auch "unvollständige" Datensätze zu sehen. Denken wir an Berichte oder Übersichten, wo wir nicht versehentlich Datensätze verschweigen wollen, nur weil eine Verknüpfung fehlt.
+
+???+ example "LEFT JOIN: Lieferanten ohne Bestellungen finden"
+
+    Ein weiterer häufiger Anwendungsfall: Welche Lieferanten haben noch **keine** Bestellungen erhalten?
+
+    ```sql
+    SELECT
+        l.firmenname,
+        l.land,
+        COUNT(b.bestell_id) AS anzahl_bestellungen
+    FROM lieferanten l
+    LEFT JOIN bestellungen b ON l.lieferant_id = b.lieferant_id
+    GROUP BY l.firmenname, l.land
+    HAVING COUNT(b.bestell_id) = 0;
+    ```
+
+    ```sql title="Output"
+     firmenname    | land        | anzahl_bestellungen
+    ---------------+-------------+---------------------
+     IronWorks AG  | Deutschland |                   0
+    ```
+
+    Mit LEFT JOIN und Aggregation können wir leicht herausfinden, welche Lieferanten noch nie eine Bestellung erhalten haben.
 
 ---
 
@@ -289,121 +371,316 @@ Für die allermeisten Anwendungsfälle reichen `INNER JOIN` und `LEFT JOIN` voll
 
 Bisher haben wir in unseren Beispielen immer nur zwei Tabellen miteinander verknüpft. In der Realität sind Datenbanken jedoch oft komplexer strukturiert, und wir müssen Daten aus drei, vier oder sogar noch mehr Tabellen kombinieren. Die gute Nachricht: Man kann beliebig viele Tabellen in einer einzigen Abfrage joinen!
 
-Dies ist besonders bei n:m-Beziehungen wichtig, wo eine Zwischentabelle (Junction Table) die Verbindung zwischen zwei Haupttabellen herstellt. Um alle relevanten Informationen zu erhalten, müssen wir dann alle drei Tabellen zusammenführen..
+Dies ist besonders bei komplexen Geschäftsprozessen wichtig. In unserem Beschaffungsszenario müssen wir beispielsweise Bestellungen, Lieferanten, Artikel und Bestellpositionen zusammenführen, um eine vollständige Übersicht zu erhalten.
 
-Erinnern wir uns an die n:m-Beziehung aus dem [Kapitel Datenmodellierung](modellierung.md). Wenn wir wissen wollen, welche Ersatzteile eine Maschine benötigt, müssen wir drei Tabellen miteinander verbinden:
+---
+
+Stellen wir uns vor, wir möchten eine vollständige Übersicht aller Bestellpositionen mit Lieferant, Artikel und Gesamtkosten:
 
 ```sql
--- Welche Maschinen benötigen welche Ersatzteile in welcher Menge?
+-- Welche Artikel wurden von welchem Lieferanten bestellt?
 SELECT
-    m.name AS maschine,
-    e.teilname,
-    me.menge,
-    e.preis
-FROM maschinen m
-INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
-INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
-ORDER BY m.name, e.teilname;
+    l.firmenname AS lieferant,
+    b.bestelldatum,
+    a.artikelname,
+    bp.menge,
+    bp.einzelpreis,
+    (bp.menge * bp.einzelpreis) AS positionswert
+FROM bestellpositionen bp
+INNER JOIN bestellungen b ON bp.bestell_id = b.bestell_id
+INNER JOIN lieferanten l ON b.lieferant_id = l.lieferant_id
+INNER JOIN artikel a ON bp.artikel_id = a.artikel_id
+ORDER BY b.bestelldatum, l.firmenname;
 ```
 
 ```sql title="Output"
- maschine             | teilname          | menge  | preis
-----------------------|-------------------|--------|--------
- CNC-Fräse Alpha      | Kühlmittelpumpe   |     2  |  380.50
- CNC-Fräse Alpha      | Spindelmotor      |     1  | 1250.00
- Drehbank Beta        | Kühlmittelpumpe   |     1  |  380.50
- Drehbank Beta        | Spindelmotor      |     1  | 1250.00
- Schweißroboter Gamma | Kühlmittelpumpe   |     1  |  380.50
- Schweißroboter Gamma | Schweißdrahtsp.   |     5  |   45.90
+ lieferant      | bestelldatum | artikelname       | menge | einzelpreis | positionswert
+----------------+--------------+-------------------+-------+-------------+---------------
+ Stahl GmbH     | 2024-01-15   | Stahlblech 2mm    |   500 |       12.50 |       6250.00
+ Stahl GmbH     | 2024-01-15   | Schrauben M8      |  5000 |        0.15 |        750.00
+ MetalCorp      | 2024-01-20   | Aluminiumprofile  |   200 |       25.00 |       5000.00
+ Stahl GmbH     | 2024-01-22   | Stahlblech 2mm    |   300 |       12.50 |       3750.00
+ Stahl GmbH     | 2024-01-22   | Muttern M8        |  5000 |        0.08 |        400.00
+ SteelWorld Inc | 2024-01-25   | Dichtungsringe    |   800 |        1.20 |        960.00
 ```
 
 Die Datenbank führt die JOINs sequenziell aus - erst wird das erste JOIN-Paar verarbeitet, dann das Ergebnis mit der nächsten Tabelle verknüpft:
 
-1. `maschinen` mit `maschinen_ersatzteile` joinen (über `maschinen_id`)
-2. Das Zwischenergebnis wird dann mit `ersatzteile` gejoint (über `teil_id`)
+1. `bestellpositionen` mit `bestellungen` joinen (über `bestell_id`)
+2. Das Zwischenergebnis mit `lieferanten` joinen (über `lieferant_id`)
+3. Das Zwischenergebnis mit `artikel` joinen (über `artikel_id`)
 
-In diesem Beispiel nutzen wir ausschließlich `INNER JOINs`, weil wir nur die Maschinen sehen wollen, die tatsächlich Ersatzteile zugeordnet haben. Würden wir auch Maschinen ohne Ersatzteile sehen wollen, müssten wir `LEFT JOINs` verwenden.
+In diesem Beispiel nutzen wir ausschließlich `INNER JOINs`, weil wir nur vollständige Datensätze sehen wollen. Würden wir auch Bestellungen ohne Lieferanten oder Positionen ohne Artikel sehen wollen, müssten wir `LEFT JOINs` verwenden.
 
 ---
 
-Nun ist es wieder an der Zeit, das Gelernte zu üben! Die folgenden Aufgaben helfen uns, die verschiedenen JOIN-Typen zu verstehen und anzuwenden.
+Besonders mächtig wird die Kombination aus mehreren JOINs und Aggregationen. Zum Beispiel: Welcher Lieferant hat das größte Bestellvolumen?
 
-???+ info "Vorbereitung"
+```sql
+SELECT
+    l.firmenname,
+    l.land,
+    COUNT(DISTINCT b.bestell_id) AS anzahl_bestellungen,
+    SUM(bp.menge * bp.einzelpreis) AS gesamtumsatz
+FROM lieferanten l
+LEFT JOIN bestellungen b ON l.lieferant_id = b.lieferant_id
+LEFT JOIN bestellpositionen bp ON b.bestell_id = bp.bestell_id
+GROUP BY l.firmenname, l.land
+ORDER BY gesamtumsatz DESC NULLS LAST;
+```
 
-    Für die nachfolgenden Übungen verwenden wir die Tabellen aus dem [Kapitel Datenmodellierung](modellierung.md):
+```sql title="Output"
+ firmenname     | land        | anzahl_bestellungen | gesamtumsatz
+----------------+-------------+---------------------+--------------
+ Stahl GmbH     | Deutschland |                   2 |     11150.00
+ MetalCorp      | Frankreich  |                   1 |      5000.00
+ SteelWorld Inc | USA         |                   1 |       960.00
+ IronWorks AG   | Deutschland |                   0 |         NULL
+```
 
-    - `maschinen` - Tabelle mit Maschineninformationen
-    - `ersatzteile` - Tabelle mit Ersatzteilinformationen
-    - `maschinen_ersatzteile` - Zuordnungstabelle für n:m-Beziehung
+Hier verwenden wir `LEFT JOIN`, um auch Lieferanten ohne Bestellungen (wie IronWorks AG) anzuzeigen. Die Aggregation zeigt uns dann, welche Lieferanten am wichtigsten sind.
 
-    Stelle sicher, dass diese Tabellen in deiner Datenbank vorhanden sind und Testdaten enthalten.
+---
 
-???+ question "Aufgabe 1: INNER JOIN"
+## Übung ✍️
 
-    Zeige alle Ersatzteil-Zuordnungen mit Maschinennamen und Teilnamen.
+Nun wenden wir das Erlernte auf unser **TecGuy GmbH Produktionsplanungssystem** an! Wir nutzen die in den vorherigen Kapiteln erstellten Tabellen und verknüpfen sie mit JOINs, um aussagekräftige Berichte und Analysen zu erstellen.
+
+???+ info "Übungsvorbereitung"
+
+    Stelle sicher, dass du zur TecGuy GmbH Datenbank verbunden bist und folgende Tabellen existieren:
+
+    ```sql
+    -- Zur Datenbank wechseln
+    \c produktionsplanung_db
+    ```
+
+    **Benötigte Tabellen aus vorherigen Kapiteln:**
+
+    - `maschinen` (mit `maschinen_id`, `maschinenname`, `maschinentyp`, ...)
+    - `produktionsauftraege` (mit `auftrag_id`, `kunde`, `produkt`, `maschinen_id` FK, ...)
+    - `wartungsprotokolle` (mit `wartungs_id`, `wartungsdatum`, `kosten`, `maschinen_id` FK, ...)
+    - `ersatzteile` (mit `teil_id`, `teilename`, `preis`, ...)
+    - `maschinen_ersatzteile` (mit `maschinen_id` FK, `teil_id` FK, `benoetigte_anzahl`, ...)
+
+    Falls diese Tabellen noch nicht existieren, führe die Setup-Anweisungen aus den vorherigen Kapiteln aus.
+
+???+ question "Aufgabe 1: INNER JOIN - Produktionsaufträge mit Maschinen"
+
+    Erstelle eine Übersicht aller Produktionsaufträge mit dem Namen der zugeordneten Maschine.
+
+    **Anforderungen:**
+
+    - Zeige: Auftragsnummer, Kunde, Produkt, Maschinennamen, Status
+    - Sortiere nach Auftragsnummer
+    - Verwende Aliasse für bessere Lesbarkeit
 
     ??? tip "Lösung anzeigen"
 
         ```sql
         SELECT
-            m.name AS maschine,
-            e.teilname,
-            me.menge,
-            e.preis
-        FROM maschinen_ersatzteile me
-        INNER JOIN maschinen m ON me.maschinen_id = m.maschinen_id
-        INNER JOIN ersatzteile e ON me.teil_id = e.teil_id;
+            p.auftragsnummer,
+            p.kunde,
+            p.produkt,
+            m.maschinenname,
+            p.status
+        FROM produktionsauftraege p
+        INNER JOIN maschinen m ON p.maschinen_id = m.maschinen_id
+        ORDER BY p.auftragsnummer;
         ```
 
-???+ question "Aufgabe 2: LEFT JOIN"
+        ```sql title="Output"
+         auftragsnummer |     kunde     |     produkt     |   maschinenname   |    status
+        ----------------+---------------+-----------------+-------------------+---------------
+         AUF-2024-001   | BMW AG        | Getriebegehäuse | CNC-Fraese Alpha  | In Produktion
+         AUF-2024-002   | Audi AG       | Kurbelwelle     | Drehbank Beta     | Geplant
+         AUF-2024-003   | Mercedes-Benz | Pleuelstange    | CNC-Fraese Alpha  | In Produktion
+         AUF-2024-005   | BMW AG        | Kurbelwelle     | Drehbank Beta     | In Produktion
+         AUF-2024-010   | BMW AG        | Kolben          | CNC-Fraese Alpha  | In Produktion
+        ```
 
-    Zeige alle Maschinen und ihre Ersatzteile. Auch Maschinen ohne Ersatzteile sollen angezeigt werden.
+        **Erklärung:** Der INNER JOIN zeigt nur Produktionsaufträge, die einer Maschine zugeordnet sind. Aufträge ohne Maschinenzuordnung werden nicht angezeigt.
+
+???+ question "Aufgabe 2: LEFT JOIN - Alle Maschinen und ihre Aufträge"
+
+    Zeige alle Maschinen und die Anzahl ihrer zugeordneten Produktionsaufträge. Auch Maschinen ohne Aufträge sollen angezeigt werden.
+
+    **Anforderungen:**
+
+    - Zeige: Maschinenname, Maschinentyp, Anzahl Aufträge
+    - Verwende LEFT JOIN, damit auch Maschinen ohne Aufträge erscheinen
+    - Gruppiere nach Maschine
+    - Sortiere nach Anzahl Aufträge (absteigend)
 
     ??? tip "Lösung anzeigen"
 
         ```sql
         SELECT
-            m.name AS maschine,
-            e.teilname,
-            me.menge
+            m.maschinenname,
+            m.maschinentyp,
+            COUNT(p.auftrag_id) AS anzahl_auftraege
         FROM maschinen m
-        LEFT JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
-        LEFT JOIN ersatzteile e ON me.teil_id = e.teil_id;
+        LEFT JOIN produktionsauftraege p ON m.maschinen_id = p.maschinen_id
+        GROUP BY m.maschinenname, m.maschinentyp
+        ORDER BY anzahl_auftraege DESC;
         ```
 
-???+ question "Aufgabe 3: Aggregation mit JOIN"
+        ```sql title="Output"
+         maschinenname         |  maschinentyp   | anzahl_auftraege
+        -----------------------+-----------------+------------------
+         CNC-Fraese Alpha      | CNC-Fraese      |                3
+         Drehbank Beta         | Drehbank        |                2
+         Schweissroboter Gamma | Schweissroboter |                0
+         Lackieranlage Delta   | Lackieranlage   |                0
+        ```
 
-    Wie viele Maschinen benötigen jedes Ersatzteil?
+        **Erklärung:** Durch LEFT JOIN sehen wir auch Maschinen ohne Produktionsaufträge (Schweissroboter Gamma und Lackieranlage Delta). Dies ist wichtig, um unterausgelastete Maschinen zu identifizieren.
+
+???+ question "Aufgabe 3: INNER JOIN - Wartungsprotokolle mit Maschinen"
+
+    Erstelle einen Wartungsbericht: Zeige alle Wartungen mit Maschinenname, sortiert nach Kosten (höchste zuerst).
+
+    **Anforderungen:**
+
+    - Zeige: Maschinenname, Wartungsdatum, Beschreibung, Techniker, Kosten
+    - Nur Wartungen, die tatsächlich einer Maschine zugeordnet sind
+    - Sortiere nach Kosten absteigend
+    - Filtere nur Wartungen mit Kosten > 200 EUR
 
     ??? tip "Lösung anzeigen"
 
         ```sql
         SELECT
-            e.teilname,
-            COUNT(me.maschinen_id) AS anzahl_maschinen
-        FROM ersatzteile e
-        LEFT JOIN maschinen_ersatzteile me ON e.teil_id = me.teil_id
-        GROUP BY e.teilname
-        ORDER BY anzahl_maschinen DESC;
+            m.maschinenname,
+            w.wartungsdatum,
+            w.beschreibung,
+            w.techniker,
+            w.kosten
+        FROM wartungsprotokolle w
+        INNER JOIN maschinen m ON w.maschinen_id = m.maschinen_id
+        WHERE w.kosten > 200
+        ORDER BY w.kosten DESC;
         ```
 
-???+ question "Aufgabe 4: Durchschnittskosten pro Maschine"
+        ```sql title="Output"
+         maschinenname    | wartungsdatum |       beschreibung        |  techniker   | kosten
+        ------------------+---------------+---------------------------+--------------+--------
+         CNC-Fraese Alpha | 2024-02-10    | Reparatur Spindelmotor    | L. Weber     | 850.00
+         CNC-Fraese Alpha | 2024-01-15    | Routinewartung-Oelwechsel | M. Schneider | 250.00
+        ```
 
-    Berechne die durchschnittlichen Ersatzteilkosten für jede Maschine (gewichtet mit Menge).
+        **Erklärung:** Der INNER JOIN kombiniert Wartungsprotokolle mit Maschinennamen. Die WHERE-Klausel filtert dann auf Kosten > 200 EUR.
+
+???+ question "Aufgabe 4: Mehrere Tabellen - Ersatzteile für Maschinen (n:m)"
+
+    Zeige, welche Maschinen welche Ersatzteile benötigen. Berechne außerdem die Gesamtkosten pro Maschine.
+
+    **Anforderungen:**
+
+    - Verknüpfe 3 Tabellen: `maschinen`, `maschinen_ersatzteile`, `ersatzteile`
+    - Zeige: Maschinenname, Teilename, benötigte Anzahl, Einzelpreis, Gesamtpreis (Anzahl * Preis)
+    - Sortiere nach Maschine und Teilename
 
     ??? tip "Lösung anzeigen"
 
         ```sql
         SELECT
-            m.name AS maschine,
-            AVG(e.preis * me.menge) AS durchschnitt_kosten,
-            SUM(e.preis * me.menge) AS gesamt_kosten
+            m.maschinenname,
+            e.teilename,
+            me.benoetigte_anzahl,
+            e.preis,
+            (me.benoetigte_anzahl * e.preis) AS gesamtpreis
         FROM maschinen m
         INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
         INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
-        GROUP BY m.name
-        ORDER BY gesamt_kosten DESC;
+        ORDER BY m.maschinenname, e.teilename;
         ```
+
+        ```sql title="Output"
+         maschinenname    |        teilename        | benoetigte_anzahl |  preis  | gesamtpreis
+        ------------------+-------------------------+-------------------+---------+-------------
+         CNC-Fraese Alpha | Kuehlmittelpumpe        |                 2 |  320.50 |      641.00
+         CNC-Fraese Alpha | Linearfuehrung 500mm    |                 4 |  680.00 |     2720.00
+         CNC-Fraese Alpha | Spindelmotor 5kW        |                 1 | 1850.00 |     1850.00
+         CNC-Fraese Alpha | Werkzeughalter ISO40    |                 6 |  145.00 |      870.00
+         Drehbank Beta    | Drehfutter 250mm        |                 1 |  890.00 |      890.00
+         Drehbank Beta    | Kuehlmittelpumpe        |                 1 |  320.50 |      320.50
+        ```
+
+        **Erklärung:** Durch das Verbinden von drei Tabellen können wir die n:m-Beziehung zwischen Maschinen und Ersatzteilen auflösen und alle Informationen zusammenführen.
+
+???+ question "Aufgabe 5: Aggregation - Wartungskosten pro Maschine"
+
+    Berechne die Gesamtwartungskosten für jede Maschine.
+
+    **Anforderungen:**
+
+    - Zeige: Maschinenname, Anzahl Wartungen, Summe der Wartungskosten, Durchschnittskosten pro Wartung
+    - Verwende LEFT JOIN, um auch Maschinen ohne Wartungen zu zeigen
+    - Gruppiere nach Maschine
+    - Sortiere nach Gesamtkosten absteigend
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        SELECT
+            m.maschinenname,
+            COUNT(w.wartungs_id) AS anzahl_wartungen,
+            COALESCE(SUM(w.kosten), 0) AS gesamtkosten,
+            COALESCE(AVG(w.kosten), 0) AS durchschnitt_kosten
+        FROM maschinen m
+        LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
+        GROUP BY m.maschinenname
+        ORDER BY gesamtkosten DESC;
+        ```
+
+        ```sql title="Output"
+         maschinenname         | anzahl_wartungen | gesamtkosten | durchschnitt_kosten
+        -----------------------+------------------+--------------+---------------------
+         CNC-Fraese Alpha      |                2 |      1100.00 |              550.00
+         Drehbank Beta         |                2 |       300.00 |              150.00
+         Schweissroboter Gamma |                0 |         0.00 |                0.00
+         Lackieranlage Delta   |                0 |         0.00 |                0.00
+        ```
+
+        **Erklärung:** LEFT JOIN zeigt alle Maschinen, auch solche ohne Wartungen. `COALESCE` wandelt NULL-Werte in 0 um für bessere Lesbarkeit.
+
+???+ question "Aufgabe 6: Komplexe Abfrage - Produktionsübersicht"
+
+    Erstelle eine umfassende Übersicht pro Maschine: Anzahl Aufträge, Anzahl Wartungen und Gesamtwartungskosten.
+
+    **Anforderungen:**
+
+    - Zeige: Maschinenname, Anzahl Produktionsaufträge, Anzahl Wartungen, Gesamtwartungskosten
+    - Verwende LEFT JOINs für beide Verknüpfungen
+    - Gruppiere nach Maschine
+    - Sortiere nach Maschinenname
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        SELECT
+            m.maschinenname,
+            COUNT(DISTINCT p.auftrag_id) AS anzahl_auftraege,
+            COUNT(DISTINCT w.wartungs_id) AS anzahl_wartungen,
+            COALESCE(SUM(w.kosten), 0) AS gesamtwartungskosten
+        FROM maschinen m
+        LEFT JOIN produktionsauftraege p ON m.maschinen_id = p.maschinen_id
+        LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
+        GROUP BY m.maschinenname
+        ORDER BY m.maschinenname;
+        ```
+
+        ```sql title="Output"
+         maschinenname         | anzahl_auftraege | anzahl_wartungen | gesamtwartungskosten
+        -----------------------+------------------+------------------+----------------------
+         CNC-Fraese Alpha      |                3 |                2 |              1100.00
+         Drehbank Beta         |                2 |                2 |               300.00
+         Lackieranlage Delta   |                0 |                0 |                 0.00
+         Schweissroboter Gamma |                0 |                0 |                 0.00
+        ```
+
+        **Erklärung:** Diese komplexe Abfrage kombiniert zwei LEFT JOINs und mehrere Aggregationen. `COUNT(DISTINCT ...)` verhindert Doppelzählungen, die bei mehreren JOINs auftreten können.
 
 ---
 

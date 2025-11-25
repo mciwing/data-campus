@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_abfragen.png" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Daten abfragen mit SQL
 
 Im vorherigen Kapitel haben wir gelernt, wie man Tabellen erstellt, Daten einfügt und Daten auch einfach ausliest. Jetzt gehen wir einen Schritt weiter: Wir lernen, wie man **gezielt nach Daten sucht, sie filtert, sortiert und analysiert** - das Herzstück jeder Datenbank!

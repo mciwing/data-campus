@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_ausblick.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Ausblick & Weiterführende Themen
 
 <div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
@@ -22,6 +26,82 @@ Doch die Welt der Datenbanken ist **viel größer** als das, was wir bisher gese
 
 ---
 
+???+ info "Datenbank-Setup"
+
+    Für die folgenden Beispiele erstellen wir eine **E-Commerce/Online-Shop-Datenbank**. In dieser Datenbank werden Produkte, Bestellungen und Lagerbestände verwaltet.
+
+    **Datenbank erstellen und verbinden:**
+
+    ```sql
+    CREATE DATABASE shop_db;
+    \c shop_db
+    ```
+
+    **Tabellen erstellen:**
+
+    ```sql
+    -- Tabelle: Produkte
+    CREATE TABLE produkte (
+        produkt_id SERIAL PRIMARY KEY,
+        produktname VARCHAR(200) NOT NULL,
+        kategorie VARCHAR(100),
+        preis NUMERIC(10, 2) NOT NULL CHECK (preis >= 0),
+        lagerbestand INTEGER NOT NULL DEFAULT 0 CHECK (lagerbestand >= 0),
+        aktiv BOOLEAN DEFAULT TRUE,
+        erstellt_am TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        letzte_aenderung TIMESTAMP
+    );
+
+    -- Tabelle: Bestellungen
+    CREATE TABLE bestellungen (
+        bestell_id SERIAL PRIMARY KEY,
+        kunde VARCHAR(200) NOT NULL,
+        bestelldatum TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(50) DEFAULT 'offen',
+        gesamtbetrag NUMERIC(12, 2)
+    );
+
+    -- Tabelle: Bestellpositionen
+    CREATE TABLE bestellpositionen (
+        position_id SERIAL PRIMARY KEY,
+        bestell_id INTEGER REFERENCES bestellungen(bestell_id) ON DELETE CASCADE,
+        produkt_id INTEGER REFERENCES produkte(produkt_id),
+        menge INTEGER NOT NULL CHECK (menge > 0),
+        einzelpreis NUMERIC(10, 2) NOT NULL
+    );
+    ```
+
+    **Testdaten einfügen:**
+
+    ```sql
+    -- Produkte einfügen
+    INSERT INTO produkte (produktname, kategorie, preis, lagerbestand) VALUES
+    ('Laptop ThinkPad X1', 'Elektronik', 1299.99, 15),
+    ('Wireless Mouse MX3', 'Zubehör', 79.99, 50),
+    ('USB-C Hub 7-Port', 'Zubehör', 49.99, 30),
+    ('Monitor 27" 4K', 'Elektronik', 449.99, 8),
+    ('Mechanische Tastatur', 'Zubehör', 129.99, 20),
+    ('Webcam HD Pro', 'Elektronik', 89.99, 0),
+    ('Laptop-Tasche Premium', 'Zubehör', 59.99, 25);
+
+    -- Bestellungen einfügen
+    INSERT INTO bestellungen (kunde, status, gesamtbetrag) VALUES
+    ('Anna Schmidt', 'abgeschlossen', 1429.98),
+    ('Thomas Weber', 'in_bearbeitung', 179.98),
+    ('Lisa Müller', 'offen', 449.99);
+
+    -- Bestellpositionen einfügen
+    INSERT INTO bestellpositionen (bestell_id, produkt_id, menge, einzelpreis) VALUES
+    (1, 1, 1, 1299.99),  -- Anna: Laptop
+    (1, 2, 1, 79.99),     -- Anna: Mouse
+    (1, 3, 1, 49.99),     -- Anna: Hub
+    (2, 2, 1, 79.99),     -- Thomas: Mouse
+    (2, 5, 1, 129.99),    -- Thomas: Tastatur
+    (3, 4, 1, 449.99);    -- Lisa: Monitor
+    ```
+
+---
+
 ## Views (Sichten)
 
 Eine **View** ist eine **virtuelle Tabelle**, die auf einer oder mehreren echten Tabellen basiert. Views speichern keine eigenen Daten, sondern definieren eine **gespeicherte Abfrage**, die bei jedem Aufruf ausgeführt wird. Allgemein lautet der Syntax
@@ -33,36 +113,73 @@ FROM tabelle
 WHERE bedingung;
 ```
 
-Betrachten wir das ganze anhand eines Beispiels. 
+Betrachten wir das ganze anhand eines Beispiels.
 
-???+ example "Beispiel: View für betriebsbereite Maschinen"
+???+ example "Beispiel: View für verfügbare Produkte"
 
-    Wir erstellen eine View, die nur **betriebsbereite Maschinen** zeigt:
+    Wir erstellen eine View, die nur **verfügbare Produkte** zeigt (auf Lager und aktiv):
 
     ```sql
-    CREATE VIEW betriebsbereite_maschinen AS
-    SELECT m.maschinen_id, m.name, m.typ, m.standort
-    FROM maschinen m
-    WHERE m.status = 'Aktiv'
-      AND m.maschinen_id NOT IN (
-        SELECT maschinen_id
-        FROM wartungsauftraege
-        WHERE status = 'in_arbeit'
-    );
+    CREATE VIEW verfuegbare_produkte AS
+    SELECT
+        produkt_id,
+        produktname,
+        kategorie,
+        preis,
+        lagerbestand
+    FROM produkte
+    WHERE aktiv = TRUE
+      AND lagerbestand > 0
+    ORDER BY produktname;
     ```
 
-    Anschließend können wir den View verwenden:
+    Anschließend können wir die View verwenden:
 
     ```sql
     -- View verwenden wie eine normale Tabelle
-    SELECT * FROM betriebsbereite_maschinen;
+    SELECT * FROM verfuegbare_produkte;
     ```
 
     ```title="Output"
-     maschinen_id |      name      |     typ     |    standort
-    --------------+----------------+-------------+-----------------
-                1 | CNC-Fräse Alpha| CNC-Fräse   | Halle A
-                3 | Drehbank Delta | Drehbank    | Halle B
+     produkt_id |       produktname        | kategorie  |  preis  | lagerbestand
+    ------------+--------------------------+------------+---------+--------------
+              1 | Laptop ThinkPad X1       | Elektronik | 1299.99 |           15
+              7 | Laptop-Tasche Premium    | Zubehör    |   59.99 |           25
+              5 | Mechanische Tastatur     | Zubehör    |  129.99 |           20
+              4 | Monitor 27" 4K           | Elektronik |  449.99 |            8
+              3 | USB-C Hub 7-Port         | Zubehör    |   49.99 |           30
+              2 | Wireless Mouse MX3       | Zubehör    |   79.99 |           50
+    ```
+
+???+ example "Beispiel: View für Bestellübersicht"
+
+    Eine komplexere View kann mehrere Tabellen kombinieren:
+
+    ```sql
+    CREATE VIEW bestelluebersicht AS
+    SELECT
+        b.bestell_id,
+        b.kunde,
+        b.bestelldatum,
+        b.status,
+        COUNT(bp.position_id) AS anzahl_artikel,
+        SUM(bp.menge * bp.einzelpreis) AS gesamtbetrag
+    FROM bestellungen b
+    LEFT JOIN bestellpositionen bp ON b.bestell_id = bp.bestell_id
+    GROUP BY b.bestell_id, b.kunde, b.bestelldatum, b.status
+    ORDER BY b.bestelldatum DESC;
+    ```
+
+    ```sql
+    SELECT * FROM bestelluebersicht;
+    ```
+
+    ```title="Output"
+     bestell_id |     kunde      |     bestelldatum     |     status      | anzahl_artikel | gesamtbetrag
+    ------------+----------------+----------------------+-----------------+----------------+--------------
+              3 | Lisa Müller    | 2025-11-25 14:30:00  | offen           |              1 |       449.99
+              2 | Thomas Weber   | 2025-11-25 10:15:00  | in_bearbeitung  |              2 |       209.98
+              1 | Anna Schmidt   | 2025-11-24 09:20:00  | abgeschlossen   |              3 |      1429.97
     ```
 
 
@@ -100,10 +217,11 @@ Views haben wir nahezu alles im Leben Vor- und Nachteile.  Diese wind nachfolgen
 
 ???+ tip "View löschen"
 
-    Views können natürlich auch wieder gelöscht werden mit folgendem Syntax: 
+    Views können natürlich auch wieder gelöscht werden mit folgendem Syntax:
 
     ```sql
-    DROP VIEW IF EXISTS betriebsbereite_maschinen;
+    DROP VIEW IF EXISTS verfuegbare_produkte;
+    DROP VIEW IF EXISTS bestelluebersicht;
     ```
 
 ---
@@ -145,17 +263,18 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
 </table>
 </div>
 
-???+ example "Beispiel: Function für Maschinenstatus"
+???+ example "Beispiel: Function für Produktverfügbarkeit"
 
     ```sql
-    CREATE OR REPLACE FUNCTION ist_betriebsbereit(p_maschinen_id INTEGER)
+    CREATE OR REPLACE FUNCTION ist_verfuegbar(p_produkt_id INTEGER, p_menge INTEGER)
     RETURNS BOOLEAN AS $$
     BEGIN
-        RETURN NOT EXISTS (
+        RETURN EXISTS (
             SELECT 1
-            FROM wartungsauftraege
-            WHERE maschinen_id = p_maschinen_id
-              AND status = 'in_arbeit'
+            FROM produkte
+            WHERE produkt_id = p_produkt_id
+              AND aktiv = TRUE
+              AND lagerbestand >= p_menge
         );
     END;
     $$ LANGUAGE plpgsql;
@@ -164,31 +283,54 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
     **Verwendung:**
 
     ```sql
-    SELECT name, ist_betriebsbereit(maschinen_id) AS betriebsbereit
-    FROM maschinen;
+    -- Prüfen, ob 10 Stück Laptop verfügbar sind
+    SELECT produktname, ist_verfuegbar(produkt_id, 10) AS verfuegbar
+    FROM produkte;
     ```
 
     ```title="Output"
-          name       | betriebsbereit
-    -----------------+----------------
-     CNC-Fräse Alpha | t
-     Drehbank Beta   | f
-     Schweißer Gamma | t
+           produktname        | verfuegbar
+    --------------------------+------------
+     Laptop ThinkPad X1       | t
+     Wireless Mouse MX3       | t
+     USB-C Hub 7-Port         | t
+     Monitor 27" 4K           | f
+     Mechanische Tastatur     | t
+     Webcam HD Pro            | f
+     Laptop-Tasche Premium    | t
     ```
 
-???+ example "Beispiel: Procedure für Wartungsprotokoll"
+???+ example "Beispiel: Procedure für Bestellung erstellen"
 
     ```sql
-    CREATE OR REPLACE PROCEDURE erstelle_wartungsprotokoll(
-        p_maschinen_id INTEGER,
-        p_beschreibung TEXT
+    CREATE OR REPLACE PROCEDURE erstelle_bestellung(
+        p_kunde VARCHAR,
+        p_produkt_id INTEGER,
+        p_menge INTEGER
     )
     LANGUAGE plpgsql AS $$
+    DECLARE
+        v_bestell_id INTEGER;
+        v_preis NUMERIC;
     BEGIN
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung)
-        VALUES (p_maschinen_id, CURRENT_DATE, p_beschreibung);
+        -- Preis holen
+        SELECT preis INTO v_preis FROM produkte WHERE produkt_id = p_produkt_id;
 
-        RAISE NOTICE 'Wartungsprotokoll für Maschine % erstellt', p_maschinen_id;
+        -- Bestellung erstellen
+        INSERT INTO bestellungen (kunde, status, gesamtbetrag)
+        VALUES (p_kunde, 'offen', v_preis * p_menge)
+        RETURNING bestell_id INTO v_bestell_id;
+
+        -- Bestellposition erstellen
+        INSERT INTO bestellpositionen (bestell_id, produkt_id, menge, einzelpreis)
+        VALUES (v_bestell_id, p_produkt_id, p_menge, v_preis);
+
+        -- Lagerbestand reduzieren
+        UPDATE produkte
+        SET lagerbestand = lagerbestand - p_menge
+        WHERE produkt_id = p_produkt_id;
+
+        RAISE NOTICE 'Bestellung % für Kunde % erstellt', v_bestell_id, p_kunde;
     END;
     $$;
     ```
@@ -196,7 +338,11 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
     **Verwendung:**
 
     ```sql
-    CALL erstelle_wartungsprotokoll(1, 'Routinewartung durchgeführt');
+    CALL erstelle_bestellung('Max Mustermann', 1, 2);
+    ```
+
+    ```title="Output"
+    NOTICE:  Bestellung 4 für Kunde Max Mustermann erstellt
     ```
 
 ---
@@ -215,10 +361,6 @@ Typeische **Anwendungsfälle** sind:
 ???+ example "Beispiel: Automatische Zeitstempel-Aktualisierung"
 
     ```sql
-    -- Spalte hinzufügen
-    ALTER TABLE maschinen
-    ADD COLUMN letzte_aenderung TIMESTAMP;
-
     -- Trigger-Function erstellen
     CREATE OR REPLACE FUNCTION update_timestamp()
     RETURNS TRIGGER AS $$
@@ -229,20 +371,85 @@ Typeische **Anwendungsfälle** sind:
     $$ LANGUAGE plpgsql;
 
     -- Trigger erstellen
-    CREATE TRIGGER maschine_update_timestamp
-    BEFORE UPDATE ON maschinen
+    CREATE TRIGGER produkt_update_timestamp
+    BEFORE UPDATE ON produkte
     FOR EACH ROW
     EXECUTE FUNCTION update_timestamp();
     ```
 
-    **Wirkung:** Jedes Mal, wenn eine Maschine geändert wird, wird automatisch `letzte_aenderung` aktualisiert.
+    **Wirkung:** Jedes Mal, wenn ein Produkt geändert wird, wird automatisch `letzte_aenderung` aktualisiert.
 
     ```sql
-    -- Maschine aktualisieren
-    UPDATE maschinen SET status = 'Wartung' WHERE maschinen_id = 1;
+    -- Produkt aktualisieren
+    UPDATE produkte SET preis = 1199.99 WHERE produkt_id = 1;
 
     -- Zeitstempel wurde automatisch gesetzt
-    SELECT name, status, letzte_aenderung FROM maschinen WHERE maschinen_id = 1;
+    SELECT produktname, preis, letzte_aenderung FROM produkte WHERE produkt_id = 1;
+    ```
+
+    ```title="Output"
+       produktname      |  preis  |    letzte_aenderung
+    --------------------+---------+------------------------
+     Laptop ThinkPad X1 | 1199.99 | 2025-11-25 15:42:33.15
+    ```
+
+???+ example "Beispiel: Automatische Lagerbestandsaktualisierung"
+
+    Ein praktischeres Beispiel: Lagerbestand automatisch reduzieren, wenn eine Bestellposition erstellt wird.
+
+    ```sql
+    -- Trigger-Function erstellen
+    CREATE OR REPLACE FUNCTION reduziere_lagerbestand()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        UPDATE produkte
+        SET lagerbestand = lagerbestand - NEW.menge
+        WHERE produkt_id = NEW.produkt_id;
+
+        -- Warnung, wenn Lagerbestand niedrig wird
+        IF (SELECT lagerbestand FROM produkte WHERE produkt_id = NEW.produkt_id) < 5 THEN
+            RAISE NOTICE 'Warnung: Niedriger Lagerbestand für Produkt %', NEW.produkt_id;
+        END IF;
+
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    -- Trigger erstellen
+    CREATE TRIGGER nach_bestellposition_einfuegen
+    AFTER INSERT ON bestellpositionen
+    FOR EACH ROW
+    EXECUTE FUNCTION reduziere_lagerbestand();
+    ```
+
+    **Wirkung:** Bei jeder neuen Bestellposition wird automatisch der Lagerbestand reduziert.
+
+    ```sql
+    -- Vor der Bestellung
+    SELECT produktname, lagerbestand FROM produkte WHERE produkt_id = 4;
+    ```
+
+    ```title="Output"
+       produktname    | lagerbestand
+    ------------------+--------------
+     Monitor 27" 4K   |            8
+    ```
+
+    ```sql
+    -- Neue Bestellung erstellen
+    INSERT INTO bestellungen (kunde, status) VALUES ('Peter Klein', 'offen');
+    INSERT INTO bestellpositionen (bestell_id, produkt_id, menge, einzelpreis)
+    VALUES (4, 4, 3, 449.99);
+
+    -- Nach der Bestellung
+    SELECT produktname, lagerbestand FROM produkte WHERE produkt_id = 4;
+    ```
+
+    ```title="Output"
+       produktname    | lagerbestand
+    ------------------+--------------
+     Monitor 27" 4K   |            5
+    NOTICE:  Warnung: Niedriger Lagerbestand für Produkt 4
     ```
 
 Typische Befehle im Zusammen hang mit Trigger sind:
@@ -313,49 +520,66 @@ PostgreSQL bietet **native Unterstützung für JSON-Daten**, was flexible, semi-
 </table>
 </div>
 
-???+ example "Beispiel: Maschinen mit flexiblen Metadaten"
+???+ example "Beispiel: Produkte mit flexiblen Attributen"
 
     ```sql
-    CREATE TABLE maschinen_extended (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(200) NOT NULL,
-        typ VARCHAR(100) NOT NULL,
-        metadaten JSONB  -- Flexible zusätzliche Daten
+    CREATE TABLE produkte_extended (
+        produkt_id SERIAL PRIMARY KEY,
+        produktname VARCHAR(200) NOT NULL,
+        kategorie VARCHAR(100),
+        preis NUMERIC(10, 2) NOT NULL,
+        attribute JSONB  -- Flexible zusätzliche Produkteigenschaften
     );
 
-    INSERT INTO maschinen_extended (name, typ, metadaten) VALUES
-    ('CNC-Fräse Alpha', 'CNC-Fräse',
-     '{"leistung_kw": 15.5, "hersteller": "DMG MORI", "gewicht_kg": 3200, "tags": ["Präzision", "5-Achsen"]}'::jsonb),
-    ('Drehbank Beta', 'Drehbank',
-     '{"leistung_kw": 8.0, "hersteller": "EMAG", "gewicht_kg": 2100, "tags": ["Hochpräzision"]}'::jsonb);
+    INSERT INTO produkte_extended (produktname, kategorie, preis, attribute) VALUES
+    ('Laptop ThinkPad X1', 'Elektronik', 1299.99,
+     '{"bildschirm": "14 Zoll", "prozessor": "Intel i7", "ram_gb": 16, "ssd_gb": 512, "farben": ["Schwarz", "Silber"]}'::jsonb),
+    ('Wireless Mouse MX3', 'Zubehör', 79.99,
+     '{"dpi": 4000, "kabellos": true, "batterielaufzeit_tage": 70, "farben": ["Schwarz", "Weiß", "Grau"]}'::jsonb),
+    ('Monitor 27" 4K', 'Elektronik', 449.99,
+     '{"aufloesung": "3840x2160", "bildwiederholrate_hz": 60, "panel_typ": "IPS", "hdr": true}'::jsonb);
     ```
 
     **JSON-Abfragen:**
 
     ```sql
     -- Zugriff auf JSON-Felder
-    SELECT name, metadaten->>'hersteller' AS hersteller
-    FROM maschinen_extended;
+    SELECT produktname, attribute->>'bildschirm' AS bildschirm, attribute->>'prozessor' AS prozessor
+    FROM produkte_extended
+    WHERE attribute ? 'bildschirm';  -- Nur Produkte mit Bildschirm-Attribut
     ```
 
     ```title="Output"
-          name       | hersteller
-    -----------------+------------
-     CNC-Fräse Alpha | DMG MORI
-     Drehbank Beta   | EMAG
+       produktname      | bildschirm | prozessor
+    --------------------+------------+-----------
+     Laptop ThinkPad X1 | 14 Zoll    | Intel i7
     ```
 
     ```sql
     -- Nach JSON-Werten filtern
-    SELECT name, metadaten->>'leistung_kw' AS leistung
-    FROM maschinen_extended
-    WHERE (metadaten->>'leistung_kw')::numeric > 10;
+    SELECT produktname, attribute->>'ram_gb' AS ram
+    FROM produkte_extended
+    WHERE (attribute->>'ram_gb')::integer >= 16;
     ```
 
     ```title="Output"
-          name       | leistung
-    -----------------+----------
-     CNC-Fräse Alpha | 15.5
+       produktname      | ram
+    --------------------+-----
+     Laptop ThinkPad X1 | 16
+    ```
+
+    ```sql
+    -- JSON-Array durchsuchen
+    SELECT produktname, attribute->'farben' AS verfuegbare_farben
+    FROM produkte_extended
+    WHERE attribute->'farben' ? 'Schwarz';  -- Produkte in Schwarz
+    ```
+
+    ```title="Output"
+       produktname      | verfuegbare_farben
+    --------------------+---------------------
+     Laptop ThinkPad X1 | ["Schwarz", "Silber"]
+     Wireless Mouse MX3 | ["Schwarz", "Weiß", "Grau"]
     ```
 
 ???+ tip "Wann JSON verwenden?"
@@ -417,25 +641,31 @@ Typische PostgreSQL Backup-Methoden sind:
     **Gesamte Datenbank sichern:**
 
     ```bash
-    pg_dump produktionsdb > produktionsdb_backup.sql
+    pg_dump shop_db > shop_db_backup.sql
     ```
 
     **Nur Struktur (ohne Daten):**
 
     ```bash
-    pg_dump --schema-only produktionsdb > struktur.sql
+    pg_dump --schema-only shop_db > struktur.sql
     ```
 
     **Nur Daten (ohne Struktur):**
 
     ```bash
-    pg_dump --data-only produktionsdb > daten.sql
+    pg_dump --data-only shop_db > daten.sql
+    ```
+
+    **Bestimmte Tabelle sichern:**
+
+    ```bash
+    pg_dump -t produkte shop_db > produkte_backup.sql
     ```
 
     **Wiederherstellen:**
 
     ```bash
-    psql produktionsdb < produktionsdb_backup.sql
+    psql shop_db < shop_db_backup.sql
     ```
 
 ---

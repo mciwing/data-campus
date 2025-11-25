@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_manipulieren.png" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Daten manipulieren
 
 In den vorangigen Kapiteln haben wir gelernt, wie man eine Datenbank erstellt, Daten **einfügt** und **abfragt**. 
@@ -649,6 +653,354 @@ Wie auch bei `UPDATE` zuvor ist es extrem wichtig, dass wir `DELETE` in Kombinat
         LINE 1: SELECT * FROM artikel;
                             ^
         ```
+
+---
+
+## Exkurs: `ALTER` - Tabellen nachträglich ändern
+
+Bisher haben wir gelernt, wie man Daten manipuliert (**INSERT**, **UPDATE**, **DELETE**). Doch was passiert, wenn sich die **Anforderungen ändern** und wir die Tabellenstruktur selbst anpassen müssen?
+
+Stell dir vor:
+
+- Du möchtest eine **neue Spalte** hinzufügen (z.B. "email" für Kunden)
+- Du musst eine **Spalte umbenennen** (z.B. "name" → "kundenname")
+- Du willst eine **Spalte löschen** (z.B. nicht mehr benötigte Daten)
+- Du musst den **Datentyp ändern** (z.B. VARCHAR(50) → VARCHAR(100))
+
+Für all diese Änderungen verwenden wir den `ALTER TABLE` Befehl.
+
+???+ danger "Wichtiger Hinweis"
+    `ALTER TABLE` ändert die Tabellenstruktur **dauerhaft**! Bei Produktivdatenbanken solltest du vorher **Backups** anlegen und Änderungen zunächst in einer Testumgebung testen.
+
+---
+
+### Spalten bearbeiten
+
+Mit `ALTER TABLE` können wir nachträglich Spalten zu einer bestehenden Tabelle hinzufügen, löschen oder umbenennen. Der Syntax ist wie folgt:
+
+```sql { .yaml .no-copy }
+ALTER TABLE tabellenname
+ADD | RENAME | DROP COLUMN spaltenname [datentyp | constraints];
+```
+
+Die Anweisung startet mit `ALTER TABLE` und dem Tabellennamen. Es folgt die Aktion (`ADD`, `RENAME`, `DROP`) inklusive `COLUMN` und der Spaltenname. Bei bedarf können auch noch der Datentyp und die Constraints angegeben werden.
+
+???+ example "Beispiel: Neue Spalte hinzufügen"
+
+    Wir möchten zu unseren Artikeln eine **Email-Adresse des Lieferanten** hinzufügen. Da wir die gesamte Tabelle zuvor bereits gelöscht haben, müssen wir diese erneut erstellen (siehe Datenbank-Setup am Anfang des Kapitels).
+
+    ```sql
+    -- Neue Spalte für Lieferanten-Email hinzufügen
+    ALTER TABLE artikel
+    ADD COLUMN lieferant_email VARCHAR(100);
+    ```
+
+    ```title="Output"
+    ALTER TABLE
+    ```
+
+    Wir können die Tabellenstruktur mit folgendem psql Befehl überprüfen:
+
+    ```sql
+    \d artikel
+    ```
+
+    Die neue Spalte `lieferant_email` ist jetzt sichtbar. **Alle bestehenden Zeilen** haben für diese Spalte den Wert `NULL`.
+
+    **Mit Constraints und DEFAULT:**
+
+    ```sql
+    -- Spalte mit DEFAULT-Wert hinzufügen
+    ALTER TABLE artikel
+    ADD COLUMN gepruefte_qualitaet BOOLEAN DEFAULT FALSE;
+
+    -- Spalte mit NOT NULL und DEFAULT hinzufügen
+    ALTER TABLE artikel
+    ADD COLUMN hersteller VARCHAR(100) NOT NULL DEFAULT 'Unbekannt';
+    ```
+
+    ??? code "weitere Beispiele"
+    
+        ??? example "Beispiel: Spalte umbenennen"
+
+            Der Name "artikelname" ist zu generisch. Wir möchten ihn in "produktbezeichnung" umbenennen:
+
+            ```sql
+            -- Spaltenname ändern
+            ALTER TABLE artikel
+            RENAME COLUMN artikelname TO produktbezeichnung;
+            ```
+
+            ```title="Output"
+            ALTER TABLE
+            ```
+
+            **Wichtig:** Alle Abfragen, die den alten Spaltennamen verwenden, funktionieren danach nicht mehr!
+
+            ```sql
+            -- Funktioniert nicht mehr:
+            SELECT artikelname FROM artikel;  -- ❌ FEHLER
+
+            -- Funktioniert:
+            SELECT produktbezeichnung FROM artikel;  -- ✅
+            ```
+
+        ??? example "Beispiel: Spalte löschen"
+
+            Die Spalte `lieferant_email` wird doch nicht benötigt:
+
+            ```sql
+            -- Spalte löschen
+            ALTER TABLE artikel
+            DROP COLUMN lieferant_email;
+            ```
+
+            ```title="Output"
+            ALTER TABLE
+            ```
+
+            **Achtung:** Alle Daten in dieser Spalte sind **unwiederbringlich verloren**!
+
+            ???+ danger "CASCADE vs. RESTRICT"
+                Wenn andere Tabellen auf diese Spalte verweisen (z.B. durch Foreign Keys), musst du entscheiden:
+
+                ```sql
+                -- Fehler, wenn Abhängigkeiten bestehen (sicherer!)
+                ALTER TABLE artikel DROP COLUMN spalte RESTRICT;
+
+                -- Löscht auch abhängige Objekte (gefährlich!)
+                ALTER TABLE artikel DROP COLUMN spalte CASCADE;
+                ```
+
+---
+
+### Datentyp ändern
+
+Mit `ALTER TABLE ... ALTER COLUMN ... TYPE` können wir den Datentyp einer Spalte ändern.
+
+```sql { .yaml .no-copy }
+ALTER TABLE tabellenname
+ALTER COLUMN spaltenname TYPE neuer_datentyp;
+```
+
+???+ example "Beispiel: Datentyp ändern"
+
+    Die `kategorie`-Spalte ist aktuell `VARCHAR(50)`, aber wir brauchen mehr Platz:
+
+    ```sql
+    -- Datentyp von VARCHAR(50) auf VARCHAR(150) ändern
+    ALTER TABLE artikel
+    ALTER COLUMN kategorie TYPE VARCHAR(150);
+    ```
+
+    ```title="Output"
+    ALTER TABLE
+    ```
+
+---
+
+### NOT NULL hinzufügen/entfernen
+
+Mit `ALTER TABLE ... ALTER COLUMN ... SET NOT NULL` bzw. `DROP NOT NULL` können wir die NOT NULL-Einschränkung ändern.
+
+```sql { .yaml .no-copy }
+-- NOT NULL hinzufügen
+ALTER TABLE tabellenname
+ALTER COLUMN spaltenname SET NOT NULL;
+
+-- NOT NULL entfernen
+ALTER TABLE tabellenname
+ALTER COLUMN spaltenname DROP NOT NULL;
+```
+
+???+ example "Beispiel: NOT NULL hinzufügen"
+
+    Wir möchten sicherstellen, dass jeder Artikel eine Kategorie hat:
+
+    ```sql
+    -- Erst prüfen, ob NULL-Werte existieren
+    SELECT COUNT(*) FROM artikel WHERE kategorie IS NULL;
+    ```
+
+    ```title="Output"
+     count
+    -------
+         0
+    ```
+
+    Wenn keine NULL-Werte vorhanden sind, können wir NOT NULL hinzufügen:
+
+    ```sql
+    -- NOT NULL-Einschränkung hinzufügen
+    ALTER TABLE artikel
+    ALTER COLUMN kategorie SET NOT NULL;
+    ```
+
+    **Wichtig:** Wenn noch NULL-Werte in der Spalte existieren, gibt es einen Fehler!
+
+    ```sql
+    -- Zuerst NULL-Werte füllen:
+    UPDATE artikel SET kategorie = 'Allgemein' WHERE kategorie IS NULL;
+
+    -- Dann NOT NULL hinzufügen:
+    ALTER TABLE artikel ALTER COLUMN kategorie SET NOT NULL;
+    ```
+
+---
+
+### DEFAULT ändern
+
+Mit `ALTER TABLE ... ALTER COLUMN ... SET DEFAULT` bzw. `DROP DEFAULT` können wir Standardwerte ändern oder entfernen.
+
+```sql { .yaml .no-copy }
+-- DEFAULT hinzufügen/ändern
+ALTER TABLE tabellenname
+ALTER COLUMN spaltenname SET DEFAULT wert;
+
+-- DEFAULT entfernen
+ALTER TABLE tabellenname
+ALTER COLUMN spaltenname DROP DEFAULT;
+```
+
+???+ example "Beispiel: DEFAULT hinzufügen"
+
+    ```sql
+    -- DEFAULT-Wert für mindestbestand setzen
+    ALTER TABLE artikel
+    ALTER COLUMN mindestbestand SET DEFAULT 100;
+    ```
+
+    **Wichtig:** Der DEFAULT gilt **nur für neue Zeilen**! Bestehende Zeilen werden **nicht** geändert.
+
+    ```sql
+    -- Bestehende Zeilen behalten ihre Werte
+    SELECT artikel_id, mindestbestand FROM artikel LIMIT 3;
+    ```
+
+    ```title="Output"
+     artikel_id | mindestbestand
+    ------------+----------------
+              1 |           1000
+              2 |           1000
+              3 |             50
+    ```
+
+    ```sql
+    -- Neue Zeile bekommt DEFAULT-Wert
+    INSERT INTO artikel (artikel_id, produktbezeichnung, kategorie, bestand, preis, lagerort)
+    VALUES (20, 'Testprodukt', 'Test', 50, 10.00, 'Regal Z1');
+
+    SELECT artikel_id, mindestbestand FROM artikel WHERE artikel_id = 20;
+    ```
+
+    ```title="Output"
+     artikel_id | mindestbestand
+    ------------+----------------
+             20 |            100
+    ```
+
+---
+
+### Tabelle umbenennen
+
+Mit `ALTER TABLE ... RENAME TO` können wir eine gesamte Tabelle umbenennen.
+
+```sql { .yaml .no-copy }
+ALTER TABLE alter_tabellenname
+RENAME TO neuer_tabellenname;
+```
+
+???+ example "Beispiel: Tabelle umbenennen"
+
+    ```sql
+    -- Tabelle "artikel" in "lagerartikel" umbenennen
+    ALTER TABLE artikel
+    RENAME TO lagerartikel;
+    ```
+
+    ```title="Output"
+    ALTER TABLE
+    ```
+
+    Ab jetzt müssen alle Abfragen den neuen Namen verwenden:
+
+    ```sql
+    SELECT * FROM lagerartikel;  -- ✅
+    SELECT * FROM artikel;        -- ❌ FEHLER
+    ```
+
+---
+
+### Mehrere Änderungen kombinieren
+
+Mehrere ALTER-Befehle können **nicht** in einem Statement kombiniert werden. Jede Änderung benötigt ein eigenes `ALTER TABLE`.
+
+???+ example "Beispiel: Mehrere Änderungen"
+
+    ```sql
+    -- FALSCH: Funktioniert nicht!
+    ALTER TABLE artikel
+        ADD COLUMN neue_spalte VARCHAR(50),
+        DROP COLUMN alte_spalte;  -- ❌ Syntax-Fehler
+
+    -- RICHTIG: Separate Befehle
+    ALTER TABLE artikel ADD COLUMN neue_spalte VARCHAR(50);
+    ALTER TABLE artikel DROP COLUMN alte_spalte;
+    ```
+
+---
+
+### Zusammenfassung ALTER-Befehle
+
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Operation</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Befehl</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Spalte hinzufügen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ADD COLUMN c typ;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Spalte löschen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t DROP COLUMN c;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Spalte umbenennen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t RENAME COLUMN alt TO neu;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Datentyp ändern</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c TYPE typ;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">NOT NULL setzen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c SET NOT NULL;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">NOT NULL entfernen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c DROP NOT NULL;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">DEFAULT setzen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c SET DEFAULT wert;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">DEFAULT entfernen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c DROP DEFAULT;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Tabelle umbenennen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE alt RENAME TO neu;</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
 ---
 

@@ -1,6 +1,10 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_integritaet.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Datenintegrität & Constraints
 
-Stell dir vor, jemand gibt in deine Datenbank ein: `anschaffungsjahr = 1800` oder `preis = -500`. Dies wären offensichtlich unsinnige Daten! Wie können wir solche **Datenfehler verhindern**?
+Stell dir vor, jemand gibt in deine Datenbank ein: `pruefergebnis = 150` (bei einer Skala von 0-100) oder `temperatur = -500`. Dies wären offensichtlich unsinnige Daten! Wie können wir solche **Datenfehler verhindern**?
 
 Die Antwort: **Constraints** (Integritätsbedingungen)!
 
@@ -83,9 +87,69 @@ Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert w
 
 ---
 
+???+ info "Datenbank-Setup"
+
+    Für die folgenden Beispiele erstellen wir eine **Qualitätskontroll-Datenbank**. In dieser Datenbank werden Produkte und ihre Prüfungen verwaltet.
+
+    **Datenbank erstellen und verbinden:**
+
+    ```sql
+    CREATE DATABASE qualitaetskontrolle_db;
+    \c qualitaetskontrolle_db
+    ```
+
+    **Tabellen erstellen:**
+
+    ```sql
+    -- Tabelle: Produkte
+    CREATE TABLE produkte (
+        produkt_id SERIAL PRIMARY KEY,
+        produktname VARCHAR(100) NOT NULL,
+        produktcode VARCHAR(20) UNIQUE NOT NULL,
+        kategorie VARCHAR(50) NOT NULL,
+        mindestqualitaet INTEGER CHECK (mindestqualitaet >= 0 AND mindestqualitaet <= 100)
+    );
+
+    -- Tabelle: Prüfungen
+    CREATE TABLE pruefungen (
+        pruefung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER NOT NULL,
+        pruefdatum DATE NOT NULL,
+        pruefergebnis INTEGER CHECK (pruefergebnis >= 0 AND pruefergebnis <= 100),
+        status VARCHAR(20) DEFAULT 'ausstehend',
+        temperatur NUMERIC(4,1) CHECK (temperatur >= -20 AND temperatur <= 50),
+        luftfeuchtigkeit INTEGER CHECK (luftfeuchtigkeit >= 0 AND luftfeuchtigkeit <= 100),
+        pruefername VARCHAR(100),
+        FOREIGN KEY (produkt_id) REFERENCES produkte(produkt_id) ON DELETE CASCADE
+    );
+    ```
+
+    **Testdaten einfügen:**
+
+    ```sql
+    -- Produkte einfügen
+    INSERT INTO produkte (produktname, produktcode, kategorie, mindestqualitaet) VALUES
+    ('Smartphone X500', 'SP-X500', 'Elektronik', 95),
+    ('Laptop Pro 15', 'LP-PRO15', 'Elektronik', 90),
+    ('Tablet Ultra', 'TB-ULTRA', 'Elektronik', 92),
+    ('Gaming Monitor', 'GM-4K', 'Elektronik', 88),
+    ('Mechanische Tastatur', 'KB-MECH', 'Peripherie', 85);
+
+    -- Prüfungen einfügen
+    INSERT INTO pruefungen (produkt_id, pruefdatum, pruefergebnis, status, temperatur, luftfeuchtigkeit, pruefername) VALUES
+    (1, '2025-11-01', 98, 'bestanden', 22.5, 45, 'Anna Schmidt'),
+    (1, '2025-11-15', 96, 'bestanden', 23.0, 48, 'Thomas Weber'),
+    (2, '2025-11-02', 92, 'bestanden', 21.8, 50, 'Anna Schmidt'),
+    (3, '2025-11-03', 85, 'nachpruefung', 22.0, 52, 'Thomas Weber'),
+    (4, '2025-11-05', 91, 'bestanden', 22.3, 47, 'Anna Schmidt'),
+    (5, '2025-11-10', NULL, 'ausstehend', NULL, NULL, 'Thomas Weber');
+    ```
+
+---
+
 ### Pflichtfelder (`NOT NULL`)
 
-Die `NOT NULL` Bedingung stellt sicher, dass eine Spalte **niemals leer** sein darf. Der allgemeine Syntax ist wiefolgt: 
+Die `NOT NULL` Bedingung stellt sicher, dass eine Spalte **niemals leer** sein darf. Der allgemeine Syntax ist wiefolgt:
 
 ```sql { .yaml .no-copy }
 CREATE TABLE tabellenname (
@@ -98,29 +162,29 @@ CREATE TABLE tabellenname (
     Zuerst erstellen wir eine neue Tabelle mit gewissen Pflichtspalten.
 
     ```sql hl_lines="3 4 6"
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,        -- Muss ausgefuellt sein!
-        typ VARCHAR(50) NOT NULL,          -- Muss ausgefuellt sein!
-        seriennummer VARCHAR(50),          -- Darf leer sein
-        anschaffungsjahr INTEGER NOT NULL  -- Muss ausgefuellt sein!
+    CREATE TABLE qualitaetspruefungen (
+        pruefung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER NOT NULL,         -- Muss ausgefuellt sein!
+        pruefdatum DATE NOT NULL,            -- Muss ausgefuellt sein!
+        pruefername VARCHAR(100),            -- Darf leer sein
+        pruefergebnis INTEGER NOT NULL       -- Muss ausgefuellt sein!
     );
     ```
 
-    Was passiert nun, wenn wir versuchen, eine Maschine ohne Name und Typ zu erstellen?
+    Was passiert nun, wenn wir versuchen, eine Prüfung ohne Prüfdatum zu erstellen?
 
     ```sql
-    -- Fehler: name ist NOT NULL!
-    INSERT INTO maschinen (typ, anschaffungsjahr)
-    VALUES ('CNC-Fräse', 2020);
+    -- Fehler: pruefdatum ist NOT NULL!
+    INSERT INTO qualitaetspruefungen (produkt_id, pruefergebnis)
+    VALUES (1, 95);
     ```
 
     ```title="Output"
-    FEHLER:  NULL-Wert in Spalte »name« von Relation »maschinen« verletzt Not-Null-Constraint
-    DETAIL:  Fehlgeschlagene Zeile enthält (1, null, CNC-Fräse, null, 2020).
+    FEHLER:  NULL-Wert in Spalte »pruefdatum« von Relation »qualitaetspruefungen« verletzt Not-Null-Constraint
+    DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, null, null, 95).
     ```
 
-    Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Maschine ohne Name und Typ zu erstellen.
+    Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Prüfung ohne Datum zu erstellen.
 
 ???+ tip "Best Practice"
     Verwende NOT NULL für alle Spalten, die **immer** einen Wert haben müssen. Das verhindert unvollständige Daten.
@@ -129,7 +193,7 @@ CREATE TABLE tabellenname (
 
 ### Eindeutigkeit erzwingen (`UNIQUE`)
 
-Die `UNIQUE` Bedingung stellt sicher, dass ein Wert in einer Spalte **nur einmal vorkommt**. Generell liest sich der Syntax: 
+Die `UNIQUE` Bedingung stellt sicher, dass ein Wert in einer Spalte **nur einmal vorkommt**. Generell liest sich der Syntax:
 
 ```sql { .yaml .no-copy }
 CREATE TABLE tabellenname (
@@ -141,35 +205,34 @@ CREATE TABLE tabellenname (
 
     Zuerst erstellen wir eine neue Tabelle mit einer Spalte, die eindeutig sein muss.
 
-    ```sql hl_lines="5"
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        typ VARCHAR(50) NOT NULL,
-        seriennummer VARCHAR(50) UNIQUE,   -- Jede Seriennummer nur einmal!
-        anschaffungsjahr INTEGER
+    ```sql hl_lines="4"
+    CREATE TABLE produkte_test (
+        produkt_id SERIAL PRIMARY KEY,
+        produktname VARCHAR(100) NOT NULL,
+        produktcode VARCHAR(20) UNIQUE,      -- Jeder Produktcode nur einmal!
+        kategorie VARCHAR(50)
     );
     ```
 
-    Was passiert nun, wenn wir versuchen, eine Maschine mit derselben Seriennummer zu erstellen, wie eine bereits existierende Maschine?
+    Was passiert nun, wenn wir versuchen, ein Produkt mit demselben Produktcode zu erstellen, wie ein bereits existierendes Produkt?
 
 
     ```sql
     -- Erste Einfügung: OK
-    INSERT INTO maschinen (name, typ, seriennummer, anschaffungsjahr)
-    VALUES ('CNC-Fräse Alpha', 'CNC-Fräse', 'CNC-2019-001', 2019);
+    INSERT INTO produkte_test (produktname, produktcode, kategorie)
+    VALUES ('Smartphone Alpha', 'SP-2025-001', 'Elektronik');
 
-    -- Zweite Einfügung mit gleicher Seriennummer: FEHLER!
-    INSERT INTO maschinen (name, typ, seriennummer, anschaffungsjahr)
-    VALUES ('CNC-Fräse Beta', 'CNC-Fräse', 'CNC-2019-001', 2020);
+    -- Zweite Einfügung mit gleichem Produktcode: FEHLER!
+    INSERT INTO produkte_test (produktname, produktcode, kategorie)
+    VALUES ('Smartphone Beta', 'SP-2025-001', 'Elektronik');
     ```
 
     ```title="Output"
-    FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »maschinen_seriennummer_key«
-    DETAIL:  Schlüssel »(seriennummer)=(CNC-2019-001)« existiert bereits.
+    FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »produkte_test_produktcode_key«
+    DETAIL:  Schlüssel »(produktcode)=(SP-2025-001)« existiert bereits.
     ```
 
-    Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Maschine mit derselben Seriennummer zu erstellen, wie eine bereits existierende Maschine.
+    Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, ein Produkt mit demselben Produktcode zu erstellen, wie ein bereits existierendes Produkt.
 
 `UNIQUE` kann auch mit mehreren Spalten definiert werden. Dies ist beispielsweise dann sinnvoll, wenn wir eine Kombination aus zwei Spalten als eindeutig erkennen möchten.
 
@@ -177,16 +240,16 @@ CREATE TABLE tabellenname (
 ???+ example "UNIQUE mit mehreren Spalten"
 
     ```sql hl_lines="6"
-    CREATE TABLE wartungsprotokolle (
-        wartungs_id SERIAL PRIMARY KEY,
-        maschinen_id INTEGER,
-        wartungsdatum DATE,
-        beschreibung TEXT,
-        UNIQUE (maschinen_id, wartungsdatum)  -- Diese Kombination muss eindeutig sein
+    CREATE TABLE pruefungen_test (
+        pruefung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER,
+        pruefdatum DATE,
+        pruefername VARCHAR(100),
+        UNIQUE (produkt_id, pruefdatum, pruefername)  -- Diese Kombination muss eindeutig sein
     );
     ```
 
-    Das erlaubt mehrere Wartungen für eine Maschine, aber nicht zweimal am selben Tag.
+    Das erlaubt mehrere Prüfungen für ein Produkt, aber nicht zweimal am selben Tag vom selben Prüfer.
 
 ---
 
@@ -204,30 +267,58 @@ CREATE TABLE tabellenname (
 
     Wir erstellen eine neue Tabelle mit einer oder mehreren Spalten, die einen Wertebereich prüfen müssen.
 
-    ```sql hl_lines="5 6"
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        typ VARCHAR(50) NOT NULL,
-        anschaffungsjahr INTEGER CHECK (anschaffungsjahr >= 1950 AND anschaffungsjahr <= 2030),
-        installationsdatum DATE CHECK (installationsdatum <= CURRENT_DATE)  -- In der Vergangenheit
+    ```sql hl_lines="5 6 7"
+    CREATE TABLE qualitaetsmessungen (
+        messung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER NOT NULL,
+        messdatum DATE NOT NULL,
+        pruefergebnis INTEGER CHECK (pruefergebnis >= 0 AND pruefergebnis <= 100),
+        temperatur NUMERIC(4,1) CHECK (temperatur >= -20 AND temperatur <= 50),
+        luftfeuchtigkeit INTEGER CHECK (luftfeuchtigkeit >= 0 AND luftfeuchtigkeit <= 100)
     );
     ```
 
-    Nun erstellen wir eine Maschine mit einem Anschaffungsjahr von 1800.
+    Nun erstellen wir eine Messung mit einem Prüfergebnis von 150 (ungültig).
 
     ```sql
-    -- Fehler: Anschaffungsjahr 1800 ist ungültig!
-    INSERT INTO maschinen (name, typ, anschaffungsjahr)
-    VALUES ('Alte Maschine', 'Presse', 1800);
+    -- Fehler: Prüfergebnis 150 ist ungültig!
+    INSERT INTO qualitaetsmessungen (produkt_id, messdatum, pruefergebnis, temperatur, luftfeuchtigkeit)
+    VALUES (1, '2025-11-25', 150, 22.0, 50);
     ```
 
     ```title="Output"
-    FEHLER:  neue Zeile für Relation »maschinen« verletzt Check-Constraint »maschinen_anschaffungsjahr_check«
-    DETAIL:  Fehlgeschlagene Zeile enthält (1, Alte Maschine, Presse, 1800, null)
+    FEHLER:  neue Zeile für Relation »qualitaetsmessungen« verletzt Check-Constraint »qualitaetsmessungen_pruefergebnis_check«
+    DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, 150, 22.0, 50)
     ```
 
-    Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Maschine mit einem Anschaffungsjahr von 1800 zu erstellen.
+    Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Messung mit einem Prüfergebnis von 150 zu erstellen.
+
+???+ example "CHECK mit Status-Werten"
+
+    CHECK kann auch verwendet werden, um nur bestimmte Werte zuzulassen:
+
+    ```sql hl_lines="6"
+    CREATE TABLE pruefungen_mit_status (
+        pruefung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER NOT NULL,
+        pruefdatum DATE NOT NULL,
+        pruefergebnis INTEGER,
+        status VARCHAR(20) CHECK (status IN ('ausstehend', 'bestanden', 'durchgefallen', 'nachpruefung'))
+    );
+    ```
+
+    Versuchen wir nun einen ungültigen Status einzufügen:
+
+    ```sql
+    -- Fehler: 'pending' ist kein gültiger Status
+    INSERT INTO pruefungen_mit_status (produkt_id, pruefdatum, status)
+    VALUES (1, '2025-11-25', 'pending');
+    ```
+
+    ```title="Output"
+    FEHLER:  neue Zeile für Relation »pruefungen_mit_status« verletzt Check-Constraint »pruefungen_mit_status_status_check«
+    DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, null, pending)
+    ```
 
 ---
 
@@ -246,42 +337,42 @@ CREATE TABLE tabellenname (
     Zuerst erstellen wir eine neue Tabelle mit einer oder mehreren Spalten, die einen Standardwert haben müssen.
 
     ```sql hl_lines="5 6 7"
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        typ VARCHAR(50) NOT NULL,
-        status VARCHAR(20) DEFAULT 'Aktiv',            -- Standard: Aktiv
-        installationsdatum DATE DEFAULT CURRENT_DATE,  -- Standard: Heute
-        betriebsbereit BOOLEAN DEFAULT TRUE            -- Standard: betriebsbereit
+    CREATE TABLE pruefungen_mit_defaults (
+        pruefung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER NOT NULL,
+        pruefdatum DATE NOT NULL,
+        status VARCHAR(20) DEFAULT 'ausstehend',       -- Standard: ausstehend
+        erfassungsdatum DATE DEFAULT CURRENT_DATE,     -- Standard: Heute
+        freigegeben BOOLEAN DEFAULT FALSE              -- Standard: nicht freigegeben
     );
     ```
 
-    Nun fügen wir neue Maschinen ein, ohne einen Status anzugeben.
+    Nun fügen wir neue Prüfungen ein, ohne einen Status anzugeben.
 
     ```sql
-    -- Ohne status: wird automatisch 'Aktiv'
-    INSERT INTO maschinen (name, typ)
-    VALUES ('CNC-Fräse Alpha', 'CNC-Fräse');
+    -- Ohne status: wird automatisch 'ausstehend'
+    INSERT INTO pruefungen_mit_defaults (produkt_id, pruefdatum)
+    VALUES (1, '2025-11-25');
     ```
 
-    Lasst uns überprüfen, ob der Status automatisch auf 'Aktiv' gesetzt wurde.
+    Lasst uns überprüfen, ob der Status automatisch auf 'ausstehend' gesetzt wurde.
 
     ```sql
-    SELECT * FROM maschinen;
+    SELECT * FROM pruefungen_mit_defaults;
     ```
 
     ```title="Output"
-     maschinen_id |      name       |    typ    | status | installationsdatum | betriebsbereit
-    --------------+-----------------+-----------+--------+--------------------+----------------
-                1 | CNC-Fräse Alpha | CNC-Fräse | Aktiv  | 2025-11-19         | true
+     pruefung_id | produkt_id | pruefdatum | status      | erfassungsdatum | freigegeben
+    -------------+------------+------------+-------------+-----------------+-------------
+               1 |          1 | 2025-11-25 | ausstehend  | 2025-11-25      | false
     ```
 
-    Wir sehen also folgendes: 
+    Wir sehen also folgendes:
 
-    - `maschinen_id`: 1 (automatisch durch SERIAL)
-    - `status`: 'Aktiv' (DEFAULT)
-    - `installationsdatum`: 2025-11-19 (CURRENT_DATE)
-    - `betriebsbereit`: TRUE (DEFAULT)
+    - `pruefung_id`: 1 (automatisch durch SERIAL)
+    - `status`: 'ausstehend' (DEFAULT)
+    - `erfassungsdatum`: 2025-11-25 (CURRENT_DATE)
+    - `freigegeben`: FALSE (DEFAULT)
 
 ---
 
@@ -298,10 +389,10 @@ Generell hat man bei `CHECK`-Constraints (und auch anderen) **zwei Möglichkeite
     Die Bedingung wird **direkt bei der Spalte** definiert:
 
     ```sql hl_lines="4"
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        leistung_kw NUMERIC(5,2) CHECK (leistung_kw >= 0)
+    CREATE TABLE messungen (
+        messung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER NOT NULL,
+        pruefergebnis INTEGER CHECK (pruefergebnis >= 0 AND pruefergebnis <= 100)
     );
     ```
 
@@ -312,21 +403,21 @@ Generell hat man bei `CHECK`-Constraints (und auch anderen) **zwei Möglichkeite
     Der Constraint wird **am Ende der Tabelle** als eigene Zeile definiert:
 
     ```sql hl_lines="6"
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        leistung_kw NUMERIC(5,2),
-        anschaffungsjahr INTEGER,
-        CHECK (leistung_kw >= 0)
+    CREATE TABLE messungen (
+        messung_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER NOT NULL,
+        pruefergebnis INTEGER,
+        temperatur NUMERIC(4,1),
+        CHECK (pruefergebnis >= 0 AND pruefergebnis <= 100)
     );
     ```
 
     **Vorteil:** Du kannst **mehrere Spalten gleichzeitig** prüfen:
 
     ```sql hl_lines="7"
-    CREATE TABLE wartungen (
-        wartung_id SERIAL PRIMARY KEY,
-        maschinen_id INTEGER,
+    CREATE TABLE pruefperioden (
+        periode_id SERIAL PRIMARY KEY,
+        produkt_id INTEGER,
         startdatum DATE,
         enddatum DATE,
         kosten NUMERIC(10,2),
@@ -340,7 +431,7 @@ Generell hat man bei `CHECK`-Constraints (und auch anderen) **zwei Möglichkeite
 
     - Für einfache Regeln, die nur **eine Spalte** betreffen
     - Wenn du die Regel direkt bei der Spaltendefinition sehen möchtest
-    - Beispiel: `preis NUMERIC(10,2) CHECK (preis >= 0)`
+    - Beispiel: `pruefergebnis INTEGER CHECK (pruefergebnis >= 0 AND pruefergebnis <= 100)`
 
     **Separate Zeile (Tabellen-Constraint):**
 
@@ -356,33 +447,33 @@ Constraints können von uns auch einen eigenen **Namen bekommen**, um sie späte
 
 ???+ example "Benannte Constraints"
 
-    Wir erstellen wieder eine neue Tabelle mit benannten Constraints. 
+    Wir erstellen wieder eine neue Tabelle mit benannten Constraints.
 
     ```sql hl_lines="6 7 8"
-    CREATE TABLE maschinen (
-        maschinen_id INTEGER,
-        seriennummer VARCHAR(50),
-        anschaffungsjahr INTEGER,
+    CREATE TABLE produkte_benannt (
+        produkt_id INTEGER,
+        produktcode VARCHAR(20),
+        mindestqualitaet INTEGER,
 
-        CONSTRAINT pk_maschinen PRIMARY KEY (maschinen_id),
-        CONSTRAINT uq_seriennummer UNIQUE (seriennummer),
-        CONSTRAINT ck_anschaffungsjahr CHECK (anschaffungsjahr >= 1950 AND anschaffungsjahr <= 2030)
+        CONSTRAINT pk_produkte PRIMARY KEY (produkt_id),
+        CONSTRAINT uq_produktcode UNIQUE (produktcode),
+        CONSTRAINT ck_mindestqualitaet CHECK (mindestqualitaet >= 0 AND mindestqualitaet <= 100)
     );
     ```
 
-    Nun versuchen wir absichtlich einen Fehler bei der Bedingung `ck_anschaffungsjahr` hervorzurufen indem wir das Jahr `1800` einfügen.
+    Nun versuchen wir absichtlich einen Fehler bei der Bedingung `ck_mindestqualitaet` hervorzurufen indem wir einen Wert von `150` einfügen.
 
-    ```sql hl_lines="6 7 8"
-    INSERT INTO maschinen (maschinen_id, seriennummer, anschaffungsjahr)
-    VALUES ('000', 'Presse', 1800);
+    ```sql
+    INSERT INTO produkte_benannt (produkt_id, produktcode, mindestqualitaet)
+    VALUES (1, 'SP-2025-001', 150);
     ```
 
     ```title="Output"
-    FEHLER:  neue Zeile für Relation »maschinen« verletzt Check-Constraint »ck_anschaffungsjahr«
-    DETAIL:  Fehlgeschlagene Zeile enthält (000, Presse, 1800).
+    FEHLER:  neue Zeile für Relation »produkte_benannt« verletzt Check-Constraint »ck_mindestqualitaet«
+    DETAIL:  Fehlgeschlagene Zeile enthält (1, SP-2025-001, 150).
     ```
 
-    Wir sehen also, dass die Einfügung fehlschlägt und wir erhalten bei der Fehlermeldung den Namen des Constraints `ck_anschaffungsjahr`.
+    Wir sehen also, dass die Einfügung fehlschlägt und wir erhalten bei der Fehlermeldung den Namen des Constraints `ck_mindestqualitaet`.
 
 ---
 
@@ -396,97 +487,364 @@ Es gibt auch die Möglichkeit, Constraints zu bestehenden Tabellen nachträglich
 
     **NOT NULL hinzufügen:**
     ```sql
-    ALTER TABLE maschinen
-    ALTER COLUMN seriennummer SET NOT NULL;
+    ALTER TABLE pruefungen
+    ALTER COLUMN pruefername SET NOT NULL;
     ```
 
     **UNIQUE hinzufügen:**
     ```sql
-    ALTER TABLE maschinen
-    ADD CONSTRAINT seriennummer_unique UNIQUE (seriennummer);
+    ALTER TABLE produkte
+    ADD CONSTRAINT produktcode_unique UNIQUE (produktcode);
     ```
 
     **CHECK hinzufügen:**
     ```sql
-    ALTER TABLE maschinen
-    ADD CONSTRAINT jahr_check CHECK (anschaffungsjahr >= 1950 AND anschaffungsjahr <= 2030);
+    ALTER TABLE pruefungen
+    ADD CONSTRAINT pruefergebnis_check CHECK (pruefergebnis >= 0 AND pruefergebnis <= 100);
+    ```
+
+    **DEFAULT hinzufügen:**
+    ```sql
+    ALTER TABLE pruefungen
+    ALTER COLUMN status SET DEFAULT 'ausstehend';
     ```
 
     **Constraint entfernen:**
     ```sql
-    ALTER TABLE maschinen
-    DROP CONSTRAINT seriennummer_unique;
+    ALTER TABLE produkte
+    DROP CONSTRAINT produktcode_unique;
     ```
 
 ---
 
-???+ question "Aufgabe 1: Techniker-Tabelle"
+## Übung ✍️
 
-    Erstelle eine Tabelle `techniker` mit folgenden Anforderungen:
+Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** an! Die Übungen decken alle wichtigen Constraint-Typen ab und helfen dir, Datenintegrität in der Praxis durchzusetzen.
 
-    - ID (Primärschlüssel, automatisch)
-    - Name (Pflicht)
-    - Abteilung (Pflicht)
-    - Telefon (eindeutig, Pflicht)
-    - Erfahrungsjahre (positiv, mindestens 0, maximal 50)
-    - Einstellungsdatum (Standardwert: heute)
+???+ info "Übungsvorbereitung"
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        CREATE TABLE techniker (
-            techniker_id SERIAL PRIMARY KEY,
-            name VARCHAR(100) NOT NULL,
-            abteilung VARCHAR(50) NOT NULL,
-            telefon VARCHAR(20) UNIQUE NOT NULL,
-            erfahrungsjahre INTEGER CHECK (erfahrungsjahre >= 0 AND erfahrungsjahre <= 50),
-            einstellungsdatum DATE DEFAULT CURRENT_DATE
-        );
-        ```
-
-???+ question "Aufgabe 2: Constraint hinzufügen"
-
-    Füge zur bestehenden `ersatzteile`-Tabelle ein Constraint hinzu: Die Teilnummer muss mit 'ET-' beginnen.
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        ALTER TABLE ersatzteile
-        ADD CONSTRAINT teilnummer_format CHECK (teilnummer LIKE 'ET-%');
-        ```
-
-???+ question "Aufgabe 3: Fehler finden"
-
-    Was ist an dieser Tabellendefinition problematisch?
+    Stelle sicher, dass du zur TecGuy GmbH Datenbank verbunden bist:
 
     ```sql
-    CREATE TABLE wartungsauftraege (
-        auftrag_id SERIAL,
-        maschinen_id INTEGER,
-        kosten NUMERIC(10, 2),
-        status VARCHAR(20)
-    );
+    -- Zur Datenbank wechseln
+    \c produktionsplanung_db
     ```
+
+    **Benötigte Tabellen:**
+    - `maschinen`
+    - `produktionsauftraege`
+    - `wartungsprotokolle`
+    - `ersatzteile`
+    - `maschinen_ersatzteile`
+
+???+ question "Aufgabe 1: NOT NULL Constraints hinzufügen"
+
+    Die Tabelle `produktionsauftraege` hat aktuell einige Spalten, die leer sein dürfen, obwohl sie kritische Informationen enthalten. Füge folgende NOT NULL Constraints hinzu:
+
+    - `auftragsnummer` soll nicht leer sein (jeder Auftrag braucht eine Nummer)
+    - `startdatum` soll nicht leer sein (jeder Auftrag braucht ein Startdatum)
 
     ??? tip "Lösung anzeigen"
 
-        **Probleme:**
+        ```sql
+        -- Zuerst mit Produktionsplanung DB verbinden
+        \c produktionsplanung_db
 
-        1. Kein PRIMARY KEY definiert (sollte bei `auftrag_id` sein)
-        2. `maschinen_id` sollte NOT NULL sein (jeder Auftrag braucht eine Maschine)
-        3. `kosten` sollte CHECK (kosten >= 0) haben
-        4. `status` könnte auf bestimmte Werte eingeschränkt werden
+        -- NOT NULL für auftragsnummer hinzufügen
+        ALTER TABLE produktionsauftraege
+        ALTER COLUMN auftragsnummer SET NOT NULL;
 
-        **Verbesserung:**
+        -- NOT NULL für startdatum hinzufügen
+        ALTER TABLE produktionsauftraege
+        ALTER COLUMN startdatum SET NOT NULL;
+
+        -- Überprüfen
+        \d produktionsauftraege
+        ```
+
+???+ question "Aufgabe 2: UNIQUE Constraint für Maschinencodes"
+
+    Jede Maschine in der Tabelle `maschinen` sollte einen **eindeutigen Maschinencode** haben. Füge einen UNIQUE Constraint für die Spalte `maschinencode` hinzu.
+
+    **Tipp:** Verwende einen aussagekräftigen Namen für den Constraint (z.B. `uq_maschinencode`).
+
+    ??? tip "Lösung anzeigen"
 
         ```sql
-        CREATE TABLE wartungsauftraege (
-            auftrag_id SERIAL PRIMARY KEY,
-            maschinen_id INTEGER NOT NULL,
-            kosten NUMERIC(10, 2) CHECK (kosten >= 0),
-            status VARCHAR(20) CHECK (status IN ('geplant', 'in_arbeit', 'abgeschlossen', 'abgebrochen')),
-            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-        );
+        -- UNIQUE Constraint hinzufügen
+        ALTER TABLE maschinen
+        ADD CONSTRAINT uq_maschinencode UNIQUE (maschinencode);
+
+        -- Test: Versuche eine doppelte Seriennummer einzufügen (sollte fehlschlagen)
+        INSERT INTO maschinen (maschinenname, maschinentyp, maschinencode, anschaffungsjahr)
+        VALUES ('Test Maschine', 'CNC-Fräse', 'M-001', 2025);
+        ```
+
+        ```title="Output"
+        FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »uq_maschinencode«
+        DETAIL:  Schlüssel »(maschinencode)=(M-001)« existiert bereits.
+        ```
+
+???+ question "Aufgabe 3: CHECK Constraint für Wartungsintervalle"
+
+    In der Tabelle `maschinen` gibt es eine Spalte `wartungsintervall_tage`, die angibt, nach wie vielen Tagen eine Wartung fällig ist.
+
+    Füge einen CHECK Constraint hinzu, der sicherstellt, dass das Wartungsintervall **mindestens 30 Tage und maximal 365 Tage** beträgt.
+
+    **Tipp:** Verwende einen aussagekräftigen Namen für den Constraint (z.B. `ck_wartungsintervall_gueltig`).
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- CHECK Constraint hinzufügen
+        ALTER TABLE maschinen
+        ADD CONSTRAINT ck_wartungsintervall_gueltig
+        CHECK (wartungsintervall_tage >= 30 AND wartungsintervall_tage <= 365);
+
+        -- Test: Versuche einen ungültigen Wert einzufügen (sollte fehlschlagen)
+        UPDATE maschinen
+        SET wartungsintervall_tage = 10
+        WHERE maschinen_id = 1;
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »maschinen« verletzt Check-Constraint »ck_wartungsintervall_gueltig«
+        DETAIL:  Fehlgeschlagene Zeile enthält (...)
+        ```
+
+???+ question "Aufgabe 4: CHECK Constraint für Kosten"
+
+    In der Tabelle `wartungsprotokolle` werden die Wartungskosten gespeichert. Manchmal werden jedoch versehentlich negative Werte eingetragen.
+
+    Füge einen CHECK Constraint hinzu, der sicherstellt, dass `kosten` **größer oder gleich 0** sind.
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- CHECK Constraint für positive Kosten hinzufügen
+        ALTER TABLE wartungsprotokolle
+        ADD CONSTRAINT ck_kosten_positiv CHECK (kosten >= 0);
+
+        -- Test: Versuche negative Kosten einzufügen (sollte fehlschlagen)
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (1, '2025-11-25', 'Test Wartung', -500);
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »wartungsprotokolle« verletzt Check-Constraint »ck_kosten_positiv«
+        ```
+
+???+ question "Aufgabe 5: DEFAULT Werte für Status"
+
+    In der Tabelle `produktionsauftraege` sollte jeder neue Auftrag standardmäßig den Status `'geplant'` erhalten, wenn kein Status angegeben wird.
+
+    Füge einen DEFAULT Constraint für die Spalte `status` hinzu.
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- DEFAULT Wert für status hinzufügen
+        ALTER TABLE produktionsauftraege
+        ALTER COLUMN status SET DEFAULT 'geplant';
+
+        -- Test: Füge einen Auftrag ohne Status ein
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
+        VALUES ('PA-TEST-001', 'Test Produkt', 100, '2025-12-01', 1);
+
+        -- Überprüfen
+        SELECT auftragsnummer, status FROM produktionsauftraege WHERE auftragsnummer = 'PA-TEST-001';
+        ```
+
+        ```title="Output"
+         auftragsnummer | status
+        ----------------+--------
+         PA-TEST-001    | geplant
+        ```
+
+???+ question "Aufgabe 6: CHECK Constraint für Stückzahlen"
+
+    In der Tabelle `produktionsauftraege` sollte die `stueckzahl` niemals **kleiner als 1** sein.
+
+    Füge einen CHECK Constraint hinzu, der dies sicherstellt.
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- CHECK Constraint für mindestens 1 Stück hinzufügen
+        ALTER TABLE produktionsauftraege
+        ADD CONSTRAINT ck_stueckzahl_mindestens_eins CHECK (stueckzahl >= 1);
+
+        -- Test: Versuche 0 Stück einzufügen (sollte fehlschlagen)
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
+        VALUES ('PA-TEST-002', 'Test Produkt 2', 0, '2025-12-01', 1);
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_stueckzahl_mindestens_eins«
+        ```
+
+???+ question "Aufgabe 7: Multi-Column UNIQUE Constraint"
+
+    In der Tabelle `wartungsprotokolle` möchtest du verhindern, dass **dieselbe Maschine zweimal am selben Tag** gewartet wird.
+
+    Füge einen UNIQUE Constraint hinzu, der die Kombination aus `maschinen_id` und `wartungsdatum` eindeutig macht.
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- UNIQUE Constraint für Kombination hinzufügen
+        ALTER TABLE wartungsprotokolle
+        ADD CONSTRAINT uq_maschine_wartungsdatum UNIQUE (maschinen_id, wartungsdatum);
+
+        -- Test: Versuche zweimal die gleiche Maschine am gleichen Tag zu warten
+        -- Erste Wartung: OK
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (1, '2025-12-01', 'Routinewartung 1', 250);
+
+        -- Zweite Wartung am gleichen Tag: FEHLER!
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (1, '2025-12-01', 'Routinewartung 2', 300);
+        ```
+
+        ```title="Output"
+        FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »uq_maschine_wartungsdatum«
+        DETAIL:  Schlüssel »(maschinen_id, wartungsdatum)=(1, 2025-12-01)« existiert bereits.
+        ```
+
+???+ question "Aufgabe 8: CHECK Constraint mit Datumsvergleich"
+
+    In der Tabelle `produktionsauftraege` gibt es die Spalten `startdatum` und `enddatum`. Das Enddatum sollte immer **nach dem Startdatum** liegen.
+
+    Füge einen CHECK Constraint hinzu, der dies sicherstellt.
+
+    **Tipp:** Der Constraint sollte auch NULL-Werte für `enddatum` erlauben (da Aufträge noch laufen können).
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- CHECK Constraint für Datumsvergleich hinzufügen
+        ALTER TABLE produktionsauftraege
+        ADD CONSTRAINT ck_enddatum_nach_startdatum
+        CHECK (enddatum IS NULL OR enddatum > startdatum);
+
+        -- Test 1: Enddatum vor Startdatum (sollte fehlschlagen)
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, enddatum, maschinen_id)
+        VALUES ('PA-TEST-003', 'Test Produkt 3', 50, '2025-12-10', '2025-12-05', 1);
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_enddatum_nach_startdatum«
+        ```
+
+        ```sql
+        -- Test 2: Enddatum nach Startdatum (sollte funktionieren)
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, enddatum, maschinen_id)
+        VALUES ('PA-TEST-003', 'Test Produkt 3', 50, '2025-12-05', '2025-12-10', 1);
+
+        -- Test 3: Kein Enddatum (sollte funktionieren)
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
+        VALUES ('PA-TEST-004', 'Test Produkt 4', 75, '2025-12-05', 1);
+        ```
+
+???+ question "Aufgabe 9: Constraint testen und verstehen"
+
+    Teste die Constraints, die du in den vorherigen Aufgaben hinzugefügt hast:
+
+    1. Versuche eine Maschine mit `wartungsintervall_tage = 500` einzufügen
+    2. Versuche einen Produktionsauftrag mit `stueckzahl = -10` einzufügen
+    3. Versuche eine Wartung mit `kosten = -1000` einzufügen
+
+    Analysiere die Fehlermeldungen und erkläre, warum die Constraints die Einfügung verhindern.
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- Test 1: Wartungsintervall zu groß
+        INSERT INTO maschinen (maschinenname, maschinentyp, maschinencode, wartungsintervall_tage, anschaffungsjahr)
+        VALUES ('Test Maschine 1', 'Presse', 'M-TEST-001', 500, 2025);
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »maschinen« verletzt Check-Constraint »ck_wartungsintervall_gueltig«
+        DETAIL:  Fehlgeschlagene Zeile enthält (..., 500, ...)
+        ```
+
+        **Erklärung:** Der CHECK Constraint `ck_wartungsintervall_gueltig` erlaubt nur Werte zwischen 30 und 365.
+
+        ```sql
+        -- Test 2: Negative Stückzahl
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
+        VALUES ('PA-TEST-005', 'Test Produkt 5', -10, '2025-12-01', 1);
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_stueckzahl_mindestens_eins«
+        ```
+
+        **Erklärung:** Der CHECK Constraint `ck_stueckzahl_mindestens_eins` stellt sicher, dass mindestens 1 Stück produziert wird.
+
+        ```sql
+        -- Test 3: Negative Kosten
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (1, '2025-12-02', 'Test Wartung', -1000);
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »wartungsprotokolle« verletzt Check-Constraint »ck_kosten_positiv«
+        ```
+
+        **Erklärung:** Der CHECK Constraint `ck_kosten_positiv` verhindert negative Wartungskosten.
+
+???+ question "Aufgabe 10: Constraint-Übersicht anzeigen"
+
+    Verschaffe dir einen Überblick über alle Constraints, die in der Datenbank definiert sind.
+
+    Verwende den Befehl `\d tabellenname`, um die Constraints für die Tabellen `maschinen`, `produktionsauftraege` und `wartungsprotokolle` anzuzeigen.
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- Constraints für Maschinen anzeigen
+        \d maschinen
+        ```
+
+        ```title="Output (Auszug)"
+        Tabelle »public.maschinen«
+             Spalte          |          Typ           | Constraints
+        ---------------------+------------------------+-------------
+         maschinen_id        | integer                | not null
+         maschinenname       | varchar(100)           | not null
+         maschinencode       | varchar(20)            |
+         wartungsintervall   | integer                |
+        Indexe:
+            "maschinen_pkey" PRIMARY KEY, btree (maschinen_id)
+            "uq_maschinencode" UNIQUE CONSTRAINT, btree (maschinencode)
+        Check-Constraints:
+            "ck_wartungsintervall_gueltig" CHECK (wartungsintervall_tage >= 30 AND wartungsintervall_tage <= 365)
+        ```
+
+        ```sql
+        -- Constraints für Produktionsaufträge anzeigen
+        \d produktionsauftraege
+        ```
+
+        ```title="Output (Auszug)"
+        Check-Constraints:
+            "ck_stueckzahl_mindestens_eins" CHECK (stueckzahl >= 1)
+            "ck_enddatum_nach_startdatum" CHECK (enddatum IS NULL OR enddatum > startdatum)
+        ```
+
+        ```sql
+        -- Constraints für Wartungsprotokolle anzeigen
+        \d wartungsprotokolle
+        ```
+
+        ```title="Output (Auszug)"
+        Indexe:
+            "wartungsprotokolle_pkey" PRIMARY KEY, btree (wartungs_id)
+            "uq_maschine_wartungsdatum" UNIQUE CONSTRAINT, btree (maschinen_id, wartungsdatum)
+        Check-Constraints:
+            "ck_kosten_positiv" CHECK (kosten >= 0)
         ```
 
 ---

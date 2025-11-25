@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_transaktionen.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Transaktionen & ACID
 
 In den vorherigen Kapiteln haben wir gelernt, wie wir Daten in PostgreSQL strukturieren, abfragen und manipulieren können. Dabei haben wir immer angenommen, dass unsere Operationen erfolgreich ausgeführt werden und die Datenbank in einem konsistenten Zustand bleibt.
@@ -16,6 +20,55 @@ In solchen Situationen reicht es nicht aus, einfach SQL-Befehle auszuführen. Wi
 </div>
 
 In diesem Kapitel lernen wir, was Transaktionen sind, warum sie wichtig sind und wie wir sie in PostgreSQL verwenden. Außerdem schauen wir uns die **ACID-Prinzipien** an, die das Fundament für verlässliche Datenbanksysteme bilden.
+
+---
+
+???+ info "Datenbank-Setup"
+
+    Für die folgenden Beispiele erstellen wir eine **Banking-Datenbank**. In dieser Datenbank werden Bankkonten und Geldtransfers verwaltet.
+
+    **Datenbank erstellen und verbinden:**
+
+    ```sql
+    CREATE DATABASE banking_db;
+    \c banking_db
+    ```
+
+    **Tabellen erstellen:**
+
+    ```sql
+    -- Tabelle: Konten
+    CREATE TABLE konten (
+        konto_id SERIAL PRIMARY KEY,
+        kontoinhaber VARCHAR(100) NOT NULL,
+        kontonummer VARCHAR(20) UNIQUE NOT NULL,
+        saldo NUMERIC(12, 2) NOT NULL CHECK (saldo >= 0),
+        kontotyp VARCHAR(20) DEFAULT 'Girokonto'
+    );
+
+    -- Tabelle: Transaktionslog
+    CREATE TABLE transaktionslog (
+        transaktion_id SERIAL PRIMARY KEY,
+        von_konto_id INTEGER REFERENCES konten(konto_id),
+        zu_konto_id INTEGER REFERENCES konten(konto_id),
+        betrag NUMERIC(12, 2) NOT NULL CHECK (betrag > 0),
+        transaktionsdatum TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        beschreibung TEXT,
+        status VARCHAR(20) DEFAULT 'abgeschlossen'
+    );
+    ```
+
+    **Testdaten einfügen:**
+
+    ```sql
+    -- Konten einfügen
+    INSERT INTO konten (kontoinhaber, kontonummer, saldo, kontotyp) VALUES
+    ('Max Mustermann', 'DE89370400440532013000', 5000.00, 'Girokonto'),
+    ('Anna Schmidt', 'DE89370400440532013001', 3000.00, 'Girokonto'),
+    ('Thomas Weber', 'DE89370400440532013002', 10000.00, 'Sparkonto'),
+    ('Lisa Müller', 'DE89370400440532013003', 1500.00, 'Girokonto'),
+    ('Peter Klein', 'DE89370400440532013004', 8000.00, 'Sparkonto');
+    ```
 
 ---
 
@@ -46,27 +99,27 @@ flowchart LR
 
 Ohne Transaktionen können **inkonsistente Zustände** entstehen, die zu schwerwiegenden Problemen führen.
 
-???+ example "Beispiel: Lagertransfer ohne Transaktion"
+???+ example "Beispiel: Geldtransfer ohne Transaktion"
 
-    Stell dir vor, wir transferieren 50 Ersatzteile vom Hauptlager ins Produktionslager:
+    Stell dir vor, wir überweisen 500€ vom Konto von Max Mustermann an Anna Schmidt:
 
     ```sql
-    -- Schritt 1: Teile aus Hauptlager entnehmen
-    UPDATE lager
-    SET bestand = bestand - 50
-    WHERE lager_id = 'HAUPT01';
+    -- Schritt 1: Geld vom Sender-Konto abbuchen
+    UPDATE konten
+    SET saldo = saldo - 500
+    WHERE kontoinhaber = 'Max Mustermann';
 
-    -- Schritt 2: Teile ins Produktionslager einbuchen
-    UPDATE lager
-    SET bestand = bestand + 50
-    WHERE lager_id = 'PROD01';
+    -- Schritt 2: Geld auf Empfänger-Konto gutschreiben
+    UPDATE konten
+    SET saldo = saldo + 500
+    WHERE kontoinhaber = 'Anna Schmidt';
     ```
 
     **❌ Problem: Was passiert, wenn zwischen diesen beiden Schritten ein Fehler auftritt?**
 
-    - Die Teile wären aus dem **Hauptlager entnommen**
-    - Aber **nicht im Produktionslager angekommen**
-    - 50 Ersatzteile wären einfach verschwunden! 📦
+    - Das Geld wäre vom **Sender-Konto abgebucht**
+    - Aber **nicht auf dem Empfänger-Konto angekommen**
+    - 500€ wären einfach verschwunden! 💸
 
     Mit einer **Transaktion** stellen wir sicher, dass **entweder beide** Operationen erfolgreich sind, **oder keine von beiden**.
 
@@ -124,62 +177,54 @@ Der `BEGIN` Befehl startet zunächst eine neue Transaktion. Alle nachfolgenden S
 
 ---
 
-Betrachten wir zum besseren Verständnis wieder ein praktisches Beispiel. 
+Betrachten wir zum besseren Verständnis wieder ein praktisches Beispiel.
 
 ???+ example "Transaktion mit `COMMIT` abschließen"
 
-    Wir erstellen zunächst eine Beispieltabelle für unsere Lager:
+    Überprüfen wir zunächst die aktuellen Kontostände:
 
     ```sql
-    CREATE TABLE lager (
-        lager_id VARCHAR(10) PRIMARY KEY,
-        standort VARCHAR(50) NOT NULL,
-        bestand INTEGER NOT NULL CHECK(bestand >= 0)
-    );
-
-    INSERT INTO lager (lager_id, standort, bestand) VALUES
-    ('HAUPT01', 'Hauptlager Halle A', 200),
-    ('PROD01', 'Produktionslager Halle B', 100);
-    ```
-
-    ```sql
-    SELECT * FROM lager;
+    SELECT kontoinhaber, kontonummer, saldo
+    FROM konten
+    WHERE kontoinhaber IN ('Max Mustermann', 'Anna Schmidt');
     ```
 
     ```title="Output"
-    lager_id |          standort           | bestand
-    ---------+-----------------------------+---------
-    HAUPT01  | Hauptlager Halle A          |     200
-    PROD01   | Produktionslager Halle B    |     100
+     kontoinhaber    |     kontonummer      |  saldo
+    -----------------+----------------------+---------
+     Max Mustermann  | DE89370400440532013000 | 5000.00
+     Anna Schmidt    | DE89370400440532013001 | 3000.00
     ```
 
-    Jetzt führen wir den Transfer **mit einer Transaktion** durch:
+    Jetzt führen wir die Überweisung **mit einer Transaktion** durch:
 
     ```sql hl_lines="1"
     BEGIN;
 
-    -- Schritt 1: Teile aus Hauptlager entnehmen
-    UPDATE lager
-    SET bestand = bestand - 50
-    WHERE lager_id = 'HAUPT01';
+    -- Schritt 1: Geld vom Sender-Konto abbuchen
+    UPDATE konten
+    SET saldo = saldo - 500
+    WHERE kontoinhaber = 'Max Mustermann';
 
-    -- Schritt 2: Teile ins Produktionslager einbuchen
-    UPDATE lager
-    SET bestand = bestand + 50
-    WHERE lager_id = 'PROD01';
+    -- Schritt 2: Geld auf Empfänger-Konto gutschreiben
+    UPDATE konten
+    SET saldo = saldo + 500
+    WHERE kontoinhaber = 'Anna Schmidt';
     ```
 
-    Überprüfen wir das Ergebnis:
+    Überprüfen wir das Ergebnis (noch innerhalb der Transaktion):
 
     ```sql
-    SELECT * FROM lager;
+    SELECT kontoinhaber, saldo
+    FROM konten
+    WHERE kontoinhaber IN ('Max Mustermann', 'Anna Schmidt');
     ```
 
     ```title="Output"
-    lager_id |          standort           | bestand
-    ---------+-----------------------------+---------
-    HAUPT01  | Hauptlager Halle A          |     150
-    PROD01   | Produktionslager Halle B    |     150
+     kontoinhaber    |  saldo
+    -----------------+---------
+     Max Mustermann  | 4500.00
+     Anna Schmidt    | 3500.00
     ```
 
     Sollte alles wie gewünscht funktioniert haben, können wir die Transaktion abschließen:
@@ -188,7 +233,7 @@ Betrachten wir zum besseren Verständnis wieder ein praktisches Beispiel.
     COMMIT;
     ```
 
-    ✅ **Beide Änderungen** wurden erfolgreich durchgeführt!
+    ✅ **Beide Änderungen** wurden erfolgreich durchgeführt! Die Gesamtsumme (8000€) bleibt gleich.
 
 ???+ tip "Best Practice: Transaktionen verwenden"
 
@@ -205,33 +250,35 @@ Was passiert aber, wenn wir einen **Fehler bemerken** oder die Transaktion **abb
 
 ???+ example "Transaktion mit `ROLLBACK` abbrechen"
 
-    Arbeiten wir am vorherigen Beispiel weiter und versuchen einen Fehler zu 'verursachen':
+    Arbeiten wir am vorherigen Beispiel weiter und versuchen einen Transfer, den wir dann abbrechen:
 
     ```sql hl_lines="1 9"
     BEGIN;
 
-    -- Versuch eines Transfers
-    UPDATE lager
-    SET bestand = bestand - 50
-    WHERE lager_id = 'HAUPT01';
+    -- Versuch einer Überweisung
+    UPDATE konten
+    SET saldo = saldo - 1000
+    WHERE kontoinhaber = 'Max Mustermann';
 
-    -- Ups, falsches Lager! Abbrechen:
+    -- Ups, falscher Betrag! Abbrechen:
     ROLLBACK;
     ```
 
-    Überprüfen wir nun wieder den Bestand:
+    Überprüfen wir nun wieder den Kontostand:
 
     ```sql
-    SELECT * FROM lager WHERE lager_id = 'HAUPT01';
+    SELECT kontoinhaber, saldo
+    FROM konten
+    WHERE kontoinhaber = 'Max Mustermann';
     ```
 
     ```title="Output"
-    lager_id |     standort           | bestand
-    ---------+------------------------+---------
-    HAUPT01  | Hauptlager Halle A     |     150
+     kontoinhaber    |  saldo
+    -----------------+---------
+     Max Mustermann  | 4500.00
     ```
 
-    Die Änderung wurde **NICHT gespeichert**! Der Bestand ist immer noch bei 150.
+    Die Änderung wurde **NICHT gespeichert**! Der Kontostand ist immer noch bei 4500€.
 
 Mit `ROLLBACK` werden also **alle Änderungen seit BEGIN** verworfen, als hätten sie nie stattgefunden.
 
@@ -243,30 +290,30 @@ PostgreSQL führt **automatisch ein ROLLBACK** durch, wenn während einer Transa
 
 ???+ example "Automatisches Rollback bei Constraint-Verletzung"
 
-    Wir versuchen, mehr Teile zu entnehmen, als vorhanden sind:
+    Wir versuchen, mehr Geld abzuheben, als auf dem Konto vorhanden ist:
 
     ```sql hl_lines="1 8"
     BEGIN;
 
-    UPDATE lager
-    SET bestand = bestand - 50
-    WHERE lager_id = 'HAUPT01';
+    UPDATE konten
+    SET saldo = saldo - 200
+    WHERE kontoinhaber = 'Max Mustermann';
 
-    -- Dieser Befehl verletzt die CHECK-Constraint (Bestand darf nicht negativ sein)
-    UPDATE lager
-    SET bestand = bestand - 200
-    WHERE lager_id = 'PROD01';  -- Fehler! Bestand würde negativ werden (-100)
+    -- Dieser Befehl verletzt die CHECK-Constraint (Saldo darf nicht negativ sein)
+    UPDATE konten
+    SET saldo = saldo - 5000
+    WHERE kontoinhaber = 'Max Mustermann';  -- Fehler! Saldo würde negativ werden (-700)
     ```
 
     ```title="Output"
-    FEHLER:  neue Zeile für Relation »lager« verletzt Check-Constraint »lager_bestand_check«
-    DETAIL:  Fehlgeschlagene Zeile enthält (PROD01, Produktionslager Halle B, -50)
+    FEHLER:  neue Zeile für Relation »konten« verletzt Check-Constraint »konten_saldo_check«
+    DETAIL:  Fehlgeschlagene Zeile enthält (1, Max Mustermann, DE89370400440532013000, -700.00, Girokonto)
     ```
 
-    Wenn wir nun in weiterer Folge einen Befehl eingeben - egal welchen - wird uns das System folgendes zurückmelden: 
+    Wenn wir nun in weiterer Folge einen Befehl eingeben - egal welchen - wird uns das System folgendes zurückmelden:
 
     ```sql
-    SELECT * FROM lager;
+    SELECT * FROM konten;
     ```
 
     ```title="Output"
@@ -274,22 +321,23 @@ PostgreSQL führt **automatisch ein ROLLBACK** durch, wenn während einer Transa
     ```
 
     Was nun passiert ist, dass egal ob wir `COMMIT` oder `ROLLBACK` ausführen, PostgreSQL automatisch einen `ROLLBACK` durchführen wird. Dabei werden **alle Änderungen** rückgängig gemacht!
-    Wir testen dies, indem wir ein `COMMIT ausführen und anschließend nochmals die Daten überprüfen. 
+    Wir testen dies, indem wir ein `COMMIT` ausführen und anschließend nochmals die Daten überprüfen.
 
     ```sql
     COMMIT;
 
-    SELECT * FROM lager;
+    SELECT kontoinhaber, saldo
+    FROM konten
+    WHERE kontoinhaber = 'Max Mustermann';
     ```
 
     ```title="Output"
-    lager_id |          standort           | bestand
-    ---------+-----------------------------+---------
-    HAUPT01  | Hauptlager Halle A          |     150
-    PROD01   | Produktionslager Halle B    |     150
+     kontoinhaber    |  saldo
+    -----------------+---------
+     Max Mustermann  | 4500.00
     ```
 
-    ✅ Beide Lager haben ihre **ursprünglichen Bestände** behalten!
+    ✅ Das Konto hat seinen **ursprünglichen Kontostand** behalten!
 
 
 ???+ tip "Verwendet PostgreSQL automatisch Transaktionen?"
@@ -382,205 +430,444 @@ Ein `SAVEPOINT` ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du ka
 
 ???+ example "`SAVEPOINT` verwenden"
 
-    ```sql hl_lines="3 7"
+    Stellen wir uns vor, wir führen mehrere Überweisungen durch, möchten aber nur eine davon rückgängig machen:
+
+    ```sql hl_lines="5 11"
     BEGIN;
 
-    UPDATE lager SET bestand = bestand - 50 WHERE lager_id = 'HAUPT01';
+    -- Erste Überweisung: 200€ von Max an Anna
+    UPDATE konten SET saldo = saldo - 200 WHERE kontoinhaber = 'Max Mustermann';
+    UPDATE konten SET saldo = saldo + 200 WHERE kontoinhaber = 'Anna Schmidt';
 
-    SAVEPOINT mein_savepoint;
+    SAVEPOINT nach_erster_ueberweisung;
 
-    UPDATE lager SET bestand = bestand + 50 WHERE lager_id = 'PROD01';
+    -- Zweite Überweisung: 300€ von Max an Thomas
+    UPDATE konten SET saldo = saldo - 300 WHERE kontoinhaber = 'Max Mustermann';
+    UPDATE konten SET saldo = saldo + 300 WHERE kontoinhaber = 'Thomas Weber';
 
-    -- Ups, Fehler beim zweiten Update! Nur diesen rückgängig machen:
-    ROLLBACK TO SAVEPOINT mein_savepoint;
+    -- Ups, die zweite Überweisung war falsch! Nur diese rückgängig machen:
+    ROLLBACK TO SAVEPOINT nach_erster_ueberweisung;
 
-    -- Der erste UPDATE bleibt erhalten, der zweite wurde rückgängig gemacht
+    -- Die erste Überweisung bleibt erhalten, die zweite wurde rückgängig gemacht
     COMMIT;
     ```
 
-    Beim oben gezeigten Beispiel wird das erste Update (`HAUPT01`) durchgeführt, das zweite (`PROD01`) aber verworfen.
+    Beim oben gezeigten Beispiel wird die erste Überweisung (200€ an Anna) durchgeführt, die zweite Überweisung (300€ an Thomas) aber verworfen.
+
+    ```sql
+    SELECT kontoinhaber, saldo FROM konten
+    WHERE kontoinhaber IN ('Max Mustermann', 'Anna Schmidt', 'Thomas Weber');
+    ```
+
+    ```title="Output"
+     kontoinhaber    |   saldo
+    -----------------+----------
+     Max Mustermann  |  4300.00
+     Anna Schmidt    |  3700.00
+     Thomas Weber    | 10000.00
+    ```
 
 ---
 
+## Übung ✍️
 
-???+ question "Aufgabe 1: Einfache Transaktion"
+Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem** an! Die Übungen decken verschiedene Transaktionsszenarien ab und helfen dir, ACID-Prinzipien in der Praxis anzuwenden.
 
-    Erstelle eine Tabelle `ersatzteillager` mit folgenden Daten:
+???+ info "Übungsvorbereitung"
+
+    Stelle sicher, dass du zur TecGuy GmbH Datenbank verbunden bist:
 
     ```sql
-    CREATE TABLE ersatzteillager (
-        teil_id SERIAL PRIMARY KEY,
-        teilname VARCHAR(50) NOT NULL,
-        bestand INTEGER NOT NULL CHECK(bestand >= 0)
-    );
-
-    INSERT INTO ersatzteillager (teilname, bestand) VALUES
-    ('Spindelmotor', 10),
-    ('Kühlmittelpumpe', 50),
-    ('Schweißdrahtspule', 30);
+    -- Zur Datenbank wechseln
+    \c produktionsplanung_db
     ```
 
-    **Aufgabe:** Führe eine Transaktion durch, die:
+    **Benötigte Tabellen:**
+    - `maschinen`
+    - `produktionsauftraege`
+    - `wartungsprotokolle`
+    - `ersatzteile`
+    - `maschinen_ersatzteile`
 
-    1. Den Bestand von "Spindelmotor" um 2 Stück reduziert
-    2. Den Bestand von "Kühlmittelpumpe" um 5 Stück erhöht
-    3. Die Änderungen mit COMMIT bestätigt
+    **Zusätzliche Tabelle für Übungen erstellen:**
 
-    ??? info "💡 Lösung anzeigen"
+    ```sql
+    -- Lagerverwaltung für Ersatzteile
+    CREATE TABLE IF NOT EXISTS lager (
+        lager_id SERIAL PRIMARY KEY,
+        standort VARCHAR(100) NOT NULL,
+        ersatzteil_id INTEGER REFERENCES ersatzteile(ersatzteil_id),
+        bestand INTEGER NOT NULL CHECK (bestand >= 0)
+    );
+
+    -- Testdaten einfügen (falls noch nicht vorhanden)
+    INSERT INTO lager (standort, ersatzteil_id, bestand)
+    SELECT 'Hauptlager', ersatzteil_id, 100
+    FROM ersatzteile
+    WHERE NOT EXISTS (SELECT 1 FROM lager)
+    LIMIT 3;
+
+    INSERT INTO lager (standort, ersatzteil_id, bestand)
+    SELECT 'Produktionslager', ersatzteil_id, 50
+    FROM ersatzteile
+    WHERE NOT EXISTS (SELECT 1 FROM lager WHERE standort = 'Produktionslager')
+    LIMIT 3;
+    ```
+
+???+ question "Aufgabe 1: Ersatzteile-Transfer zwischen Lagern"
+
+    Transferiere 20 Einheiten eines Ersatzteils vom Hauptlager ins Produktionslager mit einer Transaktion.
+
+    **Anforderungen:**
+    - Wähle ein beliebiges Ersatzteil
+    - Reduziere Bestand im Hauptlager um 20
+    - Erhöhe Bestand im Produktionslager um 20
+    - Verwende BEGIN und COMMIT
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- Aktuellen Bestand anzeigen
+        SELECT l.lager_id, l.standort, e.teilname, l.bestand
+        FROM lager l
+        JOIN ersatzteile e ON l.ersatzteil_id = e.ersatzteil_id
+        ORDER BY l.standort, e.teilname;
+        ```
 
         ```sql
         BEGIN;
 
-        UPDATE ersatzteillager
-        SET bestand = bestand - 2
-        WHERE teilname = 'Spindelmotor';
+        -- Transfer durchführen (Beispiel mit ersatzteil_id = 1)
+        UPDATE lager
+        SET bestand = bestand - 20
+        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
 
-        UPDATE ersatzteillager
-        SET bestand = bestand + 5
-        WHERE teilname = 'Kühlmittelpumpe';
+        UPDATE lager
+        SET bestand = bestand + 20
+        WHERE standort = 'Produktionslager' AND ersatzteil_id = 1;
+
+        -- Überprüfen
+        SELECT l.standort, l.bestand
+        FROM lager l
+        WHERE l.ersatzteil_id = 1;
 
         COMMIT;
         ```
 
-        Überprüfung:
-        ```sql
-        SELECT * FROM ersatzteillager;
-        ```
+        ✅ **Beide Lager wurden erfolgreich aktualisiert!**
 
-        ```title="Output"
-         teil_id |     teilname      | bestand
-        ---------+-------------------+---------
-               1 | Spindelmotor      |       8
-               2 | Kühlmittelpumpe   |      55
-               3 | Schweißdrahtspule |      30
-        ```
+???+ question "Aufgabe 2: Produktionsauftrag mit Maschinenprüfung"
 
-???+ question "Aufgabe 2: Rollback bei Fehler"
+    Erstelle einen neuen Produktionsauftrag und weise ihm eine Maschine zu. Wenn die Maschine bereits einen aktiven Auftrag hat, soll die Transaktion abgebrochen werden.
 
-    **Aufgabe:** Versuche, den Bestand von "Schweißdrahtspule" um 50 Stück zu reduzieren (was einen negativen Bestand ergeben würde). Beobachte, was passiert.
+    **Anforderungen:**
+    - Prüfe, ob die Maschine verfügbar ist (kein aktiver Auftrag mit status = 'in_produktion')
+    - Erstelle nur dann einen neuen Auftrag
+    - Verwende ROLLBACK, wenn die Maschine nicht verfügbar ist
 
-    ??? info "💡 Lösung anzeigen"
+    ??? tip "Lösung anzeigen"
 
         ```sql
         BEGIN;
 
-        UPDATE ersatzteillager
-        SET bestand = bestand - 50
-        WHERE teilname = 'Schweißdrahtspule';
+        -- Prüfen, ob Maschine verfügbar ist
+        SELECT COUNT(*) FROM produktionsauftraege
+        WHERE maschinen_id = 1 AND status = 'in_produktion';
+
+        -- Wenn keine aktiven Aufträge (COUNT = 0), dann neuen Auftrag erstellen:
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id, status)
+        VALUES ('PA-2025-999', 'Test Widget', 500, CURRENT_DATE, 1, 'geplant');
+
+        -- Falls die Maschine belegt wäre:
+        -- ROLLBACK;
+
+        -- Falls verfügbar:
+        COMMIT;
         ```
 
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »ersatzteillager« verletzt Check-Constraint »ersatzteillager_bestand_check«
-        DETAIL:  Fehlgeschlagene Zeile enthält (3, Schweißdrahtspule, -20)
-        ```
+        **Erklärung:** In der Praxis würdest du eine IF-Bedingung in einer Stored Procedure verwenden, um automatisch zu entscheiden, ob COMMIT oder ROLLBACK ausgeführt wird.
 
-        PostgreSQL führt **automatisch ROLLBACK** durch – die Änderung wird nicht gespeichert!
+???+ question "Aufgabe 3: Wartung mit Ersatzteil-Entnahme"
 
-        ```sql
-        SELECT bestand FROM ersatzteillager WHERE teilname = 'Schweißdrahtspule';
-        ```
+    Führe eine Wartung durch und entnimm dabei ein Ersatzteil aus dem Lager. Beide Operationen sollen atomar erfolgen.
 
-        ```title="Output"
-        bestand
-        -------
-             30
-        ```
+    **Anforderungen:**
+    - Erstelle einen Wartungseintrag in `wartungsprotokolle`
+    - Reduziere den Bestand des verwendeten Ersatzteils im Lager
+    - Alles in einer Transaktion
 
-        ✅ Der Bestand bleibt bei **30** – die fehlerhafte Operation wurde nicht durchgeführt.
-
-???+ question "Aufgabe 3: Mehrere Operationen"
-
-    Erstelle folgende Tabellen:
-
-    ```sql
-    CREATE TABLE maschinen (
-        maschinen_id SERIAL PRIMARY KEY,
-        name VARCHAR(50) NOT NULL
-    );
-
-    CREATE TABLE wartungsauftraege (
-        auftrag_id SERIAL PRIMARY KEY,
-        maschinen_id INTEGER REFERENCES maschinen(maschinen_id),
-        beschreibung TEXT NOT NULL,
-        kosten NUMERIC(10, 2)
-    );
-    ```
-
-    **Aufgabe:** Erstelle eine Transaktion, die:
-
-    1. Eine neue Maschine "Drehbank Delta" einfügt
-    2. Einen Wartungsauftrag für diese Maschine mit Beschreibung "Erstinspektion nach Installation" und Kosten von 450 Euro erstellt
-
-    Wenn ein Fehler auftritt, sollen beide Operationen rückgängig gemacht werden.
-
-    ??? info "💡 Lösung anzeigen"
+    ??? tip "Lösung anzeigen"
 
         ```sql
         BEGIN;
 
-        -- Neue Maschine anlegen
-        INSERT INTO maschinen (name)
-        VALUES ('Drehbank Delta');
+        -- Wartung eintragen
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (1, CURRENT_DATE, 'Austausch Spindelmotor', 1200.00);
 
-        -- Wartungsauftrag für diese Maschine anlegen
-        INSERT INTO wartungsauftraege (maschinen_id, beschreibung, kosten)
-        VALUES (
-            (SELECT maschinen_id FROM maschinen WHERE name = 'Drehbank Delta'),
-            'Erstinspektion nach Installation',
-            450.00
-        );
+        -- Ersatzteil aus Lager entnehmen (ersatzteil_id = 1, z.B. Spindelmotor)
+        UPDATE lager
+        SET bestand = bestand - 1
+        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
+
+        -- Überprüfen
+        SELECT * FROM wartungsprotokolle
+        WHERE maschinen_id = 1
+        ORDER BY wartungsdatum DESC
+        LIMIT 1;
+
+        SELECT bestand FROM lager
+        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
 
         COMMIT;
         ```
 
-        Überprüfung:
-        ```sql
-        SELECT m.name, w.beschreibung, w.kosten
-        FROM maschinen m
-        JOIN wartungsauftraege w ON m.maschinen_id = w.maschinen_id;
-        ```
+        ✅ **Wartung eingetragen und Ersatzteil entnommen!**
 
-        ```title="Output"
-              name       |          beschreibung              | kosten
-        -----------------+------------------------------------+--------
-         Drehbank Delta  | Erstinspektion nach Installation  | 450.00
-        ```
+???+ question "Aufgabe 4: SAVEPOINT für komplexe Wartung"
 
-???+ question "Aufgabe 4: Bewusster Rollback"
+    Führe eine komplexe Wartung mit mehreren Schritten durch. Verwende SAVEPOINT, um nur einen Teil rückgängig zu machen.
 
-    **Aufgabe:** Starte eine Transaktion, füge einen neuen Datensatz "Kettenrad" mit Bestand 15 ein, überprüfe das Ergebnis mit SELECT, und mache dann die Änderung mit ROLLBACK rückgängig.
+    **Szenario:**
+    - Wartung beginnen und Kosten für Grundinspektion erfassen
+    - SAVEPOINT setzen
+    - Zusätzliche Reparatur erfassen
+    - SAVEPOINT setzen
+    - Dritte Reparatur (zu teuer!) → zurück zum zweiten SAVEPOINT
 
-    ??? info "💡 Lösung anzeigen"
+    ??? tip "Lösung anzeigen"
 
         ```sql
         BEGIN;
 
-        INSERT INTO ersatzteillager (teilname, bestand)
-        VALUES ('Kettenrad', 15);
+        -- Erste Wartung: Grundinspektion
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (2, CURRENT_DATE, 'Grundinspektion', 500.00)
+        RETURNING wartungs_id;  -- Merke dir die ID (z.B. 101)
 
-        -- Überprüfung (nur innerhalb der Transaktion sichtbar)
-        SELECT * FROM ersatzteillager WHERE teilname = 'Kettenrad';
+        SAVEPOINT nach_grundinspektion;
+
+        -- Zweite Wartung: Kleinreparatur
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (2, CURRENT_DATE, 'Austausch Dichtung', 150.00);
+
+        SAVEPOINT nach_kleinreparatur;
+
+        -- Dritte Wartung: Große Reparatur (zu teuer!)
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (2, CURRENT_DATE, 'Motoraustausch', 5000.00);
+
+        -- Ups, zu teuer! Zurück zum zweiten SAVEPOINT:
+        ROLLBACK TO SAVEPOINT nach_kleinreparatur;
+
+        -- Die ersten beiden Wartungen bleiben, die dritte wird verworfen
+        COMMIT;
+
+        -- Überprüfung
+        SELECT beschreibung, kosten
+        FROM wartungsprotokolle
+        WHERE maschinen_id = 2 AND wartungsdatum = CURRENT_DATE;
         ```
 
         ```title="Output"
-         teil_id | teilname  | bestand
-        ---------+-----------+---------
-               4 | Kettenrad |      15
+            beschreibung    | kosten
+        --------------------+---------
+         Grundinspektion    | 500.00
+         Austausch Dichtung | 150.00
+        ```
+
+        ✅ **Nur die ersten beiden Wartungen wurden gespeichert!**
+
+???+ question "Aufgabe 5: Automatisches ROLLBACK bei Constraint-Verletzung"
+
+    Versuche, mehr Ersatzteile aus dem Lager zu entnehmen, als vorhanden sind. Beobachte das automatische ROLLBACK.
+
+    **Anforderungen:**
+    - Starte eine Transaktion
+    - Versuche, 200 Einheiten zu entnehmen (obwohl nur z.B. 100 vorhanden sind)
+    - Beobachte die Fehlermeldung
+    - Überprüfe, dass keine Änderungen gespeichert wurden
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- Aktuellen Bestand prüfen
+        SELECT standort, bestand
+        FROM lager
+        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
+
+        BEGIN;
+
+        -- Gültige Entnahme
+        UPDATE lager
+        SET bestand = bestand - 10
+        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
+
+        -- Ungültige Entnahme (Bestand würde negativ werden)
+        UPDATE lager
+        SET bestand = bestand - 200
+        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
+        ```
+
+        ```title="Output"
+        FEHLER:  neue Zeile für Relation »lager« verletzt Check-Constraint »lager_bestand_check«
+        DETAIL:  Fehlgeschlagene Zeile enthält (...)
         ```
 
         ```sql
-        -- Änderung verwerfen
+        -- Versuche weitere Befehle
+        SELECT * FROM lager;
+        ```
+
+        ```title="Output"
+        FEHLER:  aktuelle Transaktion wurde abgebrochen, Befehle werden bis zum Ende der Transaktion ignoriert
+        ```
+
+        ```sql
+        COMMIT;  -- PostgreSQL führt automatisch ROLLBACK durch
+
+        -- Überprüfung: Bestand unverändert
+        SELECT bestand FROM lager
+        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
+        ```
+
+        ✅ **Alle Änderungen wurden automatisch rückgängig gemacht!**
+
+???+ question "Aufgabe 6: Multi-Tabellen-Transaktion"
+
+    Erstelle einen Produktionsauftrag, aktualisiere den Maschinenstatus und erstelle einen Wartungsplan – alles in einer Transaktion.
+
+    **Anforderungen:**
+    - Neuen Produktionsauftrag erstellen
+    - Maschinenstatus aktualisieren (z.B. neues Feld `letzter_auftrag`)
+    - Wartungsplan für nach dem Auftrag erstellen
+    - Alles mit einer Transaktion absichern
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        BEGIN;
+
+        -- Neuen Produktionsauftrag erstellen
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id, status)
+        VALUES ('PA-2025-1000', 'Spezialkomponente XY', 200, CURRENT_DATE, 3, 'in_produktion')
+        RETURNING auftrags_id;
+
+        -- Wartungsplan für nach dem Auftrag erstellen
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+        VALUES (3, CURRENT_DATE + INTERVAL '7 days', 'Wartung nach Produktionsauftrag PA-2025-1000', 0);
+
+        -- Überprüfung
+        SELECT p.auftragsnummer, p.status, w.beschreibung, w.wartungsdatum
+        FROM produktionsauftraege p
+        LEFT JOIN wartungsprotokolle w ON p.maschinen_id = w.maschinen_id
+        WHERE p.auftragsnummer = 'PA-2025-1000';
+
+        COMMIT;
+        ```
+
+        ✅ **Auftrag erstellt und Wartung eingeplant!**
+
+???+ question "Aufgabe 7: Bewusster ROLLBACK-Test"
+
+    Teste bewusstes ROLLBACK: Erstelle mehrere Änderungen und mache sie dann absichtlich rückgängig.
+
+    **Anforderungen:**
+    - Erstelle 3 neue Wartungseinträge
+    - Aktualisiere Lagerbestände
+    - Überprüfe die Änderungen mit SELECT
+    - Führe ROLLBACK aus
+    - Überprüfe, dass nichts gespeichert wurde
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        -- Vor der Transaktion: Anzahl der Wartungen
+        SELECT COUNT(*) FROM wartungsprotokolle;
+
+        BEGIN;
+
+        -- Mehrere Wartungen erstellen
+        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten) VALUES
+        (1, CURRENT_DATE, 'Test Wartung 1', 100),
+        (2, CURRENT_DATE, 'Test Wartung 2', 200),
+        (3, CURRENT_DATE, 'Test Wartung 3', 300);
+
+        -- Lagerbestand ändern
+        UPDATE lager
+        SET bestand = bestand - 5
+        WHERE standort = 'Hauptlager';
+
+        -- Überprüfung (innerhalb der Transaktion sichtbar)
+        SELECT COUNT(*) FROM wartungsprotokolle;
+
+        -- Alles rückgängig machen
         ROLLBACK;
 
-        -- Überprüfung: Der Datensatz wurde nicht gespeichert
-        SELECT * FROM ersatzteillager WHERE teilname = 'Kettenrad';
+        -- Überprüfung: Nichts wurde gespeichert
+        SELECT COUNT(*) FROM wartungsprotokolle
+        WHERE beschreibung LIKE 'Test Wartung%';
         ```
 
         ```title="Output"
-        (0 rows)
+         count
+        -------
+             0
         ```
 
-        ✅ Der Datensatz wurde **nicht gespeichert** – ROLLBACK hat die Änderung verworfen!
+        ✅ **Alle Änderungen wurden erfolgreich verworfen!**
+
+???+ question "Aufgabe 8: Komplexer Produktionsprozess"
+
+    Simuliere einen kompletten Produktionsprozess mit mehreren abhängigen Schritten.
+
+    **Szenario:**
+    - Produktionsauftrag erstellen
+    - Ersatzteile aus Lager entnehmen
+    - Produktionsauftrag auf "in_produktion" setzen
+    - Bei Fehler: Alles rückgängig machen
+
+    ??? tip "Lösung anzeigen"
+
+        ```sql
+        BEGIN;
+
+        -- 1. Produktionsauftrag erstellen
+        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id, status)
+        VALUES ('PA-2025-KOMPLEX', 'Komplexes Bauteil', 100, CURRENT_DATE, 1, 'geplant');
+
+        -- 2. Benötigte Ersatzteile aus Lager entnehmen
+        UPDATE lager
+        SET bestand = bestand - 3
+        WHERE standort = 'Produktionslager' AND ersatzteil_id = 1;
+
+        UPDATE lager
+        SET bestand = bestand - 2
+        WHERE standort = 'Produktionslager' AND ersatzteil_id = 2;
+
+        -- 3. Produktionsauftrag auf "in_produktion" setzen
+        UPDATE produktionsauftraege
+        SET status = 'in_produktion'
+        WHERE auftragsnummer = 'PA-2025-KOMPLEX';
+
+        -- 4. Überprüfung aller Änderungen
+        SELECT p.auftragsnummer, p.status, p.produktname
+        FROM produktionsauftraege p
+        WHERE auftragsnummer = 'PA-2025-KOMPLEX';
+
+        SELECT l.standort, e.teilname, l.bestand
+        FROM lager l
+        JOIN ersatzteile e ON l.ersatzteil_id = e.ersatzteil_id
+        WHERE l.standort = 'Produktionslager';
+
+        -- Alles erfolgreich? Dann committen:
+        COMMIT;
+
+        -- Falls ein Fehler aufgetreten wäre:
+        -- ROLLBACK;
+        ```
+
+        ✅ **Kompletter Produktionsprozess erfolgreich abgeschlossen!**
 
 ---
 

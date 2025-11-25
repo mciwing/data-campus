@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img src="/assets/header/database/header_relational.png" alt="" style="width:100%; margin-bottom: 1em;">
+</div>
+
 # Grundlagen des Relationalen Modells
 
 Nachdem wir im vorherigen Kapitel Datenbanken als Lösung für strukturierte Datenhaltung kennengelernt und PostgreSQL installiert haben, wird es jetzt konkret: Wie werden Daten in einer relationalen Datenbank organisiert?
