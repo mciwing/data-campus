@@ -404,21 +404,122 @@ Es gibt auch die Möglichkeit, Constraints zu bestehenden Tabellen nachträglich
 
 Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** an! Die Übungen decken alle wichtigen Constraint-Typen ab und helfen dir, Datenintegrität in der Praxis durchzusetzen.
 
-???+ info "Übungsvorbereitung"
+???+ info "Übungsvorbereitung – Datenbank zurücksetzen"
 
-    Stelle sicher, dass du zur TecGuy GmbH Datenbank verbunden bist:
+    Falls du die vorherigen Kapitel nicht abgeschlossen hast oder von vorne beginnen möchtest, kannst du mit folgendem Code-Block die Datenbank komplett neu aufsetzen:
 
     ```sql
+    -- Datenbank löschen und neu erstellen
+    DROP DATABASE IF EXISTS produktionsplanung_db;
+    CREATE DATABASE produktionsplanung_db;
+
     -- Zur Datenbank wechseln
     \c produktionsplanung_db
-    ```
 
-    **Benötigte Tabellen:**
-    - `maschinen`
-    - `produktionsauftraege`
-    - `wartungsprotokolle`
-    - `ersatzteile`
-    - `maschinen_ersatzteile`
+    -- Tabelle: Maschinen
+    CREATE TABLE maschinen (
+        maschinen_id INTEGER PRIMARY KEY,
+        maschinenname VARCHAR(100) NOT NULL,
+        maschinentyp VARCHAR(50),
+        maschinencode VARCHAR(20),  -- NEU in Kapitel 7: Eindeutige Maschinencodes
+        produktionshalle VARCHAR(50),
+        anschaffungsjahr INTEGER,
+        maschinenstatus VARCHAR(20),
+        wartungsintervall_tage INTEGER
+    );
+
+    -- Tabelle: Produktionsaufträge
+    CREATE TABLE produktionsauftraege (
+        auftrag_id INTEGER PRIMARY KEY,
+        auftragsnummer VARCHAR(20),
+        kunde VARCHAR(100),
+        produkt VARCHAR(100),
+        menge INTEGER,
+        startdatum DATE,
+        lieferdatum DATE,
+        enddatum DATE,  -- NEU in Kapitel 7: Tatsächliches Produktionsende
+        status VARCHAR(20),
+        maschinen_id INTEGER,
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE RESTRICT
+    );
+
+    -- Tabelle: Wartungsprotokolle (1:n Beziehung zu Maschinen)
+    CREATE TABLE wartungsprotokolle (
+        wartungs_id SERIAL PRIMARY KEY,
+        wartungsdatum DATE NOT NULL,
+        beschreibung TEXT,
+        techniker VARCHAR(100),
+        kosten NUMERIC(10, 2),
+        maschinen_id INTEGER NOT NULL,
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE CASCADE
+    );
+
+    -- Tabelle: Ersatzteile
+    CREATE TABLE ersatzteile (
+        ersatzteil_id INTEGER PRIMARY KEY,
+        teilenummer VARCHAR(20) NOT NULL UNIQUE,
+        bezeichnung VARCHAR(100) NOT NULL,
+        lagerbestand INTEGER DEFAULT 0,
+        mindestbestand INTEGER DEFAULT 10
+    );
+
+    -- Tabelle: Maschinen-Ersatzteile (n:m Beziehung)
+    CREATE TABLE maschinen_ersatzteile (
+        maschinen_id INTEGER,
+        ersatzteil_id INTEGER,
+        menge_pro_wartung INTEGER,
+        PRIMARY KEY (maschinen_id, ersatzteil_id),
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE CASCADE,
+        FOREIGN KEY (ersatzteil_id) REFERENCES ersatzteile(ersatzteil_id)
+            ON DELETE CASCADE
+    );
+
+    -- Testdaten: Maschinen
+    INSERT INTO maschinen VALUES
+    (1, 'Spritzgussmaschine Alpha', 'Spritzgussmaschine', 'M-001', 'Halle A', 2018, 'In Betrieb', 90),
+    (2, 'CNC-Fräse Beta', 'CNC-Fräse', 'M-002', 'Halle B', 2020, 'In Betrieb', 60),
+    (3, 'Drehmaschine Gamma', 'Drehmaschine', 'M-003', 'Halle A', 2019, 'Wartung', 120),
+    (4, 'Presse Delta', 'Hydraulikpresse', 'M-004', 'Halle C', 2021, 'In Betrieb', 180);
+
+    -- Testdaten: Produktionsaufträge
+    INSERT INTO produktionsauftraege VALUES
+    (1, 'PA-2024-001', 'Bosch GmbH', 'Kunststoffgehäuse', 500, '2024-03-01', '2024-03-15', NULL, 'In Produktion', 1),
+    (2, 'PA-2024-002', 'Siemens AG', 'Metallrahmen', 200, '2024-03-05', '2024-03-20', NULL, 'Geplant', 2),
+    (3, 'PA-2024-003', 'Daimler AG', 'Präzisionsteile', 150, '2024-03-10', '2024-03-25', NULL, 'Geplant', 3),
+    (4, 'PA-2024-004', 'ZF Friedrichshafen AG', 'Zahnräder', 300, '2024-03-12', '2024-03-28', NULL, 'In Produktion', 2),
+    (5, 'PA-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', '2024-04-20', 'Abgeschlossen', 2),
+    (6, 'PA-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'Geplant', 4),
+    (7, 'PA-2024-007', 'Audi AG', 'Pleuel', 250, '2024-04-25', '2024-05-05', NULL, 'Geplant', 2),
+    (8, 'PA-2024-008', 'Porsche AG', 'Kurbelgehäuse', 100, '2024-05-01', '2024-05-10', NULL, 'In Produktion', 1);
+
+    -- Testdaten: Wartungsprotokolle
+    INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id) VALUES
+    ('2024-01-15', 'Routinewartung - Ölwechsel und Filter', 'Thomas Weber', 450.00, 1),
+    ('2024-02-20', 'Austausch Hydraulikschläuche', 'Anna Schmidt', 320.00, 4),
+    ('2024-03-10', 'Software-Update CNC-Steuerung', 'Thomas Weber', 180.00, 2),
+    ('2024-03-22', 'Inspektion nach 5000 Betriebsstunden', 'Michael Klein', 520.00, 3),
+    ('2024-04-05', 'Reparatur Kühlsystem', 'Anna Schmidt', 890.00, 1);
+
+    -- Testdaten: Ersatzteile
+    INSERT INTO ersatzteile VALUES
+    (1, 'ET-001', 'Hydrauliköl 10L', 50, 20),
+    (2, 'ET-002', 'Ölfilter', 30, 15),
+    (3, 'ET-003', 'Hydraulikschlauch 2m', 25, 10),
+    (4, 'ET-004', 'Dichtungssatz', 40, 12),
+    (5, 'ET-005', 'Sicherungsring Set', 100, 30);
+
+    -- Testdaten: Maschinen-Ersatzteile (Zuordnung)
+    INSERT INTO maschinen_ersatzteile VALUES
+    (1, 1, 2),  -- Spritzgussmaschine braucht Hydrauliköl
+    (1, 2, 1),  -- Spritzgussmaschine braucht Ölfilter
+    (2, 4, 1),  -- CNC-Fräse braucht Dichtungssatz
+    (3, 1, 1),  -- Drehmaschine braucht Hydrauliköl
+    (4, 3, 2),  -- Presse braucht Hydraulikschläuche
+    (4, 4, 1);  -- Presse braucht Dichtungssatz
+    ```
 
 ???+ question "Aufgabe 1: NOT NULL Constraints hinzufügen"
 
@@ -531,8 +632,8 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         ALTER COLUMN status SET DEFAULT 'geplant';
 
         -- Test: Füge einen Auftrag ohne Status ein
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
-        VALUES ('PA-TEST-001', 'Test Produkt', 100, '2025-12-01', 1);
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES ('PA-TEST-001', 'Test AG', 'Test Produkt', 100, '2025-12-01', 1);
 
         -- Überprüfen
         SELECT auftragsnummer, status FROM produktionsauftraege WHERE auftragsnummer = 'PA-TEST-001';
@@ -555,15 +656,15 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         ```sql
         -- CHECK Constraint für mindestens 1 Stück hinzufügen
         ALTER TABLE produktionsauftraege
-        ADD CONSTRAINT ck_stueckzahl_mindestens_eins CHECK (stueckzahl >= 1);
+        ADD CONSTRAINT ck_menge_mindestens_eins CHECK (menge >= 1);
 
         -- Test: Versuche 0 Stück einzufügen (sollte fehlschlagen)
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
-        VALUES ('PA-TEST-002', 'Test Produkt 2', 0, '2025-12-01', 1);
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES ('PA-TEST-002', 'Test AG', 'Test Produkt 2', 0, '2025-12-01', 1);
         ```
 
         ```title="Output"
-        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_stueckzahl_mindestens_eins«
+        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_menge_mindestens_eins«
         ```
 
 ???+ question "Aufgabe 7: Multi-Column UNIQUE Constraint"
@@ -611,8 +712,8 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         CHECK (enddatum IS NULL OR enddatum > startdatum);
 
         -- Test 1: Enddatum vor Startdatum (sollte fehlschlagen)
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, enddatum, maschinen_id)
-        VALUES ('PA-TEST-003', 'Test Produkt 3', 50, '2025-12-10', '2025-12-05', 1);
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
+        VALUES ('PA-TEST-003', 'Test AG', 'Test Produkt 3', 50, '2025-12-10', '2025-12-05', 1);
         ```
 
         ```title="Output"
@@ -621,12 +722,12 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
         ```sql
         -- Test 2: Enddatum nach Startdatum (sollte funktionieren)
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, enddatum, maschinen_id)
-        VALUES ('PA-TEST-003', 'Test Produkt 3', 50, '2025-12-05', '2025-12-10', 1);
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
+        VALUES ('PA-TEST-003', 'Test AG', 'Test Produkt 3', 50, '2025-12-05', '2025-12-10', 1);
 
         -- Test 3: Kein Enddatum (sollte funktionieren)
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
-        VALUES ('PA-TEST-004', 'Test Produkt 4', 75, '2025-12-05', 1);
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES ('PA-TEST-004', 'Test AG', 'Test Produkt 4', 75, '2025-12-05', 1);
         ```
 
 ???+ question "Aufgabe 9: Constraint testen und verstehen"
@@ -634,7 +735,7 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
     Teste die Constraints, die du in den vorherigen Aufgaben hinzugefügt hast:
 
     1. Versuche eine Maschine mit `wartungsintervall_tage = 500` einzufügen
-    2. Versuche einen Produktionsauftrag mit `stueckzahl = -10` einzufügen
+    2. Versuche einen Produktionsauftrag mit `menge = -10` einzufügen
     3. Versuche eine Wartung mit `kosten = -1000` einzufügen
 
     Analysiere die Fehlermeldungen und erkläre, warum die Constraints die Einfügung verhindern.
@@ -655,16 +756,16 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         **Erklärung:** Der CHECK Constraint `ck_wartungsintervall_gueltig` erlaubt nur Werte zwischen 30 und 365.
 
         ```sql
-        -- Test 2: Negative Stückzahl
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id)
-        VALUES ('PA-TEST-005', 'Test Produkt 5', -10, '2025-12-01', 1);
+        -- Test 2: Negative Menge
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES ('PA-TEST-005', 'Test AG', 'Test Produkt 5', -10, '2025-12-01', 1);
         ```
 
         ```title="Output"
-        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_stueckzahl_mindestens_eins«
+        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_menge_mindestens_eins«
         ```
 
-        **Erklärung:** Der CHECK Constraint `ck_stueckzahl_mindestens_eins` stellt sicher, dass mindestens 1 Stück produziert wird.
+        **Erklärung:** Der CHECK Constraint `ck_menge_mindestens_eins` stellt sicher, dass mindestens 1 Stück produziert wird.
 
         ```sql
         -- Test 3: Negative Kosten

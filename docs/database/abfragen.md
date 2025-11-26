@@ -1417,50 +1417,74 @@ FROM tabelle;
 
 Nun ist es an der Zeit, unser erlerntes Wissen auf unser Gesamtprojekt anzuwenden! In diesem Kapitel erweitern wir das **Produktionsplanungssystem für TecGuy GmbH**.
 
-Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` und die Tabelle `produktionsauftraege` erstellt. 
+Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Tabellen `produktionsauftraege` und `maschinen` erstellt.
 
-??? info "Datenbankstand aus dem vorherigen Kapitel"
+---
 
-    Falls du die Datenbank noch nicht hast, führe folgenden Code aus:
+???+ info "Übungsvorbereitung - Datenbank zurücksetzen"
+
+    Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+    führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
+    korrekten Ausgangszustand für dieses Kapitel.
 
     ```sql
-    -- Datenbank erstellen
+    -- Zur Datenbank wechseln (oder neu erstellen)
+    DROP DATABASE IF EXISTS produktionsplanung_db;
     CREATE DATABASE produktionsplanung_db;
-
-    -- Zur Datenbank wechseln
     \c produktionsplanung_db
 
-    -- Tabelle erstellen
+    -- Tabelle für Maschinen erstellen
+    CREATE TABLE maschinen (
+        maschinen_id INTEGER PRIMARY KEY,
+        maschinenname VARCHAR(100),
+        maschinentyp VARCHAR(50),
+        produktionshalle VARCHAR(50),
+        anschaffungsjahr INTEGER,
+        maschinenstatus VARCHAR(20),
+        wartungsintervall_tage INTEGER
+    );
+
+    -- Tabelle für Produktionsaufträge erstellen
     CREATE TABLE produktionsauftraege (
         auftrag_id INTEGER PRIMARY KEY,
         auftragsnummer VARCHAR(20),
         kunde VARCHAR(100),
         produkt VARCHAR(100),
         menge INTEGER,
+        startdatum DATE,
         lieferdatum DATE,
-        status VARCHAR(20)
+        status VARCHAR(20),
+        maschinen_id INTEGER
     );
 
-    -- Daten einfügen
+    -- Maschinen-Daten einfügen
+    INSERT INTO maschinen VALUES
+    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+    (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+    (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Wartung', 60),
+    (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+
+    -- Produktionsaufträge-Daten einfügen (erste 4 aus Kapitel 1)
     INSERT INTO produktionsauftraege VALUES
-    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-15', 'In Produktion'),
-    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-20', 'Geplant'),
-    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-18', 'In Produktion'),
-    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-25', 'Geplant');
+    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'Geplant', 2),
+    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'Geplant', 4);
     ```
 
+---
 
 Wir erweitern nun unsere Tabelle mit zusätzlichen Produktionsaufträgen, um unsere Analysen aussagekräftiger zu machen:
 
 ```sql
 -- Weitere Produktionsaufträge hinzufügen
 INSERT INTO produktionsauftraege VALUES
-(5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-22', 'In Produktion'),
-(6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-28', 'Geplant'),
-(7, 'AUF-2024-007', 'Mercedes-Benz', 'Getriebegehäuse', 250, '2024-04-30', 'Abgeschlossen'),
-(8, 'AUF-2024-008', 'Audi AG', 'Pleuelstange', 180, '2024-04-16', 'Abgeschlossen'),
-(9, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-05-05', 'Geplant'),
-(10, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-19', 'In Produktion');
+(5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
+(6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'Geplant', 4),
+(7, 'AUF-2024-007', 'Mercedes-Benz', 'Getriebegehäuse', 250, '2024-04-22', '2024-04-30', 'Abgeschlossen', 1),
+(8, 'AUF-2024-008', 'Audi AG', 'Pleuelstange', 180, '2024-04-08', '2024-04-16', 'Abgeschlossen', 2),
+(9, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'Geplant', 2),
+(10, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
 ```
 
 ---
@@ -1934,6 +1958,102 @@ INSERT INTO produktionsauftraege VALUES
          Mercedes-Benz  |                    1
          Audi AG        |                    1
         (2 rows)
+        ```
+
+---
+
+???+ question "Aufgabe 8: Abfragen auf der Maschinen-Tabelle"
+
+    Nun wollen wir auch die Maschinen-Datenbank analysieren:
+
+    1. Zeige alle **aktiven Maschinen** (maschinenstatus = 'Aktiv')
+    2. Zeige alle Maschinen aus **Halle A**, sortiert nach Anschaffungsjahr
+    3. Wie viele Maschinen gibt es **pro Produktionshalle**?
+    4. Welche Maschine hat das **kürzeste Wartungsintervall**?
+    5. Wie viele Maschinen gibt es **pro Maschinentyp**, sortiert nach Anzahl?
+
+    ??? info "💡 Lösung anzeigen"
+
+        ```sql
+        -- 1. Alle aktiven Maschinen
+        SELECT maschinenname, maschinentyp, produktionshalle
+        FROM maschinen
+        WHERE maschinenstatus = 'Aktiv';
+        ```
+
+        ```title="Output"
+           maschinenname       |   maschinentyp    | produktionshalle
+        -----------------------+-------------------+------------------
+         CNC-Fraese Alpha      | CNC-Fraese        | Halle A
+         Drehbank Delta        | Drehbank          | Halle A
+         Schweissroboter Beta  | Schweissroboter   | Halle C
+        (3 rows)
+        ```
+
+        ```sql
+        -- 2. Maschinen aus Halle A, nach Anschaffungsjahr sortiert
+        SELECT maschinenname, anschaffungsjahr, maschinenstatus
+        FROM maschinen
+        WHERE produktionshalle = 'Halle A'
+        ORDER BY anschaffungsjahr ASC;
+        ```
+
+        ```title="Output"
+           maschinenname    | anschaffungsjahr | maschinenstatus
+        --------------------+------------------+-----------------
+         Drehbank Delta     |             2018 | Aktiv
+         CNC-Fraese Alpha   |             2020 | Aktiv
+        (2 rows)
+        ```
+
+        ```sql
+        -- 3. Anzahl Maschinen pro Halle
+        SELECT produktionshalle, COUNT(*) AS anzahl_maschinen
+        FROM maschinen
+        GROUP BY produktionshalle
+        ORDER BY anzahl_maschinen DESC;
+        ```
+
+        ```title="Output"
+         produktionshalle | anzahl_maschinen
+        ------------------+------------------
+         Halle A          |                2
+         Halle B          |                1
+         Halle C          |                1
+        (3 rows)
+        ```
+
+        ```sql
+        -- 4. Maschine mit kürzestem Wartungsintervall
+        SELECT maschinenname, maschinentyp, wartungsintervall_tage
+        FROM maschinen
+        ORDER BY wartungsintervall_tage ASC
+        LIMIT 1;
+        ```
+
+        ```title="Output"
+           maschinenname | maschinentyp | wartungsintervall_tage
+        -----------------+--------------+------------------------
+         Presse Gamma    | Presse       |                     60
+        (1 row)
+        ```
+
+        ```sql
+        -- 5. Anzahl Maschinen pro Maschinentyp
+        SELECT maschinentyp, COUNT(*) AS anzahl
+        FROM maschinen
+        GROUP BY maschinentyp
+        ORDER BY anzahl DESC;
+        ```
+
+        ```title="Output"
+           maschinentyp    | anzahl
+        -------------------+--------
+         Drehbank          |      1
+         CNC-Fraese        |      1
+         Presse            |      1
+         Schweissroboter   |      1
+        (4 rows)
         ```
 
 ---

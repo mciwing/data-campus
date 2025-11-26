@@ -990,246 +990,243 @@ In nachfolgender Tabelle findest du eine Übersicht gängiger ALTER-Befehle.
 
 ## Übung ✍️
 
-Nun üben wir wieder an unserem bestehenden Projekt. Die **TecGuy GmbH** baut ihr Produktionsplanungssystem weiter aus und benötigt eine Verwaltung für ihre Produktionsmaschinen.
+Nun üben wir wieder an unserem bestehenden Projekt. Die **TecGuy GmbH** möchte ihr Produktionsplanungssystem weiter ausbauen und Daten pflegen.
 
-???+ info "Übungsvorbereitung"
+Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen wir, wie man Daten **ändert, löscht und Tabellenstrukturen anpasst**.
 
-    Stelle sicher, dass du zur TecGuy GmbH Datenbank verbunden bist:
+---
+
+???+ info "Übungsvorbereitung - Datenbank zurücksetzen"
+
+    Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+    führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
+    korrekten Ausgangszustand für dieses Kapitel.
 
     ```sql
-    -- Zur Datenbank wechseln
+    -- Zur Datenbank wechseln (oder neu erstellen)
+    DROP DATABASE IF EXISTS produktionsplanung_db;
+    CREATE DATABASE produktionsplanung_db;
     \c produktionsplanung_db
+
+    -- Tabelle für Maschinen erstellen
+    CREATE TABLE maschinen (
+        maschinen_id INTEGER PRIMARY KEY,
+        maschinenname VARCHAR(100),
+        maschinentyp VARCHAR(50),
+        produktionshalle VARCHAR(50),
+        anschaffungsjahr INTEGER,
+        maschinenstatus VARCHAR(20),
+        wartungsintervall_tage INTEGER
+    );
+
+    -- Tabelle für Produktionsaufträge erstellen
+    CREATE TABLE produktionsauftraege (
+        auftrag_id INTEGER PRIMARY KEY,
+        auftragsnummer VARCHAR(20),
+        kunde VARCHAR(100),
+        produkt VARCHAR(100),
+        menge INTEGER,
+        startdatum DATE,
+        lieferdatum DATE,
+        status VARCHAR(20),
+        maschinen_id INTEGER
+    );
+
+    -- Maschinen-Daten einfügen (aus Kapitel 1 & 2)
+    INSERT INTO maschinen VALUES
+    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+    (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+    (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Wartung', 60),
+    (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+
+    -- Produktionsaufträge-Daten einfügen (alle 10 aus Kapitel 2)
+    INSERT INTO produktionsauftraege VALUES
+    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'Geplant', 2),
+    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'Geplant', 4),
+    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
+    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'Geplant', 4),
+    (7, 'AUF-2024-007', 'Mercedes-Benz', 'Getriebegehäuse', 250, '2024-04-22', '2024-04-30', 'Abgeschlossen', 1),
+    (8, 'AUF-2024-008', 'Audi AG', 'Pleuelstange', 180, '2024-04-08', '2024-04-16', 'Abgeschlossen', 2),
+    (9, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'Geplant', 2),
+    (10, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
     ```
 
-???+ question "Aufgabe 1: Tabelle erstellen"
+---
 
-    Erstelle die Tabelle `maschinen` mit folgenden Eigenschaften:
+???+ question "Aufgabe 1: UPDATE - Produktionsaufträge aktualisieren"
 
-    - `maschinen_id` (INTEGER, PRIMARY KEY)
-    - `maschinenname` (VARCHAR(100), Pflichtfeld)
-    - `maschinentyp` (VARCHAR(50), Pflichtfeld)
-    - `produktionshalle` (VARCHAR(50), Pflichtfeld, DEFAULT `'Halle Zentral'`)
-    - `anschaffungsjahr` (INTEGER, Pflichtfeld, DEFAULT `2024`)
-    - `maschinenstatus` (VARCHAR(20), Pflichtfeld, DEFAULT `'Aktiv'`)
-    - `wartungsintervall_tage` (INTEGER, DEFAULT `90`)
+    In der TecGuy GmbH haben sich Änderungen an Produktionsaufträgen ergeben:
 
-    ??? info "💡 Lösung anzeigen"
+    1. Auftrag **AUF-2024-002** (Audi AG, Kurbelwelle) ist jetzt **"In Produktion"**. Ändere den Status.
 
-        ```sql
-        CREATE TABLE maschinen (
-            maschinen_id INTEGER PRIMARY KEY,
-            maschinenname VARCHAR(100) NOT NULL,
-            maschinentyp VARCHAR(50) NOT NULL,
-            produktionshalle VARCHAR(50) NOT NULL DEFAULT 'Halle Zentral',
-            anschaffungsjahr INTEGER NOT NULL DEFAULT 2024,
-            maschinenstatus VARCHAR(20) NOT NULL DEFAULT 'Aktiv',
-            wartungsintervall_tage INTEGER DEFAULT 90
-        );
-        ```
+    2. Auftrag **AUF-2024-007** (Mercedes-Benz, Getriebegehäuse) wurde mit Verspätung geliefert. Ändere das Lieferdatum auf `'2024-05-02'`.
 
-        **Wichtige Konzepte:**
+    3. Alle Aufträge mit Status **"Geplant"** sollen den Status **"In Vorbereitung"** bekommen.
 
-        - **NOT NULL ohne DEFAULT** (`maschinenname`, `maschinentyp`) → **muss** beim INSERT angegeben werden
-        - **NOT NULL mit DEFAULT** (`produktionshalle`, `anschaffungsjahr`, `maschinenstatus`) → kann weggelassen werden (bekommt DEFAULT), aber **nicht** explizit NULL
-        - **Nur DEFAULT ohne NOT NULL** (`wartungsintervall_tage`) → kann weggelassen werden (bekommt DEFAULT) **oder** explizit NULL
-
-???+ question "Aufgabe 2: Maschinen einfügen"
-
-    Füge Maschinen ein und **teste das Verhalten** von DEFAULT und NOT NULL:
-
-    1. Füge **CNC-Fraese Alpha** (ID: 1) ein:
-        - Name: `'CNC-Fraese Alpha'`
-        - Typ: `'CNC-Fraese'`
-        - **Nur diese beiden Spalten angeben** → Rest soll DEFAULT-Werte bekommen
-
-    2. Füge **Drehbank Beta** (ID: 2) ein:
-        - Name: `'Drehbank Beta'`
-        - Typ: `'Drehbank'`
-        - Halle: `'Halle Nord'` (DEFAULT überschreiben)
-
-    3. Füge **Schweissroboter Gamma** (ID: 3) ein:
-        - Name: `'Schweissroboter Gamma'`
-        - Typ: `'Schweissroboter'`
-        - Halle: `'Halle Sued'`
-        - Anschaffungsjahr: `2020`
-        - Status: `'Wartung'`
-        - Wartungsintervall: `60` Tage
-
-    4. Füge **Lackieranlage Delta** (ID: 4) ein:
-        - Name: `'Lackieranlage Delta'`
-        - Typ: `'Lackieranlage'`
-        - Wartungsintervall: **NULL** (explizit)
-
-    5. **Teste**, was passiert, wenn du versuchst eine Maschine **ohne** `maschinentyp` einzufügen (sollte fehlschlagen!):
-        ```sql
-        INSERT INTO maschinen (maschinen_id, maschinenname)
-        VALUES (99, 'Fehlertest');
-        ```
-
-    6. Zeige alle Maschinen an.
-
-    ??? info "💡 Lösung anzeigen"
-
-        ```sql
-        -- 1. CNC-Fraese Alpha - nur Pflichtfelder, Rest DEFAULT
-        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp)
-        VALUES (1, 'CNC-Fraese Alpha', 'CNC-Fraese');
-        -- Ergebnis: produktionshalle='Halle Zentral', anschaffungsjahr=2024,
-        --           maschinenstatus='Aktiv', wartungsintervall_tage=90
-
-        -- 2. Drehbank Beta - DEFAULT teilweise überschreiben
-        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp, produktionshalle)
-        VALUES (2, 'Drehbank Beta', 'Drehbank', 'Halle Nord');
-
-        -- 3. Schweissroboter Gamma - alle Werte explizit
-        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp, produktionshalle, anschaffungsjahr, maschinenstatus, wartungsintervall_tage)
-        VALUES (3, 'Schweissroboter Gamma', 'Schweissroboter', 'Halle Sued', 2020, 'Wartung', 60);
-
-        -- 4. Lackieranlage Delta - wartungsintervall_tage auf NULL
-        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp, wartungsintervall_tage)
-        VALUES (4, 'Lackieranlage Delta', 'Lackieranlage', NULL);
-        -- wartungsintervall_tage=NULL (funktioniert, da kein NOT NULL!)
-
-        -- 5. Fehlertest - sollte fehlschlagen
-        INSERT INTO maschinen (maschinen_id, maschinenname)
-        VALUES (99, 'Fehlertest');
-        -- ❌ FEHLER: NULL value in column "maschinentyp" violates not-null constraint
-
-        -- 6. Alle Maschinen anzeigen
-        SELECT * FROM maschinen ORDER BY maschinen_id;
-        ```
-
-???+ question "Aufgabe 3: UPDATE - Daten aktualisieren"
-
-    In der TecGuy GmbH haben sich Änderungen ergeben:
-
-    1. **CNC-Fraese Alpha** (ID 1) geht in Wartung. Ändere den Status auf `'Wartung'`.
-
-    2. **Drehbank Beta** (ID 2) wird verlegt. Ändere die Halle auf `'Halle West'` **und** das Wartungsintervall auf `120` Tage (beide in einem UPDATE).
-
-    3. **Schweissroboter Gamma** (ID 3) ist fertig gewartet. Setze den Status zurück auf `'Aktiv'`.
-
-    4. Alle Maschinen **ohne** Wartungsintervall (`wartungsintervall_tage IS NULL`) sollen das Standard-Wartungsintervall von `90` Tagen bekommen.
+    4. Der Auftrag **AUF-2024-006** (VW, Kolben) wurde auf eine andere Maschine verlegt. Ändere `maschinen_id` auf `1`.
 
     **Wichtig:** Prüfe immer erst mit `SELECT`, bevor du `UPDATE` ausführst!
 
     ??? info "💡 Lösung anzeigen"
 
         ```sql
-        -- 1. CNC-Fraese Alpha in Wartung setzen
-        SELECT * FROM maschinen WHERE maschinen_id = 1;  -- Safety check
-        UPDATE maschinen
-        SET maschinenstatus = 'Wartung'
-        WHERE maschinen_id = 1;
+        -- 1. AUF-2024-002 Status ändern
+        SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-002';  -- Safety check
+        UPDATE produktionsauftraege
+        SET status = 'In Produktion'
+        WHERE auftragsnummer = 'AUF-2024-002';
 
-        -- 2. Drehbank Beta: Halle und Wartungsintervall ändern
-        SELECT * FROM maschinen WHERE maschinen_id = 2;  -- Safety check
-        UPDATE maschinen
-        SET produktionshalle = 'Halle West',
-            wartungsintervall_tage = 120
-        WHERE maschinen_id = 2;
+        -- 2. AUF-2024-007 Lieferdatum ändern
+        SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-007';  -- Safety check
+        UPDATE produktionsauftraege
+        SET lieferdatum = '2024-05-02'
+        WHERE auftragsnummer = 'AUF-2024-007';
 
-        -- 3. Schweissroboter Gamma auf Aktiv setzen
+        -- 3. Alle "Geplant" → "In Vorbereitung"
+        SELECT * FROM produktionsauftraege WHERE status = 'Geplant';  -- Safety check
+        UPDATE produktionsauftraege
+        SET status = 'In Vorbereitung'
+        WHERE status = 'Geplant';
+
+        -- 4. AUF-2024-006 Maschine wechseln
+        SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-006';  -- Safety check
+        UPDATE produktionsauftraege
+        SET maschinen_id = 1
+        WHERE auftragsnummer = 'AUF-2024-006';
+
+        -- Ergebnis prüfen
+        SELECT auftragsnummer, kunde, status, lieferdatum, maschinen_id
+        FROM produktionsauftraege
+        ORDER BY auftrag_id;
+        ```
+
+???+ question "Aufgabe 2: UPDATE - Maschinen aktualisieren"
+
+    In der TecGuy GmbH haben sich Änderungen an Maschinen ergeben:
+
+    1. **Presse Gamma** (ID 3) ist fertig gewartet. Setze den Status auf `'Aktiv'`.
+
+    2. **CNC-Fraese Alpha** (ID 1) geht in Wartung. Ändere den Status auf `'Wartung'`.
+
+    3. **Drehbank Delta** (ID 2) wird verlegt. Ändere die Halle auf `'Halle D'`.
+
+    4. Alle Maschinen in **Halle C** sollen das Wartungsintervall auf `120` Tage verlängert bekommen.
+
+    **Wichtig:** Prüfe immer erst mit `SELECT`, bevor du `UPDATE` ausführst!
+
+    ??? info "💡 Lösung anzeigen"
+
+        ```sql
+        -- 1. Presse Gamma Wartung abgeschlossen
         SELECT * FROM maschinen WHERE maschinen_id = 3;  -- Safety check
         UPDATE maschinen
         SET maschinenstatus = 'Aktiv'
         WHERE maschinen_id = 3;
 
-        -- 4. Allen Maschinen ohne Wartungsintervall 90 Tage geben
-        SELECT * FROM maschinen WHERE wartungsintervall_tage IS NULL;  -- Safety check
+        -- 2. CNC-Fraese Alpha in Wartung setzen
+        SELECT * FROM maschinen WHERE maschinen_id = 1;  -- Safety check
         UPDATE maschinen
-        SET wartungsintervall_tage = 90
-        WHERE wartungsintervall_tage IS NULL;
+        SET maschinenstatus = 'Wartung'
+        WHERE maschinen_id = 1;
+
+        -- 3. Drehbank Delta verlegen
+        SELECT * FROM maschinen WHERE maschinen_id = 2;  -- Safety check
+        UPDATE maschinen
+        SET produktionshalle = 'Halle D'
+        WHERE maschinen_id = 2;
+
+        -- 4. Alle Maschinen in Halle C: Wartungsintervall verlängern
+        SELECT * FROM maschinen WHERE produktionshalle = 'Halle C';  -- Safety check
+        UPDATE maschinen
+        SET wartungsintervall_tage = 120
+        WHERE produktionshalle = 'Halle C';
 
         -- Ergebnis prüfen
         SELECT * FROM maschinen ORDER BY maschinen_id;
         ```
 
-???+ question "Aufgabe 4: UPDATE mit Berechnungen und String-Operationen"
+???+ question "Aufgabe 3: UPDATE mit Berechnungen und String-Operationen"
 
-    Erweiterte UPDATE-Operationen:
+    Erweiterte UPDATE-Operationen mit Berechnungen und String-Funktionen:
 
-    1. **Alle** Maschinen aus dem Jahr 2024 (DEFAULT-Wert!) wurden tatsächlich 2023 angeschafft. Korrigiere das Anschaffungsjahr indem du **1 Jahr abziehst**.
+    1. Alle Aufträge mit einer **Menge kleiner als 200** sollen um **50 Stück erhöht** werden. (Berechnung: `menge = menge + 50`)
 
-    2. Das Wartungsintervall für alle Maschinen vom Typ `'CNC-Fraese'` soll um **30 Tage verlängert** werden (aktueller Wert + 30).
+    2. Alle Produktionshallen in der `maschinen` Tabelle sollen umbenannt werden: Ersetze `'Halle'` durch `'Produktionshalle'`.
 
-    3. Alle Produktionshallen sollen umbenannt werden: Ersetze `"Halle"` durch `"Produktionshalle"`.
+    3. Das Wartungsintervall für Maschinen vom Typ `'Drehbank'` soll um **20 Tage verkürzt** werden.
 
-    4. Alle Maschinennamen in Hallen die "West" enthalten sollen das Präfix `"West-"` bekommen.
+    4. Alle Auftragsnummern sollen das Präfix `'TEC-'` bekommen (z.B. `'AUF-2024-001'` → `'TEC-AUF-2024-001'`).
 
     **Tipp:** Nutze Berechnungen (`+`, `-`) und String-Funktionen (`REPLACE`, `CONCAT`).
 
     ??? info "💡 Lösung anzeigen"
 
         ```sql
-        -- 1. Anschaffungsjahr korrigieren (2024 → 2023)
-        SELECT * FROM maschinen WHERE anschaffungsjahr = 2024;  -- Safety check
-        UPDATE maschinen
-        SET anschaffungsjahr = anschaffungsjahr - 1
-        WHERE anschaffungsjahr = 2024;
+        -- 1. Kleine Aufträge um 50 Stück erhöhen
+        SELECT * FROM produktionsauftraege WHERE menge < 200;  -- Safety check
+        UPDATE produktionsauftraege
+        SET menge = menge + 50
+        WHERE menge < 200;
 
-        -- 2. Wartungsintervall für CNC-Fraesen verlängern
-        SELECT * FROM maschinen WHERE maschinentyp = 'CNC-Fraese';  -- Safety check
-        UPDATE maschinen
-        SET wartungsintervall_tage = wartungsintervall_tage + 30
-        WHERE maschinentyp = 'CNC-Fraese';
-
-        -- 3. Produktionshallen umbenennen
+        -- 2. Produktionshallen umbenennen
         UPDATE maschinen
         SET produktionshalle = REPLACE(produktionshalle, 'Halle', 'Produktionshalle');
 
-        -- 4. Präfix für Maschinen in West-Hallen
-        SELECT * FROM maschinen WHERE produktionshalle LIKE '%West%';  -- Safety check
+        -- 3. Wartungsintervall für Drehbänke verkürzen
+        SELECT * FROM maschinen WHERE maschinentyp = 'Drehbank';  -- Safety check
         UPDATE maschinen
-        SET maschinenname = CONCAT('West-', maschinenname)
-        WHERE produktionshalle LIKE '%West%';
+        SET wartungsintervall_tage = wartungsintervall_tage - 20
+        WHERE maschinentyp = 'Drehbank';
 
-        -- Ergebnis prüfen
-        SELECT * FROM maschinen ORDER BY maschinen_id;
+        -- 4. Präfix für alle Auftragsnummern
+        UPDATE produktionsauftraege
+        SET auftragsnummer = CONCAT('TEC-', auftragsnummer);
+
+        -- Ergebnisse prüfen
+        SELECT auftragsnummer, produkt, menge FROM produktionsauftraege ORDER BY auftrag_id;
+        SELECT maschinenname, maschinentyp, produktionshalle, wartungsintervall_tage FROM maschinen ORDER BY maschinen_id;
         ```
 
-???+ question "Aufgabe 5: DELETE - Maschinen löschen"
+???+ question "Aufgabe 4: DELETE - Datensätze löschen"
 
-    Die TecGuy GmbH muss einige Maschinen ausmustern:
+    Die TecGuy GmbH muss Daten bereinigen:
 
-    1. Die **Lackieranlage Delta** (ID 4) wird verschrottet. Lösche sie aus der Datenbank.
+    1. Alle **abgeschlossenen Aufträge** (`status = 'Abgeschlossen'`) sollen aus der Datenbank gelöscht werden.
 
-    2. Lösche dann **alle** Maschinen aus dem Jahr 2023.
+    2. Lösche die Maschine **Presse Gamma** (ID 3).
+
+    3. Lösche alle Aufträge mit einer **Menge kleiner als 100**.
 
     **Goldene Regel:** Immer erst `SELECT` mit der gleichen WHERE-Bedingung, dann `DELETE`!
 
     ??? info "💡 Lösung anzeigen"
 
         ```sql
-        -- 1. Lackieranlage Delta löschen
-        SELECT * FROM maschinen WHERE maschinen_id = 4;  -- Safety check
-        DELETE FROM maschinen WHERE maschinen_id = 4;
+        -- 1. Abgeschlossene Aufträge löschen
+        SELECT * FROM produktionsauftraege WHERE status = 'Abgeschlossen';  -- Safety check
+        DELETE FROM produktionsauftraege WHERE status = 'Abgeschlossen';
 
-        -- 2. Testmaschinen einfügen
-        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp)
-        VALUES (98, 'Testmaschine 1', 'Test');
+        -- 2. Presse Gamma löschen
+        SELECT * FROM maschinen WHERE maschinen_id = 3;  -- Safety check
+        DELETE FROM maschinen WHERE maschinen_id = 3;
 
-        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp)
-        VALUES (99, 'Testmaschine 2', 'Test');
+        -- 3. Kleine Aufträge löschen (< 100 Stück)
+        SELECT * FROM produktionsauftraege WHERE menge < 100;  -- Safety check
+        DELETE FROM produktionsauftraege WHERE menge < 100;
 
-        -- Prüfen welche Maschinen aus 2023 sind
-        SELECT * FROM maschinen WHERE anschaffungsjahr = 2023;  -- Safety check
-
-        -- Alle Maschinen aus 2023 löschen
-        DELETE FROM maschinen WHERE anschaffungsjahr = 2023;
-        -- Löscht beide Testmaschinen (ID 98, 99) und andere aus 2023
-
-        -- 3. Sicherheitscheck (NICHT AUSFÜHREN!)
+        -- WICHTIGER SICHERHEITSHINWEIS (NICHT AUSFÜHREN!)
+        -- DELETE FROM produktionsauftraege; würde ALLE Aufträge löschen!
         -- DELETE FROM maschinen; würde ALLE Maschinen löschen!
         -- NIEMALS ohne WHERE-Klausel verwenden!
 
-        -- Verbleibende Maschinen anzeigen
+        -- Verbleibende Daten anzeigen
+        SELECT * FROM produktionsauftraege ORDER BY auftrag_id;
         SELECT * FROM maschinen ORDER BY maschinen_id;
         ```
 
-        **Wichtige Beobachtung:**
-
-        Die Testmaschinen bekamen automatisch `anschaffungsjahr = 2024` (DEFAULT), welches in Aufgabe 4 auf 2023 korrigiert wurde. Daher werden sie mit dem DELETE erfasst!
+        **Wichtig:** Diese Löschungen sind **dauerhaft**! Es gibt kein "Rückgängig" in SQL!
 
 ---
 

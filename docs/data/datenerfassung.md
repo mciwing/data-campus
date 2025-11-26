@@ -102,11 +102,10 @@ Das Gehirn filtert diese Rohdaten, **reduziert sie auf das Wesentliche** und for
  
     Zum Vergleich: die geschätzte Speicherkapazität unseres Gehirns beträgt ~60 TB  
 
-<br>
 
-> **💡 Reflexion:**
-> Unser Gehirn agiert wie ein intelligentes Filtersystem – es verwirft 99,99 % aller Daten.
-> Auch in der Informatik ist das Ziel, **relevante Informationen aus großen Datenmengen** zu extrahieren – ein Konzept, das der biologischen Wahrnehmung erstaunlich ähnelt.
+???+ tip "Reflexion"
+    Unser Gehirn agiert wie ein intelligentes Filtersystem – es verwirft 99,99 % aller Daten.
+    Auch in der Informatik ist das Ziel, **relevante Informationen aus großen Datenmengen** zu extrahieren – ein Konzept, das der biologischen Wahrnehmung erstaunlich ähnelt.
 
 ---
 
@@ -139,7 +138,10 @@ Er wandelt eine physikalische Größe (z. B. Temperatur, Druck, Licht) in ein el
 - Ein **Verstärker** erhöht die Leistung des Sensorsignals und kann gleichzeitig **Nichtlinearitäten ausgleichen**. Er sorgt also dafür, dass das Signal robust und auswertbar wird.
 - Unsere reale Welt ist **analog**, aber Computer verarbeiten **digitale Daten**.
 Daher wird ein **A/D-Wandler (ADC)** benötigt, der analoge Signale in digitale Werte umwandelt.
-> 📘 **Merke**: Manche Systeme benötigen keinen A/D-Wandler, weil die Daten bereits **digital** vorliegen. Das gilt z. B. für Daten aus einer **Datenbank** (Kundenverhalten, Umsätze) oder für **digitale Sensoren** (z. B. Inkrementalgeber, I²C-Sensoren).
+
+    ???+ info "Merke"
+        Manche Systeme benötigen keinen A/D-Wandler, weil die Daten bereits **digital** vorliegen. Das gilt z. B. für Daten aus einer **Datenbank** (Kundenverhalten, Umsätze) oder für **digitale Sensoren** (z. B. Inkrementalgeber, I²C-Sensoren).
+
 - In der Steuereinheit findet die **Datenverarbeitung** statt – hier kommen Methoden der **Data Science**, **Regelungstechnik** oder **Signalverarbeitung** zum Einsatz.
 Das kann ein **Computer**, ein **Mikrocontroller**, ein **FPGA** oder sogar ein neuronales Netzwerk sein.
 - Wenn das System mit der analogen Welt interagieren soll (z. B. Anzeige, Motor, Lautsprecher), muss das digitale Signal wieder in ein **analoges Signal** umgewandelt werden. Dazu dient der **D/A-Wandler (DAC)**.
@@ -237,10 +239,12 @@ Alle Daten werden **fusioniert** und von **neuronalen Netzen** analysiert, um En
 
 ---
 
-> **💡 Fazit:**
-> Sowohl biologische als auch technische Systeme funktionieren nach demselben Prinzip:
-> **Daten aufnehmen – verarbeiten – reagieren.**
-> In der Informatik nennen wir das den Prozess der **Datenerfassung**, der die Grundlage jeder Datenanalyse bildet.
+???+ tip "Fazit"
+    Sowohl biologische als auch technische Systeme funktionieren nach demselben Prinzip:
+
+    **Daten aufnehmen – verarbeiten – reagieren.**
+
+    In der Informatik nennen wir das den Prozess der **Datenerfassung**, der die Grundlage jeder Datenanalyse bildet.
 
 ---
 

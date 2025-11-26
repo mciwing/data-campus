@@ -56,8 +56,6 @@ nav:
     - Transaktionen: database/transaktionen.md
     - Ausblick: database/ausblick.md
 
-  - Excel:
-    - Home: excel/index.md
 
 extra_css:
   - stylesheets/colors.css

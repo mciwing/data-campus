@@ -479,45 +479,138 @@ Ein `SAVEPOINT` ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du ka
 
 Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem** an! Die Übungen decken verschiedene Transaktionsszenarien ab und helfen dir, ACID-Prinzipien in der Praxis anzuwenden.
 
-???+ info "Übungsvorbereitung"
+???+ info "Übungsvorbereitung – Datenbank zurücksetzen"
 
-    Stelle sicher, dass du zur TecGuy GmbH Datenbank verbunden bist:
+    Falls du die vorherigen Kapitel nicht abgeschlossen hast oder von vorne beginnen möchtest, kannst du mit folgendem Code-Block die Datenbank komplett neu aufsetzen:
 
     ```sql
+    -- Datenbank löschen und neu erstellen
+    DROP DATABASE IF EXISTS produktionsplanung_db;
+    CREATE DATABASE produktionsplanung_db;
+
     -- Zur Datenbank wechseln
     \c produktionsplanung_db
-    ```
 
-    **Benötigte Tabellen:**
-    - `maschinen`
-    - `produktionsauftraege`
-    - `wartungsprotokolle`
-    - `ersatzteile`
-    - `maschinen_ersatzteile`
+    -- Tabelle: Maschinen
+    CREATE TABLE maschinen (
+        maschinen_id INTEGER PRIMARY KEY,
+        maschinenname VARCHAR(100) NOT NULL,
+        maschinentyp VARCHAR(50),
+        maschinencode VARCHAR(20),
+        produktionshalle VARCHAR(50),
+        anschaffungsjahr INTEGER,
+        maschinenstatus VARCHAR(20),
+        wartungsintervall_tage INTEGER
+    );
 
-    **Zusätzliche Tabelle für Übungen erstellen:**
+    -- Tabelle: Produktionsaufträge
+    CREATE TABLE produktionsauftraege (
+        auftrag_id INTEGER PRIMARY KEY,
+        auftragsnummer VARCHAR(20),
+        kunde VARCHAR(100),
+        produkt VARCHAR(100),
+        menge INTEGER,
+        startdatum DATE,
+        lieferdatum DATE,
+        enddatum DATE,
+        status VARCHAR(20),
+        maschinen_id INTEGER,
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE RESTRICT
+    );
 
-    ```sql
-    -- Lagerverwaltung für Ersatzteile
-    CREATE TABLE IF NOT EXISTS lager (
+    -- Tabelle: Wartungsprotokolle (1:n Beziehung zu Maschinen)
+    CREATE TABLE wartungsprotokolle (
+        wartungs_id SERIAL PRIMARY KEY,
+        wartungsdatum DATE NOT NULL,
+        beschreibung TEXT,
+        techniker VARCHAR(100),
+        kosten NUMERIC(10, 2),
+        maschinen_id INTEGER NOT NULL,
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE CASCADE
+    );
+
+    -- Tabelle: Ersatzteile
+    CREATE TABLE ersatzteile (
+        ersatzteil_id INTEGER PRIMARY KEY,
+        teilenummer VARCHAR(20) NOT NULL UNIQUE,
+        bezeichnung VARCHAR(100) NOT NULL,
+        lagerbestand INTEGER DEFAULT 0,
+        mindestbestand INTEGER DEFAULT 10
+    );
+
+    -- Tabelle: Maschinen-Ersatzteile (n:m Beziehung)
+    CREATE TABLE maschinen_ersatzteile (
+        maschinen_id INTEGER,
+        ersatzteil_id INTEGER,
+        menge_pro_wartung INTEGER,
+        PRIMARY KEY (maschinen_id, ersatzteil_id),
+        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+            ON DELETE CASCADE,
+        FOREIGN KEY (ersatzteil_id) REFERENCES ersatzteile(ersatzteil_id)
+            ON DELETE CASCADE
+    );
+
+    -- Tabelle: Lager (NEU für Transaktionsübungen)
+    CREATE TABLE lager (
         lager_id SERIAL PRIMARY KEY,
         standort VARCHAR(100) NOT NULL,
         ersatzteil_id INTEGER REFERENCES ersatzteile(ersatzteil_id),
         bestand INTEGER NOT NULL CHECK (bestand >= 0)
     );
 
-    -- Testdaten einfügen (falls noch nicht vorhanden)
-    INSERT INTO lager (standort, ersatzteil_id, bestand)
-    SELECT 'Hauptlager', ersatzteil_id, 100
-    FROM ersatzteile
-    WHERE NOT EXISTS (SELECT 1 FROM lager)
-    LIMIT 3;
+    -- Testdaten: Maschinen
+    INSERT INTO maschinen VALUES
+    (1, 'Spritzgussmaschine Alpha', 'Spritzgussmaschine', 'M-001', 'Halle A', 2018, 'In Betrieb', 90),
+    (2, 'CNC-Fräse Beta', 'CNC-Fräse', 'M-002', 'Halle B', 2020, 'In Betrieb', 60),
+    (3, 'Drehmaschine Gamma', 'Drehmaschine', 'M-003', 'Halle A', 2019, 'Wartung', 120),
+    (4, 'Presse Delta', 'Hydraulikpresse', 'M-004', 'Halle C', 2021, 'In Betrieb', 180);
 
-    INSERT INTO lager (standort, ersatzteil_id, bestand)
-    SELECT 'Produktionslager', ersatzteil_id, 50
-    FROM ersatzteile
-    WHERE NOT EXISTS (SELECT 1 FROM lager WHERE standort = 'Produktionslager')
-    LIMIT 3;
+    -- Testdaten: Produktionsaufträge
+    INSERT INTO produktionsauftraege VALUES
+    (1, 'PA-2024-001', 'Bosch GmbH', 'Kunststoffgehäuse', 500, '2024-03-01', '2024-03-15', NULL, 'In Produktion', 1),
+    (2, 'PA-2024-002', 'Siemens AG', 'Metallrahmen', 200, '2024-03-05', '2024-03-20', NULL, 'Geplant', 2),
+    (3, 'PA-2024-003', 'Daimler AG', 'Präzisionsteile', 150, '2024-03-10', '2024-03-25', NULL, 'Geplant', 3),
+    (4, 'PA-2024-004', 'ZF Friedrichshafen AG', 'Zahnräder', 300, '2024-03-12', '2024-03-28', NULL, 'In Produktion', 2),
+    (5, 'PA-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', '2024-04-20', 'Abgeschlossen', 2),
+    (6, 'PA-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'Geplant', 4),
+    (7, 'PA-2024-007', 'Audi AG', 'Pleuel', 250, '2024-04-25', '2024-05-05', NULL, 'Geplant', 2),
+    (8, 'PA-2024-008', 'Porsche AG', 'Kurbelgehäuse', 100, '2024-05-01', '2024-05-10', NULL, 'In Produktion', 1);
+
+    -- Testdaten: Wartungsprotokolle
+    INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id) VALUES
+    ('2024-01-15', 'Routinewartung - Ölwechsel und Filter', 'Thomas Weber', 450.00, 1),
+    ('2024-02-20', 'Austausch Hydraulikschläuche', 'Anna Schmidt', 320.00, 4),
+    ('2024-03-10', 'Software-Update CNC-Steuerung', 'Thomas Weber', 180.00, 2),
+    ('2024-03-22', 'Inspektion nach 5000 Betriebsstunden', 'Michael Klein', 520.00, 3),
+    ('2024-04-05', 'Reparatur Kühlsystem', 'Anna Schmidt', 890.00, 1);
+
+    -- Testdaten: Ersatzteile
+    INSERT INTO ersatzteile VALUES
+    (1, 'ET-001', 'Hydrauliköl 10L', 50, 20),
+    (2, 'ET-002', 'Ölfilter', 30, 15),
+    (3, 'ET-003', 'Hydraulikschlauch 2m', 25, 10),
+    (4, 'ET-004', 'Dichtungssatz', 40, 12),
+    (5, 'ET-005', 'Sicherungsring Set', 100, 30);
+
+    -- Testdaten: Maschinen-Ersatzteile (Zuordnung)
+    INSERT INTO maschinen_ersatzteile VALUES
+    (1, 1, 2),  -- Spritzgussmaschine braucht Hydrauliköl
+    (1, 2, 1),  -- Spritzgussmaschine braucht Ölfilter
+    (2, 4, 1),  -- CNC-Fräse braucht Dichtungssatz
+    (3, 1, 1),  -- Drehmaschine braucht Hydrauliköl
+    (4, 3, 2),  -- Presse braucht Hydraulikschläuche
+    (4, 4, 1);  -- Presse braucht Dichtungssatz
+
+    -- Testdaten: Lager (für Transaktionsübungen)
+    INSERT INTO lager (standort, ersatzteil_id, bestand) VALUES
+    ('Hauptlager', 1, 100),
+    ('Hauptlager', 2, 80),
+    ('Hauptlager', 3, 60),
+    ('Produktionslager', 1, 50),
+    ('Produktionslager', 2, 40),
+    ('Produktionslager', 3, 30);
     ```
 
 ???+ question "Aufgabe 1: Ersatzteile-Transfer zwischen Lagern"
@@ -534,10 +627,10 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
 
         ```sql
         -- Aktuellen Bestand anzeigen
-        SELECT l.lager_id, l.standort, e.teilname, l.bestand
+        SELECT l.lager_id, l.standort, e.bezeichnung, l.bestand
         FROM lager l
         JOIN ersatzteile e ON l.ersatzteil_id = e.ersatzteil_id
-        ORDER BY l.standort, e.teilname;
+        ORDER BY l.standort, e.bezeichnung;
         ```
 
         ```sql
@@ -581,8 +674,8 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         WHERE maschinen_id = 1 AND status = 'in_produktion';
 
         -- Wenn keine aktiven Aufträge (COUNT = 0), dann neuen Auftrag erstellen:
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id, status)
-        VALUES ('PA-2025-999', 'Test Widget', 500, CURRENT_DATE, 1, 'geplant');
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
+        VALUES ('PA-2025-999', 'Test GmbH', 'Test Widget', 500, CURRENT_DATE, 1, 'geplant');
 
         -- Falls die Maschine belegt wäre:
         -- ROLLBACK;
@@ -755,9 +848,9 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         BEGIN;
 
         -- Neuen Produktionsauftrag erstellen
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id, status)
-        VALUES ('PA-2025-1000', 'Spezialkomponente XY', 200, CURRENT_DATE, 3, 'in_produktion')
-        RETURNING auftrags_id;
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
+        VALUES ('PA-2025-1000', 'Special Parts AG', 'Spezialkomponente XY', 200, CURRENT_DATE, 3, 'in_produktion')
+        RETURNING auftrag_id;
 
         -- Wartungsplan für nach dem Auftrag erstellen
         INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
@@ -839,8 +932,8 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         BEGIN;
 
         -- 1. Produktionsauftrag erstellen
-        INSERT INTO produktionsauftraege (auftragsnummer, produktname, stueckzahl, startdatum, maschinen_id, status)
-        VALUES ('PA-2025-KOMPLEX', 'Komplexes Bauteil', 100, CURRENT_DATE, 1, 'geplant');
+        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
+        VALUES ('PA-2025-KOMPLEX', 'Precision Tech AG', 'Komplexes Bauteil', 100, CURRENT_DATE, 1, 'geplant');
 
         -- 2. Benötigte Ersatzteile aus Lager entnehmen
         UPDATE lager
@@ -857,11 +950,11 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         WHERE auftragsnummer = 'PA-2025-KOMPLEX';
 
         -- 4. Überprüfung aller Änderungen
-        SELECT p.auftragsnummer, p.status, p.produktname
+        SELECT p.auftragsnummer, p.status, p.produkt
         FROM produktionsauftraege p
         WHERE auftragsnummer = 'PA-2025-KOMPLEX';
 
-        SELECT l.standort, e.teilname, l.bestand
+        SELECT l.standort, e.bezeichnung, l.bestand
         FROM lager l
         JOIN ersatzteile e ON l.ersatzteil_id = e.ersatzteil_id
         WHERE l.standort = 'Produktionslager';

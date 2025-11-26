@@ -402,13 +402,31 @@ SELECT * FROM tabellenname;
 
 Jetzt geht es darum, das Erlernte in einem **praxisnahen Projekt** anzuwenden. In diesem und den folgenden Kapiteln baust du Schritt für Schritt ein **Produktionsplanungssystem** für einen mittelständischen Fertigungsbetrieb auf.
 
-Die **TecGuy GmbH** ist ein mittelständisches Fertigungsunternehmen, das Präzisionsteile für die Automobilindustrie herstellt. Das Unternehmen möchte ein digitales System zur Verwaltung seiner Produktionsaufträge aufbauen.
+Die **TecGuy GmbH** ist ein mittelständisches Fertigungsunternehmen, das Präzisionsteile für die Automobilindustrie herstellt. Das Unternehmen möchte ein digitales System zur Verwaltung seiner Produktionsaufträge und Produktionsmaschinen aufbauen.
 
-In diesem Kapitel startest du mit der **ersten Tabelle**: Produktionsaufträge.
+In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsaufträge und Maschinen.
 
 ---
 
-???+ question "Aufgabe 1: Datenbank und Tabelle erstellen"
+???+ info "Übungsvorbereitung - Datenbank zurücksetzen"
+
+    Falls du neu startest oder die Übung wiederholen möchtest, führe dieses Setup aus.
+    Es löscht alle bestehenden Daten und erstellt den korrekten Ausgangszustand für dieses Kapitel.
+
+    ```sql
+    -- Datenbank löschen falls vorhanden und neu erstellen
+    DROP DATABASE IF EXISTS produktionsplanung_db;
+    CREATE DATABASE produktionsplanung_db;
+
+    -- Zur Datenbank wechseln
+    \c produktionsplanung_db
+    ```
+
+    **Hinweis:** Ab jetzt kannst du direkt mit Aufgabe 1 starten.
+
+---
+
+???+ question "Aufgabe 1: Datenbank und Tabellen erstellen"
 
     **Schritt 1:** Erstelle eine neue Datenbank für das Projekt:
 
@@ -424,45 +442,93 @@ In diesem Kapitel startest du mit der **ersten Tabelle**: Produktionsaufträge.
     - `kunde` (VARCHAR(100))
     - `produkt` (VARCHAR(100))
     - `menge` (INTEGER)
+    - `startdatum` (DATE)
     - `lieferdatum` (DATE)
     - `status` (VARCHAR(20))
+    - `maschinen_id` (INTEGER)
+
+    **Schritt 3:** Erstelle eine Tabelle `maschinen` mit folgenden Spalten:
+
+    - `maschinen_id` (INTEGER, Primärschlüssel)
+    - `maschinenname` (VARCHAR(100))
+    - `maschinentyp` (VARCHAR(50))
+    - `produktionshalle` (VARCHAR(50))
+    - `anschaffungsjahr` (INTEGER)
+    - `maschinenstatus` (VARCHAR(20))
+    - `wartungsintervall_tage` (INTEGER)
 
     ??? info "💡 Lösung anzeigen"
 
         ```sql
+        -- Tabelle für Produktionsaufträge
         CREATE TABLE produktionsauftraege (
             auftrag_id INTEGER PRIMARY KEY,
             auftragsnummer VARCHAR(20),
             kunde VARCHAR(100),
             produkt VARCHAR(100),
             menge INTEGER,
+            startdatum DATE,
             lieferdatum DATE,
-            status VARCHAR(20)
+            status VARCHAR(20),
+            maschinen_id INTEGER
+        );
+
+        -- Tabelle für Produktionsmaschinen
+        CREATE TABLE maschinen (
+            maschinen_id INTEGER PRIMARY KEY,
+            maschinenname VARCHAR(100),
+            maschinentyp VARCHAR(50),
+            produktionshalle VARCHAR(50),
+            anschaffungsjahr INTEGER,
+            maschinenstatus VARCHAR(20),
+            wartungsintervall_tage INTEGER
         );
         ```
 
 ???+ question "Aufgabe 2: Daten einfügen"
 
-    Füge folgende Produktionsaufträge in die Tabelle ein:
+    **Teil A:** Füge folgende Maschinen in die Tabelle `maschinen` ein:
 
-    | auftrag_id | auftragsnummer | kunde | produkt | menge | lieferdatum | status |
-    |------------|----------------|-------|---------|-------|-------------|--------|
-    | 1 | AUF-2024-001 | BMW AG | Getriebegehäuse | 500 | 2024-04-15 | In Produktion |
-    | 2 | AUF-2024-002 | Audi AG | Kurbelwelle | 200 | 2024-04-20 | Geplant |
-    | 3 | AUF-2024-003 | Mercedes-Benz | Pleuelstange | 350 | 2024-04-18 | In Produktion |
-    | 4 | AUF-2024-004 | Porsche AG | Kolben | 150 | 2024-04-25 | Geplant |
+    | maschinen_id | maschinenname | maschinentyp | produktionshalle | anschaffungsjahr | maschinenstatus | wartungsintervall_tage |
+    |-------------|---------------|--------------|------------------|-----------------|----------------|----------------------|
+    | 1 | CNC-Fraese Alpha | CNC-Fraese | Halle A | 2020 | Aktiv | 90 |
+    | 2 | Drehbank Delta | Drehbank | Halle A | 2018 | Aktiv | 120 |
+    | 3 | Presse Gamma | Presse | Halle B | 2019 | Wartung | 60 |
+    | 4 | Schweissroboter Beta | Schweissroboter | Halle C | 2021 | Aktiv | 90 |
+
+    **Teil B:** Füge folgende Produktionsaufträge in die Tabelle `produktionsauftraege` ein:
+
+    | auftrag_id | auftragsnummer | kunde | produkt | menge | startdatum | lieferdatum | status | maschinen_id |
+    |------------|----------------|-------|---------|-------|------------|-------------|--------|--------------|
+    | 1 | AUF-2024-001 | BMW AG | Getriebegehäuse | 500 | 2024-04-01 | 2024-04-15 | In Produktion | 1 |
+    | 2 | AUF-2024-002 | Audi AG | Kurbelwelle | 200 | 2024-04-10 | 2024-04-20 | Geplant | 2 |
+    | 3 | AUF-2024-003 | Mercedes-Benz | Pleuelstange | 350 | 2024-04-05 | 2024-04-18 | In Produktion | 2 |
+    | 4 | AUF-2024-004 | Porsche AG | Kolben | 150 | 2024-04-12 | 2024-04-25 | Geplant | 4 |
 
     ??? info "💡 Lösung anzeigen"
 
         ```sql
-        INSERT INTO produktionsauftraege (
-            auftrag_id, auftragsnummer, kunde, produkt, menge, lieferdatum, status
+        -- Maschinen einfügen
+        INSERT INTO maschinen (
+            maschinen_id, maschinenname, maschinentyp, produktionshalle,
+            anschaffungsjahr, maschinenstatus, wartungsintervall_tage
         )
         VALUES
-        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-15', 'In Produktion'),
-        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-20', 'Geplant'),
-        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-18', 'In Produktion'),
-        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-25', 'Geplant');
+        (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+        (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+        (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Wartung', 60),
+        (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+
+        -- Produktionsaufträge einfügen
+        INSERT INTO produktionsauftraege (
+            auftrag_id, auftragsnummer, kunde, produkt, menge,
+            startdatum, lieferdatum, status, maschinen_id
+        )
+        VALUES
+        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'Geplant', 2),
+        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'Geplant', 4);
         ```
 
 ???+ question "Aufgabe 3: Daten abfragen"
@@ -470,33 +536,52 @@ In diesem Kapitel startest du mit der **ersten Tabelle**: Produktionsaufträge.
     Führe folgende Abfragen durch:
 
     1. Zeige alle Produktionsaufträge an.
-    2. Zeige nur Auftragsnummer, Kunde und Produkt an.
+    2. Zeige nur Auftragsnummer, Kunde und Produkt der Aufträge an.
     3. Zeige nur Aufträge mit Status "In Produktion" an.
+    4. Zeige alle Maschinen an.
+    5. Zeige nur Maschinenname und Maschinentyp der Maschinen an.
+    6. Zeige nur Maschinen mit Status "Aktiv" an.
 
     ??? info "💡 Lösung anzeigen"
 
-        a. **Alle Produktionsaufträge:**
+        **1) Alle Produktionsaufträge:**
         ```sql
         SELECT * FROM produktionsauftraege;
         ```
 
-        **b) Nur bestimmte Spalten:**
+        **2) Nur bestimmte Spalten:**
         ```sql
         SELECT auftragsnummer, kunde, produkt FROM produktionsauftraege;
         ```
 
-        **c) Nur Aufträge in Produktion:**
+        **3) Nur Aufträge in Produktion:**
         ```sql
         SELECT * FROM produktionsauftraege WHERE status = 'In Produktion';
         ```
 
+        **4) Alle Maschinen:**
+        ```sql
+        SELECT * FROM maschinen;
+        ```
+
+        **5) Nur Maschinenname und Typ:**
+        ```sql
+        SELECT maschinenname, maschinentyp FROM maschinen;
+        ```
+
+        **6) Nur aktive Maschinen:**
+        ```sql
+        SELECT * FROM maschinen WHERE maschinenstatus = 'Aktiv';
+        ```
+
 In den folgenden Kapiteln werden wir:
 
-- **Weitere Tabellen** hinzufügen (Kunden, Produkte, Maschinen)
-- **Beziehungen** zwischen Tabellen erstellen
-- **Komplexe Abfragen** durchführen (Joins, Aggregationen)
-- **Datenintegrität** sicherstellen (Constraints)
-- **Transaktionen** für sichere Buchungen nutzen
+- **Beziehungen** zwischen Tabellen erstellen (Foreign Keys)
+- **Weitere Tabellen** hinzufügen (Wartungsprotokolle, Ersatzteile, Lager)
+- **Komplexe Abfragen** durchführen (Joins, Aggregationen, Subqueries)
+- **Datenintegrität** sicherstellen (Constraints, CHECK, UNIQUE)
+- **Transaktionen** für sichere Operationen nutzen
+- **Daten manipulieren** (UPDATE, DELETE, ALTER TABLE)
 
 Am Ende haben wir ein vollständiges, funktionsfähiges Produktionsplanungssystem!
 
