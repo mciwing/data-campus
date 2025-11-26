@@ -414,12 +414,11 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
     Es löscht alle bestehenden Daten und erstellt den korrekten Ausgangszustand für dieses Kapitel.
 
     ```sql
-    -- Datenbank löschen falls vorhanden und neu erstellen
-    DROP DATABASE IF EXISTS produktionsplanung_db;
-    CREATE DATABASE produktionsplanung_db;
+    -- Zu anderer Datenbank wechseln
+    \c postgres
 
-    -- Zur Datenbank wechseln
-    \c produktionsplanung_db
+    -- Datenbank löschen falls vorhanden
+    DROP DATABASE IF EXISTS produktionsplanung_db;
     ```
 
     **Hinweis:** Ab jetzt kannst du direkt mit Aufgabe 1 starten.
@@ -489,21 +488,127 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
 
     **Teil A:** Füge folgende Maschinen in die Tabelle `maschinen` ein:
 
-    | maschinen_id | maschinenname | maschinentyp | produktionshalle | anschaffungsjahr | maschinenstatus | wartungsintervall_tage |
-    |-------------|---------------|--------------|------------------|-----------------|----------------|----------------------|
-    | 1 | CNC-Fraese Alpha | CNC-Fraese | Halle A | 2020 | Aktiv | 90 |
-    | 2 | Drehbank Delta | Drehbank | Halle A | 2018 | Aktiv | 120 |
-    | 3 | Presse Gamma | Presse | Halle B | 2019 | Wartung | 60 |
-    | 4 | Schweissroboter Beta | Schweissroboter | Halle C | 2021 | Aktiv | 90 |
+    <div style="text-align:center; max-width:1100px; margin:16px auto;">
+    <table role="table"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">maschinen_id</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">maschinenname</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">maschinentyp</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">produktionshalle</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">anschaffungsjahr</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">maschinenstatus</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">wartungsintervall_tage</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">1</td>
+            <td style="padding:10px 14px;">CNC-Fraese Alpha</td>
+            <td style="padding:10px 14px;">CNC-Fraese</td>
+            <td style="padding:10px 14px;">Halle A</td>
+            <td style="padding:10px 14px;">2020</td>
+            <td style="padding:10px 14px;">Aktiv</td>
+            <td style="padding:10px 14px;">90</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">2</td>
+            <td style="padding:10px 14px;">Drehbank Delta</td>
+            <td style="padding:10px 14px;">Drehbank</td>
+            <td style="padding:10px 14px;">Halle A</td>
+            <td style="padding:10px 14px;">2018</td>
+            <td style="padding:10px 14px;">Aktiv</td>
+            <td style="padding:10px 14px;">120</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">3</td>
+            <td style="padding:10px 14px;">Presse Gamma</td>
+            <td style="padding:10px 14px;">Presse</td>
+            <td style="padding:10px 14px;">Halle B</td>
+            <td style="padding:10px 14px;">2019</td>
+            <td style="padding:10px 14px;">Wartung</td>
+            <td style="padding:10px 14px;">60</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">4</td>
+            <td style="padding:10px 14px;">Schweissroboter Beta</td>
+            <td style="padding:10px 14px;">Schweissroboter</td>
+            <td style="padding:10px 14px;">Halle C</td>
+            <td style="padding:10px 14px;">2021</td>
+            <td style="padding:10px 14px;">Aktiv</td>
+            <td style="padding:10px 14px;">90</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     **Teil B:** Füge folgende Produktionsaufträge in die Tabelle `produktionsauftraege` ein:
 
-    | auftrag_id | auftragsnummer | kunde | produkt | menge | startdatum | lieferdatum | status | maschinen_id |
-    |------------|----------------|-------|---------|-------|------------|-------------|--------|--------------|
-    | 1 | AUF-2024-001 | BMW AG | Getriebegehäuse | 500 | 2024-04-01 | 2024-04-15 | In Produktion | 1 |
-    | 2 | AUF-2024-002 | Audi AG | Kurbelwelle | 200 | 2024-04-10 | 2024-04-20 | Geplant | 2 |
-    | 3 | AUF-2024-003 | Mercedes-Benz | Pleuelstange | 350 | 2024-04-05 | 2024-04-18 | In Produktion | 2 |
-    | 4 | AUF-2024-004 | Porsche AG | Kolben | 150 | 2024-04-12 | 2024-04-25 | Geplant | 4 |
+    <div style="text-align:center; max-width:1200px; margin:16px auto;">
+    <table role="table"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">auftrag_id</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">auftragsnummer</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">kunde</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">produkt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">menge</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">startdatum</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">lieferdatum</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">status</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">maschinen_id</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">1</td>
+            <td style="padding:10px 14px;">AUF-2024-001</td>
+            <td style="padding:10px 14px;">BMW AG</td>
+            <td style="padding:10px 14px;">Getriebegehäuse</td>
+            <td style="padding:10px 14px;">500</td>
+            <td style="padding:10px 14px;">2024-04-01</td>
+            <td style="padding:10px 14px;">2024-04-15</td>
+            <td style="padding:10px 14px;">In Produktion</td>
+            <td style="padding:10px 14px;">1</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">2</td>
+            <td style="padding:10px 14px;">AUF-2024-002</td>
+            <td style="padding:10px 14px;">Audi AG</td>
+            <td style="padding:10px 14px;">Kurbelwelle</td>
+            <td style="padding:10px 14px;">200</td>
+            <td style="padding:10px 14px;">2024-04-10</td>
+            <td style="padding:10px 14px;">2024-04-20</td>
+            <td style="padding:10px 14px;">Geplant</td>
+            <td style="padding:10px 14px;">2</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">3</td>
+            <td style="padding:10px 14px;">AUF-2024-003</td>
+            <td style="padding:10px 14px;">Mercedes-Benz</td>
+            <td style="padding:10px 14px;">Pleuelstange</td>
+            <td style="padding:10px 14px;">350</td>
+            <td style="padding:10px 14px;">2024-04-05</td>
+            <td style="padding:10px 14px;">2024-04-18</td>
+            <td style="padding:10px 14px;">In Produktion</td>
+            <td style="padding:10px 14px;">2</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;">4</td>
+            <td style="padding:10px 14px;">AUF-2024-004</td>
+            <td style="padding:10px 14px;">Porsche AG</td>
+            <td style="padding:10px 14px;">Kolben</td>
+            <td style="padding:10px 14px;">150</td>
+            <td style="padding:10px 14px;">2024-04-12</td>
+            <td style="padding:10px 14px;">2024-04-25</td>
+            <td style="padding:10px 14px;">Geplant</td>
+            <td style="padding:10px 14px;">4</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     ??? info "💡 Lösung anzeigen"
 
@@ -537,10 +642,8 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
 
     1. Zeige alle Produktionsaufträge an.
     2. Zeige nur Auftragsnummer, Kunde und Produkt der Aufträge an.
-    3. Zeige nur Aufträge mit Status "In Produktion" an.
-    4. Zeige alle Maschinen an.
-    5. Zeige nur Maschinenname und Maschinentyp der Maschinen an.
-    6. Zeige nur Maschinen mit Status "Aktiv" an.
+    3. Zeige alle Maschinen an.
+    4. Zeige nur Maschinenname und Maschinentyp der Maschinen an.
 
     ??? info "💡 Lösung anzeigen"
 
@@ -554,11 +657,6 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
         SELECT auftragsnummer, kunde, produkt FROM produktionsauftraege;
         ```
 
-        **3) Nur Aufträge in Produktion:**
-        ```sql
-        SELECT * FROM produktionsauftraege WHERE status = 'In Produktion';
-        ```
-
         **4) Alle Maschinen:**
         ```sql
         SELECT * FROM maschinen;
@@ -569,10 +667,6 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
         SELECT maschinenname, maschinentyp FROM maschinen;
         ```
 
-        **6) Nur aktive Maschinen:**
-        ```sql
-        SELECT * FROM maschinen WHERE maschinenstatus = 'Aktiv';
-        ```
 
 In den folgenden Kapiteln werden wir:
 

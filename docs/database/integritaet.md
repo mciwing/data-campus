@@ -403,123 +403,129 @@ Es gibt auch die Möglichkeit, Constraints zu bestehenden Tabellen nachträglich
 ## Übung ✍️
 
 Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** an! Die Übungen decken alle wichtigen Constraint-Typen ab und helfen dir, Datenintegrität in der Praxis durchzusetzen.
+???+ info "Übungsvorbereitung - Datenbank zurücksetzen"
 
-???+ info "Übungsvorbereitung – Datenbank zurücksetzen"
+    Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+    führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
+    korrekten Ausgangszustand für dieses Kapitel.
 
-    Falls du die vorherigen Kapitel nicht abgeschlossen hast oder von vorne beginnen möchtest, kannst du mit folgendem Code-Block die Datenbank komplett neu aufsetzen:
+    ??? code "Setup"
 
-    ```sql
-    -- Datenbank löschen und neu erstellen
-    DROP DATABASE IF EXISTS produktionsplanung_db;
-    CREATE DATABASE produktionsplanung_db;
+        ```sql
+        -- Zu anderer Datenbank wechseln
+            \c postgres
+        
+        -- Zur Datenbank wechseln (oder neu erstellen)
+        DROP DATABASE IF EXISTS produktionsplanung_db;
+        CREATE DATABASE produktionsplanung_db;
+        \c produktionsplanung_db
 
-    -- Zur Datenbank wechseln
-    \c produktionsplanung_db
+        -- 1. Tabelle für Maschinen erstellen
+        CREATE TABLE maschinen (
+            maschinen_id INTEGER PRIMARY KEY,
+            maschinenname VARCHAR(100),
+            maschinentyp VARCHAR(50),
+            produktionshalle VARCHAR(50),
+            anschaffungsjahr INTEGER,
+            maschinenstatus VARCHAR(20),
+            wartungsintervall_tage INTEGER
+        );
 
-    -- Tabelle: Maschinen
-    CREATE TABLE maschinen (
-        maschinen_id INTEGER PRIMARY KEY,
-        maschinenname VARCHAR(100) NOT NULL,
-        maschinentyp VARCHAR(50),
-        maschinencode VARCHAR(20),  -- NEU in Kapitel 7: Eindeutige Maschinencodes
-        produktionshalle VARCHAR(50),
-        anschaffungsjahr INTEGER,
-        maschinenstatus VARCHAR(20),
-        wartungsintervall_tage INTEGER
-    );
+        -- 2. Tabelle für Produktionsaufträge erstellen (MIT FK-Constraint)
+        CREATE TABLE produktionsauftraege (
+            auftrag_id INTEGER PRIMARY KEY,
+            auftragsnummer VARCHAR(20),
+            kunde VARCHAR(100),
+            produkt VARCHAR(100),
+            menge INTEGER,
+            startdatum DATE,
+            lieferdatum DATE,
+            status VARCHAR(20),
+            maschinen_id INTEGER,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE RESTRICT
+        );
 
-    -- Tabelle: Produktionsaufträge
-    CREATE TABLE produktionsauftraege (
-        auftrag_id INTEGER PRIMARY KEY,
-        auftragsnummer VARCHAR(20),
-        kunde VARCHAR(100),
-        produkt VARCHAR(100),
-        menge INTEGER,
-        startdatum DATE,
-        lieferdatum DATE,
-        enddatum DATE,  -- NEU in Kapitel 7: Tatsächliches Produktionsende
-        status VARCHAR(20),
-        maschinen_id INTEGER,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE RESTRICT
-    );
+        -- 3. Tabelle für Wartungsprotokolle erstellen (MIT FK-Constraint)
+        CREATE TABLE wartungsprotokolle (
+            wartungs_id SERIAL PRIMARY KEY,
+            wartungsdatum DATE NOT NULL,
+            beschreibung TEXT,
+            techniker VARCHAR(100),
+            kosten NUMERIC(10, 2),
+            maschinen_id INTEGER NOT NULL,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE CASCADE
+        );
 
-    -- Tabelle: Wartungsprotokolle (1:n Beziehung zu Maschinen)
-    CREATE TABLE wartungsprotokolle (
-        wartungs_id SERIAL PRIMARY KEY,
-        wartungsdatum DATE NOT NULL,
-        beschreibung TEXT,
-        techniker VARCHAR(100),
-        kosten NUMERIC(10, 2),
-        maschinen_id INTEGER NOT NULL,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE
-    );
+        -- 4. Tabelle für Ersatzteile erstellen
+        CREATE TABLE ersatzteile (
+            teil_id SERIAL PRIMARY KEY,
+            teilename VARCHAR(100) NOT NULL,
+            hersteller VARCHAR(100),
+            preis NUMERIC(10, 2)
+        );
 
-    -- Tabelle: Ersatzteile
-    CREATE TABLE ersatzteile (
-        ersatzteil_id INTEGER PRIMARY KEY,
-        teilenummer VARCHAR(20) NOT NULL UNIQUE,
-        bezeichnung VARCHAR(100) NOT NULL,
-        lagerbestand INTEGER DEFAULT 0,
-        mindestbestand INTEGER DEFAULT 10
-    );
+        -- 5. Junction Table für n:m Beziehung (Maschinen ↔ Ersatzteile)
+        CREATE TABLE maschinen_ersatzteile (
+            zuordnung_id SERIAL PRIMARY KEY,
+            maschinen_id INTEGER NOT NULL,
+            teil_id INTEGER NOT NULL,
+            benoetigte_anzahl INTEGER DEFAULT 1,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE CASCADE,
+            FOREIGN KEY (teil_id) REFERENCES ersatzteile(teil_id)
+                ON DELETE CASCADE
+        );
 
-    -- Tabelle: Maschinen-Ersatzteile (n:m Beziehung)
-    CREATE TABLE maschinen_ersatzteile (
-        maschinen_id INTEGER,
-        ersatzteil_id INTEGER,
-        menge_pro_wartung INTEGER,
-        PRIMARY KEY (maschinen_id, ersatzteil_id),
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE,
-        FOREIGN KEY (ersatzteil_id) REFERENCES ersatzteile(ersatzteil_id)
-            ON DELETE CASCADE
-    );
+        -- Maschinen-Daten einfügen
+        INSERT INTO maschinen VALUES
+        (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+        (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+        (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Aktiv', 60),
+        (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
 
-    -- Testdaten: Maschinen
-    INSERT INTO maschinen VALUES
-    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'M-CNC-001', 'Halle A', 2020, 'Aktiv', 90),
-    (2, 'Drehbank Delta', 'Drehbank', 'M-DRE-002', 'Halle A', 2018, 'Aktiv', 120),
-    (3, 'Presse Gamma', 'Presse', 'M-PRE-003', 'Halle B', 2019, 'Aktiv', 60),
-    (4, 'Schweissroboter Beta', 'Schweissroboter', 'M-SCH-004', 'Halle C', 2021, 'Aktiv', 90);
+        -- Produktionsaufträge-Daten einfügen
+        INSERT INTO produktionsauftraege VALUES
+        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'In Produktion', 2),
+        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'In Vorbereitung', 4),
+        (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
+        (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'In Vorbereitung', 1),
+        (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'In Vorbereitung', 2),
+        (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
 
-    -- Testdaten: Produktionsaufträge
-    INSERT INTO produktionsauftraege VALUES
-    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', NULL, 'In Produktion', 1),
-    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', NULL, 'In Produktion', 2),
-    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', '2024-04-17', 'In Produktion', 2),
-    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', NULL, 'In Vorbereitung', 4),
-    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', NULL, 'In Produktion', 2),
-    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'In Vorbereitung', 1),
-    (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', NULL, 'In Vorbereitung', 2),
-    (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', NULL, 'In Produktion', 4);
+        -- Wartungsprotokolle-Daten einfügen
+        INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id)
+        VALUES
+        ('2024-01-15', 'Routinewartung - Oelwechsel', 'M. Schneider', 250.00, 1),
+        ('2024-02-10', 'Reparatur Spindelmotor', 'L. Weber', 850.00, 1),
+        ('2024-01-20', 'Routinewartung - Kalibrierung', 'M. Schneider', 180.00, 2),
+        ('2024-03-05', 'Austausch Keilriemen', 'L. Weber', 120.00, 2);
 
-    -- Testdaten: Wartungsprotokolle
-    INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id) VALUES
-    ('2024-01-15', 'Routinewartung - Ölwechsel und Filter', 'Thomas Weber', 450.00, 1),
-    ('2024-02-20', 'Austausch Hydraulikschläuche', 'Anna Schmidt', 320.00, 4),
-    ('2024-03-10', 'Software-Update CNC-Steuerung', 'Thomas Weber', 180.00, 2),
-    ('2024-03-22', 'Inspektion nach 5000 Betriebsstunden', 'Michael Klein', 520.00, 3),
-    ('2024-04-05', 'Reparatur Kühlsystem', 'Anna Schmidt', 890.00, 1);
+        -- Ersatzteile-Daten einfügen
+        INSERT INTO ersatzteile (teilename, hersteller, preis)
+        VALUES
+        ('Spindelmotor 5kW', 'MotorTech GmbH', 1850.00),
+        ('Kuehlmittelpumpe', 'PumpCo AG', 320.50),
+        ('Linearfuehrung 500mm', 'Precision Parts', 680.00),
+        ('Werkzeughalter ISO40', 'ToolSupply GmbH', 145.00),
+        ('Drehfutter 250mm', 'ChuckMaster', 890.00);
 
-    -- Testdaten: Ersatzteile
-    INSERT INTO ersatzteile VALUES
-    (1, 'ET-001', 'Hydrauliköl 10L', 50, 20),
-    (2, 'ET-002', 'Ölfilter', 30, 15),
-    (3, 'ET-003', 'Hydraulikschlauch 2m', 25, 10),
-    (4, 'ET-004', 'Dichtungssatz', 40, 12),
-    (5, 'ET-005', 'Sicherungsring Set', 100, 30);
+        -- Maschinen-Ersatzteile Zuordnungen einfügen
+        INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, benoetigte_anzahl)
+        VALUES
+        (1, 1, 1),  -- CNC-Fraese braucht 1x Spindelmotor
+        (1, 2, 2),  -- CNC-Fraese braucht 2x Kuehlmittelpumpe
+        (1, 3, 4),  -- CNC-Fraese braucht 4x Linearfuehrung
+        (1, 4, 6),  -- CNC-Fraese braucht 6x Werkzeughalter
+        (2, 2, 1),  -- Drehbank braucht 1x Kuehlmittelpumpe
+        (2, 5, 1);  -- Drehbank braucht 1x Drehfutter
+        ```
 
-    -- Testdaten: Maschinen-Ersatzteile (Zuordnung)
-    INSERT INTO maschinen_ersatzteile VALUES
-    (1, 1, 2),  -- Spritzgussmaschine braucht Hydrauliköl
-    (1, 2, 1),  -- Spritzgussmaschine braucht Ölfilter
-    (2, 4, 1),  -- CNC-Fräse braucht Dichtungssatz
-    (3, 1, 1),  -- Drehmaschine braucht Hydrauliköl
-    (4, 3, 2),  -- Presse braucht Hydraulikschläuche
-    (4, 4, 1);  -- Presse braucht Dichtungssatz
-    ```
+        **Hinweis:** Alle Foreign Key Constraints sind aktiv. Die Tabellen sind nun vollständig verknüpft!
+
 
 ???+ question "Aufgabe 1: NOT NULL Constraints hinzufügen"
 
@@ -527,6 +533,10 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
     - `auftragsnummer` soll nicht leer sein (jeder Auftrag braucht eine Nummer)
     - `startdatum` soll nicht leer sein (jeder Auftrag braucht ein Startdatum)
+
+    **Hinweis**
+
+    Mit dem Befehl `\d produktionsauftraege` können wir die Struktur der Tabelle `produktionsauftraege` anzeigen und Beschränkungen anzeigen.
 
     ??? tip "Lösung anzeigen"
 

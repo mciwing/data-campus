@@ -975,60 +975,65 @@ Im vorherigen Kapitel haben wir Daten manipuliert (UPDATE, DELETE). Jetzt fügen
 
 ???+ info "Übungsvorbereitung - Datenbank zurücksetzen"
 
-    Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
-    führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
-    korrekten Ausgangszustand für dieses Kapitel.
+    Da wir im vorherigen Kapitel einige Änderungen (z.B. Löschen von Daten) vorgenommen haben welche für die nachfolgenden Übungen nicht ideal sind. Wollen wir nochmals auf die Ausgangsbasis zurücksetzen. 
 
-    ```sql
-    -- Zur Datenbank wechseln (oder neu erstellen)
-    DROP DATABASE IF EXISTS produktionsplanung_db;
-    CREATE DATABASE produktionsplanung_db;
-    \c produktionsplanung_db
+    Führe dazu das nachfolgende Setup aus. Es löscht alle bestehenden Daten und erstellt den korrekten Ausgangszustand für dieses Kapitel.
 
-    -- Tabelle für Maschinen erstellen
-    CREATE TABLE maschinen (
-        maschinen_id INTEGER PRIMARY KEY,
-        maschinenname VARCHAR(100),
-        maschinentyp VARCHAR(50),
-        produktionshalle VARCHAR(50),
-        anschaffungsjahr INTEGER,
-        maschinenstatus VARCHAR(20),
-        wartungsintervall_tage INTEGER
-    );
+    ???+ code "Setup"
 
-    -- Tabelle für Produktionsaufträge erstellen (MIT maschinen_id, OHNE FK)
-    CREATE TABLE produktionsauftraege (
-        auftrag_id INTEGER PRIMARY KEY,
-        auftragsnummer VARCHAR(20),
-        kunde VARCHAR(100),
-        produkt VARCHAR(100),
-        menge INTEGER,
-        startdatum DATE,
-        lieferdatum DATE,
-        status VARCHAR(20),
-        maschinen_id INTEGER  -- Spalte existiert, aber KEIN FK-Constraint!
-    );
+        ```sql
+        -- Zu anderer Datenbank wechseln
+        \c postgres
 
-    -- Maschinen-Daten einfügen
-    INSERT INTO maschinen VALUES
-    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
-    (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
-    (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Aktiv', 60),
-    (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+        -- Zur Datenbank wechseln (oder neu erstellen)
+        DROP DATABASE IF EXISTS produktionsplanung_db;
+        CREATE DATABASE produktionsplanung_db;
+        \c produktionsplanung_db
 
-    -- Produktionsaufträge-Daten einfügen (mit maschinen_id)
-    INSERT INTO produktionsauftraege VALUES
-    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
-    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'In Produktion', 2),
-    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
-    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'In Vorbereitung', 4),
-    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
-    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'In Vorbereitung', 1),
-    (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'In Vorbereitung', 2),
-    (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
-    ```
+        -- Tabelle für Maschinen erstellen
+        CREATE TABLE maschinen (
+            maschinen_id INTEGER PRIMARY KEY,
+            maschinenname VARCHAR(100),
+            maschinentyp VARCHAR(50),
+            produktionshalle VARCHAR(50),
+            anschaffungsjahr INTEGER,
+            maschinenstatus VARCHAR(20),
+            wartungsintervall_tage INTEGER
+        );
 
-    **Hinweis:** Die Spalte `maschinen_id` existiert bereits in `produktionsauftraege`, hat aber noch **keinen Foreign Key Constraint**. Das werden wir in den Übungen hinzufügen!
+        -- Tabelle für Produktionsaufträge erstellen (MIT maschinen_id, OHNE FK)
+        CREATE TABLE produktionsauftraege (
+            auftrag_id INTEGER PRIMARY KEY,
+            auftragsnummer VARCHAR(20),
+            kunde VARCHAR(100),
+            produkt VARCHAR(100),
+            menge INTEGER,
+            startdatum DATE,
+            lieferdatum DATE,
+            status VARCHAR(20),
+            maschinen_id INTEGER  -- Spalte existiert, aber KEIN FK-Constraint!
+        );
+
+        -- Maschinen-Daten einfügen
+        INSERT INTO maschinen VALUES
+        (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+        (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+        (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Aktiv', 60),
+        (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+
+        -- Produktionsaufträge-Daten einfügen (mit maschinen_id)
+        INSERT INTO produktionsauftraege VALUES
+        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'In Produktion', 2),
+        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'In Vorbereitung', 4),
+        (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
+        (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'In Vorbereitung', 1),
+        (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'In Vorbereitung', 2),
+        (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
+        ```
+
+        **Hinweis:** Die Spalte `maschinen_id` existiert bereits in `produktionsauftraege`, hat aber noch **keinen Foreign Key Constraint**. Das werden wir in den Übungen hinzufügen!
 
 ---
 
@@ -1174,9 +1179,30 @@ Im vorherigen Kapitel haben wir Daten manipuliert (UPDATE, DELETE). Jetzt fügen
 
     **Aufgaben:**
 
-    1. Erstelle die Tabelle `wartungsprotokolle` mit geeigneten Datentypen und Fremdschlüssel
+    1. Erstelle die Tabelle `wartungsprotokolle` mit geeigneten Datentypen und Fremdschlüssel. Folgende Attribute sind zu berücksichtigen:
+
+        `wartungs_id`, `wartungsdatum`,`beschreibung`, `techniker`, `kosten`, `maschinen_id`
+
     2. Füge mindestens 4 Wartungsprotokolle für verschiedene Maschinen ein
-    3. Teste `ON DELETE CASCADE`: Lösche eine Maschine und prüfe, ob ihre Wartungsprotokolle ebenfalls gelöscht wurden
+        ```sql
+        INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id)
+        VALUES
+            ('2024-01-15', 'Routinewartung - Oelwechsel', 'M. Schneider', 250.00, 1),
+            ('2024-02-10', 'Reparatur Spindelmotor', 'L. Weber', 850.00, 1),
+            ('2024-01-20', 'Routinewartung - Kalibrierung', 'M. Schneider', 180.00, 2),
+            ('2024-03-05', 'Austausch Keilriemen', 'L. Weber', 120.00, 2);
+        ```
+
+    3. Teste `ON DELETE CASCADE`: 
+        - Füge zuerst eine Testmaschine und ein Testwartungsprotokoll ein
+        ```sql
+        INSERT INTO maschinen (maschinen_id, maschinenname, maschinentyp)
+        VALUES (99, 'Test-Maschine', 'Test');
+        INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id)
+        VALUES ('2024-03-10', 'Test-Wartung', 'Test-Techniker', 100.00, 99);
+        ```
+        - Prüfe, ob das Testwartungsprotokoll und die Testmaschine existiert
+        - Lösche eine Maschine und prüfe, ob ihre Wartungsprotokolle ebenfalls gelöscht wurden
 
     ??? tip "Lösung anzeigen"
 
@@ -1243,11 +1269,35 @@ Im vorherigen Kapitel haben wir Daten manipuliert (UPDATE, DELETE). Jetzt fügen
 
     **Aufgaben:**
 
-    1. Erstelle die Tabelle `ersatzteile`
-    2. Erstelle die Zwischentabelle `maschinen_ersatzteile` mit zwei Fremdschlüsseln und `ON DELETE CASCADE`
-    3. Füge mindestens 3 Ersatzteile ein
-    4. Erstelle mindestens 5 Zuordnungen in der Zwischentabelle
-    5. Zeige alle Ersatzteile für eine bestimmte Maschine an (mit JOIN - mehr dazu im nächsten Kapitel!)
+    1. Erstelle die Tabelle `ersatzteile` mit den Attributen `teil_id`, `teilename`, `hersteller`, `preis`.
+    
+        Füge folgende Ersatzteile ein:
+        ```sql
+        -- 3. Ersatzteile einfügen
+        INSERT INTO ersatzteile (teilename, hersteller, preis)
+        VALUES
+            ('Spindelmotor 5kW', 'MotorTech GmbH', 1850.00),
+            ('Kuehlmittelpumpe', 'PumpCo AG', 320.50),
+            ('Linearfuehrung 500mm', 'Precision Parts', 680.00),
+            ('Werkzeughalter ISO40', 'ToolSupply GmbH', 145.00),
+            ('Drehfutter 250mm', 'ChuckMaster', 890.00);
+        ```
+
+    3. Erstelle die Zwischentabelle `maschinen_ersatzteile` mit zwei Fremdschlüsseln und `ON DELETE CASCADE`
+
+        Erstelle folgende Zuordnungen in der Zwischentabelle:
+
+        ```sql
+        INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, benoetigte_anzahl)
+        VALUES
+            (1, 1, 1),  -- CNC-Fraese braucht 1x Spindelmotor
+            (1, 2, 2),  -- CNC-Fraese braucht 2x Kuehlmittelpumpe
+            (1, 3, 4),  -- CNC-Fraese braucht 4x Linearfuehrung
+            (1, 4, 6),  -- CNC-Fraese braucht 6x Werkzeughalter
+            (2, 2, 1),  -- Drehbank braucht 1x Kuehlmittelpumpe
+            (2, 5, 1);  -- Drehbank braucht 1x Drehfutter
+        ```
+
 
     ??? tip "Lösung anzeigen"
 

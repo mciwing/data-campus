@@ -456,118 +456,122 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
     korrekten Ausgangszustand für dieses Kapitel.
 
-    ```sql
-    -- Zur Datenbank wechseln (oder neu erstellen)
-    DROP DATABASE IF EXISTS produktionsplanung_db;
-    CREATE DATABASE produktionsplanung_db;
-    \c produktionsplanung_db
+    ??? code "Setup"
 
-    -- 1. Tabelle für Maschinen erstellen
-    CREATE TABLE maschinen (
-        maschinen_id INTEGER PRIMARY KEY,
-        maschinenname VARCHAR(100),
-        maschinentyp VARCHAR(50),
-        produktionshalle VARCHAR(50),
-        anschaffungsjahr INTEGER,
-        maschinenstatus VARCHAR(20),
-        wartungsintervall_tage INTEGER
-    );
+        ```sql
+        -- Zu anderer Datenbank wechseln
+            \c postgres
+        
+        -- Zur Datenbank wechseln (oder neu erstellen)
+        DROP DATABASE IF EXISTS produktionsplanung_db;
+        CREATE DATABASE produktionsplanung_db;
+        \c produktionsplanung_db
 
-    -- 2. Tabelle für Produktionsaufträge erstellen (MIT FK-Constraint)
-    CREATE TABLE produktionsauftraege (
-        auftrag_id INTEGER PRIMARY KEY,
-        auftragsnummer VARCHAR(20),
-        kunde VARCHAR(100),
-        produkt VARCHAR(100),
-        menge INTEGER,
-        startdatum DATE,
-        lieferdatum DATE,
-        status VARCHAR(20),
-        maschinen_id INTEGER,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE RESTRICT
-    );
+        -- 1. Tabelle für Maschinen erstellen
+        CREATE TABLE maschinen (
+            maschinen_id INTEGER PRIMARY KEY,
+            maschinenname VARCHAR(100),
+            maschinentyp VARCHAR(50),
+            produktionshalle VARCHAR(50),
+            anschaffungsjahr INTEGER,
+            maschinenstatus VARCHAR(20),
+            wartungsintervall_tage INTEGER
+        );
 
-    -- 3. Tabelle für Wartungsprotokolle erstellen (MIT FK-Constraint)
-    CREATE TABLE wartungsprotokolle (
-        wartungs_id SERIAL PRIMARY KEY,
-        wartungsdatum DATE NOT NULL,
-        beschreibung TEXT,
-        techniker VARCHAR(100),
-        kosten NUMERIC(10, 2),
-        maschinen_id INTEGER NOT NULL,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE
-    );
+        -- 2. Tabelle für Produktionsaufträge erstellen (MIT FK-Constraint)
+        CREATE TABLE produktionsauftraege (
+            auftrag_id INTEGER PRIMARY KEY,
+            auftragsnummer VARCHAR(20),
+            kunde VARCHAR(100),
+            produkt VARCHAR(100),
+            menge INTEGER,
+            startdatum DATE,
+            lieferdatum DATE,
+            status VARCHAR(20),
+            maschinen_id INTEGER,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE RESTRICT
+        );
 
-    -- 4. Tabelle für Ersatzteile erstellen
-    CREATE TABLE ersatzteile (
-        teil_id SERIAL PRIMARY KEY,
-        teilename VARCHAR(100) NOT NULL,
-        hersteller VARCHAR(100),
-        preis NUMERIC(10, 2)
-    );
+        -- 3. Tabelle für Wartungsprotokolle erstellen (MIT FK-Constraint)
+        CREATE TABLE wartungsprotokolle (
+            wartungs_id SERIAL PRIMARY KEY,
+            wartungsdatum DATE NOT NULL,
+            beschreibung TEXT,
+            techniker VARCHAR(100),
+            kosten NUMERIC(10, 2),
+            maschinen_id INTEGER NOT NULL,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE CASCADE
+        );
 
-    -- 5. Junction Table für n:m Beziehung (Maschinen ↔ Ersatzteile)
-    CREATE TABLE maschinen_ersatzteile (
-        zuordnung_id SERIAL PRIMARY KEY,
-        maschinen_id INTEGER NOT NULL,
-        teil_id INTEGER NOT NULL,
-        benoetigte_anzahl INTEGER DEFAULT 1,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE,
-        FOREIGN KEY (teil_id) REFERENCES ersatzteile(teil_id)
-            ON DELETE CASCADE
-    );
+        -- 4. Tabelle für Ersatzteile erstellen
+        CREATE TABLE ersatzteile (
+            teil_id SERIAL PRIMARY KEY,
+            teilename VARCHAR(100) NOT NULL,
+            hersteller VARCHAR(100),
+            preis NUMERIC(10, 2)
+        );
 
-    -- Maschinen-Daten einfügen
-    INSERT INTO maschinen VALUES
-    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
-    (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
-    (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Aktiv', 60),
-    (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+        -- 5. Junction Table für n:m Beziehung (Maschinen ↔ Ersatzteile)
+        CREATE TABLE maschinen_ersatzteile (
+            zuordnung_id SERIAL PRIMARY KEY,
+            maschinen_id INTEGER NOT NULL,
+            teil_id INTEGER NOT NULL,
+            benoetigte_anzahl INTEGER DEFAULT 1,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE CASCADE,
+            FOREIGN KEY (teil_id) REFERENCES ersatzteile(teil_id)
+                ON DELETE CASCADE
+        );
 
-    -- Produktionsaufträge-Daten einfügen
-    INSERT INTO produktionsauftraege VALUES
-    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
-    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'In Produktion', 2),
-    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
-    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'In Vorbereitung', 4),
-    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
-    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'In Vorbereitung', 1),
-    (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'In Vorbereitung', 2),
-    (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
+        -- Maschinen-Daten einfügen
+        INSERT INTO maschinen VALUES
+        (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+        (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+        (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Aktiv', 60),
+        (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
 
-    -- Wartungsprotokolle-Daten einfügen
-    INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id)
-    VALUES
-    ('2024-01-15', 'Routinewartung - Oelwechsel', 'M. Schneider', 250.00, 1),
-    ('2024-02-10', 'Reparatur Spindelmotor', 'L. Weber', 850.00, 1),
-    ('2024-01-20', 'Routinewartung - Kalibrierung', 'M. Schneider', 180.00, 2),
-    ('2024-03-05', 'Austausch Keilriemen', 'L. Weber', 120.00, 2),
-    ('2024-02-28', 'Hydraulik-Check', 'M. Schneider', 320.00, 3);
+        -- Produktionsaufträge-Daten einfügen
+        INSERT INTO produktionsauftraege VALUES
+        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'In Produktion', 2),
+        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'In Vorbereitung', 4),
+        (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
+        (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'In Vorbereitung', 1),
+        (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'In Vorbereitung', 2),
+        (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
 
-    -- Ersatzteile-Daten einfügen
-    INSERT INTO ersatzteile (teilename, hersteller, preis)
-    VALUES
-    ('Spindelmotor 3kW', 'Siemens', 1250.00),
-    ('Keilriemen A-13', 'Continental', 45.00),
-    ('Hydraulikoel 5L', 'Shell', 65.00),
-    ('Lagersatz Standard', 'SKF', 280.00),
-    ('Kuehlmittelpumpe', 'Grundfos', 420.00);
+        -- Wartungsprotokolle-Daten einfügen
+        INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id)
+        VALUES
+        ('2024-01-15', 'Routinewartung - Oelwechsel', 'M. Schneider', 250.00, 1),
+        ('2024-02-10', 'Reparatur Spindelmotor', 'L. Weber', 850.00, 1),
+        ('2024-01-20', 'Routinewartung - Kalibrierung', 'M. Schneider', 180.00, 2),
+        ('2024-03-05', 'Austausch Keilriemen', 'L. Weber', 120.00, 2);
 
-    -- Maschinen-Ersatzteile Zuordnungen einfügen
-    INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, benoetigte_anzahl)
-    VALUES
-    (1, 1, 1),  -- CNC-Fraese: Spindelmotor
-    (1, 4, 2),  -- CNC-Fraese: Lagersatz
-    (2, 2, 2),  -- Drehbank: Keilriemen
-    (2, 4, 3),  -- Drehbank: Lagersatz
-    (3, 3, 4),  -- Presse: Hydraulikoel
-    (4, 5, 1);  -- Schweissroboter: Kuehlmittelpumpe
-    ```
+        -- Ersatzteile-Daten einfügen
+        INSERT INTO ersatzteile (teilename, hersteller, preis)
+        VALUES
+        ('Spindelmotor 5kW', 'MotorTech GmbH', 1850.00),
+        ('Kuehlmittelpumpe', 'PumpCo AG', 320.50),
+        ('Linearfuehrung 500mm', 'Precision Parts', 680.00),
+        ('Werkzeughalter ISO40', 'ToolSupply GmbH', 145.00),
+        ('Drehfutter 250mm', 'ChuckMaster', 890.00);
 
-    **Hinweis:** Alle Foreign Key Constraints sind aktiv. Die Tabellen sind nun vollständig verknüpft!
+        -- Maschinen-Ersatzteile Zuordnungen einfügen
+        INSERT INTO maschinen_ersatzteile (maschinen_id, teil_id, benoetigte_anzahl)
+        VALUES
+        (1, 1, 1),  -- CNC-Fraese braucht 1x Spindelmotor
+        (1, 2, 2),  -- CNC-Fraese braucht 2x Kuehlmittelpumpe
+        (1, 3, 4),  -- CNC-Fraese braucht 4x Linearfuehrung
+        (1, 4, 6),  -- CNC-Fraese braucht 6x Werkzeughalter
+        (2, 2, 1),  -- Drehbank braucht 1x Kuehlmittelpumpe
+        (2, 5, 1);  -- Drehbank braucht 1x Drehfutter
+        ```
+
+        **Hinweis:** Alle Foreign Key Constraints sind aktiv. Die Tabellen sind nun vollständig verknüpft!
 
 ---
 
@@ -596,13 +600,17 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
         ```
 
         ```sql title="Output"
-         auftragsnummer |     kunde     |     produkt     |   maschinenname   |    status
-        ----------------+---------------+-----------------+-------------------+---------------
-         AUF-2024-001   | BMW AG        | Getriebegehäuse | CNC-Fraese Alpha  | In Produktion
-         AUF-2024-002   | Audi AG       | Kurbelwelle     | Drehbank Beta     | Geplant
-         AUF-2024-003   | Mercedes-Benz | Pleuelstange    | CNC-Fraese Alpha  | In Produktion
-         AUF-2024-005   | BMW AG        | Kurbelwelle     | Drehbank Beta     | In Produktion
-         AUF-2024-010   | BMW AG        | Kolben          | CNC-Fraese Alpha  | In Produktion
+         auftragsnummer |     kunde     |     produkt     |    maschinenname     |     status
+        ----------------+---------------+-----------------+----------------------+-----------------
+         AUF-2024-001   | BMW AG        | Getriebegehäuse | CNC-Fraese Alpha     | In Produktion
+         AUF-2024-002   | Audi AG       | Kurbelwelle     | Drehbank Delta       | In Produktion
+         AUF-2024-003   | Mercedes-Benz | Pleuelstange    | Drehbank Delta       | In Produktion
+         AUF-2024-004   | Porsche AG    | Kolben          | Schweissroboter Beta | In Vorbereitung
+         AUF-2024-005   | BMW AG        | Kurbelwelle     | Drehbank Delta       | In Produktion
+         AUF-2024-006   | Volkswagen AG | Kolben          | CNC-Fraese Alpha     | In Vorbereitung
+         AUF-2024-009   | Porsche AG    | Kurbelwelle     | Drehbank Delta       | In Vorbereitung
+         AUF-2024-010   | BMW AG        | Kolben          | Schweissroboter Beta | In Produktion
+        (8 rows)
         ```
 
         **Erklärung:** Der INNER JOIN zeigt nur Produktionsaufträge, die einer Maschine zugeordnet sind. Aufträge ohne Maschinenzuordnung werden nicht angezeigt.
@@ -614,7 +622,7 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     **Anforderungen:**
 
     - Zeige: Maschinenname, Maschinentyp, Anzahl Aufträge
-    - Verwende LEFT JOIN, damit auch Maschinen ohne Aufträge erscheinen
+    - Es sollen auch Maschinen ohne Aufträge erscheinen
     - Gruppiere nach Maschine
     - Sortiere nach Anzahl Aufträge (absteigend)
 
@@ -632,15 +640,16 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
         ```
 
         ```sql title="Output"
-         maschinenname         |  maschinentyp   | anzahl_auftraege
-        -----------------------+-----------------+------------------
-         CNC-Fraese Alpha      | CNC-Fraese      |                3
-         Drehbank Beta         | Drehbank        |                2
-         Schweissroboter Gamma | Schweissroboter |                0
-         Lackieranlage Delta   | Lackieranlage   |                0
+         maschinenname        |  maschinentyp   | anzahl_auftraege
+        ----------------------+-----------------+------------------
+         Drehbank Delta       | Drehbank        |                4
+         CNC-Fraese Alpha     | CNC-Fraese      |                2
+         Schweissroboter Beta | Schweissroboter |                2
+         Presse Gamma         | Presse          |                0
+        (4 rows)
         ```
 
-        **Erklärung:** Durch LEFT JOIN sehen wir auch Maschinen ohne Produktionsaufträge (Schweissroboter Gamma und Lackieranlage Delta). Dies ist wichtig, um unterausgelastete Maschinen zu identifizieren.
+        **Erklärung:** Durch LEFT JOIN sehen wir auch Maschinen ohne Produktionsaufträge (Presse Gamma). Dies ist wichtig, um unterausgelastete Maschinen zu identifizieren.
 
 ???+ question "Aufgabe 3: INNER JOIN - Wartungsprotokolle mit Maschinen"
 
@@ -709,49 +718,15 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
          CNC-Fraese Alpha | Linearfuehrung 500mm    |                 4 |  680.00 |     2720.00
          CNC-Fraese Alpha | Spindelmotor 5kW        |                 1 | 1850.00 |     1850.00
          CNC-Fraese Alpha | Werkzeughalter ISO40    |                 6 |  145.00 |      870.00
-         Drehbank Beta    | Drehfutter 250mm        |                 1 |  890.00 |      890.00
-         Drehbank Beta    | Kuehlmittelpumpe        |                 1 |  320.50 |      320.50
+         Drehbank Delta   | Drehfutter 250mm        |                 1 |  890.00 |      890.00
+         Drehbank Delta   | Kuehlmittelpumpe        |                 1 |  320.50 |      320.50
+        (6 rows)
         ```
 
         **Erklärung:** Durch das Verbinden von drei Tabellen können wir die n:m-Beziehung zwischen Maschinen und Ersatzteilen auflösen und alle Informationen zusammenführen.
 
-???+ question "Aufgabe 5: Aggregation - Wartungskosten pro Maschine"
 
-    Berechne die Gesamtwartungskosten für jede Maschine.
-
-    **Anforderungen:**
-
-    - Zeige: Maschinenname, Anzahl Wartungen, Summe der Wartungskosten, Durchschnittskosten pro Wartung
-    - Verwende LEFT JOIN, um auch Maschinen ohne Wartungen zu zeigen
-    - Gruppiere nach Maschine
-    - Sortiere nach Gesamtkosten absteigend
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            COUNT(w.wartungs_id) AS anzahl_wartungen,
-            COALESCE(SUM(w.kosten), 0) AS gesamtkosten,
-            COALESCE(AVG(w.kosten), 0) AS durchschnitt_kosten
-        FROM maschinen m
-        LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
-        GROUP BY m.maschinenname
-        ORDER BY gesamtkosten DESC;
-        ```
-
-        ```sql title="Output"
-         maschinenname         | anzahl_wartungen | gesamtkosten | durchschnitt_kosten
-        -----------------------+------------------+--------------+---------------------
-         CNC-Fraese Alpha      |                2 |      1100.00 |              550.00
-         Drehbank Beta         |                2 |       300.00 |              150.00
-         Schweissroboter Gamma |                0 |         0.00 |                0.00
-         Lackieranlage Delta   |                0 |         0.00 |                0.00
-        ```
-
-        **Erklärung:** LEFT JOIN zeigt alle Maschinen, auch solche ohne Wartungen. `COALESCE` wandelt NULL-Werte in 0 um für bessere Lesbarkeit.
-
-???+ question "Aufgabe 6: Komplexe Abfrage - Produktionsübersicht"
+???+ question "Aufgabe 5: Komplexe Abfrage - Produktionsübersicht"
 
     Erstelle eine umfassende Übersicht pro Maschine: Anzahl Aufträge, Anzahl Wartungen und Gesamtwartungskosten.
 
@@ -769,7 +744,7 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
             m.maschinenname,
             COUNT(DISTINCT p.auftrag_id) AS anzahl_auftraege,
             COUNT(DISTINCT w.wartungs_id) AS anzahl_wartungen,
-            COALESCE(SUM(w.kosten), 0) AS gesamtwartungskosten
+            SUM(w.kosten) AS gesamtwartungskosten
         FROM maschinen m
         LEFT JOIN produktionsauftraege p ON m.maschinen_id = p.maschinen_id
         LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
@@ -778,12 +753,13 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
         ```
 
         ```sql title="Output"
-         maschinenname         | anzahl_auftraege | anzahl_wartungen | gesamtwartungskosten
-        -----------------------+------------------+------------------+----------------------
-         CNC-Fraese Alpha      |                3 |                2 |              1100.00
-         Drehbank Beta         |                2 |                2 |               300.00
-         Lackieranlage Delta   |                0 |                0 |                 0.00
-         Schweissroboter Gamma |                0 |                0 |                 0.00
+         maschinenname        | anzahl_auftraege | anzahl_wartungen | gesamtwartungskosten
+        ----------------------+------------------+------------------+----------------------
+         CNC-Fraese Alpha     |                2 |                2 |              1100.00
+         Drehbank Delta       |                4 |                2 |               300.00
+         Presse Gamma         |                0 |                0 |                 0.00
+         Schweissroboter Beta |                2 |                0 |                 0.00
+        (4 rows)
         ```
 
         **Erklärung:** Diese komplexe Abfrage kombiniert zwei LEFT JOINs und mehrere Aggregationen. `COUNT(DISTINCT ...)` verhindert Doppelzählungen, die bei mehreren JOINs auftreten können.

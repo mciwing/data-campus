@@ -1002,56 +1002,61 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
     führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
     korrekten Ausgangszustand für dieses Kapitel.
 
-    ```sql
-    -- Zur Datenbank wechseln (oder neu erstellen)
-    DROP DATABASE IF EXISTS produktionsplanung_db;
-    CREATE DATABASE produktionsplanung_db;
-    \c produktionsplanung_db
+    ??? code "Setup"
 
-    -- Tabelle für Maschinen erstellen
-    CREATE TABLE maschinen (
-        maschinen_id INTEGER PRIMARY KEY,
-        maschinenname VARCHAR(100),
-        maschinentyp VARCHAR(50),
-        produktionshalle VARCHAR(50),
-        anschaffungsjahr INTEGER,
-        maschinenstatus VARCHAR(20),
-        wartungsintervall_tage INTEGER
-    );
+        ```sql
+        -- Zu anderer Datenbank wechseln
+        \c postgres
 
-    -- Tabelle für Produktionsaufträge erstellen
-    CREATE TABLE produktionsauftraege (
-        auftrag_id INTEGER PRIMARY KEY,
-        auftragsnummer VARCHAR(20),
-        kunde VARCHAR(100),
-        produkt VARCHAR(100),
-        menge INTEGER,
-        startdatum DATE,
-        lieferdatum DATE,
-        status VARCHAR(20),
-        maschinen_id INTEGER
-    );
+        -- Zur Datenbank wechseln (oder neu erstellen)
+        DROP DATABASE IF EXISTS produktionsplanung_db;
+        CREATE DATABASE produktionsplanung_db;
+        \c produktionsplanung_db
 
-    -- Maschinen-Daten einfügen (aus Kapitel 1 & 2)
-    INSERT INTO maschinen VALUES
-    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
-    (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
-    (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Wartung', 60),
-    (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+        -- Tabelle für Maschinen erstellen
+        CREATE TABLE maschinen (
+            maschinen_id INTEGER PRIMARY KEY,
+            maschinenname VARCHAR(100),
+            maschinentyp VARCHAR(50),
+            produktionshalle VARCHAR(50),
+            anschaffungsjahr INTEGER,
+            maschinenstatus VARCHAR(20),
+            wartungsintervall_tage INTEGER
+        );
 
-    -- Produktionsaufträge-Daten einfügen (alle 10 aus Kapitel 2)
-    INSERT INTO produktionsauftraege VALUES
-    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
-    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'Geplant', 2),
-    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
-    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'Geplant', 4),
-    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
-    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'Geplant', 4),
-    (7, 'AUF-2024-007', 'Mercedes-Benz', 'Getriebegehäuse', 250, '2024-04-22', '2024-04-30', 'Abgeschlossen', 1),
-    (8, 'AUF-2024-008', 'Audi AG', 'Pleuelstange', 180, '2024-04-08', '2024-04-16', 'Abgeschlossen', 2),
-    (9, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'Geplant', 2),
-    (10, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
-    ```
+        -- Tabelle für Produktionsaufträge erstellen
+        CREATE TABLE produktionsauftraege (
+            auftrag_id INTEGER PRIMARY KEY,
+            auftragsnummer VARCHAR(20),
+            kunde VARCHAR(100),
+            produkt VARCHAR(100),
+            menge INTEGER,
+            startdatum DATE,
+            lieferdatum DATE,
+            status VARCHAR(20),
+            maschinen_id INTEGER
+        );
+
+        -- Maschinen-Daten einfügen (aus Kapitel 1 & 2)
+        INSERT INTO maschinen VALUES
+        (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+        (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+        (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Wartung', 60),
+        (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+
+        -- Produktionsaufträge-Daten einfügen (alle 10 aus Kapitel 2)
+        INSERT INTO produktionsauftraege VALUES
+        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'Geplant', 2),
+        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'Geplant', 4),
+        (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', 'In Produktion', 2),
+        (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', 'Geplant', 4),
+        (7, 'AUF-2024-007', 'Mercedes-Benz', 'Getriebegehäuse', 250, '2024-04-22', '2024-04-30', 'Abgeschlossen', 1),
+        (8, 'AUF-2024-008', 'Audi AG', 'Pleuelstange', 180, '2024-04-08', '2024-04-16', 'Abgeschlossen', 2),
+        (9, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', 'Geplant', 2),
+        (10, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', 'In Produktion', 4);
+        ```
 
 ---
 
