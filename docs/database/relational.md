@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_relational.png" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Grundlagen des Relationalen Modells
 
 Nachdem wir im vorherigen Kapitel Datenbanken als Lösung für strukturierte Datenhaltung kennengelernt und PostgreSQL installiert haben, wird es jetzt konkret: Wie werden Daten in einer relationalen Datenbank organisiert?
@@ -264,7 +260,7 @@ Anschließend erstellen wir eine neue Datenbank für unser Beispiel in diesem Ka
     \c zulieferer_db
     ```
 
-    ``` title="Output"
+    ```{.cmd .no-copy title="Output"}
     You are now connected to database "zulieferer_db" as user "postgres"
     ``` 
 
@@ -304,7 +300,7 @@ CREATE TABLE tabellenname (
     6. Aktueller Lagerbestand (ganze Zahl)
     7. Name des Lieferanten (max 100 Zeichen)
 
-    ``` title="Output"
+    ```{.cmd .no-copy title="Output"}
     CREATE TABLE
     ```
 
@@ -340,7 +336,7 @@ VALUES (wert1, wert2, ...);
     (105, 'Näherungsschalter induktiv', 'Sensorik', 35.90, 100, 'Sick AG');
     ```
 
-    ``` title="Output"
+    ```{.cmd .no-copy title="Output"}
     INSERT 0 5
     ```
 
@@ -363,7 +359,7 @@ SELECT * FROM tabellenname;
     SELECT * FROM produkte;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      produkt_id |         produktname          |    kategorie     |  preis  | lagerbestand |   lieferant
     ------------+------------------------------+------------------+---------+--------------+----------------
             101 | Hydraulikzylinder Standard   | Hydraulik        | 450.00  |           25 | Bosch Rexroth
@@ -388,7 +384,7 @@ SELECT * FROM tabellenname;
         SELECT produktname, kategorie, preis FROM produkte;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
                 produktname          |    kategorie     | preis
         -----------------------------+------------------+--------
         Hydraulikzylinder Standard   | Hydraulik        | 450.00

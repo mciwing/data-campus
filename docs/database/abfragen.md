@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_abfragen.png" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Daten abfragen mit SQL
 
 Im vorherigen Kapitel haben wir gelernt, wie man Tabellen erstellt, Daten einfügt und Daten auch einfach ausliest. Jetzt gehen wir einen Schritt weiter: Wir lernen, wie man **gezielt nach Daten sucht, sie filtert, sortiert und analysiert** - das Herzstück jeder Datenbank!
@@ -143,7 +139,7 @@ Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfr
     WHERE lieferant = 'Stahlwerk Salzgitter';
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      lieferung_id |      lieferant       |      material       | menge | preis_pro_einheit | lieferdatum |  status  | zielstandort
     --------------+----------------------+---------------------+-------+-------------------+-------------+----------+--------------
                 1 | Stahlwerk Salzgitter | Stahlblech 2mm      |   500 |             12.50 | 2024-03-15  | Geliefert| Lager Nord
@@ -162,7 +158,7 @@ Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfr
         WHERE menge > 200;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       |       material        | menge
         ----------------------+-----------------------+-------
          Stahlwerk Salzgitter | Stahlblech 2mm        |   500
@@ -184,7 +180,7 @@ Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfr
         WHERE status != 'Geliefert';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       |      material      |   status
         ----------------------+--------------------+------------
          Kunststoff GmbH      | PVC-Platten        | In Transit
@@ -254,7 +250,7 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
     WHERE menge > 200 AND status = 'Geliefert';
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
           lieferant       |       material        | menge |  status
     ----------------------+-----------------------+-------+-----------
      Stahlwerk Salzgitter | Stahlblech 2mm        |   500 | Geliefert
@@ -275,7 +271,7 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
         WHERE status = 'In Transit' OR status = 'Bestellt';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       |      material      |   status
         ----------------------+--------------------+------------
          Kunststoff GmbH      | PVC-Platten        | In Transit
@@ -297,7 +293,7 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
         WHERE NOT status = 'Geliefert';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       |      material      |   status
         ----------------------+--------------------+------------
          Kunststoff GmbH      | PVC-Platten        | In Transit
@@ -319,7 +315,7 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
         WHERE menge BETWEEN 100 AND 500;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       |      material      | menge
         ----------------------+--------------------+-------
          Stahlwerk Salzgitter | Stahlblech 2mm     |   500
@@ -347,7 +343,7 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
         WHERE lieferant = 'Aluminium AG' OR lieferant = 'Elektronik Weber'
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
             lieferant     |      material      | menge
         ------------------+--------------------+-------
          Aluminium AG     | Aluminiumprofile   |   200
@@ -444,7 +440,7 @@ Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfra
     WHERE lieferant LIKE '%GmbH%';
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
         lieferant    |    material
     -----------------+----------------
      Kunststoff GmbH | PVC-Platten
@@ -463,7 +459,7 @@ Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfra
         WHERE material LIKE 'Stahl%';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       |      material
         ----------------------+--------------------
          Stahlwerk Salzgitter | Stahlblech 2mm
@@ -484,7 +480,7 @@ Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfra
         WHERE lieferant LIKE '%Weber';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
             lieferant     |    material
         ------------------+----------------
          Elektronik Weber | Sensoren Typ A
@@ -503,7 +499,7 @@ Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfra
         WHERE material LIKE '%blech%';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       |      material
         ----------------------+--------------------
          Stahlwerk Salzgitter | Stahlblech 2mm
@@ -524,7 +520,7 @@ Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfra
     SELECT material FROM lieferungen WHERE material ILIKE 'stahl%';  -- findet "Stahlblech"
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
           material
     --------------------
      Stahlblech 2mm
@@ -583,7 +579,7 @@ Die zwei verschiedenen Sortierrichtungen können mit Hilfe zweier Schlüsselwör
     ORDER BY lieferant ASC, menge DESC;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
           lieferant       |       material        | menge
     ----------------------+-----------------------+-------
      Aluminium AG         | Aluminiumblech 3mm    |   300
@@ -613,7 +609,7 @@ Die zwei verschiedenen Sortierrichtungen können mit Hilfe zweier Schlüsselwör
         ORDER BY material;  -- ASC ist Standard und kann weggelassen werden
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
                material        |      lieferant
         -----------------------+----------------------
          Aluminiumblech 3mm    | Aluminium AG
@@ -640,7 +636,7 @@ Die zwei verschiedenen Sortierrichtungen können mit Hilfe zweier Schlüsselwör
         ORDER BY lieferdatum DESC;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
                material        | lieferdatum
         -----------------------+-------------
          Kabelbaum 5m          | 2024-03-28
@@ -738,7 +734,7 @@ Wenn wir diesem Syntax folgen können wir beispielsweise die ersten 3 Ergebnisse
     LIMIT 3;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
            material        | preis_pro_einheit |    lieferant
     -----------------------+-------------------+-----------------
      Muttern M8            |              0.08 | Schrauben Meyer
@@ -774,7 +770,7 @@ LIMIT anzahl OFFSET überspringen;
     LIMIT 3 OFFSET 3;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
          material     | lieferdatum |    lieferant
     ------------------+-------------+------------------
      Aluminiumprofile | 2024-03-18  | Aluminium AG
@@ -870,7 +866,7 @@ Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berec
     FROM lieferungen;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      guenstigster_preis | teuerster_preis
     --------------------+-----------------
                    0.08 |           45.00
@@ -889,7 +885,7 @@ Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berec
         FROM lieferungen;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
          anzahl_lieferungen
         --------------------
                          10
@@ -909,7 +905,7 @@ Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berec
         WHERE status = 'Geliefert';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
          anzahl_geliefert
         ------------------
                         5
@@ -928,7 +924,7 @@ Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berec
         FROM lieferungen;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
          durchschnittspreis
         ---------------------
          14.7180000000000000
@@ -948,7 +944,7 @@ Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berec
         FROM lieferungen;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
          gesamtmenge
         -------------
                12180
@@ -997,7 +993,7 @@ GROUP BY gruppenspalte;
     GROUP BY lieferant;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
           lieferant       | anzahl
     ----------------------+--------
      Schrauben Meyer      |      2
@@ -1024,7 +1020,7 @@ GROUP BY gruppenspalte;
         GROUP BY lieferant;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       | guenstigster | teuerster
         ----------------------+--------------+-----------
          Schrauben Meyer      |         0.08 |      0.15
@@ -1053,7 +1049,7 @@ Spannend wird es, wenn wir **mehrere Aggregatfunktionen** gleichzeitig auf diese
     ORDER BY anzahl DESC;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      zielstandort | anzahl | gesamtmenge | durchschnittspreis
     --------------+--------+-------------+---------------------
      Lager Nord   |      5 |       11450 |  4.7560000000000000
@@ -1078,7 +1074,7 @@ Um unsere Analyse noch weiter zu verfeinern, können wir auch **mehreren Spalten
     ORDER BY anzahl DESC;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      zielstandort |   status   | anzahl
     --------------+------------+--------
      Lager Nord   | Geliefert  |      3
@@ -1109,7 +1105,7 @@ Um unsere Analyse noch weiter zu verfeinern, können wir auch **mehreren Spalten
     GROUP BY lieferant;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     ERROR:  Spalte »lieferungen.material« muss in der GROUP-BY-Klausel erscheinen oder in einer Aggregatfunktion verwendet werden
     LINE 1: SELECT lieferant, material, COUNT(*) AS anzahl  -- ? materia...
                               ^
@@ -1202,7 +1198,7 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
     HAVING AVG(preis_pro_einheit) > 10;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      zielstandort | durchschnittspreis  | anzahl
     --------------+---------------------+--------
      Lager Ost    | 26.6333333333333333 |      3
@@ -1224,7 +1220,7 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
         HAVING COUNT(*) > 1;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant       | anzahl
         ----------------------+--------
          Schrauben Meyer      |      2
@@ -1250,7 +1246,7 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
         HAVING COUNT(*) > 1;        -- Filtert Gruppen NACH Aggregation
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
          zielstandort | anzahl_geliefert
         --------------+------------------
          Lager Nord   |                3
@@ -1280,7 +1276,7 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
         HAVING SUM(menge) > 200 AND AVG(preis_pro_einheit) < 20;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
             lieferant    | gesamtmenge |   durchschnittspreis
         -----------------+-------------+------------------------
          Schrauben Meyer |       10000 | 0.11500000000000000000
@@ -1320,7 +1316,7 @@ FROM tabelle;
     FROM lieferungen;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
           lieferant
     ----------------------
      Schrauben Meyer
@@ -1344,7 +1340,7 @@ FROM tabelle;
         ORDER BY zielstandort, status;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
          zielstandort |   status
         --------------+------------
          Lager Nord   | Geliefert
@@ -1369,7 +1365,7 @@ FROM tabelle;
         ORDER BY zielstandort;
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
          zielstandort
         --------------
          Lager Nord
@@ -1391,7 +1387,7 @@ FROM tabelle;
         WHERE status = 'Geliefert';
         ```
 
-        ```title="Output"
+        ```{.cmd .no-copy title="Output"}
               lieferant
         ----------------------
          Aluminium AG

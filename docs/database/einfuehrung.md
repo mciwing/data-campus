@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_einfuehrung.png" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Einführung in Datenbanken
 
 In den vorherigen Kapiteln haben wir uns mit **[Datenerfassung, -verarbeitung und -speicherung](../data/index.md)** beschäftigt. Wir haben gesehen, wie Daten von Sensoren erfasst, in binärer Form verarbeitet und auf verschiedenen Speichermedien wie RAM, SSD oder HDD gesichert werden.

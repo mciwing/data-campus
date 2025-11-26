@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_ausblick.jpeg" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Ausblick & Weiterführende Themen
 
 <div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
@@ -26,20 +22,22 @@ Doch die Welt der Datenbanken ist **viel größer** als das, was wir bisher gese
 
 ---
 
+
+???+ warning "Wichtiger Hinweis"
+
+    In diesem Kapitel wird ein Ausblick auf weiterführende Themen gegeben. Alle Code Snippets können wie bisher ausgeführt und getestet werden. Eine detailierte Beschreibung und Erklärung der einzelnen Themen gibt es in diesem Kapitel nicht. Trotzdem kann jeder versuchen den Code nachzuvollziehen und gegebenenfalls mittels Recherche eine Erklärung zu finden. 
+
 ???+ info "Datenbank-Setup"
 
     Für die folgenden Beispiele erstellen wir eine **E-Commerce/Online-Shop-Datenbank**. In dieser Datenbank werden Produkte, Bestellungen und Lagerbestände verwaltet.
 
-    **Datenbank erstellen und verbinden:**
-
     ```sql
+    -- Datenbank erstellen
     CREATE DATABASE shop_db;
+
+    -- Zur Datenbank wechseln
     \c shop_db
-    ```
 
-    **Tabellen erstellen:**
-
-    ```sql
     -- Tabelle: Produkte
     CREATE TABLE produkte (
         produkt_id SERIAL PRIMARY KEY,
@@ -69,12 +67,8 @@ Doch die Welt der Datenbanken ist **viel größer** als das, was wir bisher gese
         menge INTEGER NOT NULL CHECK (menge > 0),
         einzelpreis NUMERIC(10, 2) NOT NULL
     );
-    ```
 
-    **Testdaten einfügen:**
-
-    ```sql
-    -- Produkte einfügen
+    -- Testdaten: Produkte
     INSERT INTO produkte (produktname, kategorie, preis, lagerbestand) VALUES
     ('Laptop ThinkPad X1', 'Elektronik', 1299.99, 15),
     ('Wireless Mouse MX3', 'Zubehör', 79.99, 50),
@@ -84,13 +78,13 @@ Doch die Welt der Datenbanken ist **viel größer** als das, was wir bisher gese
     ('Webcam HD Pro', 'Elektronik', 89.99, 0),
     ('Laptop-Tasche Premium', 'Zubehör', 59.99, 25);
 
-    -- Bestellungen einfügen
+    -- Testdaten: Bestellungen
     INSERT INTO bestellungen (kunde, status, gesamtbetrag) VALUES
     ('Anna Schmidt', 'abgeschlossen', 1429.98),
     ('Thomas Weber', 'in_bearbeitung', 179.98),
-    ('Lisa Müller', 'offen', 449.99);
+    ('Lisa Miller', 'offen', 449.99);
 
-    -- Bestellpositionen einfügen
+    -- Testdaten: Bestellpositionen
     INSERT INTO bestellpositionen (bestell_id, produkt_id, menge, einzelpreis) VALUES
     (1, 1, 1, 1299.99),  -- Anna: Laptop
     (1, 2, 1, 79.99),     -- Anna: Mouse
@@ -140,47 +134,50 @@ Betrachten wir das ganze anhand eines Beispiels.
     SELECT * FROM verfuegbare_produkte;
     ```
 
-    ```title="Output"
-     produkt_id |       produktname        | kategorie  |  preis  | lagerbestand
-    ------------+--------------------------+------------+---------+--------------
-              1 | Laptop ThinkPad X1       | Elektronik | 1299.99 |           15
-              7 | Laptop-Tasche Premium    | Zubehör    |   59.99 |           25
-              5 | Mechanische Tastatur     | Zubehör    |  129.99 |           20
-              4 | Monitor 27" 4K           | Elektronik |  449.99 |            8
-              3 | USB-C Hub 7-Port         | Zubehör    |   49.99 |           30
-              2 | Wireless Mouse MX3       | Zubehör    |   79.99 |           50
+    ```{.cmd .no-copy title="Output"}
+     produkt_id |      produktname      | kategorie  |  preis  | lagerbestand
+    ------------+-----------------------+------------+---------+--------------
+              7 | Laptop-Tasche Premium | Zubehör    |   59.99 |           25
+              1 | Laptop ThinkPad X1    | Elektronik | 1299.99 |           15
+              5 | Mechanische Tastatur  | Zubehör    |  129.99 |           20
+              4 | Monitor 27" 4K        | Elektronik |  449.99 |            8
+              3 | USB-C Hub 7-Port      | Zubehör    |   49.99 |           30
+              2 | Wireless Mouse MX3    | Zubehör    |   79.99 |           50
+    (6 rows)
     ```
 
-???+ example "Beispiel: View für Bestellübersicht"
+    ??? code "weitere Beispiele"
 
-    Eine komplexere View kann mehrere Tabellen kombinieren:
 
-    ```sql
-    CREATE VIEW bestelluebersicht AS
-    SELECT
-        b.bestell_id,
-        b.kunde,
-        b.bestelldatum,
-        b.status,
-        COUNT(bp.position_id) AS anzahl_artikel,
-        SUM(bp.menge * bp.einzelpreis) AS gesamtbetrag
-    FROM bestellungen b
-    LEFT JOIN bestellpositionen bp ON b.bestell_id = bp.bestell_id
-    GROUP BY b.bestell_id, b.kunde, b.bestelldatum, b.status
-    ORDER BY b.bestelldatum DESC;
-    ```
+        Eine komplexere View kann mehrere Tabellen kombinieren:
 
-    ```sql
-    SELECT * FROM bestelluebersicht;
-    ```
+        ```sql
+        CREATE VIEW bestelluebersicht AS
+        SELECT
+            b.bestell_id,
+            b.kunde,
+            b.bestelldatum,
+            b.status,
+            COUNT(bp.position_id) AS anzahl_artikel,
+            SUM(bp.menge * bp.einzelpreis) AS gesamtbetrag
+        FROM bestellungen b
+        LEFT JOIN bestellpositionen bp ON b.bestell_id = bp.bestell_id
+        GROUP BY b.bestell_id, b.kunde, b.bestelldatum, b.status
+        ORDER BY b.bestelldatum DESC;
+        ```
 
-    ```title="Output"
-     bestell_id |     kunde      |     bestelldatum     |     status      | anzahl_artikel | gesamtbetrag
-    ------------+----------------+----------------------+-----------------+----------------+--------------
-              3 | Lisa Müller    | 2025-11-25 14:30:00  | offen           |              1 |       449.99
-              2 | Thomas Weber   | 2025-11-25 10:15:00  | in_bearbeitung  |              2 |       209.98
-              1 | Anna Schmidt   | 2025-11-24 09:20:00  | abgeschlossen   |              3 |      1429.97
-    ```
+        ```sql
+        SELECT * FROM bestelluebersicht;
+        ```
+
+        ```{.cmd .no-copy title="Output"}
+         bestell_id |    kunde     |        bestelldatum        |     status     | anzahl_artikel | gesamtbetrag
+        ------------+--------------+----------------------------+----------------+----------------+--------------
+                  3 | Lisa Miller  | 2025-11-26 09:45:08.313595 | offen          |              1 |       449.99
+                  2 | Thomas Weber | 2025-11-26 09:45:08.313595 | in_bearbeitung |              2 |       209.98
+                  1 | Anna Schmidt | 2025-11-26 09:45:08.313595 | abgeschlossen  |              3 |      1429.97
+        (3 rows)
+        ```
 
 
 Views haben wir nahezu alles im Leben Vor- und Nachteile.  Diese wind nachfolgend aufgelistet. 
@@ -224,6 +221,11 @@ Views haben wir nahezu alles im Leben Vor- und Nachteile.  Diese wind nachfolgen
     DROP VIEW IF EXISTS bestelluebersicht;
     ```
 
+    ```{.cmd .no-copy title="Output"}
+    DROP VIEW
+    DROP VIEW
+    ```
+
 ---
 
 ## Stored Procedures & Functions
@@ -263,7 +265,7 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
 </table>
 </div>
 
-???+ example "Beispiel: Function für Produktverfügbarkeit"
+???+ example "Beispiel: Funktion für Produktverfügbarkeit"
 
     ```sql
     CREATE OR REPLACE FUNCTION ist_verfuegbar(p_produkt_id INTEGER, p_menge INTEGER)
@@ -288,16 +290,17 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
     FROM produkte;
     ```
 
-    ```title="Output"
-           produktname        | verfuegbar
-    --------------------------+------------
-     Laptop ThinkPad X1       | t
-     Wireless Mouse MX3       | t
-     USB-C Hub 7-Port         | t
-     Monitor 27" 4K           | f
-     Mechanische Tastatur     | t
-     Webcam HD Pro            | f
-     Laptop-Tasche Premium    | t
+    ```{.cmd .no-copy title="Output"}
+          produktname      | verfuegbar
+    -----------------------+------------
+     Laptop ThinkPad X1    | t
+     Wireless Mouse MX3    | t
+     USB-C Hub 7-Port      | t
+     Monitor 27" 4K        | f
+     Mechanische Tastatur  | t
+     Webcam HD Pro         | f
+     Laptop-Tasche Premium | t
+    (7 rows)
     ```
 
 ???+ example "Beispiel: Procedure für Bestellung erstellen"
@@ -330,7 +333,7 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
         SET lagerbestand = lagerbestand - p_menge
         WHERE produkt_id = p_produkt_id;
 
-        RAISE NOTICE 'Bestellung % für Kunde % erstellt', v_bestell_id, p_kunde;
+        RAISE NOTICE 'Bestellung % fuer Kunde % erstellt', v_bestell_id, p_kunde;
     END;
     $$;
     ```
@@ -341,8 +344,8 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
     CALL erstelle_bestellung('Max Mustermann', 1, 2);
     ```
 
-    ```title="Output"
-    NOTICE:  Bestellung 4 für Kunde Max Mustermann erstellt
+    ```{.cmd .no-copy title="Output"}
+    HINWEIS:  Bestellung 4 fuer Kunde Max Mustermann erstellt
     ```
 
 ---
@@ -351,7 +354,7 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
 
 Ein **Trigger** ist ein **automatisch ausgeführtes SQL-Programm**, das bei bestimmten Ereignissen (INSERT, UPDATE, DELETE) aktiviert wird.
 
-Typeische **Anwendungsfälle** sind:
+Typische **Anwendungsfälle** sind:
 
 - Automatische Protokollierung von Änderungen
 - Datenkonsistenz durch automatische Updates
@@ -387,70 +390,74 @@ Typeische **Anwendungsfälle** sind:
     SELECT produktname, preis, letzte_aenderung FROM produkte WHERE produkt_id = 1;
     ```
 
-    ```title="Output"
-       produktname      |  preis  |    letzte_aenderung
-    --------------------+---------+------------------------
-     Laptop ThinkPad X1 | 1199.99 | 2025-11-25 15:42:33.15
+    ```{.cmd .no-copy title="Output"}
+        produktname     |  preis  |      letzte_aenderung
+    --------------------+---------+----------------------------
+     Laptop ThinkPad X1 | 1199.99 | 2025-11-26 09:55:40.404667
+    (1 row)
     ```
 
-???+ example "Beispiel: Automatische Lagerbestandsaktualisierung"
+    ??? code "weitere Beispiele"
 
-    Ein praktischeres Beispiel: Lagerbestand automatisch reduzieren, wenn eine Bestellposition erstellt wird.
+        Ein praktischeres Beispiel: Lagerbestand automatisch reduzieren, wenn eine Bestellposition erstellt wird.
 
-    ```sql
-    -- Trigger-Function erstellen
-    CREATE OR REPLACE FUNCTION reduziere_lagerbestand()
-    RETURNS TRIGGER AS $$
-    BEGIN
-        UPDATE produkte
-        SET lagerbestand = lagerbestand - NEW.menge
-        WHERE produkt_id = NEW.produkt_id;
+        ```sql
+        -- Trigger-Function erstellen
+        CREATE OR REPLACE FUNCTION reduziere_lagerbestand()
+        RETURNS TRIGGER AS $$
+        BEGIN
+            UPDATE produkte
+            SET lagerbestand = lagerbestand - NEW.menge
+            WHERE produkt_id = NEW.produkt_id;
 
-        -- Warnung, wenn Lagerbestand niedrig wird
-        IF (SELECT lagerbestand FROM produkte WHERE produkt_id = NEW.produkt_id) < 5 THEN
-            RAISE NOTICE 'Warnung: Niedriger Lagerbestand für Produkt %', NEW.produkt_id;
-        END IF;
+            -- Warnung, wenn Lagerbestand niedrig wird
+            IF (SELECT lagerbestand FROM produkte WHERE produkt_id = NEW.produkt_id) < 5 THEN
+                RAISE NOTICE 'Warnung: Niedriger Lagerbestand fuer Produkt %', NEW.produkt_id;
+            END IF;
 
-        RETURN NEW;
-    END;
-    $$ LANGUAGE plpgsql;
+            RETURN NEW;
+        END;
+        $$ LANGUAGE plpgsql;
 
-    -- Trigger erstellen
-    CREATE TRIGGER nach_bestellposition_einfuegen
-    AFTER INSERT ON bestellpositionen
-    FOR EACH ROW
-    EXECUTE FUNCTION reduziere_lagerbestand();
-    ```
+        -- Trigger erstellen
+        CREATE TRIGGER nach_bestellposition_einfuegen
+        AFTER INSERT ON bestellpositionen
+        FOR EACH ROW
+        EXECUTE FUNCTION reduziere_lagerbestand();
+        ```
 
-    **Wirkung:** Bei jeder neuen Bestellposition wird automatisch der Lagerbestand reduziert.
+        **Wirkung:** Bei jeder neuen Bestellposition wird automatisch der Lagerbestand reduziert.
 
-    ```sql
-    -- Vor der Bestellung
-    SELECT produktname, lagerbestand FROM produkte WHERE produkt_id = 4;
-    ```
+        ```sql
+        -- Vor der Bestellung
+        SELECT produktname, lagerbestand FROM produkte WHERE produkt_id = 4;
+        ```
 
-    ```title="Output"
-       produktname    | lagerbestand
-    ------------------+--------------
-     Monitor 27" 4K   |            8
-    ```
+        ```{.cmd .no-copy title="Output"}
+          produktname   | lagerbestand
+        ----------------+--------------
+         Monitor 27" 4K |            8
+        (1 row)
+        ```
 
-    ```sql
-    -- Neue Bestellung erstellen
-    INSERT INTO bestellungen (kunde, status) VALUES ('Peter Klein', 'offen');
-    INSERT INTO bestellpositionen (bestell_id, produkt_id, menge, einzelpreis)
-    VALUES (4, 4, 3, 449.99);
+        ```sql
+        -- Neue Bestellung erstellen
+        INSERT INTO bestellungen (kunde, status) VALUES ('Peter Klein', 'offen');
+        INSERT INTO bestellpositionen (bestell_id, produkt_id, menge, einzelpreis)
+        VALUES (4, 4, 4, 449.99);
 
-    -- Nach der Bestellung
-    SELECT produktname, lagerbestand FROM produkte WHERE produkt_id = 4;
-    ```
+        -- Nach der Bestellung
+        SELECT produktname, lagerbestand FROM produkte WHERE produkt_id = 4;
+        ```
 
-    ```title="Output"
-       produktname    | lagerbestand
-    ------------------+--------------
-     Monitor 27" 4K   |            5
-    NOTICE:  Warnung: Niedriger Lagerbestand für Produkt 4
-    ```
+        ```title="Output"
+        HINWEIS:  Warnung: Niedriger Lagerbestand fuer Produkt 4
+
+          produktname   | lagerbestand
+        ----------------+--------------
+         Monitor 27" 4K |            5
+        (1 row)
+        ```
 
 Typische Befehle im Zusammen hang mit Trigger sind:
 
@@ -549,10 +556,11 @@ PostgreSQL bietet **native Unterstützung für JSON-Daten**, was flexible, semi-
     WHERE attribute ? 'bildschirm';  -- Nur Produkte mit Bildschirm-Attribut
     ```
 
-    ```title="Output"
-       produktname      | bildschirm | prozessor
+    ```{.cmd .no-copy title="Output"}
+        produktname     | bildschirm | prozessor
     --------------------+------------+-----------
      Laptop ThinkPad X1 | 14 Zoll    | Intel i7
+    (1 row)
     ```
 
     ```sql
@@ -562,10 +570,11 @@ PostgreSQL bietet **native Unterstützung für JSON-Daten**, was flexible, semi-
     WHERE (attribute->>'ram_gb')::integer >= 16;
     ```
 
-    ```title="Output"
-       produktname      | ram
+    ```{.cmd .no-copy title="Output"}
+        produktname     | ram
     --------------------+-----
      Laptop ThinkPad X1 | 16
+    (1 row)
     ```
 
     ```sql
@@ -575,11 +584,12 @@ PostgreSQL bietet **native Unterstützung für JSON-Daten**, was flexible, semi-
     WHERE attribute->'farben' ? 'Schwarz';  -- Produkte in Schwarz
     ```
 
-    ```title="Output"
-       produktname      | verfuegbare_farben
-    --------------------+---------------------
+    ```{.cmd .no-copy title="Output"}
+        produktname     |     verfuegbare_farben
+    --------------------+-----------------------------
      Laptop ThinkPad X1 | ["Schwarz", "Silber"]
      Wireless Mouse MX3 | ["Schwarz", "Weiß", "Grau"]
+    (2 rows)
     ```
 
 ???+ tip "Wann JSON verwenden?"
@@ -637,35 +647,36 @@ Typische PostgreSQL Backup-Methoden sind:
 </div>
 
 ???+ example "Beispiel: pg_dump verwenden"
+    Folgende Befehle müssen in der Powershell/CMD eingegeben werden. Port (hier 5433) und Server (hier localhost) müssen gegebenenfalls angepasst werden.
 
     **Gesamte Datenbank sichern:**
 
     ```bash
-    pg_dump shop_db > shop_db_backup.sql
+    pg_dump -h localhost -p 5433 -U postgres shop_db > shop_db_backup.sql
     ```
 
     **Nur Struktur (ohne Daten):**
 
     ```bash
-    pg_dump --schema-only shop_db > struktur.sql
+    pg_dump -h localhost -p 5433 -U postgres --schema-only shop_db > struktur.sql
     ```
 
     **Nur Daten (ohne Struktur):**
 
     ```bash
-    pg_dump --data-only shop_db > daten.sql
+    pg_dump -h localhost -p 5433 -U postgres --data-only shop_db > daten.sql
     ```
 
     **Bestimmte Tabelle sichern:**
 
     ```bash
-    pg_dump -t produkte shop_db > produkte_backup.sql
+    pg_dump -h localhost -p 5433 -U postgres -t produkte shop_db > produkte_backup.sql
     ```
 
     **Wiederherstellen:**
 
     ```bash
-    psql shop_db < shop_db_backup.sql
+    psql -h localhost -p 5433 -U postgres shop_db < shop_db_backup.sql
     ```
 
 ---

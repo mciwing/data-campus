@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_manipulieren.png" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Daten manipulieren
 
 In den vorangigen Kapiteln haben wir gelernt, wie man eine Datenbank erstellt, Daten **einfügt** und **abfragt**. 
@@ -86,7 +82,7 @@ VALUES (wert1, wert2, wert3);
         (11, 'O-Ring 30mm', 'Dichtungen', 500, 150, 0.80, 'Regal C1');
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     INSERT 0 3
     ```
 
@@ -397,7 +393,7 @@ Wichtig ist hier, dass wir die `WHERE`-Klausel verwenden. Ohne diese, werden all
     -- Safety Check
     SELECT artikel_id, artikelname, lagerort FROM artikel WHERE artikel_id = 3;
     ```
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      artikel_id |   artikelname   | lagerort
     ------------+-----------------+----------
               3 | Kugellager 6201 | Regal B3
@@ -415,7 +411,7 @@ Wichtig ist hier, dass wir die `WHERE`-Klausel verwenden. Ohne diese, werden all
     WHERE artikel_id = 3;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     UPDATE 1
     ```
 
@@ -455,7 +451,7 @@ Wir können mit dem aktuellen Wert rechnen und daraus den neuen Wert berechnen:
     SELECT * FROM artikel WHERE kategorie = 'Maschinenteile';
     ```	
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      artikel_id |    artikelname     |   kategorie    | bestand | mindestbestand | preis | lagerort
     ------------+--------------------+----------------+---------+----------------+-------+----------
               7 | Zahnriemen HTD-5M  | Maschinenteile |      25 |             10 | 35.00 | Regal B2
@@ -498,7 +494,7 @@ SQL bietet verschiedene Funktionen zur Bearbeitung von Textwerten. Eine gute Üb
     SELECT artikel_id, artikelname, lagerort FROM artikel;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      artikel_id |     artikelname     |     lagerort
     ------------+---------------------+------------------
               4 | Dichtungsring 50mm  | Lagerplatz C2
@@ -578,7 +574,7 @@ Wie auch bei `UPDATE` zuvor ist es extrem wichtig, dass wir `DELETE` in Kombinat
     SELECT artikel_id, artikelname, lagerort FROM artikel WHERE artikel_id = 8;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      artikel_id |     artikelname     |   lagerort
     ------------+---------------------+---------------
               8 | Sicherungsring 25mm | Lagerplatz A2
@@ -593,7 +589,7 @@ Wie auch bei `UPDATE` zuvor ist es extrem wichtig, dass wir `DELETE` in Kombinat
     WHERE artikel_id = 8;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     DELETE 1
     ```
 
@@ -637,8 +633,8 @@ Wie auch bei `UPDATE` zuvor ist es extrem wichtig, dass wir `DELETE` in Kombinat
         SELECT * FROM artikel;  -- Funktioniert, gibt 0 Zeilen zurück
         ```
 
-        ```title="Output"
-        artikel_id | artikelname | kategorie | bestand | mindestbestand | preis | lagerort
+        ```{.cmd .no-copy title="Output"}
+         artikel_id | artikelname | kategorie | bestand | mindestbestand | preis | lagerort
         ------------+-------------+-----------+---------+----------------+-------+----------
         (0 rows)
         ```
@@ -648,7 +644,8 @@ Wie auch bei `UPDATE` zuvor ist es extrem wichtig, dass wir `DELETE` in Kombinat
         DROP TABLE artikel;
         SELECT * FROM artikel;  -- FEHLER: Tabelle existiert nicht
         ```
-        ```title="Output"
+
+        ```{.cmd .no-copy title="Output"}
         FEHLER:  Relation »artikel« existiert nicht
         LINE 1: SELECT * FROM artikel;
                             ^
@@ -695,7 +692,7 @@ Die Anweisung startet mit `ALTER TABLE` und dem Tabellennamen. Es folgt die Akti
     ADD COLUMN lieferant_email VARCHAR(100);
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     ALTER TABLE
     ```
 
@@ -731,7 +728,7 @@ Die Anweisung startet mit `ALTER TABLE` und dem Tabellennamen. Es folgt die Akti
             RENAME COLUMN artikelname TO produktbezeichnung;
             ```
 
-            ```title="Output"
+            ```{.cmd .no-copy title="Output"}
             ALTER TABLE
             ```
 
@@ -755,7 +752,7 @@ Die Anweisung startet mit `ALTER TABLE` und dem Tabellennamen. Es folgt die Akti
             DROP COLUMN lieferant_email;
             ```
 
-            ```title="Output"
+            ```{.cmd .no-copy title="Output"}
             ALTER TABLE
             ```
 
@@ -793,7 +790,7 @@ ALTER COLUMN spaltenname TYPE neuer_datentyp;
     ALTER COLUMN kategorie TYPE VARCHAR(150);
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     ALTER TABLE
     ```
 
@@ -835,7 +832,7 @@ Hierbei ist zu beachten, dass wenn wir ein `DEFAULT` hinzufügen oder ändern, d
     SELECT COUNT(*) FROM artikel WHERE kategorie IS NULL;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
      count
     -------
          0
@@ -866,7 +863,7 @@ Hierbei ist zu beachten, dass wenn wir ein `DEFAULT` hinzufügen oder ändern, d
             SELECT artikel_id, mindestbestand FROM artikel LIMIT 3;
             ```
 
-            ```title="Output"
+            ```{.cmd .no-copy title="Output"}
             artikel_id | mindestbestand
             ------------+----------------
                     1 |           1000
@@ -882,7 +879,7 @@ Hierbei ist zu beachten, dass wenn wir ein `DEFAULT` hinzufügen oder ändern, d
             SELECT artikel_id, mindestbestand FROM artikel WHERE artikel_id = 20;
             ```
 
-            ```title="Output"
+            ```{.cmd .no-copy title="Output"}
             artikel_id | mindestbestand
             ------------+----------------
                     20 |            100
@@ -907,7 +904,7 @@ RENAME TO neuer_tabellenname;
     RENAME TO lagerartikel;
     ```
 
-    ```title="Output"
+    ```{.cmd .no-copy title="Output"}
     ALTER TABLE
     ```
 

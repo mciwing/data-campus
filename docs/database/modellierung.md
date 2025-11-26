@@ -1,7 +1,3 @@
-<div style="text-align: center;">
-    <img src="/assets/header/database/header_modellierung.png" alt="" style="width:100%; margin-bottom: 1em;">
-</div>
-
 # Datenmodellierung & Beziehungen
 
 
@@ -25,7 +21,7 @@ Beginnen wir mit einem Gedankenexperiment: Was passiert, wenn wir versuchen, all
 
 Versuchen wir, Maschinen **und** ihre Wartungen in einer einzigen Tabelle zu speichern:
 
-```sql title="Tabelle: maschinen_mit_wartungen" 
+```{.cmd .no-copy title="Tabelle: maschinen_mit_wartungen"}
  maschinen_id |      name        |     typ     | wartungsdatum |   techniker   | kosten
 --------------+------------------+-------------+---------------+---------------+--------
             1 | CNC-Fräse Alpha  | CNC-Fräse   | 2024-01-15    | M. Schneider  | 450.00
@@ -48,7 +44,7 @@ Doch wo liegt hier das Problem?
 3. **Inkonsistenz** - Widersprüchliche Daten möglich
 
     Was, wenn wir den Namen nur in einer Zeile ändern? Dann haben wir widersprüchliche Daten:
-    ```sql
+    ```{.cmd .no-copy}
     1 │ CNC-Fräse Alpha    │ ...
     1 │ CNC-Fräse Alpha V2 │ ...  -- Welcher Name stimmt jetzt?
     ```
@@ -68,14 +64,14 @@ Doch für unser Problem gibt es eine einfache Lösung:
 
 Anstelle aller Daten in einer einzelnen Tabelle zu sammeln, können wir die Informationen verteilt auf mehrere Tabellen speichern:
 
-```sql title="Tabelle: maschinen"
+```{.cmd .no-copy title="Tabelle: maschinen"}
  maschinen_id | name            | typ       
 --------------+-----------------+-----------
             1 | CNC-Fräse Alpha | CNC-Fräse
             2 | Drehbank Beta   | Drehbank  
 ```
 
-```sql title="Tabelle: wartungsprotokolle"
+```{.cmd .no-copy title="Tabelle: wartungsprotokolle"}
  wartungs_id | maschinen_id | wartungsdatum | techniker    | kosten
 -------------+--------------+---------------+--------------+--------
         101  |      1       | 2024-01-15    | M. Schneider | 450.00
@@ -361,7 +357,7 @@ Schauen wir uns ein Beispiel zum besseren Verständnis an:
 
 ???+ example "Krähenfuß-Notation"
 
-    ```
+    ```{.cmd .no-copy}
     MASCHINEN   ||-----o{   WARTUNGSPROTOKOLLE
                 ↑↑     ↑↑
                 ││     │└── Krähenfuß = viele
@@ -616,7 +612,7 @@ Das heißt, die oben hervorgehobene Code Zeile besagt, dass der Wert in `wartung
     ```
 
 
-    ```sql title="Output"
+    ```{.cmd .no-copy title="Output"}
     maschinen_id | name                 | typ            | standort
     -------------+----------------------+----------------+-----------
                1 | CNC-Fraese Alpha     | CNC-Fraese     | Halle A
@@ -657,7 +653,7 @@ Stellen wir uns folgendes Szenario vor: Eine Maschine benötigt viele Ersatzteil
 ???+ info "Gedankenexperiment"
     **Versuch 1:** Fremdschlüssel in `maschinen`?
 
-    ```sql title="Tabelle: wartungsprotokolle"
+    ```{.cmd .no-copy title="Tabelle: wartungsprotokolle"}
     maschinen_id | name            | ersatzteil_id
     -------------+-----------------+--------------
               1  | CNC-Fräse Alpha | ???  -- Mehrere Ersatzteile?
@@ -667,7 +663,7 @@ Stellen wir uns folgendes Szenario vor: Eine Maschine benötigt viele Ersatzteil
 
     **Versuch 2:** Fremdschlüssel in `ersatzteile`?
 
-    ```sql title="Tabelle: ersatzteile"
+    ```{.cmd .no-copy title="Tabelle: ersatzteile"}
     ersatzteil_id | bezeichnung      | maschinen_id
     --------------+------------------+--------------
                 1 | Spindelmotor     | ???  -- In mehreren Maschinen?
@@ -806,7 +802,7 @@ Nachdem wir nun mühevoll versucht haben Beziehungen in der Datenbank zu modelli
 
     ❌ **Fehler!**
 
-    ```
+    ```{.cmd .no-copy title="Output"}
     FEHLER:  Aktualisieren oder Löschen in Tabelle »maschinen« verletzt Fremdschlüssel-Constraint »wartungsprotokolle_maschinen_id_fkey« von Tabelle »wartungsprotokolle«
     DETAIL:  Auf Schlüssel (maschinen_id)=(1) wird noch aus Tabelle »wartungsprotokolle« verwiesen.
     ```

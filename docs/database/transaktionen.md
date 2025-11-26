@@ -423,6 +423,23 @@ Ein `SAVEPOINT` ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du ka
 
 ???+ example "`SAVEPOINT` verwenden"
 
+    Betrachten wir nochmals kurz den aktuellen Kontostand von Thomas, Max und Anna: 
+
+    ```sql
+    SELECT kontoinhaber, saldo FROM konten
+    WHERE kontoinhaber IN ('Max Mustermann', 'Anna Schmidt', 'Thomas Weber');
+    ```
+
+    ```{.cmd .no-copy title="Output"}
+      kontoinhaber  |  saldo
+    ----------------+----------
+     Thomas Weber   | 10000.00
+     Max Mustermann |  4000.00
+     Anna Schmidt   |  4000.00
+    (3 rows)
+    ```
+
+
     Stellen wir uns vor, wir führen mehrere Überweisungen durch, möchten aber nur eine davon rückgängig machen:
 
     ```sql hl_lines="5 11"
@@ -445,19 +462,15 @@ Ein `SAVEPOINT` ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du ka
     COMMIT;
     ```
 
-    Beim oben gezeigten Beispiel wird die erste Überweisung (200€ an Anna) durchgeführt, die zweite Überweisung (300€ an Thomas) aber verworfen.
+    Beim oben gezeigten Beispiel wird die erste Überweisung (200€ an Anna) durchgeführt, die zweite Überweisung (300€ an Thomas) aber verworfen. Lassen wir uns nochmals den aktuellen Kontostand anzeigen, erhalten wir: 
 
-    ```sql
-    SELECT kontoinhaber, saldo FROM konten
-    WHERE kontoinhaber IN ('Max Mustermann', 'Anna Schmidt', 'Thomas Weber');
-    ```
-
-    ```title="Output"
-     kontoinhaber    |   saldo
-    -----------------+----------
-     Max Mustermann  |  4300.00
-     Anna Schmidt    |  3700.00
-     Thomas Weber    | 10000.00
+    ```{.cmd .no-copy title="Output"}
+      kontoinhaber  |  saldo
+    ----------------+----------
+     Thomas Weber   | 10000.00
+     Max Mustermann |  3800.00
+     Anna Schmidt   |  4200.00
+    (3 rows)
     ```
 
 ---
