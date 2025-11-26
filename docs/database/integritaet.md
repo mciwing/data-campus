@@ -479,21 +479,21 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
     -- Testdaten: Maschinen
     INSERT INTO maschinen VALUES
-    (1, 'Spritzgussmaschine Alpha', 'Spritzgussmaschine', 'M-001', 'Halle A', 2018, 'In Betrieb', 90),
-    (2, 'CNC-Fräse Beta', 'CNC-Fräse', 'M-002', 'Halle B', 2020, 'In Betrieb', 60),
-    (3, 'Drehmaschine Gamma', 'Drehmaschine', 'M-003', 'Halle A', 2019, 'Wartung', 120),
-    (4, 'Presse Delta', 'Hydraulikpresse', 'M-004', 'Halle C', 2021, 'In Betrieb', 180);
+    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'M-CNC-001', 'Halle A', 2020, 'Aktiv', 90),
+    (2, 'Drehbank Delta', 'Drehbank', 'M-DRE-002', 'Halle A', 2018, 'Aktiv', 120),
+    (3, 'Presse Gamma', 'Presse', 'M-PRE-003', 'Halle B', 2019, 'Aktiv', 60),
+    (4, 'Schweissroboter Beta', 'Schweissroboter', 'M-SCH-004', 'Halle C', 2021, 'Aktiv', 90);
 
     -- Testdaten: Produktionsaufträge
     INSERT INTO produktionsauftraege VALUES
-    (1, 'PA-2024-001', 'Bosch GmbH', 'Kunststoffgehäuse', 500, '2024-03-01', '2024-03-15', NULL, 'In Produktion', 1),
-    (2, 'PA-2024-002', 'Siemens AG', 'Metallrahmen', 200, '2024-03-05', '2024-03-20', NULL, 'Geplant', 2),
-    (3, 'PA-2024-003', 'Daimler AG', 'Präzisionsteile', 150, '2024-03-10', '2024-03-25', NULL, 'Geplant', 3),
-    (4, 'PA-2024-004', 'ZF Friedrichshafen AG', 'Zahnräder', 300, '2024-03-12', '2024-03-28', NULL, 'In Produktion', 2),
-    (5, 'PA-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', '2024-04-20', 'Abgeschlossen', 2),
-    (6, 'PA-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'Geplant', 4),
-    (7, 'PA-2024-007', 'Audi AG', 'Pleuel', 250, '2024-04-25', '2024-05-05', NULL, 'Geplant', 2),
-    (8, 'PA-2024-008', 'Porsche AG', 'Kurbelgehäuse', 100, '2024-05-01', '2024-05-10', NULL, 'In Produktion', 1);
+    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', NULL, 'In Produktion', 1),
+    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', NULL, 'In Produktion', 2),
+    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', '2024-04-17', 'In Produktion', 2),
+    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', NULL, 'In Vorbereitung', 4),
+    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', NULL, 'In Produktion', 2),
+    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'In Vorbereitung', 1),
+    (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', NULL, 'In Vorbereitung', 2),
+    (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', NULL, 'In Produktion', 4);
 
     -- Testdaten: Wartungsprotokolle
     INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id) VALUES
@@ -561,12 +561,12 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
         -- Test: Versuche eine doppelte Seriennummer einzufügen (sollte fehlschlagen)
         INSERT INTO maschinen (maschinenname, maschinentyp, maschinencode, anschaffungsjahr)
-        VALUES ('Test Maschine', 'CNC-Fräse', 'M-001', 2025);
+        VALUES ('Test Maschine', 'CNC-Fräse', 'M-CNC-001', 2025);
         ```
 
         ```title="Output"
         FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »uq_maschinencode«
-        DETAIL:  Schlüssel »(maschinencode)=(M-001)« existiert bereits.
+        DETAIL:  Schlüssel »(maschinencode)=(M-CNC-001)« existiert bereits.
         ```
 
 ???+ question "Aufgabe 3: CHECK Constraint für Wartungsintervalle"
@@ -632,17 +632,17 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         ALTER COLUMN status SET DEFAULT 'geplant';
 
         -- Test: Füge einen Auftrag ohne Status ein
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES ('PA-TEST-001', 'Test AG', 'Test Produkt', 100, '2025-12-01', 1);
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES (90, 'AUF-TEST-001', 'Test AG', 'Test Produkt', 100, '2025-12-01', 1);
 
         -- Überprüfen
-        SELECT auftragsnummer, status FROM produktionsauftraege WHERE auftragsnummer = 'PA-TEST-001';
+        SELECT auftragsnummer, status FROM produktionsauftraege WHERE auftragsnummer = 'AUF-TEST-001';
         ```
 
         ```title="Output"
          auftragsnummer | status
         ----------------+--------
-         PA-TEST-001    | geplant
+         AUF-TEST-001   | geplant
         ```
 
 ???+ question "Aufgabe 6: CHECK Constraint für Stückzahlen"
@@ -659,8 +659,8 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         ADD CONSTRAINT ck_menge_mindestens_eins CHECK (menge >= 1);
 
         -- Test: Versuche 0 Stück einzufügen (sollte fehlschlagen)
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES ('PA-TEST-002', 'Test AG', 'Test Produkt 2', 0, '2025-12-01', 1);
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES (91, 'AUF-TEST-002', 'Test AG', 'Test Produkt 2', 0, '2025-12-01', 1);
         ```
 
         ```title="Output"
@@ -712,8 +712,8 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         CHECK (enddatum IS NULL OR enddatum > startdatum);
 
         -- Test 1: Enddatum vor Startdatum (sollte fehlschlagen)
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
-        VALUES ('PA-TEST-003', 'Test AG', 'Test Produkt 3', 50, '2025-12-10', '2025-12-05', 1);
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
+        VALUES (99, 'AUF-TEST-001', 'Test AG', 'Test Produkt 3', 50, '2025-12-10', '2025-12-05', 1);
         ```
 
         ```title="Output"
@@ -722,12 +722,12 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
         ```sql
         -- Test 2: Enddatum nach Startdatum (sollte funktionieren)
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
-        VALUES ('PA-TEST-003', 'Test AG', 'Test Produkt 3', 50, '2025-12-05', '2025-12-10', 1);
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
+        VALUES (100, 'AUF-TEST-002', 'Test AG', 'Test Produkt 3', 50, '2025-12-05', '2025-12-10', 1);
 
         -- Test 3: Kein Enddatum (sollte funktionieren)
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES ('PA-TEST-004', 'Test AG', 'Test Produkt 4', 75, '2025-12-05', 1);
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES (101, 'AUF-TEST-003', 'Test AG', 'Test Produkt 4', 75, '2025-12-05', 1);
         ```
 
 ???+ question "Aufgabe 9: Constraint testen und verstehen"
@@ -757,8 +757,8 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
         ```sql
         -- Test 2: Negative Menge
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES ('PA-TEST-005', 'Test AG', 'Test Produkt 5', -10, '2025-12-01', 1);
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
+        VALUES (92, 'AUF-TEST-003', 'Test AG', 'Test Produkt 5', -10, '2025-12-01', 1);
         ```
 
         ```title="Output"

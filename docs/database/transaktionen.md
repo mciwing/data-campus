@@ -562,21 +562,21 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
 
     -- Testdaten: Maschinen
     INSERT INTO maschinen VALUES
-    (1, 'Spritzgussmaschine Alpha', 'Spritzgussmaschine', 'M-001', 'Halle A', 2018, 'In Betrieb', 90),
-    (2, 'CNC-Fräse Beta', 'CNC-Fräse', 'M-002', 'Halle B', 2020, 'In Betrieb', 60),
-    (3, 'Drehmaschine Gamma', 'Drehmaschine', 'M-003', 'Halle A', 2019, 'Wartung', 120),
-    (4, 'Presse Delta', 'Hydraulikpresse', 'M-004', 'Halle C', 2021, 'In Betrieb', 180);
+    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'M-CNC-001', 'Halle A', 2020, 'Aktiv', 90),
+    (2, 'Drehbank Delta', 'Drehbank', 'M-DRE-002', 'Halle A', 2018, 'Aktiv', 120),
+    (3, 'Presse Gamma', 'Presse', 'M-PRE-003', 'Halle B', 2019, 'Aktiv', 60),
+    (4, 'Schweissroboter Beta', 'Schweissroboter', 'M-SCH-004', 'Halle C', 2021, 'Aktiv', 90);
 
     -- Testdaten: Produktionsaufträge
     INSERT INTO produktionsauftraege VALUES
-    (1, 'PA-2024-001', 'Bosch GmbH', 'Kunststoffgehäuse', 500, '2024-03-01', '2024-03-15', NULL, 'In Produktion', 1),
-    (2, 'PA-2024-002', 'Siemens AG', 'Metallrahmen', 200, '2024-03-05', '2024-03-20', NULL, 'Geplant', 2),
-    (3, 'PA-2024-003', 'Daimler AG', 'Präzisionsteile', 150, '2024-03-10', '2024-03-25', NULL, 'Geplant', 3),
-    (4, 'PA-2024-004', 'ZF Friedrichshafen AG', 'Zahnräder', 300, '2024-03-12', '2024-03-28', NULL, 'In Produktion', 2),
-    (5, 'PA-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', '2024-04-20', 'Abgeschlossen', 2),
-    (6, 'PA-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'Geplant', 4),
-    (7, 'PA-2024-007', 'Audi AG', 'Pleuel', 250, '2024-04-25', '2024-05-05', NULL, 'Geplant', 2),
-    (8, 'PA-2024-008', 'Porsche AG', 'Kurbelgehäuse', 100, '2024-05-01', '2024-05-10', NULL, 'In Produktion', 1);
+    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', NULL, 'In Produktion', 1),
+    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', NULL, 'In Produktion', 2),
+    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', '2024-04-17', 'In Produktion', 2),
+    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', NULL, 'In Vorbereitung', 4),
+    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', NULL, 'In Produktion', 2),
+    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'In Vorbereitung', 1),
+    (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', NULL, 'In Vorbereitung', 2),
+    (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', NULL, 'In Produktion', 4);
 
     -- Testdaten: Wartungsprotokolle
     INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id) VALUES
@@ -674,8 +674,8 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         WHERE maschinen_id = 1 AND status = 'in_produktion';
 
         -- Wenn keine aktiven Aufträge (COUNT = 0), dann neuen Auftrag erstellen:
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
-        VALUES ('PA-2025-999', 'Test GmbH', 'Test Widget', 500, CURRENT_DATE, 1, 'geplant');
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
+        VALUES (90, 'AUF-2025-001', 'Test GmbH', 'Test Widget', 500, CURRENT_DATE, 1, 'geplant');
 
         -- Falls die Maschine belegt wäre:
         -- ROLLBACK;
@@ -848,19 +848,19 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         BEGIN;
 
         -- Neuen Produktionsauftrag erstellen
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
-        VALUES ('PA-2025-1000', 'Special Parts AG', 'Spezialkomponente XY', 200, CURRENT_DATE, 3, 'in_produktion')
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
+        VALUES (91, 'AUF-2025-002', 'Special Parts AG', 'Spezialkomponente XY', 200, CURRENT_DATE, 3, 'in_produktion')
         RETURNING auftrag_id;
 
         -- Wartungsplan für nach dem Auftrag erstellen
         INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (3, CURRENT_DATE + INTERVAL '7 days', 'Wartung nach Produktionsauftrag PA-2025-1000', 0);
+        VALUES (3, CURRENT_DATE + INTERVAL '7 days', 'Wartung nach Produktionsauftrag AUF-2025-002', 0);
 
         -- Überprüfung
         SELECT p.auftragsnummer, p.status, w.beschreibung, w.wartungsdatum
         FROM produktionsauftraege p
         LEFT JOIN wartungsprotokolle w ON p.maschinen_id = w.maschinen_id
-        WHERE p.auftragsnummer = 'PA-2025-1000';
+        WHERE p.auftragsnummer = 'AUF-2025-002';
 
         COMMIT;
         ```
@@ -932,8 +932,8 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         BEGIN;
 
         -- 1. Produktionsauftrag erstellen
-        INSERT INTO produktionsauftraege (auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
-        VALUES ('PA-2025-KOMPLEX', 'Precision Tech AG', 'Komplexes Bauteil', 100, CURRENT_DATE, 1, 'geplant');
+        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
+        VALUES (92, 'AUF-2025-003', 'Precision Tech AG', 'Komplexes Bauteil', 100, CURRENT_DATE, 1, 'geplant');
 
         -- 2. Benötigte Ersatzteile aus Lager entnehmen
         UPDATE lager
@@ -947,12 +947,12 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         -- 3. Produktionsauftrag auf "in_produktion" setzen
         UPDATE produktionsauftraege
         SET status = 'in_produktion'
-        WHERE auftragsnummer = 'PA-2025-KOMPLEX';
+        WHERE auftragsnummer = 'AUF-2025-003';
 
         -- 4. Überprüfung aller Änderungen
         SELECT p.auftragsnummer, p.status, p.produkt
         FROM produktionsauftraege p
-        WHERE auftragsnummer = 'PA-2025-KOMPLEX';
+        WHERE auftragsnummer = 'AUF-2025-003';
 
         SELECT l.standort, e.bezeichnung, l.bestand
         FROM lager l
