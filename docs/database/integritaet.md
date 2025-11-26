@@ -413,7 +413,7 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
         ```sql
         -- Zu anderer Datenbank wechseln
-            \c postgres
+        \c postgres
         
         -- Zur Datenbank wechseln (oder neu erstellen)
         DROP DATABASE IF EXISTS produktionsplanung_db;
@@ -556,36 +556,13 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         \d produktionsauftraege
         ```
 
-???+ question "Aufgabe 2: UNIQUE Constraint für Maschinencodes"
-
-    Jede Maschine in der Tabelle `maschinen` sollte einen **eindeutigen Maschinencode** haben. Füge einen UNIQUE Constraint für die Spalte `maschinencode` hinzu.
-
-    **Tipp:** Verwende einen aussagekräftigen Namen für den Constraint (z.B. `uq_maschinencode`).
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- UNIQUE Constraint hinzufügen
-        ALTER TABLE maschinen
-        ADD CONSTRAINT uq_maschinencode UNIQUE (maschinencode);
-
-        -- Test: Versuche eine doppelte Seriennummer einzufügen (sollte fehlschlagen)
-        INSERT INTO maschinen (maschinenname, maschinentyp, maschinencode, anschaffungsjahr)
-        VALUES ('Test Maschine', 'CNC-Fräse', 'M-CNC-001', 2025);
-        ```
-
-        ```title="Output"
-        FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »uq_maschinencode«
-        DETAIL:  Schlüssel »(maschinencode)=(M-CNC-001)« existiert bereits.
-        ```
-
-???+ question "Aufgabe 3: CHECK Constraint für Wartungsintervalle"
+???+ question "Aufgabe 2: CHECK Constraint für Wartungsintervalle"
 
     In der Tabelle `maschinen` gibt es eine Spalte `wartungsintervall_tage`, die angibt, nach wie vielen Tagen eine Wartung fällig ist.
 
     Füge einen CHECK Constraint hinzu, der sicherstellt, dass das Wartungsintervall **mindestens 30 Tage und maximal 365 Tage** beträgt.
 
-    **Tipp:** Verwende einen aussagekräftigen Namen für den Constraint (z.B. `ck_wartungsintervall_gueltig`).
+    **Tipp:** Verwende einen aussagekräftigen Namen für den Constraint (z.B. `ck_wartungsintervall_gueltig`). Wieder können wir mit dem Befehl `\d maschinen` die Struktur der Tabelle `maschinen` anzeigen und Beschränkungen anzeigen.
 
     ??? tip "Lösung anzeigen"
 
@@ -606,78 +583,7 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         DETAIL:  Fehlgeschlagene Zeile enthält (...)
         ```
 
-???+ question "Aufgabe 4: CHECK Constraint für Kosten"
-
-    In der Tabelle `wartungsprotokolle` werden die Wartungskosten gespeichert. Manchmal werden jedoch versehentlich negative Werte eingetragen.
-
-    Füge einen CHECK Constraint hinzu, der sicherstellt, dass `kosten` **größer oder gleich 0** sind.
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- CHECK Constraint für positive Kosten hinzufügen
-        ALTER TABLE wartungsprotokolle
-        ADD CONSTRAINT ck_kosten_positiv CHECK (kosten >= 0);
-
-        -- Test: Versuche negative Kosten einzufügen (sollte fehlschlagen)
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (1, '2025-11-25', 'Test Wartung', -500);
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »wartungsprotokolle« verletzt Check-Constraint »ck_kosten_positiv«
-        ```
-
-???+ question "Aufgabe 5: DEFAULT Werte für Status"
-
-    In der Tabelle `produktionsauftraege` sollte jeder neue Auftrag standardmäßig den Status `'geplant'` erhalten, wenn kein Status angegeben wird.
-
-    Füge einen DEFAULT Constraint für die Spalte `status` hinzu.
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- DEFAULT Wert für status hinzufügen
-        ALTER TABLE produktionsauftraege
-        ALTER COLUMN status SET DEFAULT 'geplant';
-
-        -- Test: Füge einen Auftrag ohne Status ein
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES (90, 'AUF-TEST-001', 'Test AG', 'Test Produkt', 100, '2025-12-01', 1);
-
-        -- Überprüfen
-        SELECT auftragsnummer, status FROM produktionsauftraege WHERE auftragsnummer = 'AUF-TEST-001';
-        ```
-
-        ```title="Output"
-         auftragsnummer | status
-        ----------------+--------
-         AUF-TEST-001   | geplant
-        ```
-
-???+ question "Aufgabe 6: CHECK Constraint für Stückzahlen"
-
-    In der Tabelle `produktionsauftraege` sollte die `stueckzahl` niemals **kleiner als 1** sein.
-
-    Füge einen CHECK Constraint hinzu, der dies sicherstellt.
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- CHECK Constraint für mindestens 1 Stück hinzufügen
-        ALTER TABLE produktionsauftraege
-        ADD CONSTRAINT ck_menge_mindestens_eins CHECK (menge >= 1);
-
-        -- Test: Versuche 0 Stück einzufügen (sollte fehlschlagen)
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES (91, 'AUF-TEST-002', 'Test AG', 'Test Produkt 2', 0, '2025-12-01', 1);
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_menge_mindestens_eins«
-        ```
-
-???+ question "Aufgabe 7: Multi-Column UNIQUE Constraint"
+???+ question "Aufgabe 3: Multi-Column UNIQUE Constraint"
 
     In der Tabelle `wartungsprotokolle` möchtest du verhindern, dass **dieselbe Maschine zweimal am selben Tag** gewartet wird.
 
@@ -705,141 +611,6 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         DETAIL:  Schlüssel »(maschinen_id, wartungsdatum)=(1, 2025-12-01)« existiert bereits.
         ```
 
-???+ question "Aufgabe 8: CHECK Constraint mit Datumsvergleich"
-
-    In der Tabelle `produktionsauftraege` gibt es die Spalten `startdatum` und `enddatum`. Das Enddatum sollte immer **nach dem Startdatum** liegen.
-
-    Füge einen CHECK Constraint hinzu, der dies sicherstellt.
-
-    **Tipp:** Der Constraint sollte auch NULL-Werte für `enddatum` erlauben (da Aufträge noch laufen können).
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- CHECK Constraint für Datumsvergleich hinzufügen
-        ALTER TABLE produktionsauftraege
-        ADD CONSTRAINT ck_enddatum_nach_startdatum
-        CHECK (enddatum IS NULL OR enddatum > startdatum);
-
-        -- Test 1: Enddatum vor Startdatum (sollte fehlschlagen)
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
-        VALUES (99, 'AUF-TEST-001', 'Test AG', 'Test Produkt 3', 50, '2025-12-10', '2025-12-05', 1);
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_enddatum_nach_startdatum«
-        ```
-
-        ```sql
-        -- Test 2: Enddatum nach Startdatum (sollte funktionieren)
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, enddatum, maschinen_id)
-        VALUES (100, 'AUF-TEST-002', 'Test AG', 'Test Produkt 3', 50, '2025-12-05', '2025-12-10', 1);
-
-        -- Test 3: Kein Enddatum (sollte funktionieren)
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES (101, 'AUF-TEST-003', 'Test AG', 'Test Produkt 4', 75, '2025-12-05', 1);
-        ```
-
-???+ question "Aufgabe 9: Constraint testen und verstehen"
-
-    Teste die Constraints, die du in den vorherigen Aufgaben hinzugefügt hast:
-
-    1. Versuche eine Maschine mit `wartungsintervall_tage = 500` einzufügen
-    2. Versuche einen Produktionsauftrag mit `menge = -10` einzufügen
-    3. Versuche eine Wartung mit `kosten = -1000` einzufügen
-
-    Analysiere die Fehlermeldungen und erkläre, warum die Constraints die Einfügung verhindern.
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- Test 1: Wartungsintervall zu groß
-        INSERT INTO maschinen (maschinenname, maschinentyp, maschinencode, wartungsintervall_tage, anschaffungsjahr)
-        VALUES ('Test Maschine 1', 'Presse', 'M-TEST-001', 500, 2025);
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »maschinen« verletzt Check-Constraint »ck_wartungsintervall_gueltig«
-        DETAIL:  Fehlgeschlagene Zeile enthält (..., 500, ...)
-        ```
-
-        **Erklärung:** Der CHECK Constraint `ck_wartungsintervall_gueltig` erlaubt nur Werte zwischen 30 und 365.
-
-        ```sql
-        -- Test 2: Negative Menge
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id)
-        VALUES (92, 'AUF-TEST-003', 'Test AG', 'Test Produkt 5', -10, '2025-12-01', 1);
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »produktionsauftraege« verletzt Check-Constraint »ck_menge_mindestens_eins«
-        ```
-
-        **Erklärung:** Der CHECK Constraint `ck_menge_mindestens_eins` stellt sicher, dass mindestens 1 Stück produziert wird.
-
-        ```sql
-        -- Test 3: Negative Kosten
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (1, '2025-12-02', 'Test Wartung', -1000);
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »wartungsprotokolle« verletzt Check-Constraint »ck_kosten_positiv«
-        ```
-
-        **Erklärung:** Der CHECK Constraint `ck_kosten_positiv` verhindert negative Wartungskosten.
-
-???+ question "Aufgabe 10: Constraint-Übersicht anzeigen"
-
-    Verschaffe dir einen Überblick über alle Constraints, die in der Datenbank definiert sind.
-
-    Verwende den Befehl `\d tabellenname`, um die Constraints für die Tabellen `maschinen`, `produktionsauftraege` und `wartungsprotokolle` anzuzeigen.
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- Constraints für Maschinen anzeigen
-        \d maschinen
-        ```
-
-        ```title="Output (Auszug)"
-        Tabelle »public.maschinen«
-             Spalte          |          Typ           | Constraints
-        ---------------------+------------------------+-------------
-         maschinen_id        | integer                | not null
-         maschinenname       | varchar(100)           | not null
-         maschinencode       | varchar(20)            |
-         wartungsintervall   | integer                |
-        Indexe:
-            "maschinen_pkey" PRIMARY KEY, btree (maschinen_id)
-            "uq_maschinencode" UNIQUE CONSTRAINT, btree (maschinencode)
-        Check-Constraints:
-            "ck_wartungsintervall_gueltig" CHECK (wartungsintervall_tage >= 30 AND wartungsintervall_tage <= 365)
-        ```
-
-        ```sql
-        -- Constraints für Produktionsaufträge anzeigen
-        \d produktionsauftraege
-        ```
-
-        ```title="Output (Auszug)"
-        Check-Constraints:
-            "ck_stueckzahl_mindestens_eins" CHECK (stueckzahl >= 1)
-            "ck_enddatum_nach_startdatum" CHECK (enddatum IS NULL OR enddatum > startdatum)
-        ```
-
-        ```sql
-        -- Constraints für Wartungsprotokolle anzeigen
-        \d wartungsprotokolle
-        ```
-
-        ```title="Output (Auszug)"
-        Indexe:
-            "wartungsprotokolle_pkey" PRIMARY KEY, btree (wartungs_id)
-            "uq_maschine_wartungsdatum" UNIQUE CONSTRAINT, btree (maschinen_id, wartungsdatum)
-        Check-Constraints:
-            "ck_kosten_positiv" CHECK (kosten >= 0)
-        ```
 
 ---
 

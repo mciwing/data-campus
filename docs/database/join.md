@@ -460,7 +460,7 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
 
         ```sql
         -- Zu anderer Datenbank wechseln
-            \c postgres
+        \c postgres
         
         -- Zur Datenbank wechseln (oder neu erstellen)
         DROP DATABASE IF EXISTS produktionsplanung_db;

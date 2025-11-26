@@ -481,143 +481,148 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
 
 ???+ info "Übungsvorbereitung – Datenbank zurücksetzen"
 
-    Falls du die vorherigen Kapitel nicht abgeschlossen hast oder von vorne beginnen möchtest, kannst du mit folgendem Code-Block die Datenbank komplett neu aufsetzen:
+    Für die nachfolgenden Übungen wollen wir nochmals auf die Ausgangsbasis zurückgehen und zusätzlich noch eine neue Lager Tabelle hinzufügen. Führe dazu das nachfolgende Setup aus.
 
-    ```sql
-    -- Datenbank löschen und neu erstellen
-    DROP DATABASE IF EXISTS produktionsplanung_db;
-    CREATE DATABASE produktionsplanung_db;
+    ???+ code "Setup"
+        ```sql
+        -- Zu anderer Datenbank wechseln
+        \c postgres
+        
+        -- Datenbank löschen und neu erstellen
+        DROP DATABASE IF EXISTS produktionsplanung_db;
+        CREATE DATABASE produktionsplanung_db;
 
-    -- Zur Datenbank wechseln
-    \c produktionsplanung_db
+        -- Zur Datenbank wechseln
+        \c produktionsplanung_db
 
-    -- Tabelle: Maschinen
-    CREATE TABLE maschinen (
-        maschinen_id INTEGER PRIMARY KEY,
-        maschinenname VARCHAR(100) NOT NULL,
-        maschinentyp VARCHAR(50),
-        maschinencode VARCHAR(20),
-        produktionshalle VARCHAR(50),
-        anschaffungsjahr INTEGER,
-        maschinenstatus VARCHAR(20),
-        wartungsintervall_tage INTEGER
-    );
+        -- Tabelle: Maschinen
+        CREATE TABLE maschinen (
+            maschinen_id INTEGER PRIMARY KEY,
+            maschinenname VARCHAR(100) NOT NULL,
+            maschinentyp VARCHAR(50),
+            maschinencode VARCHAR(20),
+            produktionshalle VARCHAR(50),
+            anschaffungsjahr INTEGER,
+            maschinenstatus VARCHAR(20),
+            wartungsintervall_tage INTEGER
+        );
 
-    -- Tabelle: Produktionsaufträge
-    CREATE TABLE produktionsauftraege (
-        auftrag_id INTEGER PRIMARY KEY,
-        auftragsnummer VARCHAR(20),
-        kunde VARCHAR(100),
-        produkt VARCHAR(100),
-        menge INTEGER,
-        startdatum DATE,
-        lieferdatum DATE,
-        enddatum DATE,
-        status VARCHAR(20),
-        maschinen_id INTEGER,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE RESTRICT
-    );
+        -- Tabelle: Produktionsaufträge
+        CREATE TABLE produktionsauftraege (
+            auftrag_id INTEGER PRIMARY KEY,
+            auftragsnummer VARCHAR(20),
+            kunde VARCHAR(100),
+            produkt VARCHAR(100),
+            menge INTEGER,
+            startdatum DATE,
+            lieferdatum DATE,
+            enddatum DATE,
+            status VARCHAR(20),
+            maschinen_id INTEGER,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE RESTRICT
+        );
 
-    -- Tabelle: Wartungsprotokolle (1:n Beziehung zu Maschinen)
-    CREATE TABLE wartungsprotokolle (
-        wartungs_id SERIAL PRIMARY KEY,
-        wartungsdatum DATE NOT NULL,
-        beschreibung TEXT,
-        techniker VARCHAR(100),
-        kosten NUMERIC(10, 2),
-        maschinen_id INTEGER NOT NULL,
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE
-    );
+        -- Tabelle: Wartungsprotokolle (1:n Beziehung zu Maschinen)
+        CREATE TABLE wartungsprotokolle (
+            wartungs_id SERIAL PRIMARY KEY,
+            wartungsdatum DATE NOT NULL,
+            beschreibung TEXT,
+            techniker VARCHAR(100),
+            kosten NUMERIC(10, 2),
+            maschinen_id INTEGER NOT NULL,
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE CASCADE
+        );
 
-    -- Tabelle: Ersatzteile
-    CREATE TABLE ersatzteile (
-        ersatzteil_id INTEGER PRIMARY KEY,
-        teilenummer VARCHAR(20) NOT NULL UNIQUE,
-        bezeichnung VARCHAR(100) NOT NULL,
-        lagerbestand INTEGER DEFAULT 0,
-        mindestbestand INTEGER DEFAULT 10
-    );
+        -- Tabelle: Ersatzteile
+        CREATE TABLE ersatzteile (
+            ersatzteil_id INTEGER PRIMARY KEY,
+            teilenummer VARCHAR(20) NOT NULL UNIQUE,
+            bezeichnung VARCHAR(100) NOT NULL,
+            lagerbestand INTEGER DEFAULT 0,
+            mindestbestand INTEGER DEFAULT 10
+        );
 
-    -- Tabelle: Maschinen-Ersatzteile (n:m Beziehung)
-    CREATE TABLE maschinen_ersatzteile (
-        maschinen_id INTEGER,
-        ersatzteil_id INTEGER,
-        menge_pro_wartung INTEGER,
-        PRIMARY KEY (maschinen_id, ersatzteil_id),
-        FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
-            ON DELETE CASCADE,
-        FOREIGN KEY (ersatzteil_id) REFERENCES ersatzteile(ersatzteil_id)
-            ON DELETE CASCADE
-    );
+        -- Tabelle: Maschinen-Ersatzteile (n:m Beziehung)
+        CREATE TABLE maschinen_ersatzteile (
+            maschinen_id INTEGER,
+            ersatzteil_id INTEGER,
+            menge_pro_wartung INTEGER,
+            PRIMARY KEY (maschinen_id, ersatzteil_id),
+            FOREIGN KEY (maschinen_id) REFERENCES maschinen(maschinen_id)
+                ON DELETE CASCADE,
+            FOREIGN KEY (ersatzteil_id) REFERENCES ersatzteile(ersatzteil_id)
+                ON DELETE CASCADE
+        );
 
-    -- Tabelle: Lager (NEU für Transaktionsübungen)
-    CREATE TABLE lager (
-        lager_id SERIAL PRIMARY KEY,
-        standort VARCHAR(100) NOT NULL,
-        ersatzteil_id INTEGER REFERENCES ersatzteile(ersatzteil_id),
-        bestand INTEGER NOT NULL CHECK (bestand >= 0)
-    );
+        -- Tabelle: Lager (NEU für Transaktionsübungen)
+        CREATE TABLE lager (
+            lager_id SERIAL PRIMARY KEY,
+            standort VARCHAR(100) NOT NULL,
+            ersatzteil_id INTEGER REFERENCES ersatzteile(ersatzteil_id),
+            bestand INTEGER NOT NULL CHECK (bestand >= 0)
+        );
 
-    -- Testdaten: Maschinen
-    INSERT INTO maschinen VALUES
-    (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'M-CNC-001', 'Halle A', 2020, 'Aktiv', 90),
-    (2, 'Drehbank Delta', 'Drehbank', 'M-DRE-002', 'Halle A', 2018, 'Aktiv', 120),
-    (3, 'Presse Gamma', 'Presse', 'M-PRE-003', 'Halle B', 2019, 'Aktiv', 60),
-    (4, 'Schweissroboter Beta', 'Schweissroboter', 'M-SCH-004', 'Halle C', 2021, 'Aktiv', 90);
+        -- Testdaten: Maschinen
+        INSERT INTO maschinen VALUES
+        (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'M-CNC-001', 'Halle A', 2020, 'Aktiv', 90),
+        (2, 'Drehbank Delta', 'Drehbank', 'M-DRE-002', 'Halle A', 2018, 'Aktiv', 120),
+        (3, 'Presse Gamma', 'Presse', 'M-PRE-003', 'Halle B', 2019, 'Aktiv', 60),
+        (4, 'Schweissroboter Beta', 'Schweissroboter', 'M-SCH-004', 'Halle C', 2021, 'Aktiv', 90);
 
-    -- Testdaten: Produktionsaufträge
-    INSERT INTO produktionsauftraege VALUES
-    (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', NULL, 'In Produktion', 1),
-    (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', NULL, 'In Produktion', 2),
-    (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', '2024-04-17', 'In Produktion', 2),
-    (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', NULL, 'In Vorbereitung', 4),
-    (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', NULL, 'In Produktion', 2),
-    (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'In Vorbereitung', 1),
-    (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', NULL, 'In Vorbereitung', 2),
-    (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', NULL, 'In Produktion', 4);
+        -- Testdaten: Produktionsaufträge
+        INSERT INTO produktionsauftraege VALUES
+        (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', NULL, 'In Produktion', 1),
+        (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', NULL, 'In Produktion', 2),
+        (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', '2024-04-17', 'In Produktion', 2),
+        (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', NULL, 'In Vorbereitung', 4),
+        (5, 'AUF-2024-005', 'BMW AG', 'Kurbelwelle', 300, '2024-04-15', '2024-04-22', NULL, 'In Produktion', 2),
+        (6, 'AUF-2024-006', 'Volkswagen AG', 'Kolben', 400, '2024-04-20', '2024-04-28', NULL, 'In Vorbereitung', 1),
+        (7, 'AUF-2024-009', 'Porsche AG', 'Kurbelwelle', 120, '2024-04-28', '2024-05-05', NULL, 'In Vorbereitung', 2),
+        (8, 'AUF-2024-010', 'BMW AG', 'Kolben', 350, '2024-04-12', '2024-04-19', NULL, 'In Produktion', 4);
 
-    -- Testdaten: Wartungsprotokolle
-    INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id) VALUES
-    ('2024-01-15', 'Routinewartung - Ölwechsel und Filter', 'Thomas Weber', 450.00, 1),
-    ('2024-02-20', 'Austausch Hydraulikschläuche', 'Anna Schmidt', 320.00, 4),
-    ('2024-03-10', 'Software-Update CNC-Steuerung', 'Thomas Weber', 180.00, 2),
-    ('2024-03-22', 'Inspektion nach 5000 Betriebsstunden', 'Michael Klein', 520.00, 3),
-    ('2024-04-05', 'Reparatur Kühlsystem', 'Anna Schmidt', 890.00, 1);
+        -- Testdaten: Wartungsprotokolle
+        INSERT INTO wartungsprotokolle (wartungsdatum, beschreibung, techniker, kosten, maschinen_id) VALUES
+        ('2024-01-15', 'Routinewartung - Ölwechsel und Filter', 'Thomas Weber', 450.00, 1),
+        ('2024-02-20', 'Austausch Hydraulikschläuche', 'Anna Schmidt', 320.00, 4),
+        ('2024-03-10', 'Software-Update CNC-Steuerung', 'Thomas Weber', 180.00, 2),
+        ('2024-03-22', 'Inspektion nach 5000 Betriebsstunden', 'Michael Klein', 520.00, 3),
+        ('2024-04-05', 'Reparatur Kühlsystem', 'Anna Schmidt', 890.00, 1);
 
-    -- Testdaten: Ersatzteile
-    INSERT INTO ersatzteile VALUES
-    (1, 'ET-001', 'Hydrauliköl 10L', 50, 20),
-    (2, 'ET-002', 'Ölfilter', 30, 15),
-    (3, 'ET-003', 'Hydraulikschlauch 2m', 25, 10),
-    (4, 'ET-004', 'Dichtungssatz', 40, 12),
-    (5, 'ET-005', 'Sicherungsring Set', 100, 30);
+        -- Testdaten: Ersatzteile
+        INSERT INTO ersatzteile VALUES
+        (1, 'ET-001', 'Hydrauliköl 10L', 50, 20),
+        (2, 'ET-002', 'Ölfilter', 30, 15),
+        (3, 'ET-003', 'Hydraulikschlauch 2m', 25, 10),
+        (4, 'ET-004', 'Dichtungssatz', 40, 12),
+        (5, 'ET-005', 'Sicherungsring Set', 100, 30);
 
-    -- Testdaten: Maschinen-Ersatzteile (Zuordnung)
-    INSERT INTO maschinen_ersatzteile VALUES
-    (1, 1, 2),  -- Spritzgussmaschine braucht Hydrauliköl
-    (1, 2, 1),  -- Spritzgussmaschine braucht Ölfilter
-    (2, 4, 1),  -- CNC-Fräse braucht Dichtungssatz
-    (3, 1, 1),  -- Drehmaschine braucht Hydrauliköl
-    (4, 3, 2),  -- Presse braucht Hydraulikschläuche
-    (4, 4, 1);  -- Presse braucht Dichtungssatz
+        -- Testdaten: Maschinen-Ersatzteile (Zuordnung)
+        INSERT INTO maschinen_ersatzteile VALUES
+        (1, 1, 2),  -- Spritzgussmaschine braucht Hydrauliköl
+        (1, 2, 1),  -- Spritzgussmaschine braucht Ölfilter
+        (2, 4, 1),  -- CNC-Fräse braucht Dichtungssatz
+        (3, 1, 1),  -- Drehmaschine braucht Hydrauliköl
+        (4, 3, 2),  -- Presse braucht Hydraulikschläuche
+        (4, 4, 1);  -- Presse braucht Dichtungssatz
 
-    -- Testdaten: Lager (für Transaktionsübungen)
-    INSERT INTO lager (standort, ersatzteil_id, bestand) VALUES
-    ('Hauptlager', 1, 100),
-    ('Hauptlager', 2, 80),
-    ('Hauptlager', 3, 60),
-    ('Produktionslager', 1, 50),
-    ('Produktionslager', 2, 40),
-    ('Produktionslager', 3, 30);
-    ```
+        -- Testdaten: Lager (für Transaktionsübungen)
+        INSERT INTO lager (standort, ersatzteil_id, bestand) VALUES
+        ('Hauptlager', 1, 100),
+        ('Hauptlager', 2, 80),
+        ('Hauptlager', 3, 60),
+        ('Produktionslager', 1, 50),
+        ('Produktionslager', 2, 40),
+        ('Produktionslager', 3, 30);
+        ```
 
 ???+ question "Aufgabe 1: Ersatzteile-Transfer zwischen Lagern"
 
     Transferiere 20 Einheiten eines Ersatzteils vom Hauptlager ins Produktionslager mit einer Transaktion.
 
     **Anforderungen:**
+
     - Wähle ein beliebiges Ersatzteil
     - Reduziere Bestand im Hauptlager um 20
     - Erhöhe Bestand im Produktionslager um 20
@@ -660,6 +665,7 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
     Erstelle einen neuen Produktionsauftrag und weise ihm eine Maschine zu. Wenn die Maschine bereits einen aktiven Auftrag hat, soll die Transaktion abgebrochen werden.
 
     **Anforderungen:**
+
     - Prüfe, ob die Maschine verfügbar ist (kein aktiver Auftrag mit status = 'in_produktion')
     - Erstelle nur dann einen neuen Auftrag
     - Verwende ROLLBACK, wenn die Maschine nicht verfügbar ist
@@ -686,48 +692,12 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
 
         **Erklärung:** In der Praxis würdest du eine IF-Bedingung in einer Stored Procedure verwenden, um automatisch zu entscheiden, ob COMMIT oder ROLLBACK ausgeführt wird.
 
-???+ question "Aufgabe 3: Wartung mit Ersatzteil-Entnahme"
-
-    Führe eine Wartung durch und entnimm dabei ein Ersatzteil aus dem Lager. Beide Operationen sollen atomar erfolgen.
-
-    **Anforderungen:**
-    - Erstelle einen Wartungseintrag in `wartungsprotokolle`
-    - Reduziere den Bestand des verwendeten Ersatzteils im Lager
-    - Alles in einer Transaktion
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        BEGIN;
-
-        -- Wartung eintragen
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (1, CURRENT_DATE, 'Austausch Spindelmotor', 1200.00);
-
-        -- Ersatzteil aus Lager entnehmen (ersatzteil_id = 1, z.B. Spindelmotor)
-        UPDATE lager
-        SET bestand = bestand - 1
-        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
-
-        -- Überprüfen
-        SELECT * FROM wartungsprotokolle
-        WHERE maschinen_id = 1
-        ORDER BY wartungsdatum DESC
-        LIMIT 1;
-
-        SELECT bestand FROM lager
-        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
-
-        COMMIT;
-        ```
-
-        ✅ **Wartung eingetragen und Ersatzteil entnommen!**
-
-???+ question "Aufgabe 4: SAVEPOINT für komplexe Wartung"
+???+ question "Aufgabe 3: SAVEPOINT für komplexe Wartung"
 
     Führe eine komplexe Wartung mit mehreren Schritten durch. Verwende SAVEPOINT, um nur einen Teil rückgängig zu machen.
 
     **Szenario:**
+
     - Wartung beginnen und Kosten für Grundinspektion erfassen
     - SAVEPOINT setzen
     - Zusätzliche Reparatur erfassen
@@ -777,11 +747,12 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
 
         ✅ **Nur die ersten beiden Wartungen wurden gespeichert!**
 
-???+ question "Aufgabe 5: Automatisches ROLLBACK bei Constraint-Verletzung"
+???+ question "Aufgabe 4: Automatisches ROLLBACK bei Constraint-Verletzung"
 
     Versuche, mehr Ersatzteile aus dem Lager zu entnehmen, als vorhanden sind. Beobachte das automatische ROLLBACK.
 
     **Anforderungen:**
+
     - Starte eine Transaktion
     - Versuche, 200 Einheiten zu entnehmen (obwohl nur z.B. 100 vorhanden sind)
     - Beobachte die Fehlermeldung
@@ -831,142 +802,6 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
         ```
 
         ✅ **Alle Änderungen wurden automatisch rückgängig gemacht!**
-
-???+ question "Aufgabe 6: Multi-Tabellen-Transaktion"
-
-    Erstelle einen Produktionsauftrag, aktualisiere den Maschinenstatus und erstelle einen Wartungsplan – alles in einer Transaktion.
-
-    **Anforderungen:**
-    - Neuen Produktionsauftrag erstellen
-    - Maschinenstatus aktualisieren (z.B. neues Feld `letzter_auftrag`)
-    - Wartungsplan für nach dem Auftrag erstellen
-    - Alles mit einer Transaktion absichern
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        BEGIN;
-
-        -- Neuen Produktionsauftrag erstellen
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
-        VALUES (91, 'AUF-2025-002', 'Special Parts AG', 'Spezialkomponente XY', 200, CURRENT_DATE, 3, 'in_produktion')
-        RETURNING auftrag_id;
-
-        -- Wartungsplan für nach dem Auftrag erstellen
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (3, CURRENT_DATE + INTERVAL '7 days', 'Wartung nach Produktionsauftrag AUF-2025-002', 0);
-
-        -- Überprüfung
-        SELECT p.auftragsnummer, p.status, w.beschreibung, w.wartungsdatum
-        FROM produktionsauftraege p
-        LEFT JOIN wartungsprotokolle w ON p.maschinen_id = w.maschinen_id
-        WHERE p.auftragsnummer = 'AUF-2025-002';
-
-        COMMIT;
-        ```
-
-        ✅ **Auftrag erstellt und Wartung eingeplant!**
-
-???+ question "Aufgabe 7: Bewusster ROLLBACK-Test"
-
-    Teste bewusstes ROLLBACK: Erstelle mehrere Änderungen und mache sie dann absichtlich rückgängig.
-
-    **Anforderungen:**
-    - Erstelle 3 neue Wartungseinträge
-    - Aktualisiere Lagerbestände
-    - Überprüfe die Änderungen mit SELECT
-    - Führe ROLLBACK aus
-    - Überprüfe, dass nichts gespeichert wurde
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- Vor der Transaktion: Anzahl der Wartungen
-        SELECT COUNT(*) FROM wartungsprotokolle;
-
-        BEGIN;
-
-        -- Mehrere Wartungen erstellen
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten) VALUES
-        (1, CURRENT_DATE, 'Test Wartung 1', 100),
-        (2, CURRENT_DATE, 'Test Wartung 2', 200),
-        (3, CURRENT_DATE, 'Test Wartung 3', 300);
-
-        -- Lagerbestand ändern
-        UPDATE lager
-        SET bestand = bestand - 5
-        WHERE standort = 'Hauptlager';
-
-        -- Überprüfung (innerhalb der Transaktion sichtbar)
-        SELECT COUNT(*) FROM wartungsprotokolle;
-
-        -- Alles rückgängig machen
-        ROLLBACK;
-
-        -- Überprüfung: Nichts wurde gespeichert
-        SELECT COUNT(*) FROM wartungsprotokolle
-        WHERE beschreibung LIKE 'Test Wartung%';
-        ```
-
-        ```title="Output"
-         count
-        -------
-             0
-        ```
-
-        ✅ **Alle Änderungen wurden erfolgreich verworfen!**
-
-???+ question "Aufgabe 8: Komplexer Produktionsprozess"
-
-    Simuliere einen kompletten Produktionsprozess mit mehreren abhängigen Schritten.
-
-    **Szenario:**
-    - Produktionsauftrag erstellen
-    - Ersatzteile aus Lager entnehmen
-    - Produktionsauftrag auf "in_produktion" setzen
-    - Bei Fehler: Alles rückgängig machen
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        BEGIN;
-
-        -- 1. Produktionsauftrag erstellen
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
-        VALUES (92, 'AUF-2025-003', 'Precision Tech AG', 'Komplexes Bauteil', 100, CURRENT_DATE, 1, 'geplant');
-
-        -- 2. Benötigte Ersatzteile aus Lager entnehmen
-        UPDATE lager
-        SET bestand = bestand - 3
-        WHERE standort = 'Produktionslager' AND ersatzteil_id = 1;
-
-        UPDATE lager
-        SET bestand = bestand - 2
-        WHERE standort = 'Produktionslager' AND ersatzteil_id = 2;
-
-        -- 3. Produktionsauftrag auf "in_produktion" setzen
-        UPDATE produktionsauftraege
-        SET status = 'in_produktion'
-        WHERE auftragsnummer = 'AUF-2025-003';
-
-        -- 4. Überprüfung aller Änderungen
-        SELECT p.auftragsnummer, p.status, p.produkt
-        FROM produktionsauftraege p
-        WHERE auftragsnummer = 'AUF-2025-003';
-
-        SELECT l.standort, e.bezeichnung, l.bestand
-        FROM lager l
-        JOIN ersatzteile e ON l.ersatzteil_id = e.ersatzteil_id
-        WHERE l.standort = 'Produktionslager';
-
-        -- Alles erfolgreich? Dann committen:
-        COMMIT;
-
-        -- Falls ein Fehler aufgetreten wäre:
-        -- ROLLBACK;
-        ```
-
-        ✅ **Kompletter Produktionsprozess erfolgreich abgeschlossen!**
 
 ---
 

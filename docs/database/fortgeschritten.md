@@ -776,7 +776,7 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
 
         ```sql
         -- Zu anderer Datenbank wechseln
-            \c postgres
+        \c postgres
         
         -- Zur Datenbank wechseln (oder neu erstellen)
         DROP DATABASE IF EXISTS produktionsplanung_db;
