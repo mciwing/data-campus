@@ -6,7 +6,7 @@
 
 <div align="center">
   <h1><b>DATA CAMPUS</b></h1>
-  <img src="docs/assets/icon.PNG" alt="WING Logo" style="width: 250px; height: auto;">
+  <img src="docs/assets/icon.png" alt="WING Logo" style="width: 250px; height: auto;">
   <hr>
 </div>
 
