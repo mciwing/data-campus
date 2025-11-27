@@ -1,6 +1,6 @@
 site_name: Data Campus
-repo_url: https://github.com/mciwing/data-campus
-site_url: https://code-campus.at/data-campus
+#repo_url: https://github.com/mciwing/data-campus
+#site_url: https://code-campus.at/data-campus
 theme:
   name: material
   custom_dir: overrides
