@@ -224,7 +224,7 @@ Kardinalitäten beschreiben, **wie viele** Entitäten an einer Beziehung beteili
 
 **Eine** Entität auf der einen Seite steht in Beziehung zu **vielen** Entitäten auf der anderen Seite.
 
-???+ example "Beispiel n:m"
+???+ example "1:n Beziehung"
     Eine Maschine hat **viele** Wartungen, aber jede Wartung gehört zu **einer** Maschine.
 
     ```mermaid
@@ -256,7 +256,7 @@ Bei 1:n-Beziehungen kommt der **Fremdschlüssel** auf die **"n"-Seite** (die "vi
 
 **Viele** Entitäten auf der einen Seite stehen in Beziehung zu **vielen** Entitäten auf der anderen Seite.
 
-???+ example "Beispiel n:m"
+???+ example "n:m Beziehung"
     Eine Maschine benötigt **viele** Ersatzteile, und ein Ersatzteil kann in **vielen** Maschinen verwendet werden.
 
     ```mermaid
@@ -290,7 +290,7 @@ Die Zwischentabelle enthält **zwei Fremdschlüssel**: einen für jede der beide
 
 **Eine** Entität auf der einen Seite steht in Beziehung zu **genau einer** Entität auf der anderen Seite.
 
-???+ example "Beispiel 1:1"
+???+ example "1:1 Beziehung"
     Jede Maschine hat **ein** Wartungshandbuch-PDF, und jedes Wartungshandbuch-PDF gehört zu **einer** Maschine.
 
     ```mermaid
@@ -386,7 +386,7 @@ Diese Notation mag im ersten Moment etwas gewöhnungsbedürftig sein. Mit etwas 
 
 Ein **Fremdschlüssel** (Foreign Key, FK) ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. Damit stellen wir **Beziehungen zwischen Tabellen** her!
 
-???+ example "Beispiel"
+???+ example "ER-Diagramm mit Fremdschlüssel"
 
     ```mermaid
     erDiagram
@@ -792,7 +792,7 @@ Wie wir nun Auswertungen über mehrere zusammenhängende Tabellen durchführen k
 
 Nachdem wir nun mühevoll versucht haben Beziehungen in der Datenbank zu modellieren müssen wir uns nun noch die FRage stellen: Was passiert eigentlich, wenn ich etwas Lösche, was von etwas anderem abhängt?
 
-???+ example "Beispiel: Maschine löschen"
+???+ example "Maschine löschen"
     Versuchen wir beispielsweise, eine Maschine zu löschen, die Wartungen hat:
 
     ```sql
@@ -858,7 +858,7 @@ Mit `ON DELETE` legen wir fest, was beim Löschen der referenzierten Zeile passi
 
 Schauen wir uns dazu ein Beispiel an. 
 
-???+ example "Beispiel: Kaskadierende Löschung"
+???+ example "Kaskadierende Löschung"
 
     Was passiert, wenn wir nun versuchen ein Ersatzteil zu löschen, welches in der Zwischentabelle `maschinen_ersatzteile` verwendet wird. 
 
@@ -884,7 +884,7 @@ Schauen wir uns dazu ein Beispiel an.
 
             ---
 
-            ???+ example "Beispiel"
+            ???+ example "Löschen verhindern"
                 ```sql
                 CREATE TABLE wartungsprotokolle (
                     wartungs_id SERIAL PRIMARY KEY,
@@ -910,7 +910,7 @@ Schauen wir uns dazu ein Beispiel an.
 
             ---
 
-            ???+ example "Beispiel"
+            ???+ example "Beziehung auflösen"
                 ```sql
                 CREATE TABLE wartungsprotokolle (
                     wartungs_id SERIAL PRIMARY KEY,
@@ -939,7 +939,7 @@ Schauen wir uns dazu ein Beispiel an.
 
             ---
 
-            ???+ example "Beispiel"
+            ???+ example "Standardwerte setzen"
                 ```sql
                 CREATE TABLE wartungsprotokolle (
                     wartungs_id SERIAL PRIMARY KEY,

@@ -88,7 +88,7 @@ flowchart LR
 
 Ohne Transaktionen können **inkonsistente Zustände** entstehen, die zu schwerwiegenden Problemen führen.
 
-???+ example "Beispiel: Geldtransfer ohne Transaktion"
+???+ example "Geldtransfer ohne Transaktion"
 
     Stell dir vor, wir überweisen 500€ vom Konto von Max Mustermann an Anna Schmidt:
 

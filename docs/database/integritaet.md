@@ -146,7 +146,7 @@ CREATE TABLE tabellenname (
 );
 ```
 
-???+ example "Beispiel"
+???+ example "Eindeutigkeit mit `UNIQUE`"
 
     Zuerst erstellen wir eine neue Tabelle mit einer Spalte, die eindeutig sein muss.
 
@@ -182,7 +182,7 @@ CREATE TABLE tabellenname (
 `UNIQUE` kann auch mit mehreren Spalten definiert werden. Dies ist beispielsweise dann sinnvoll, wenn wir eine Kombination aus zwei Spalten als eindeutig erkennen möchten.
 
 
-???+ example "UNIQUE mit mehreren Spalten"
+???+ example "`UNIQUE` mit mehreren Spalten"
 
     ```sql hl_lines="6"
     CREATE TABLE pruefungen_test (
@@ -210,7 +210,7 @@ CREATE TABLE tabellenname (
 
 Wie man erkennt, wird lediglich eine Bedingung nach dem `CHECK` Schlüsselwort definiert. Schauen wir uns wieder ein Beispiel an. 
 
-???+ example "Beispiel: Wertebereich prüfen"
+???+ example "Wertebereich prüfen"
 
     Wir erstellen eine neue Tabelle mit einer oder mehreren Spalten, die einen Wertebereich prüfen müssen.
 

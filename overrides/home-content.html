@@ -1,21 +1,46 @@
 <div class="page-max-width">
   <div class="md-content__inner md-typeset">
 
-    <!-- Hero -->
+    <!-- Hero Section mit integrierten Info-Cards -->
     <div class="hero-section">
-      <h1 class="hero-title" style="font-weight: 900;">DATA CAMPUS</h1>
-      <img src="assets/icon.PNG" style="scale: 0.8;" class="hero-logo" alt="Data Campus Icon">
-      <div class="hero-text">
-        <h2>
-          Lerne den richtigen Umgang mit Daten! 🚀
-        </h2>
-        <p class="hero-description">Von den Grundlagen über Speicherung in Datenbanken bis hin zur Verarbeitung mit Excel</p>
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 class="hero-title">DATA CAMPUS</h1>
+          <p class="hero-subtitle">Lerne den richtigen Umgang mit Daten! 🚀</p>
+          <p class="hero-description">Von den Grundlagen über Speicherung in Datenbanken bis hin zur Verarbeitung mit Excel</p>
+
+          <!-- Info Cards in Hero integriert -->
+          <div class="hero-features">
+            <div class="hero-feature">
+              <div class="hero-feature-icon">
+                {% include ".icons/fontawesome/solid/graduation-cap.svg" %}
+              </div>
+              <span>Strukturiert</span>
+            </div>
+            <div class="hero-feature">
+              <div class="hero-feature-icon">
+                {% include ".icons/fontawesome/solid/rocket.svg" %}
+              </div>
+              <span>Praxisnah</span>
+            </div>
+            <div class="hero-feature">
+              <div class="hero-feature-icon">
+                {% include ".icons/fontawesome/solid/book-open.svg" %}
+              </div>
+              <span>Kostenlos</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-image">
+          <img src="assets/icon.PNG" alt="Data Campus Icon">
+        </div>
       </div>
     </div>
 
     <!-- Module -->
     <section class="modules">
-      <h2 class="section-title" style="font-weight: 800;">UNSERE MODULE</h2>
+      <h2 class="section-title">UNSERE MODULE</h2>
       <div class="modules-grid">
 
         <!-- Daten -->
@@ -28,10 +53,10 @@
             <h3>Daten</h3>
           </header>
           <div class="module-card__content">
-            <p>Grundlagen der Datenverarbeitung: Erfassung, Verarbeitung und Speicherung von Daten</p>
+            <p>Grundlagen von Daten und deren Speicherung</p>
             <ul class="feature-list">
               <li>{% include ".icons/fontawesome/solid/check.svg" %} Datenerfassung</li>
-              <li>{% include ".icons/fontawesome/solid/check.svg" %} Zahlensysteme</li>
+              <li>{% include ".icons/fontawesome/solid/check.svg" %} Datenverarbeitung</li>
               <li>{% include ".icons/fontawesome/solid/check.svg" %} Speicherung</li>
             </ul>
           </div>
@@ -51,11 +76,11 @@
             <h3>Datenbanken</h3>
           </header>
           <div class="module-card__content">
-            <p>Relationale Datenbanken mit SQL: Von Grundlagen bis zu fortgeschrittenen Konzepten</p>
+            <p>Relationale Datenbanken mit PostgreSQL</p>
             <ul class="feature-list">
-              <li>{% include ".icons/fontawesome/solid/check.svg" %} SQL Abfragen & Manipulation</li>
-              <li>{% include ".icons/fontawesome/solid/check.svg" %} Datenmodellierung & Joins</li>
-              <li>{% include ".icons/fontawesome/solid/check.svg" %} Transaktionen & Indizes</li>
+              <li>{% include ".icons/fontawesome/solid/check.svg" %} Setup & Einfache Manipulation</li>
+              <li>{% include ".icons/fontawesome/solid/check.svg" %} Modellierung & Joins</li>
+              <li>{% include ".icons/fontawesome/solid/check.svg" %} Transaktionen & Integrität</li>
             </ul>
           </div>
           <a href="{{ 'database/' | url }}" class="module-card__cta">
@@ -65,8 +90,9 @@
         </article>
 
         <!-- Excel -->
-        <article class="module-card" data-accent="excel">
+        <article class="module-card module-card--coming-soon" data-accent="excel">
           <div class="card-glow"></div>
+          <span class="coming-soon-badge">Coming Soon</span>
           <header class="module-card__header">
             <span class="module-card__icon">
               {% include ".icons/fontawesome/solid/table.svg" %}
@@ -74,57 +100,25 @@
             <h3>Excel</h3>
           </header>
           <div class="module-card__content">
-            <p>Datenanalyse und -visualisierung mit Microsoft Excel</p>
+            <p>Datenanalyse und Visualisierung</p>
             <ul class="feature-list">
               <li>{% include ".icons/fontawesome/solid/check.svg" %} Formeln & Funktionen</li>
               <li>{% include ".icons/fontawesome/solid/check.svg" %} Pivot-Tabellen</li>
               <li>{% include ".icons/fontawesome/solid/check.svg" %} Diagramme & Dashboards</li>
             </ul>
           </div>
-          <a class="module-card__cta">
-            <span>Zum Modul</span>
-            <span class="arrow">{% include ".icons/fontawesome/solid/arrow-right.svg" %}</span>
-          </a>
+          <div class="module-card__cta module-card__cta--disabled">
+            <span>In Arbeit</span>
+            <span class="arrow">{% include ".icons/fontawesome/solid/hourglass-half.svg" %}</span>
+          </div>
         </article>
-
-      </div>
-    </section>
-
-    <!-- Info Section -->
-    <section class="info-section">
-      <div class="info-grid">
-
-        <div class="info-card">
-          <div class="info-icon">
-            {% include ".icons/fontawesome/solid/graduation-cap.svg" %}
-          </div>
-          <h3>Lerninhalte</h3>
-          <p>Strukturierte Module mit praktischen Beispielen und Übungen</p>
-        </div>
-
-        <div class="info-card">
-          <div class="info-icon">
-            {% include ".icons/fontawesome/solid/rocket.svg" %}
-          </div>
-          <h3>Praxisnah</h3>
-          <p>Realitätsnahe Beispiele und Projekte für den Berufsalltag</p>
-        </div>
-
-        <div class="info-card">
-          <div class="info-icon">
-            {% include ".icons/fontawesome/solid/book-open.svg" %}
-          </div>
-          <h3>Kostenlos</h3>
-          <p>Alle Inhalte sind frei zugänglich und Open Source</p>
-        </div>
 
       </div>
     </section>
 
     <!-- Contact -->
     <section class="contact">
-      <h2 class="section-title" style="font-weight: 800;">KONTAKT</h2>
-      <p class="contact-intro">Fragen oder Feedback? Wir helfen gerne weiter.</p>
+      <h2 class="section-title">KONTAKT</h2>
 
       <div class="contacts">
         <div class="contact-card">
@@ -189,12 +183,11 @@
   padding: var(--spacing-md);
 }
 
-/* Hero Section */
+/* Hero Section - Kompakter und moderner */
 .hero-section {
   position: relative;
-  text-align: center;
-  padding: var(--spacing-md) var(--spacing-md);
-  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg) var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg,
     color-mix(in oklab, var(--md-primary-fg-color) 8%, transparent),
@@ -220,10 +213,24 @@
   50% { opacity: 0.8; }
 }
 
+.hero-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content {
+  text-align: left;
+}
+
 .hero-title {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 900;
-  margin: 0 0 var(--spacing-xs);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+  font-weight: 900 !important;
+  margin: 0 0 var(--spacing-sm);
   background: linear-gradient(135deg,
     var(--md-primary-fg-color),
     var(--md-accent-fg-color)
@@ -231,49 +238,80 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  position: relative;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
-.hero-logo {
-  max-width: 200px;
-  width: 40%;
-  margin: var(--spacing-xs) auto;
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.1));
-  transition: transform 0.3s ease;
-}
-
-.hero-logo:hover {
-  transform: scale(1.05) rotate(2deg);
-}
-
-.hero-text h2 {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 600;
-  margin: var(--spacing-xs) 0 0;
+.hero-subtitle {
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  font-weight: 700;
+  margin: 0 0 var(--spacing-xs);
   color: var(--md-default-fg-color);
 }
 
-.hero-text .twemoji svg {
-  width: 1.2em;
-  height: 1.2em;
-  vertical-align: -0.2em;
+.hero-description {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.85;
+  margin: 0 0 var(--spacing-md);
+  line-height: 1.6;
+}
+
+.hero-features {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.hero-feature {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.hero-feature-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--md-primary-fg-color) 15%, transparent);
   color: var(--md-primary-fg-color);
 }
 
-.hero-description {
-  font-size: 1rem;
-  opacity: 0.8;
-  margin-top: var(--spacing-xs);
-  margin-bottom: 0;
+.hero-feature-icon svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.hero-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  width: 280px;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+  transition: transform 0.3s ease;
+}
+
+.hero-image img:hover {
+  transform: scale(1.05) rotate(2deg);
 }
 
 /* Section Title */
 .section-title {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   font-weight: 800;
   letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
   color: var(--md-primary-fg-color);
   position: relative;
   display: inline-block;
@@ -284,36 +322,35 @@
 .section-title::after {
   content: "";
   position: absolute;
-  bottom: -8px;
+  bottom: -6px;
   left: 50%;
   transform: translateX(-50%);
-  width: 60px;
+  width: 50px;
   height: 3px;
   background: linear-gradient(90deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
   border-radius: 2px;
 }
 
-/* Modules Section */
+/* Modules Section - Kompakter, drei nebeneinander */
 .modules {
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
 .modules-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-lg);
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
 }
 
 .module-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   background: var(--md-code-bg-color);
   border: 2px solid color-mix(in oklab, var(--md-default-fg-color) 15%, transparent);
   border-radius: var(--radius-md);
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -325,7 +362,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 3px;
   background: linear-gradient(90deg,
     var(--card-accent, var(--md-primary-fg-color)),
     color-mix(in oklab, var(--card-accent, var(--md-primary-fg-color)) 70%, white)
@@ -357,38 +394,63 @@
 }
 
 .module-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-4px);
   border-color: color-mix(in oklab, var(--card-accent, var(--md-primary-fg-color)) 30%, transparent);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* Accent colors - passend zum Theme */
-.module-card[data-accent="data"] { --card-accent: #FFB482; } /* Peachy */
-.module-card[data-accent="database"] { --card-accent: #009485; } /* Teal */
-.module-card[data-accent="excel"] { --card-accent: #66D4CC; } /* Aqua-ähnlich */
+/* Coming Soon Badge */
+.coming-soon-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--card-accent);
+  color: white;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.module-card--coming-soon {
+  opacity: 0.85;
+}
+
+.module-card--coming-soon .module-card__content {
+  opacity: 0.7;
+}
+
+/* Accent colors */
+.module-card[data-accent="data"] { --card-accent: #FFB482; }
+.module-card[data-accent="database"] { --card-accent: #009485; }
+.module-card[data-accent="excel"] { --card-accent: #66D4CC; }
 
 .module-card__header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-sm);
   position: relative;
   z-index: 1;
 }
 
 .module-card__icon {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-sm);
   background: color-mix(in oklab, var(--card-accent) 15%, transparent);
   color: var(--card-accent);
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
 }
 
-/* Hell/Dunkel Anpassung für Icons */
 [data-md-color-scheme="default"] .module-card__icon {
   color: color-mix(in oklab, var(--card-accent) 70%, black) !important;
   background: color-mix(in oklab, var(--card-accent) 20%, transparent);
@@ -412,48 +474,52 @@
 }
 
 .module-card__icon svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   fill: currentColor;
-  color: inherit;
 }
 
 .module-card__header h3 {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: 700;
 }
 
 .module-card__content {
   position: relative;
   z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .module-card__content p {
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
   line-height: 1.5;
   opacity: 0.9;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .feature-list {
   list-style: none;
   padding: 0;
-  margin: var(--spacing-sm) 0 0;
+  margin: var(--spacing-xs) 0 0;
 }
 
 .feature-list li {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  padding: 0.3rem 0;
-  font-size: 0.85rem;
+  padding: 0.25rem 0;
+  font-size: 0.75rem;
+  font-weight: 500;
   line-height: 1.4;
 }
 
 .feature-list svg {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   color: var(--card-accent);
   flex-shrink: 0;
 }
@@ -461,19 +527,26 @@
 .module-card__cta {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--spacing-xs);
-  padding: 0.6rem 1.3rem;
+  padding: 0.5rem 1rem;
   background: var(--card-accent);
   color: white !important;
   text-decoration: none;
   border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
   margin-top: var(--spacing-sm);
   position: relative;
   z-index: 2;
   cursor: pointer;
+}
+
+.module-card__cta--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .module-card__cta .arrow {
@@ -482,8 +555,9 @@
 }
 
 .module-card__cta .arrow svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
+  fill: white;
 }
 
 .module-card__cta:hover {
@@ -495,120 +569,29 @@
   transform: translateX(4px);
 }
 
-/* Info Section */
-.info-section {
-  margin: var(--spacing-xl) 0;
-  padding: var(--spacing-lg) 0;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.info-card {
-  text-align: center;
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-md);
-  background: var(--md-code-bg-color);
-  border: 1px solid color-mix(in oklab, var(--md-default-fg-color) 12%, transparent);
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.info-card:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in oklab, var(--md-primary-fg-color) 20%, transparent);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-
-.info-icon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto var(--spacing-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: linear-gradient(135deg,
-    color-mix(in oklab, var(--md-primary-fg-color) 15%, transparent),
-    color-mix(in oklab, var(--md-accent-fg-color) 15%, transparent)
-  );
-  color: var(--md-primary-fg-color);
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-/* Hell/Dunkel Anpassung für Info-Icons */
-[data-md-color-scheme="default"] .info-icon {
-  color: color-mix(in oklab, var(--md-primary-fg-color) 70%, black) !important;
-}
-
-[data-md-color-scheme="slate"] .info-icon {
-  color: color-mix(in oklab, var(--md-primary-fg-color) 85%, white) !important;
-}
-
-.info-card:hover .info-icon {
-  transform: scale(1.1) rotate(5deg);
-}
-
-.info-icon svg {
-  width: 32px;
-  height: 32px;
-  fill: currentColor;
-  color: inherit;
-}
-
-/* Hell/Dunkel Anpassung für Info-Icon SVGs */
-[data-md-color-scheme="default"] .info-icon svg {
-  fill: color-mix(in oklab, var(--md-primary-fg-color) 70%, black) !important;
-}
-
-[data-md-color-scheme="slate"] .info-icon svg {
-  fill: color-mix(in oklab, var(--md-primary-fg-color) 85%, white) !important;
-}
-
-.info-card h3 {
-  margin: 0 0 var(--spacing-sm);
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.info-card p {
-  margin: 0;
-  opacity: 0.8;
-  line-height: 1.6;
-}
-
-/* Contact Section */
+/* Contact Section - Kompakter */
 .contact {
   background: var(--md-code-bg-color);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-xl) var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-md);
   border: 1px solid color-mix(in oklab, var(--md-default-fg-color) 12%, transparent);
-  margin-top: var(--spacing-xl);
+  margin-top: var(--spacing-lg);
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
-
-.contact-intro {
-  text-align: center;
-  font-size: 1.1rem;
-  margin-bottom: var(--spacing-lg);
-  opacity: 0.8;
 }
 
 .contacts {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-md);
   flex-wrap: wrap;
+  margin-top: var(--spacing-sm);
 }
 
 .contact-card {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
   border-radius: var(--radius-md);
   background: var(--md-default-bg-color);
   border: 1px solid color-mix(in oklab, var(--md-default-fg-color) 10%, transparent);
@@ -617,9 +600,9 @@
 }
 
 .contact-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  background: color-mix(in oklab, var(--md-primary-fg-color) 5%, transparent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  border-color: color-mix(in oklab, var(--md-primary-fg-color) 20%, transparent);
 }
 
 .contact-avatar {
@@ -627,10 +610,10 @@
 }
 
 .contact-avatar img {
-  width: 64px;
-  height: 64px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: 3px solid var(--md-primary-fg-color);
+  border: 2px solid var(--md-primary-fg-color);
   transition: transform 0.3s ease;
 }
 
@@ -640,14 +623,14 @@
 
 .contact-card__name {
   font-weight: 700;
-  font-size: 1.1rem;
-  margin-bottom: 0.25rem;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
 }
 
 .contact-card__mail a {
   color: var(--md-primary-fg-color);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: opacity 0.3s ease;
 }
 
@@ -656,34 +639,59 @@
 }
 
 .contact-card__links {
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
 }
 
 .contact-social {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.4rem 0.8rem;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
   background: color-mix(in oklab, var(--md-default-fg-color) 5%, transparent);
   border-radius: var(--radius-sm);
   text-decoration: none;
   color: inherit;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   transition: all 0.3s ease;
 }
 
 .contact-social:hover {
   background: var(--md-primary-fg-color);
   color: var(--md-primary-bg-color);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .contact-social svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 /* Responsive */
+@media (max-width: 968px) {
+  .modules-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-features {
+    justify-content: center;
+  }
+
+  .hero-image img {
+    width: 200px;
+  }
+}
+
 @media (max-width: 768px) {
   .page-max-width {
     padding: var(--spacing-sm);
@@ -691,6 +699,12 @@
 
   .hero-section {
     padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .hero-features {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
   }
 
   .contact-card {
@@ -701,7 +715,7 @@
 
 /* Animations */
 @media (prefers-reduced-motion: no-preference) {
-  .module-card, .info-card, .contact-card {
+  .module-card, .contact-card {
     animation: fadeInUp 0.6s ease-out;
   }
 

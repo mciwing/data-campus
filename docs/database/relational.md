@@ -251,7 +251,7 @@ Bevor wir starten, erstellen wir eine neue Datenbank für unser Beispiel. Dazu v
 
 Anschließend erstellen wir eine neue Datenbank für unser Beispiel in diesem Kapitel: 
 
-???+ example "Beispiel: Zulieferer Datenbank erstellen"
+???+ example "Zulieferer Datenbank erstellen"
     ```sql
     -- Datenbank erstellen
     CREATE DATABASE zulieferer_db;
@@ -279,7 +279,7 @@ CREATE TABLE tabellenname (
 );
 ```
 
-???+ example "Beispiel: Produktkatalog"
+???+ example "Produktkatalog"
 
     ```sql { .annotate }
     CREATE TABLE produkte ( --(1)!
@@ -322,7 +322,7 @@ INSERT INTO tabellenname (attribut1, attribut2, ...)
 VALUES (wert1, wert2, ...);
 ```
 
-???+ example "Beispiel: Produkte einfügen"
+???+ example "Produkte einfügen"
 
     ```sql
     INSERT INTO produkte (
@@ -354,7 +354,7 @@ Nachdem wir nun eine befüllte Tabelle vor uns haben, ist die nächste Aufgabe k
 SELECT * FROM tabellenname;
 ```
 
-???+ example "Beispiel: Alle Produkte anzeigen"
+???+ example "Alle Produkte anzeigen"
     ```sql
     SELECT * FROM produkte;
     ```
@@ -379,7 +379,7 @@ SELECT * FROM tabellenname;
     ```
 
 
-    ???+ example "Beispiel: Bestimmte Spalten anzeigen"
+    ???+ example "Bestimmte Spalten anzeigen"
         ```sql
         SELECT produktname, kategorie, preis FROM produkte;
         ```

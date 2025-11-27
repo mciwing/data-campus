@@ -16,7 +16,7 @@ In diesem Kapitel lernen wir die verschiedenen JOIN-Typen kennen und verstehen, 
 
 ---
 
-???+ example "Beispiel: JOINs"
+???+ example "Beschaffungsmanagement Ausgangssituation"
 
     Um zu verstehen, warum JOINs so wichtig sind, betrachten wir ein konkretes Problem aus dem Beschaffungsmanagement:
 
@@ -218,7 +218,7 @@ WHERE bedingung;
 
 Nun führen wir unseren ersten JOIN aus. 
 
-???+ example "Beispiel: `INNER JOIN`"
+???+ example "`INNER JOIN` - Bestellungen mit Lieferantennamen"
 
     Wir wollen alle Bestellungen mit den zugehörigen Lieferantennamen anzeigen. Die `ON`-Klausel verbindet die beiden Tabellen über die Lieferanten-IDs:
 
@@ -260,7 +260,7 @@ Je komplexer unsere Abfragen werden, desto unübersichtlicher werden lange Tabel
 Bei JOINs schreiben wir oft lange Tabellennamen - **Aliasse** (Abkürzungen) machen das übersichtlicher und sind in der Praxis absolut üblich.
 Fast jede JOIN-Abfrage, die Sie in der Realität sehen werden, verwendet Aliasse.
 
-???+ example "Beispiel: Aliasse"
+???+ example "Aliasse bei JOINs"
 
     ```sql
     SELECT
@@ -297,7 +297,7 @@ Was aber, wenn wir **alle** Bestellungen sehen wollen, unabhängig davon, ob sie
 
 Der Unterschied zum `INNER JOIN` ist subtil aber wichtig: Beim LEFT JOIN ist die linke Tabelle (in unserem Fall `bestellungen`) die "dominante" Tabelle - alle ihre Zeilen erscheinen im Ergebnis. Gibt es für eine Bestellung keinen passenden Lieferanten, werden die Spalten aus der Lieferanten-Tabelle einfach mit `NULL` gefüllt.
 
-???+ example "Beispiel: `LEFT JOIN`"
+???+ example "`LEFT JOIN` - Bestellungen mit Lieferantennamen"
 
     ```sql
     SELECT
@@ -371,7 +371,7 @@ Bisher haben wir in unseren Beispielen immer nur zwei Tabellen miteinander verkn
 
 Dies ist besonders bei komplexen Geschäftsprozessen wichtig. In unserem Beschaffungsszenario müssen wir beispielsweise Bestellungen, Lieferanten, Artikel und Bestellpositionen zusammenführen, um eine vollständige Übersicht zu erhalten.
 
-???+ example "Beispiel: Verbinde mehrere Tabellen"
+???+ example "Verbinde mehrere Tabellen"
     Stellen wir uns vor, wir möchten eine vollständige Übersicht aller Bestellpositionen mit Lieferant, Artikel und Gesamtkosten:
 
     ```sql
@@ -412,7 +412,7 @@ Dies ist besonders bei komplexen Geschäftsprozessen wichtig. In unserem Beschaf
 
 ---
 
-???+ example "Beispiel: Kombination aus mehreren JOINs und Aggregationen"
+???+ example "Kombination aus mehreren JOINs und Aggregationen"
     Besonders mächtig wird die Kombination aus mehreren JOINs und Aggregationen. Zum Beispiel: Welcher Lieferant hat das größte Bestellvolumen?
 
     ```sql

@@ -85,7 +85,7 @@ Um uns Unterabfragen besser vorstellen zu können, betrachten wir folgendes Beis
 
 Die Frage an sich ist relativ einfach zu beantworten. Wir können den Durchschnitt der Gehälter berechnen und dann die Mitarbeiter filtern, die mehr verdienen. In einem **zweistufigen Vorgehen** könnte dies so aussehen:
 
-???+ example "Beispiel: Zweistufiges Vorgehen"
+???+ example "Zweistufiges Vorgehen"
 
     ```sql
     -- 1. Durchschnitt berechnen
@@ -113,7 +113,7 @@ So würden wir in der ersten Abfrage das Durchschnittsgehalt berechnen und in ei
 
 Da Programmierer von Haus aus faul sind, wollen wir diese Aufgabe natürlich in einem Schritt lösen. Dazu verwenden wir eine **Unterabfrage**.
 
-???+ example "Beispiel: Unterabfrage"
+???+ example "Unterabfrage"
 
     ```sql
     SELECT vorname, nachname, gehalt
@@ -147,7 +147,7 @@ Da Programmierer von Haus aus faul sind, wollen wir diese Aufgabe natürlich in 
 
 Eine besondere Art von Unterabfrage sind die **`IN`- und `NOT IN`-Operatoren**. Diese Operatoren erlauben es uns, zu prüfen, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Dies ist besonders nützlich, wenn die Unterabfrage mehrere Ergebniszeilen liefert und wir prüfen wollen, ob unser Wert in dieser Liste vorkommt. Statt eines einzelnen Wertes wie beim einfachen Vergleich, gibt die Unterabfrage hier unter Umständen eine ganze Liste von Werten zurück.
 
-???+ example "Beispiel: `IN` und `NOT IN`"
+???+ example "Mitarbeiter in technischen Abteilungen"
     Schauen wir uns das Ganze wieder anhand eines Beispiels an. Wir möchten gerne wissen, welche Mitarbeiter in den technischen Abteilungen (Produktion, Entwicklung, Qualitätssicherung) arbeiten.
 
     ```sql
@@ -185,7 +185,7 @@ Eine besondere Art von Unterabfrage sind die **`IN`- und `NOT IN`-Operatoren**. 
 
 Neben dem `IN`-Operator gibt es auch den `NOT IN`-Operator. Dieser Operator überprüft, ob ein Wert **NICHT** in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Das Vorgehen und deren Verwendung ist analog.
 
-???+ example "NOT IN Beispiel"
+???+ example "Mitarbeiter NICHT in technischen Abteilungen"
 
     ```sql
     -- Mitarbeiter NICHT in technischen Abteilungen
@@ -224,7 +224,7 @@ Betrachten wir die Operatoren wieder anhand von Beispielen:
 
     ---
 
-    ???+ example "Beispiel"
+    ???+ example "Mindestens einen Mitarbeiter"
         ```sql
         -- Welche Abteilungen haben mindestens einen Mitarbeiter?
         SELECT abteilungsname, standort
@@ -253,7 +253,7 @@ Betrachten wir die Operatoren wieder anhand von Beispielen:
 
     ---
 
-    ???+ example "Beispiel"
+    ???+ example "Abteilungen ohne Mitarbeiter"
 
         ```sql
         -- Abteilungen OHNE Mitarbeiter finden
@@ -290,7 +290,7 @@ Betrachten wir die Operatoren wieder anhand von Beispielen:
 
 Man kann eine Unterabfrage auch in der **`FROM`-Klausel** verwenden – als wäre sie eine Tabelle! Diese sogenannten "Derived Tables" oder "Inline Views" sind besonders nützlich, wenn wir mit aggregierten Daten weiterarbeiten möchten. Da wir in der `WHERE`-Klausel keine Aggregatfunktionen direkt verwenden können, erstellen wir eine Unterabfrage, die die Aggregation durchführt, und können dann auf deren Ergebnis filtern.
 
-???+ example "Beispiel: Unterabfragen in `FROM`"
+???+ example "Unterabfragen in `FROM`"
 
     ```sql
     -- Durchschnittliches Gehalt pro Abteilung, aber nur Abteilungen mit Durchschnitt > 60000
@@ -380,7 +380,7 @@ Die wichtigsten String-Funktionen sind nachfolgend aufgelistet:
 Nun schauen wir uns an, wie wir diese String-Funktionen in der Praxis einsetzen können. Die folgenden Beispiele zeigen typische Anwendungsfälle aus dem Alltag:
 
 
-???+ example "Beispiel: Vollständiger Name"
+???+ example "Vollständiger Name"
     ```sql
     -- Vollständiger Name aus Vor- und Nachname
     SELECT
@@ -409,7 +409,7 @@ Nun schauen wir uns an, wie wir diese String-Funktionen in der Praxis einsetzen 
 
     ??? code "Weitere Beispiele"
 
-        ???+ example "Beispiel: Kombination mehrerer Funktionen"
+        ???+ example "Kombination mehrerer Funktionen"
 
             ```sql
             -- Mitarbeiter-Codes generieren (Format: INITIALEN-JAHR-ID)
@@ -496,7 +496,7 @@ PostgreSQL bietet auch - neben den String-Funktionen - umfangreiche Funktionen f
 
 Nun wollen wir uns praktische Anwendungsfälle ansehen. Unsere Mitarbeitertabelle enthält bereits die Felder `eintrittsdatum` und `geburtstag`, mit denen wir arbeiten können. 
 
-???+ example "Beispiel: EXTRACT & AGE - Betriebszugehörigkeit"
+???+ example "EXTRACT & AGE - Betriebszugehörigkeit"
 
     ```sql
     -- Betriebszugehörigkeit in Jahren berechnen
@@ -529,7 +529,7 @@ Nun wollen wir uns praktische Anwendungsfälle ansehen. Unsere Mitarbeitertabell
 
     ??? code "Weitere Beispiele"
 
-        ???+ example "Beispiel: Mitarbeiter, die diesen Monat Geburtstag haben"
+        ???+ example "Mitarbeiter, die diesen Monat Geburtstag haben"
 
             ```sql
             -- Mitarbeiter, die diesen Monat Geburtstag haben
@@ -609,7 +609,7 @@ Bei der Verwendung von `CASE` können wir beliebig viele Bedingungen angeben und
 
 CASE WHEN kann auch innerhalb von [Aggregatfunktionen](abfragen.md#aggregatfunktionen-daten-zusammenfassen) verwendet werden, um selektive Zählungen durchzuführen. Dies ist besonders nützlich für Auswertungen und Berichte:
 
-???+ example "Beispiel"
+???+ example "Mitarbeiter pro Gehaltsstufe"
 
     ```sql
     -- Wie viele Mitarbeiter gibt es pro Gehaltsstufe?

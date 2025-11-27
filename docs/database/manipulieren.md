@@ -71,7 +71,7 @@ INSERT INTO tabellenname (spalte1, spalte2, spalte3)
 VALUES (wert1, wert2, wert3);
 ```
 
-???+ example "Beispiel: Mehrere Artikel gleichzeitig einfügen"
+???+ example "Mehrere Artikel gleichzeitig einfügen"
 
     ```sql
     -- Mehrere Artikel gleichzeitig einfügen
@@ -387,7 +387,7 @@ Wichtig ist hier, dass wir die `WHERE`-Klausel verwenden. Ohne diese, werden all
 
 **Goldene Regel** lautet demnach: Teste immer erst mit `SELECT`, ob deine WHERE-Bedingung die richtigen Zeilen findet und verwende anschließend das `UPDATE` in Kombination mit der `WHERE`-Klausel.
 
-???+ example "Beispiel: Einzelner Datensatz ändern"
+???+ example "Einzelner Datensatz ändern"
 
     ```sql
     -- Safety Check
@@ -444,7 +444,7 @@ Neben einfachen Wertzuweisungen können wir in `UPDATE` auch Berechnungen durchf
 
 Wir können mit dem aktuellen Wert rechnen und daraus den neuen Wert berechnen:
 
-???+ example "Beispiel: Numerische Berechnungen im `UPDATE`"
+???+ example "Numerische Berechnungen im `UPDATE`"
 
     ```sql
     -- Safety Check
@@ -478,7 +478,7 @@ Wir können mit dem aktuellen Wert rechnen und daraus den neuen Wert berechnen:
 
 SQL bietet verschiedene Funktionen zur Bearbeitung von Textwerten. Eine gute Übersicht findet man [hier](fortgeschritten.md#string-funktionen).
 
-???+ example "Beispiel: String-Operationen im `UPDATE`"
+???+ example "String-Operationen im `UPDATE`"
 
     Stellen wir uns vor, die Lagerorte haben neue Namen bekommen. Anstelle von "Regal A1" soll "Lagerplatz A1" stehen.
 
@@ -565,7 +565,7 @@ WHERE bedingung;
 
 Wie auch bei `UPDATE` zuvor ist es extrem wichtig, dass wir `DELETE` in Kombination mit der `WHERE`-Klausel verwenden. Ohne diese, werden alle Datensätze in der Tabelle gelöscht. Auch hier gibt es **kein Zurück**.
 
-???+ example "Beispiel"
+???+ example "Artikel löschen"
 
     Wir möchten nun den Artikel mit der ID 8 löschen. Dazu überprüfen wir zuerst, ob wir wirklich den richtigen Artikel finden.
 
@@ -682,7 +682,7 @@ ADD | RENAME | DROP COLUMN spaltenname [datentyp | constraints];
 
 Die Anweisung startet mit `ALTER TABLE` und dem Tabellennamen. Es folgt die Aktion (`ADD`, `RENAME`, `DROP`) inklusive `COLUMN` und der Spaltenname. Bei bedarf können auch noch der Datentyp und die Constraints angegeben werden.
 
-???+ example "Beispiel: Neue Spalte hinzufügen"
+???+ example "Neue Spalte hinzufügen"
 
     Wir möchten zu unseren Artikeln eine **Email-Adresse des Lieferanten** hinzufügen. Da wir die gesamte Tabelle zuvor bereits gelöscht haben, müssen wir diese erneut erstellen (siehe Datenbank-Setup am Anfang des Kapitels).
 
@@ -718,7 +718,7 @@ Die Anweisung startet mit `ALTER TABLE` und dem Tabellennamen. Es folgt die Akti
 
     ??? code "weitere Beispiele"
     
-        ??? example "Beispiel: Spalte umbenennen"
+        ??? example "Spalte umbenennen"
 
             Der Name "artikelname" ist zu generisch. Wir möchten ihn in "produktbezeichnung" umbenennen:
 
@@ -742,7 +742,7 @@ Die Anweisung startet mit `ALTER TABLE` und dem Tabellennamen. Es folgt die Akti
             SELECT produktbezeichnung FROM artikel;  -- ✅
             ```
 
-        ??? example "Beispiel: Spalte löschen"
+        ??? example "Spalte löschen"
 
             Die Spalte `lieferant_email` wird doch nicht benötigt:
 
@@ -780,7 +780,7 @@ ALTER TABLE tabellenname
 ALTER COLUMN spaltenname TYPE neuer_datentyp;
 ```
 
-???+ example "Beispiel: Datentyp ändern"
+???+ example "Datentyp ändern"
 
     Die `kategorie`-Spalte ist aktuell `VARCHAR(50)`, aber wir brauchen mehr Platz:
 
@@ -823,7 +823,7 @@ ALTER COLUMN spaltenname DROP DEFAULT;
 
 Hierbei ist zu beachten, dass wenn wir ein `DEFAULT` hinzufügen oder ändern, dieser nur für neue Zeilen gilt. Bestehende Zeilen werden nicht geändert. Bei Änderungen von `NOT NULL` müssen wir zuerst die NULL-Werte beheben. Ansonsten wird ein Fehler beim Hinzufügen der NOT NULL-Einschränkung auftreten.
 
-???+ example "Beispiel: NOT NULL hinzufügen"
+???+ example "NOT NULL hinzufügen"
 
     Wir möchten sicherstellen, dass jeder Artikel eine Kategorie hat:
 
@@ -848,7 +848,7 @@ Hierbei ist zu beachten, dass wenn wir ein `DEFAULT` hinzufügen oder ändern, d
 
     ??? code "weitere Beispiele"
 
-        ???+ example "Beispiel: DEFAULT hinzufügen"
+        ???+ example "DEFAULT hinzufügen"
 
             ```sql
             -- DEFAULT-Wert für mindestbestand setzen
@@ -896,7 +896,7 @@ ALTER TABLE alter_tabellenname
 RENAME TO neuer_tabellenname;
 ```
 
-???+ example "Beispiel: Tabelle umbenennen"
+???+ example "Tabelle umbenennen"
 
     ```sql
     -- Tabelle "artikel" in "lagerartikel" umbenennen

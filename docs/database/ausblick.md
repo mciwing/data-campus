@@ -109,7 +109,7 @@ WHERE bedingung;
 
 Betrachten wir das ganze anhand eines Beispiels.
 
-???+ example "Beispiel: View für verfügbare Produkte"
+???+ example "View für verfügbare Produkte"
 
     Wir erstellen eine View, die nur **verfügbare Produkte** zeigt (auf Lager und aktiv):
 
@@ -265,7 +265,7 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
 </table>
 </div>
 
-???+ example "Beispiel: Funktion für Produktverfügbarkeit"
+???+ example "Funktion für Produktverfügbarkeit"
 
     ```sql
     CREATE OR REPLACE FUNCTION ist_verfuegbar(p_produkt_id INTEGER, p_menge INTEGER)
@@ -303,7 +303,7 @@ Die Unterschiede zwischen Prozeduren und Funktionen sind:
     (7 rows)
     ```
 
-???+ example "Beispiel: Procedure für Bestellung erstellen"
+???+ example "Procedure für Bestellung erstellen"
 
     ```sql
     CREATE OR REPLACE PROCEDURE erstelle_bestellung(
@@ -361,7 +361,7 @@ Typische **Anwendungsfälle** sind:
 - Durchsetzung von Geschäftsregeln
 - Audit-Trails und Logging
 
-???+ example "Beispiel: Automatische Zeitstempel-Aktualisierung"
+???+ example "Automatische Zeitstempel-Aktualisierung"
 
     ```sql
     -- Trigger-Function erstellen
@@ -527,7 +527,7 @@ PostgreSQL bietet **native Unterstützung für JSON-Daten**, was flexible, semi-
 </table>
 </div>
 
-???+ example "Beispiel: Produkte mit flexiblen Attributen"
+???+ example "Produkte mit flexiblen Attributen"
 
     ```sql
     CREATE TABLE produkte_extended (
@@ -646,7 +646,7 @@ Typische PostgreSQL Backup-Methoden sind:
 </table>
 </div>
 
-???+ example "Beispiel: pg_dump verwenden"
+???+ example "Backup mit pg_dump verwenden"
     Folgende Befehle müssen in der Powershell/CMD eingegeben werden. Port (hier 5433) und Server (hier localhost) müssen gegebenenfalls angepasst werden.
 
     **Gesamte Datenbank sichern:**

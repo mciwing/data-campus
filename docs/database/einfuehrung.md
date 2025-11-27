@@ -132,7 +132,7 @@ Ein DBMS bietet eine Vielzahl von Funktionen, die weit über einfache Dateispeic
 
 Das DBMS ist die **Vermittlungsschicht** zwischen Anwendungen und den eigentlichen Daten. Es sorgt dafür, dass alle Zugriffe koordiniert, sicher und effizient ablaufen.
 
-???+ example "Beispiel: Produktionsdatenbank"
+???+ example "Produktionsdatenbank"
 
     - **Die Datenbank** (z.B. `produktions_db`) enthält alle Maschinendaten, Wartungsprotokolle, Produktionsaufträge etc.
     - **Das DBMS** (z.B. PostgreSQL) verwaltet diese Datenbank:

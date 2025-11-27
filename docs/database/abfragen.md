@@ -132,7 +132,7 @@ Wie auch in der Mathematik stehen uns für die Bedingungen verschiedenste Vergle
 Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfrage der Daten festlegen.
 
 
-???+ example "Beispiel: Lieferungen von spezifischen Lieferanten"
+???+ example "Lieferungen von spezifischen Lieferanten"
     ```sql hl_lines="3"
     -- Alle Lieferungen von 'Stahlwerk Salzgitter'
     SELECT * FROM lieferungen
@@ -242,7 +242,7 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
     `BETWEEN` ist inklusive - beide Grenzen sind mit eingeschlossen
 
 
-???+ example "Beispiel: Große Lieferungen die bereits geliefert wurden"
+???+ example "Große Lieferungen die bereits geliefert wurden"
     ```sql hl_lines="4"
     -- Große Lieferungen (> 200) die bereits geliefert wurden
     SELECT lieferant, material, menge, status
@@ -432,7 +432,7 @@ Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfra
 </div>
 
 
-???+ example "Beispiel: Alle Lieferanten filtern"
+???+ example "Alle Lieferanten filtern"
     ```sql hl_lines="4"
     -- Alle Lieferanten mit 'GmbH' im Namen
     SELECT lieferant, material
@@ -570,7 +570,7 @@ Die zwei verschiedenen Sortierrichtungen können mit Hilfe zweier Schlüsselwör
 </div>
 
 
-???+ example "Beispiel: Lieferant und Menge sortieren"
+???+ example "Lieferant und Menge sortieren"
 
     ```sql hl_lines="4"
     -- Erst nach Lieferant (A-Z), dann nach Menge (größte zuerst)
@@ -725,7 +725,7 @@ Wenn wir diesem Syntax folgen können wir beispielsweise die ersten 3 Ergebnisse
 
 
 
-???+ example "Beispiel: Die 3 günstigsten Materialien"
+???+ example "Die 3 günstigsten Materialien"
     ```sql hl_lines="5"
     -- Die 3 günstigsten Materialien (nach Preis pro Einheit)
     SELECT material, preis_pro_einheit, lieferant
@@ -761,7 +761,7 @@ LIMIT anzahl OFFSET überspringen;
 ```
 
 
-???+ example "Beispiel: Werte ab 3. Position auslesen"
+???+ example "Werte ab 3. Position auslesen"
     ```sql hl_lines="5"
     -- Überspringe die ersten 3, zeige die nächsten 3 Lieferungen (nach Datum)
     SELECT material, lieferdatum, lieferant
@@ -856,7 +856,7 @@ Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berec
 </table>
 </div>
 
-???+ example "Beispiel: Günstigster und teuerster Preis pro Einheit"
+???+ example "Günstigster und teuerster Preis pro Einheit"
 
     ```sql hl_lines="3 4"
     -- Günstigster und teuerster Preis pro Einheit
@@ -984,7 +984,7 @@ GROUP BY gruppenspalte;
 
 
 
-???+ example "Beispiel: Wie viele Lieferungen gibt es pro Lieferant?"
+???+ example "Wie viele Lieferungen gibt es pro Lieferant?"
 
     ```sql hl_lines="4"
     -- Wie viele Lieferungen gibt es pro Lieferant?
@@ -1037,7 +1037,7 @@ Die `GROUP BY` Klausel wird fast ausschließlich in Kombination mit einer Aggreg
 
 Spannend wird es, wenn wir **mehrere Aggregatfunktionen** gleichzeitig auf dieselbe Gruppierung anwenden. Damit können wir umfassendere Statistiken über unseren Datensatz erzeugen.
 
-???+ example "Beispiel: Umfassende Statistik pro Zielstandort"
+???+ example "Umfassende Statistik pro Zielstandort"
     ```sql hl_lines="7"
     SELECT
         zielstandort,
@@ -1063,7 +1063,7 @@ Spannend wird es, wenn wir **mehrere Aggregatfunktionen** gleichzeitig auf diese
 ---
 Um unsere Analyse noch weiter zu verfeinern, können wir auch **mehreren Spalten gleichzeitig** gruppieren. Dabei wird jede einzigartige Kombination der Spaltenwerte separat aufgeführt und die entsprechenden Analysen durchgeführt.
 
-???+ example "Beispiel: Gruppierung nach Zielstandort UND Status"
+???+ example "Gruppierung nach Zielstandort UND Status"
     ```sql hl_lines="6"
     SELECT
         zielstandort,
@@ -1185,7 +1185,7 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
 </table>
 </div>
 
-???+ example "Beispiel: Zielstandorte mit durchschnittlichem Preis > 10 EUR"
+???+ example "Zielstandorte mit durchschnittlichem Preis > 10 EUR"
 
     ```sql hl_lines="8"
     -- Zielstandorte mit durchschnittlichem Preis > 10 EUR
@@ -1309,7 +1309,7 @@ SELECT DISTINCT spalte
 FROM tabelle;
 ```
 
-???+ example "Beispiel: Welche verschiedenen Lieferanten gibt es?"
+???+ example "Welche verschiedenen Lieferanten gibt es?"
     ```sql hl_lines="2"
     -- Welche verschiedenen Lieferanten gibt es?
     SELECT DISTINCT lieferant
@@ -1432,7 +1432,7 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
         ```sql
         -- Zu anderer Datenbank wechseln
         \c postgres
-        
+
         -- Zur Datenbank wechseln (oder neu erstellen)
         DROP DATABASE IF EXISTS produktionsplanung_db;
         CREATE DATABASE produktionsplanung_db;
