@@ -12,11 +12,29 @@ Ohne Daten würde vieles, was für uns selbstverständlich ist, schlicht **nicht
 Daten sind zunächst einmal **Rohmaterial** - einzelne, isolierte Fakten, die für sich genommen keine Bedeutung tragen.
 Erst wenn wir sie **in einen Kontext setzen (Semantik)**, entstehen Informationen. Und wenn wir diese Informationen **anwenden und verknüpfen (Pragmatik)**, also Entscheidungen daraus ableiten, sprechen wir von Wissen.
 
-![Wissenspyramide](../assets/data/wissen.png)
+<div style="text-align: center;">
+  <div style="position: relative;">
+    <img src="../assets/data/wissen.png" alt="Wissenspyramide">
+    <div style="position: absolute; bottom: 8px; left: 16px; color: black; font-size: 0.45rem; opacity: 0.7;">
+        Bild erstellt mit Nano Banana 3 Pro
+    </div>
+  </div>
+    <figcaption>Quelle: in Anlehnung an <a href="https://derwirtschaftsinformatiker.de/wp-content/uploads/2012/09/wissenspyramide_derwirtschaftsinformatiker.png">Der Wirtschaftsinformatiker</a></figcaption>
+</div>
 
 <div style="text-align: center;">
   <div style="position: relative;">
     <img src="/assets/data/wissen.png" alt="Wissenspyramide">
+    <div style="position: absolute; bottom: 8px; left: 16px; color: black; font-size: 0.45rem; opacity: 0.7;">
+        Bild erstellt mit Nano Banana 3 Pro
+    </div>
+  </div>
+    <figcaption>Quelle: in Anlehnung an <a href="https://derwirtschaftsinformatiker.de/wp-content/uploads/2012/09/wissenspyramide_derwirtschaftsinformatiker.png">Der Wirtschaftsinformatiker</a></figcaption>
+</div>
+
+<div style="text-align: center;">
+  <div style="position: relative;">
+    <img src="../../docs/assets/data/wissen.png" alt="Wissenspyramide">
     <div style="position: absolute; bottom: 8px; left: 16px; color: black; font-size: 0.45rem; opacity: 0.7;">
         Bild erstellt mit Nano Banana 3 Pro
     </div>
