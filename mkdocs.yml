@@ -2,6 +2,7 @@ site_name: Data Campus
 # site_url:
 theme:
   name: material
+  custom_dir: overrides
   logo: assets/logo1.png
   favicon: assets/icon.png
   palette:
@@ -30,21 +31,70 @@ theme:
     - navigation.top  # 'back to top' button on scrolling
     - header.autohide
     - search.highlight
+  copyright:
+    © 2024 - 2025 | Manuel Ferdik & Jakob Klotz
 nav:
   - Home: index.md
 
-  - Excel:
-    - Home: excel/index.md
-  - Database:
-    - Home: database/index.md
-  - Data:
+  - Daten:
     - Home: data/index.md
+    - Einführung: data/einfuehrung.md
+    - Datenerfassung: data/datenerfassung.md
+    - Datenverarbeitung: data/zahlensysteme.md
+    - Speicherung: data/speicherung.md
+
+  - Datenbanken:
+    - Home: database/index.md
+    - Einführung: database/einfuehrung.md
+    - Relationale Datenbanken: database/relational.md
+    - Abfragen von Daten: database/abfragen.md
+    - Daten Manipulieren: database/manipulieren.md
+    - Datenmodellierung: database/modellierung.md
+    - Daten Zusammenführen: database/join.md
+    - Fortgeschrittene Techniken: database/fortgeschritten.md
+    - Datenintegrität: database/integritaet.md
+    - Transaktionen: database/transaktionen.md
+    - Ausblick: database/ausblick.md
+
 
 extra_css:
   - stylesheets/colors.css
+  - stylesheets/extra.css
+  - stylesheets/slideshow.css
 
 markdown_extensions:
+  - meta
   - attr_list
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - md_in_html
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.progressbar
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/slideshow.js
+
+plugins:
+  - glightbox:
+      auto_caption: true
+      caption_position: bottom
+  - search

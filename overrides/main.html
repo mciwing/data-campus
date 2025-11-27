@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block tabs %}
+  {% if page and page.file.src_uri == "index.md" %}
+    {% include "home-content.html" %}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if page and page.file.src_uri == "index.md" %}
+    {# Leerer Content Block für die Homepage #}
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
