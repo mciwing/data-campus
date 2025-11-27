@@ -14,7 +14,7 @@ Erst wenn wir sie **in einen Kontext setzen (Semantik)**, entstehen Informatione
 
 <div style="text-align: center;">
   <div style="position: relative;">
-    <img src="/assets/data/wissen.png" alt="Wissenspyramide">
+    <img src="../assets/data/wissen.png" alt="Wissenspyramide">
     <div style="position: absolute; bottom: 8px; left: 16px; color: black; font-size: 0.45rem; opacity: 0.7;">
         Bild erstellt mit Nano Banana 3 Pro
     </div>
@@ -72,7 +72,7 @@ Big Data wird oft durch die **3 V** beschrieben:
 3. **Variety** - die Vielfalt: Texte, Bilder, Videos, Audiosignale, Sensordaten u.v.m. sollen verarbeitet werden.
 
 <div style="text-align: center;">
-    <img src="/assets/data/ibm.png" alt="Big Data 3Vs" style="max-width: 80%;">
+    <img src="../assets/data/ibm.png" alt="Big Data 3Vs" style="max-width: 80%;">
     <figcaption>Quelle: <a href="https://blogdozouza.wordpress.com/2016/01/21/extracting-business-value-from-the-4-vs-of-big-data/">IBM</a></figcaption>
 </div>
 <div style="text-align: center;">
