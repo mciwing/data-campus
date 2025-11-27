@@ -14,7 +14,7 @@ Erst wenn wir sie **in einen Kontext setzen (Semantik)**, entstehen Informatione
 
 <div style="text-align: center;">
   <div style="position: relative;">
-    <img src="../assets/data/wissen.png" alt="Wissenspyramide">
+    <img src="../../assets/data/wissen.png" alt="Wissenspyramide">
     <div style="position: absolute; bottom: 8px; left: 16px; color: black; font-size: 0.45rem; opacity: 0.7;">
         Bild erstellt mit Nano Banana 3 Pro
     </div>
