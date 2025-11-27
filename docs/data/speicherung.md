@@ -36,13 +36,13 @@ Stellen wir uns vor, wir haben ein Array von Lampen, die wir unabhängig voneina
 Genau so funktioniert ein Schwarz-Weiß-Bild: **Jeder Pixel wird durch 1 Bit beschrieben** - `0` für schwarz, `1` für weiß.
 
 <div style="text-align: center">
-    <img src="/assets/database/grundlagen/img_1c_min2.png" style="width: 20%;">
+    <img src="../../assets/database/grundlagen/img_1c_min2.png" style="width: 20%;">
 </div>
 
 ???+ example "Minimalbeispiel: 1-Bit Bild"
 
     <div style="text-align: center">
-        <img src="/assets/database/grundlagen/img_1c.png" style="width: 50%;">
+        <img src="../../assets/database/grundlagen/img_1c.png" style="width: 50%;">
     </div>
 
     ??? code "Python Code"
@@ -76,13 +76,13 @@ Um **Farben** darzustellen, benötigen wir mehr als nur schwarz und weiß. Das g
 Wenn wir **1 Bit pro Farbkanal** verwenden, ergeben sich **3 Bit pro Pixel** → $2^3 = 8$ verschiedene Farben.
 
 <div style="text-align: center">
-    <img src="/assets/database/grundlagen/img_3c_gesamt.png" style="width: 80%;">
+    <img src="../../assets/database/grundlagen/img_3c_gesamt.png" style="width: 80%;">
 </div>
 
 ???+ example "Minimalbeispiel: 3-Bit RGB Bild"
 
     <div style="text-align: center">
-        <img src="/assets/database/grundlagen/img_3c.png" style="width: 50%;">
+        <img src="../../assets/database/grundlagen/img_3c.png" style="width: 50%;">
     </div>
 
     ??? code "Python Code"
@@ -119,13 +119,13 @@ Da unsere Welt sehr farbenfroh ist und wir uns nicht mit 8 Farben begnügen woll
 **Gesamtzahl der darstellbaren Farben**: $256^3 = 16.777.216$ Farben!
 
 <div style="text-align: center">
-    <img src="/assets/database/grundlagen/img_24c_gesamt.png" style="width: 80%;">
+    <img src="../../assets/database/grundlagen/img_24c_gesamt.png" style="width: 80%;">
 </div>
 
 ???+ example "Minimalbeispiel: 24-Bit RGB Bild"
 
     <div style="text-align: center">
-        <img src="/assets/database/grundlagen/img_24c.png" style="width: 50%;">
+        <img src="../../assets/database/grundlagen/img_24c.png" style="width: 50%;">
     </div>
 
     ??? code "Python Code"

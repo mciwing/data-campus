@@ -11,7 +11,7 @@ Die Antwort: In **Tabellen**!
 Eine **relationale Datenbank** organisiert Daten in **Tabellen** (auch Relationen genannt). Jede Tabelle besitzt einen Namen (**Relationennamen**) und besteht aus:
 
 <div style="text-align: center;">
-    <img src="/assets/database/relationen/wording.png" alt="" style="margin-bottom: 1em;">
+    <img src="../../assets/database/relationen/wording.png" alt="" style="margin-bottom: 1em;">
 </div>
 
 ???+ defi "Relationale Datenbank"
@@ -238,7 +238,7 @@ Bevor wir starten, erstellen wir eine neue Datenbank für unser Beispiel. Dazu v
     Wechsle zu pgAdmin in das *PSQL Tool Workspace* und wähle die Datenbank `produktions_db` oder `postgres` aus.
 
     <div style="text-align: center;">
-        <img src="/assets/database/relationen/connect.png" alt="" style="width: 70%; margin-bottom: 0em;">
+        <img src="../../assets/database/relationen/connect.png" alt="" style="width: 70%; margin-bottom: 0em;">
     </div>
 
     **Option 2: Terminal (cmd)**
@@ -310,7 +310,7 @@ Den **Primärschlüssel** haben wir dabei mit Hilfe des Befehls `PRIMARY KEY` au
 Wenn der Befehl erfolgreich ausgeführt wurde, sollte die Tabelle in der Datenbank angezeigt werden (*Default Workspace* > ... > *zulieferer_db* > *Schemas* > *public* > *Tables*).
 
 <div style="text-align: center;">
-    <img src="/assets/database/relationen/check_db.png" alt="" style="width: 70%; margin-bottom: 0em;">
+    <img src="../../assets/database/relationen/check_db.png" alt="" style="width: 70%; margin-bottom: 0em;">
 </div>
 
 ### Daten einfügen (INSERT)
