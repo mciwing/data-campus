@@ -25,11 +25,35 @@ Erst wenn wir sie **in einen Kontext setzen (Semantik)**, entstehen Informatione
 
 
 
-| Ebene           | Beschreibung                  | Beispiel                                                                           |
-| --------------- | ----------------------------- | ---------------------------------------------------------------------------------- |
-| **Daten**       | Einzelne, unbehandelte Fakten | `23.5`                                                                             |
-| **Information** | Daten mit Bedeutung           | Die Temperatur im Raum 101 beträgt 23,5 °C.                                  |
-| **Wissen**      | Angewandte Information        | Wenn die Temperatur über 23 °C liegt, soll die Klimaanlage eingeschaltet werden. |
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Ebene</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Daten</td>
+        <td style="padding:10px 14px;">Einzelne, unbehandelte Fakten</td>
+        <td style="padding:10px 14px;"><code>23.5</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Information</td>
+        <td style="padding:10px 14px;">Daten mit Bedeutung</td>
+        <td style="padding:10px 14px;">Die Temperatur im Raum 101 beträgt 23,5 °C.</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Wissen</td>
+        <td style="padding:10px 14px;">Angewandte Information</td>
+        <td style="padding:10px 14px;">Wenn die Temperatur über 23 °C liegt, soll die Klimaanlage eingeschaltet werden.</td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
 Dieses Prinzip begegnet uns täglich:
 In einer Fitness-App werden Schritte gezählt (**Daten**), daraus wird der Kalorienverbrauch berechnet (**Information**) - und das Wissen daraus motiviert uns, unser Tagesziel zu erreichen (**Wissen**).
@@ -108,14 +132,50 @@ Damit verschiebt sich der Fokus: Weg vom reinen Speichern - hin zum **Verstehen 
 
 Ein weiteres Unterscheidungsmerkmal ist die Datenart. Um Daten sinnvoll zu verwalten, ist es hilfreich, ihre **Form** und **Herkunft** zu verstehen. Denn je nach Art benötigen sie unterschiedliche Speicher- und Analyseverfahren.
 
-| Datenart                | Beschreibung                                    | Beispiele                                 |
-| ----------------------- | ----------------------------------------------- | ----------------------------------------- |
-| **Tabellarische Daten** | Strukturiert, in Spalten und Zeilen organisiert | Excel-Tabellen, Kundendatenbanken         |
-| **Bilddaten**           | Visuelle Informationen                          | Fotos, Röntgenbilder, Satellitenaufnahmen |
-| **Audiodaten**          | Schall- und Sprachsignale                       | Musik, Podcasts, Maschinenklänge          |
-| **Videodaten**          | Kombination aus Bild- und Audiospuren           | YouTube-Clips, Überwachungskameras        |
-| **Textdaten**           | Unstrukturierte Sprache oder Schrift            | E-Mails, Chatverläufe, Tweets             |
-| **Sensordaten**         | Physikalische Messwerte                         | Temperatur, Luftfeuchtigkeit, Bewegung    |
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Datenart</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiele</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Tabellarische Daten</td>
+        <td style="padding:10px 14px;">Strukturiert, in Spalten und Zeilen organisiert</td>
+        <td style="padding:10px 14px;">Excel-Tabellen, Kundendatenbanken</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Bilddaten</td>
+        <td style="padding:10px 14px;">Visuelle Informationen</td>
+        <td style="padding:10px 14px;">Fotos, Röntgenbilder, Satellitenaufnahmen</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Audiodaten</td>
+        <td style="padding:10px 14px;">Schall- und Sprachsignale</td>
+        <td style="padding:10px 14px;">Musik, Podcasts, Maschinenklänge</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Videodaten</td>
+        <td style="padding:10px 14px;">Kombination aus Bild- und Audiospuren</td>
+        <td style="padding:10px 14px;">YouTube-Clips, Überwachungskameras</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Textdaten</td>
+        <td style="padding:10px 14px;">Unstrukturierte Sprache oder Schrift</td>
+        <td style="padding:10px 14px;">E-Mails, Chatverläufe, Tweets</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Sensordaten</td>
+        <td style="padding:10px 14px;">Physikalische Messwerte</td>
+        <td style="padding:10px 14px;">Temperatur, Luftfeuchtigkeit, Bewegung</td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
 ???+ example "Beispiel: Mischform"
 
@@ -287,7 +347,7 @@ Die Verhältnisskala ist das höhchste Skalenniveau in der Statistik und erlaubt
   <table role="table" aria-label="Skalenniveaus" 
          style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden;">
     <thead>
-      <tr style="background:#009485 ; color:#fff; padding:12px 14px;font-weight:700">
+      <tr style="background:#009485; color:#fff; padding:12px 14px;font-weight:700">
         <th style="text-align:left; ; letter-spacing:.2px;">Skalenniveaus</th>
         <th style="text-align:left;   ">&nbsp;</th>
         <th style="text-align:center; ">=, ≠</th>
