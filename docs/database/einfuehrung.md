@@ -183,35 +183,35 @@ Bevor wir mit Datenbanken arbeiten können, müssen wir **PostgreSQL** und ein *
     <div class="image-slideshow" markdown="1">
         <div class="slideshow-container">
             <div class="slideshow-slide active" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;">
                 <div class="slide-caption">==ACHTUNG: Passwort merken==</div>
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall7.png" alt="Port auswählen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall7.png" alt="Port auswählen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall8.png" alt="Sprache auswählen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall8.png" alt="Sprache auswählen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall9.png" alt="Zusammenfassung & Installation starten" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall9.png" alt="Zusammenfassung & Installation starten" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/wininstall10.png" alt="Installation läuft" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/wininstall10.png" alt="Installation läuft" style="width: 70%; display: inline-block;">
             </div>
         </div>
         <div class="slideshow-nav">
@@ -232,7 +232,7 @@ Bevor wir mit Datenbanken arbeiten können, müssen wir **PostgreSQL** und ein *
     4. Als Ergebnis sollte die installierte Version wie nachfolgend angeführt werden.
 
     <div style="text-align: center;">
-        <img src="/assets/database/einfuehrung/sql_verify.png" alt="" style="width: 70%; display: inline-block;">
+        <img src="../../assets/database/einfuehrung/sql_verify.png" alt="" style="width: 70%; display: inline-block;">
     </div>
 
 === ":fontawesome-brands-apple: macOS"
@@ -263,22 +263,22 @@ Um mit PostgreSQL zu arbeiten, können wir neben der Komandozeile (CLI) auch ein
     <div class="image-slideshow" markdown="1">
         <div class="slideshow-container">
             <div class="slideshow-slide active" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;">
             </div>
         </div>
         <div class="slideshow-nav">
@@ -308,13 +308,13 @@ Jetzt verbinden wir pgAdmin mit unserer PostgreSQL-Datenbank.
     <div class="image-slideshow" markdown="1">
         <div class="slideshow-container">
             <div class="slideshow-slide active" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin8.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin8.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin9.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin9.png" alt="Installation starten" style="width: 70%; display: inline-block;">
             </div>
             <div class="slideshow-slide" style="text-align: center;">
-                <img src="/assets/database/einfuehrung/pgAdmin10.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
+                <img src="../../assets/database/einfuehrung/pgAdmin10.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
             </div>
         </div>
         <div class="slideshow-nav">
@@ -342,7 +342,7 @@ Jetzt erstellen wir unsere erste eigene Datenbank!
 In pgAdmin klicken wir auf der linken Seite auf 'PSQL Tool Workspace' und wählen unseren bereits existierenden Server aus. Anschließend klicken wir auf 'Connect & Open PSQL' (es kann sein, dass wir nochmals das Passwort eingeben müssen)
 
 <div style="text-align: center;">
-    <img src="/assets/database/einfuehrung/pgAdmin11.png" alt="" style="width: 70%; display: inline-block;">
+    <img src="../../assets/database/einfuehrung/pgAdmin11.png" alt="" style="width: 70%; display: inline-block;">
 </div>
 
 Nun sind wir wieder in unserer Komandozeilen Darstellung und können einen ersten SQL-Befehl kennenlernen: 
@@ -358,7 +358,7 @@ CREATE DATABASE produktions_db;
 Wenn man sich den Befehl ansieht, erkennt man, dass eine neue Datenbank erzeugt werden soll und diese den namen `produktions_db` haben soll. Wenn wir diesen Befehl in die Komandozeile eingeben, wird die neue Datenbank erstellt. 
 
 <div style="text-align: center;">
-    <img src="/assets/database/einfuehrung/pgAdmin12.png" alt="" style="width: 50%; display: inline-block;">
+    <img src="../../assets/database/einfuehrung/pgAdmin12.png" alt="" style="width: 50%; display: inline-block;">
 </div>
 
 Wenn wir wieder in die vorige Darstellung von pgAdmin wechseln (Default Workspace) sollen wir nun unter *PostgreSQL 18* > *Databases* unsere neue Datenbank sehen. 
@@ -367,7 +367,7 @@ Wenn wir wieder in die vorige Darstellung von pgAdmin wechseln (Default Workspac
     Wenn die neu erzeugte Datenbank nicht angezeigt wird, kann es daran liegen, dass die Darstellung noch nicht aktualisiert wurde. Durch Rechtsklick auf *PostgreSQL 18* kann man *Refresh* auswählen (oder Taste F5)
 
 <div style="text-align: center;">
-    <img src="/assets/database/einfuehrung/pgAdmin13.png" alt="" style="width: 50%; display: inline-block;">
+    <img src="../../assets/database/einfuehrung/pgAdmin13.png" alt="" style="width: 50%; display: inline-block;">
 </div>
 
 **🎉 Gratulation:** Du hast nun deine erste Datenbank erstellt. 
