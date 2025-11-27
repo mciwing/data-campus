@@ -240,7 +240,9 @@ Eine **IPv4-Adresse** besteht aus **4 Bytes** (32 Bit), z. B. `192.168.1.1`.
 </table>
 </div>
 
-> **☝️ Hinweis:** In der Praxis wird oft **1 KB = 1000 Bytes** verwendet (SI-Standard), was zu Verwirrung führt. Computer rechnen aber in **Zweierpotenzen** (1 KiB = 1024 Bytes).
+
+???+ warning "Hinweis"
+    In der Praxis wird oft **1 KB = 1000 Bytes** verwendet (SI-Standard), was zu Verwirrung führt. Computer rechnen aber in **Zweierpotenzen** (1 KiB = 1024 Bytes).
 
 ---
 

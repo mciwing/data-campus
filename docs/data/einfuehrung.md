@@ -13,8 +13,13 @@ Daten sind zunächst einmal **Rohmaterial** - einzelne, isolierte Fakten, die f�
 Erst wenn wir sie **in einen Kontext setzen (Semantik)**, entstehen Informationen. Und wenn wir diese Informationen **anwenden und verknüpfen (Pragmatik)**, also Entscheidungen daraus ableiten, sprechen wir von Wissen.
 
 <div style="text-align: center;">
-    <img src="https://derwirtschaftsinformatiker.de/wp-content/uploads/2012/09/wissenspyramide_derwirtschaftsinformatiker.png" alt="Hieratische Zahlen">
-    <figcaption>Quelle: <a href="https://derwirtschaftsinformatiker.de/wp-content/uploads/2012/09/wissenspyramide_derwirtschaftsinformatiker.png">Der Wirtschaftsinformatiker</a></figcaption>
+  <div style="position: relative;">
+    <img src="/assets/data/wissen.png" alt="Wissenspyramide">
+    <div style="position: absolute; bottom: 8px; left: 16px; color: black; font-size: 0.45rem; opacity: 0.7;">
+        Bild erstellt mit Nano Banana 3 Pro
+    </div>
+  </div>
+    <figcaption>Quelle: in Anlehnung an <a href="https://derwirtschaftsinformatiker.de/wp-content/uploads/2012/09/wissenspyramide_derwirtschaftsinformatiker.png">Der Wirtschaftsinformatiker</a></figcaption>
 </div>
 
 
@@ -153,17 +158,14 @@ Quantitative Variablen können in zwei Typen unterteilt werden:
 
 
 
-> **☝️ Hinweis:**
+???+ warning "Hinweis"
 
-> Nicht alle Zahlen sind automatisch quantitativ! Nur weil etwas mit Zahlen dargestellt wird, heißt das nicht automatisch, dass es eine numerische (messbare) Eigenschaft beschreibt.
+    Nicht alle Zahlen sind automatisch quantitativ! Nur weil etwas mit Zahlen dargestellt wird, heißt das nicht automatisch, dass es eine numerische (messbare) Eigenschaft beschreibt.
 
-> **Beispiel**: Eine Trikotnummer im Sport (z. B. Spieler Nummer 10) ist keine messbare Zahl.Die "10" steht hier nur als Bezeichner für eine Person, nicht für eine messbare Eigenschaft wie Länge, Gewicht oder Alter.
+    **Beispiel**: Eine Trikotnummer im Sport (z. B. Spieler Nummer 10) ist keine messbare Zahl. Die "10" steht hier nur als Bezeichner für eine Person, nicht für eine messbare Eigenschaft wie Länge, Gewicht oder Alter.
 
 
-
-> **📘 Merke:**
-
-> Eine Zahl ist nur dann quantitativ, wenn sie ein Messwert ist – also ein Ausmaß einer Eigenschaft ausdrückt (z. B. Gewicht, Preis, Alter). Wenn sie dagegen nur zur Unterscheidung oder Kennzeichnung dient, ist sie qualitativ.
+Das heißt: Eine Zahl ist nur dann quantitativ, wenn sie ein Messwert ist – also ein Ausmaß einer Eigenschaft ausdrückt (z. B. Gewicht, Preis, Alter). Wenn sie dagegen nur zur Unterscheidung oder Kennzeichnung dient, ist sie qualitativ.
 
 
 ???+ question "Qualitative und Quantiative Daten"
@@ -207,12 +209,12 @@ Sie bestehen aus Namen, Symbolen oder Codes, die Gruppen kennzeichnen.
 
 Anhand dieser Beispiele erkennt man, dass es möglich ist zu überprüfen, ob zwei Werte **gleich** oder **ungleich** sind, aber nicht, ob einer größer ist. 
 
-> **☝️ Hinweis:**
+???+ warning "Hinweis"
 
-> Nominale Attribute können auch als **Zahlen codiert** werden – diese Zahlen haben aber keine rechnerische Bedeutung.
+    Nominale Attribute können auch als **Zahlen codiert** werden – diese Zahlen haben aber keine rechnerische Bedeutung.
 
-> **Beispiel** Automarken:
-> Wir könnten für jede Automarke eine eindeutige Nummer vergeben und unsere Daten damit codieren. Dann wäre beispielsweise BMW = 1, Audi = 2, VW = 3 usw. Mathematisch könnte ich nun sagen dass 2 (Audi) größer ist als 1 (BMW). Da die inhaltliche Bedeutung der Daten aber nicht verändert wurde, ist diese Aussage weiterhin nicht sinnvoll.  
+    **Beispiel** Automarken:
+    Wir könnten für jede Automarke eine eindeutige Nummer vergeben und unsere Daten damit codieren. Dann wäre beispielsweise BMW = 1, Audi = 2, VW = 3 usw. Mathematisch könnte ich nun sagen dass 2 (Audi) größer ist als 1 (BMW). Da die inhaltliche Bedeutung der Daten aber nicht verändert wurde, ist diese Aussage weiterhin nicht sinnvoll.  
 
 Dies bedeutet nun in weiterer Folge, dass die Berechnung des arithmetischen Mittelwerts oder des Medians entweder nicht möglich oder nicht sinnvoll ist. Einzig die Berechnung des **Modus (häufigster Wert)** führt zu einer matematisch und logisch sinnvollen Aussage.
 
@@ -341,9 +343,9 @@ Die Verhältnisskala ist das höhchste Skalenniveau in der Statistik und erlaubt
   </div>
 </div>
 
-> **📘 Merke:**
-> Je höher das Skalenniveau, desto mehr Rechenoperationen sind erlaubt.
-> Nominal → Ordinal → Intervall → Verhältnis
+???+ tip "Skalenniveaus"
+    Je höher das Skalenniveau, desto mehr Rechenoperationen sind erlaubt.
+    Nominal → Ordinal → Intervall → Verhältnis
 
 ???+ question "Übungsaufgabe: Attributtypen bestimmen"
 

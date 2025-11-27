@@ -1,8 +1,27 @@
 # Daten
 
-<div style="text-align: center">
-    <img src="../assets/header/header_data.png" style="width: 100%; border-radius: 12px; margin-bottom: 2rem;">
+<div style="text-align: center; position: relative; margin-bottom: 2rem;">
+    <video id="db-video" autoplay muted loop playsinline style="width: 100%; border-radius: 12px;">
+        <source src="../assets/header/daten/daten2.mp4" type="video/mp4">
+        Ihr Browser unterstützt das Video-Tag nicht.
+    </video>
+    <div style="position: absolute; bottom: 8px; left: 16px; color: white; font-size: 0.45rem; opacity: 0.7;">
+        Video erstellt mit Nano Banana 3 Pro, Grok & ElevenLabs
+    </div>
+    <button id="mute-btn" style="position: absolute; bottom: 16px; right: 16px; background: rgba(0,0,0,0.6); border: none; color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 18px; backdrop-filter: blur(4px);">
+        🔇
+    </button>
 </div>
+
+<script>
+    const video = document.getElementById('db-video');
+    const muteBtn = document.getElementById('mute-btn');
+
+    muteBtn.addEventListener('click', function() {
+        video.muted = !video.muted;
+        muteBtn.textContent = video.muted ? '🔇' : '🔊';
+    });
+</script>
 
 <div class="welcome-section" markdown="1">
 

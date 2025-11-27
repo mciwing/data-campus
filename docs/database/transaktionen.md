@@ -628,37 +628,6 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
     - Erhöhe Bestand im Produktionslager um 20
     - Verwende BEGIN und COMMIT
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- Aktuellen Bestand anzeigen
-        SELECT l.lager_id, l.standort, e.bezeichnung, l.bestand
-        FROM lager l
-        JOIN ersatzteile e ON l.ersatzteil_id = e.ersatzteil_id
-        ORDER BY l.standort, e.bezeichnung;
-        ```
-
-        ```sql
-        BEGIN;
-
-        -- Transfer durchführen (Beispiel mit ersatzteil_id = 1)
-        UPDATE lager
-        SET bestand = bestand - 20
-        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
-
-        UPDATE lager
-        SET bestand = bestand + 20
-        WHERE standort = 'Produktionslager' AND ersatzteil_id = 1;
-
-        -- Überprüfen
-        SELECT l.standort, l.bestand
-        FROM lager l
-        WHERE l.ersatzteil_id = 1;
-
-        COMMIT;
-        ```
-
-        ✅ **Beide Lager wurden erfolgreich aktualisiert!**
 
 ???+ question "Aufgabe 2: Produktionsauftrag mit Maschinenprüfung"
 
@@ -670,27 +639,6 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
     - Erstelle nur dann einen neuen Auftrag
     - Verwende ROLLBACK, wenn die Maschine nicht verfügbar ist
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        BEGIN;
-
-        -- Prüfen, ob Maschine verfügbar ist
-        SELECT COUNT(*) FROM produktionsauftraege
-        WHERE maschinen_id = 1 AND status = 'in_produktion';
-
-        -- Wenn keine aktiven Aufträge (COUNT = 0), dann neuen Auftrag erstellen:
-        INSERT INTO produktionsauftraege (auftrag_id, auftragsnummer, kunde, produkt, menge, startdatum, maschinen_id, status)
-        VALUES (90, 'AUF-2025-001', 'Test GmbH', 'Test Widget', 500, CURRENT_DATE, 1, 'geplant');
-
-        -- Falls die Maschine belegt wäre:
-        -- ROLLBACK;
-
-        -- Falls verfügbar:
-        COMMIT;
-        ```
-
-        **Erklärung:** In der Praxis würdest du eine IF-Bedingung in einer Stored Procedure verwenden, um automatisch zu entscheiden, ob COMMIT oder ROLLBACK ausgeführt wird.
 
 ???+ question "Aufgabe 3: SAVEPOINT für komplexe Wartung"
 
@@ -704,48 +652,6 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
     - SAVEPOINT setzen
     - Dritte Reparatur (zu teuer!) → zurück zum zweiten SAVEPOINT
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        BEGIN;
-
-        -- Erste Wartung: Grundinspektion
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (2, CURRENT_DATE, 'Grundinspektion', 500.00)
-        RETURNING wartungs_id;  -- Merke dir die ID (z.B. 101)
-
-        SAVEPOINT nach_grundinspektion;
-
-        -- Zweite Wartung: Kleinreparatur
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (2, CURRENT_DATE, 'Austausch Dichtung', 150.00);
-
-        SAVEPOINT nach_kleinreparatur;
-
-        -- Dritte Wartung: Große Reparatur (zu teuer!)
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (2, CURRENT_DATE, 'Motoraustausch', 5000.00);
-
-        -- Ups, zu teuer! Zurück zum zweiten SAVEPOINT:
-        ROLLBACK TO SAVEPOINT nach_kleinreparatur;
-
-        -- Die ersten beiden Wartungen bleiben, die dritte wird verworfen
-        COMMIT;
-
-        -- Überprüfung
-        SELECT beschreibung, kosten
-        FROM wartungsprotokolle
-        WHERE maschinen_id = 2 AND wartungsdatum = CURRENT_DATE;
-        ```
-
-        ```title="Output"
-            beschreibung    | kosten
-        --------------------+---------
-         Grundinspektion    | 500.00
-         Austausch Dichtung | 150.00
-        ```
-
-        ✅ **Nur die ersten beiden Wartungen wurden gespeichert!**
 
 ???+ question "Aufgabe 4: Automatisches ROLLBACK bei Constraint-Verletzung"
 
@@ -757,51 +663,6 @@ Nun wenden wir Transaktionen auf unser **TecGuy GmbH Produktionsplanungssystem**
     - Versuche, 200 Einheiten zu entnehmen (obwohl nur z.B. 100 vorhanden sind)
     - Beobachte die Fehlermeldung
     - Überprüfe, dass keine Änderungen gespeichert wurden
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- Aktuellen Bestand prüfen
-        SELECT standort, bestand
-        FROM lager
-        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
-
-        BEGIN;
-
-        -- Gültige Entnahme
-        UPDATE lager
-        SET bestand = bestand - 10
-        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
-
-        -- Ungültige Entnahme (Bestand würde negativ werden)
-        UPDATE lager
-        SET bestand = bestand - 200
-        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »lager« verletzt Check-Constraint »lager_bestand_check«
-        DETAIL:  Fehlgeschlagene Zeile enthält (...)
-        ```
-
-        ```sql
-        -- Versuche weitere Befehle
-        SELECT * FROM lager;
-        ```
-
-        ```title="Output"
-        FEHLER:  aktuelle Transaktion wurde abgebrochen, Befehle werden bis zum Ende der Transaktion ignoriert
-        ```
-
-        ```sql
-        COMMIT;  -- PostgreSQL führt automatisch ROLLBACK durch
-
-        -- Überprüfung: Bestand unverändert
-        SELECT bestand FROM lager
-        WHERE standort = 'Hauptlager' AND ersatzteil_id = 1;
-        ```
-
-        ✅ **Alle Änderungen wurden automatisch rückgängig gemacht!**
 
 ---
 

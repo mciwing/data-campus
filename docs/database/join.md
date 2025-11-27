@@ -585,35 +585,6 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Sortiere nach Auftragsnummer
     - Verwende Aliasse für bessere Lesbarkeit
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            p.auftragsnummer,
-            p.kunde,
-            p.produkt,
-            m.maschinenname,
-            p.status
-        FROM produktionsauftraege p
-        INNER JOIN maschinen m ON p.maschinen_id = m.maschinen_id
-        ORDER BY p.auftragsnummer;
-        ```
-
-        ```sql title="Output"
-         auftragsnummer |     kunde     |     produkt     |    maschinenname     |     status
-        ----------------+---------------+-----------------+----------------------+-----------------
-         AUF-2024-001   | BMW AG        | Getriebegehäuse | CNC-Fraese Alpha     | In Produktion
-         AUF-2024-002   | Audi AG       | Kurbelwelle     | Drehbank Delta       | In Produktion
-         AUF-2024-003   | Mercedes-Benz | Pleuelstange    | Drehbank Delta       | In Produktion
-         AUF-2024-004   | Porsche AG    | Kolben          | Schweissroboter Beta | In Vorbereitung
-         AUF-2024-005   | BMW AG        | Kurbelwelle     | Drehbank Delta       | In Produktion
-         AUF-2024-006   | Volkswagen AG | Kolben          | CNC-Fraese Alpha     | In Vorbereitung
-         AUF-2024-009   | Porsche AG    | Kurbelwelle     | Drehbank Delta       | In Vorbereitung
-         AUF-2024-010   | BMW AG        | Kolben          | Schweissroboter Beta | In Produktion
-        (8 rows)
-        ```
-
-        **Erklärung:** Der INNER JOIN zeigt nur Produktionsaufträge, die einer Maschine zugeordnet sind. Aufträge ohne Maschinenzuordnung werden nicht angezeigt.
 
 ???+ question "Aufgabe 2: LEFT JOIN - Alle Maschinen und ihre Aufträge"
 
@@ -626,30 +597,6 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Gruppiere nach Maschine
     - Sortiere nach Anzahl Aufträge (absteigend)
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            m.maschinentyp,
-            COUNT(p.auftrag_id) AS anzahl_auftraege
-        FROM maschinen m
-        LEFT JOIN produktionsauftraege p ON m.maschinen_id = p.maschinen_id
-        GROUP BY m.maschinenname, m.maschinentyp
-        ORDER BY anzahl_auftraege DESC;
-        ```
-
-        ```sql title="Output"
-         maschinenname        |  maschinentyp   | anzahl_auftraege
-        ----------------------+-----------------+------------------
-         Drehbank Delta       | Drehbank        |                4
-         CNC-Fraese Alpha     | CNC-Fraese      |                2
-         Schweissroboter Beta | Schweissroboter |                2
-         Presse Gamma         | Presse          |                0
-        (4 rows)
-        ```
-
-        **Erklärung:** Durch LEFT JOIN sehen wir auch Maschinen ohne Produktionsaufträge (Presse Gamma). Dies ist wichtig, um unterausgelastete Maschinen zu identifizieren.
 
 ???+ question "Aufgabe 3: INNER JOIN - Wartungsprotokolle mit Maschinen"
 
@@ -662,30 +609,6 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Sortiere nach Kosten absteigend
     - Filtere nur Wartungen mit Kosten > 200 EUR
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            w.wartungsdatum,
-            w.beschreibung,
-            w.techniker,
-            w.kosten
-        FROM wartungsprotokolle w
-        INNER JOIN maschinen m ON w.maschinen_id = m.maschinen_id
-        WHERE w.kosten > 200
-        ORDER BY w.kosten DESC;
-        ```
-
-        ```sql title="Output"
-         maschinenname    | wartungsdatum |       beschreibung        |  techniker   | kosten
-        ------------------+---------------+---------------------------+--------------+--------
-         CNC-Fraese Alpha | 2024-02-10    | Reparatur Spindelmotor    | L. Weber     | 850.00
-         CNC-Fraese Alpha | 2024-01-15    | Routinewartung-Oelwechsel | M. Schneider | 250.00
-        ```
-
-        **Erklärung:** Der INNER JOIN kombiniert Wartungsprotokolle mit Maschinennamen. Die WHERE-Klausel filtert dann auf Kosten > 200 EUR.
-
 ???+ question "Aufgabe 4: Mehrere Tabellen - Ersatzteile für Maschinen (n:m)"
 
     Zeige, welche Maschinen welche Ersatzteile benötigen. Berechne außerdem die Gesamtkosten pro Maschine.
@@ -696,34 +619,6 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Zeige: Maschinenname, Teilename, benötigte Anzahl, Einzelpreis, Gesamtpreis (Anzahl * Preis)
     - Sortiere nach Maschine und Teilename
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            e.teilename,
-            me.benoetigte_anzahl,
-            e.preis,
-            (me.benoetigte_anzahl * e.preis) AS gesamtpreis
-        FROM maschinen m
-        INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
-        INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
-        ORDER BY m.maschinenname, e.teilename;
-        ```
-
-        ```sql title="Output"
-         maschinenname    |        teilename        | benoetigte_anzahl |  preis  | gesamtpreis
-        ------------------+-------------------------+-------------------+---------+-------------
-         CNC-Fraese Alpha | Kuehlmittelpumpe        |                 2 |  320.50 |      641.00
-         CNC-Fraese Alpha | Linearfuehrung 500mm    |                 4 |  680.00 |     2720.00
-         CNC-Fraese Alpha | Spindelmotor 5kW        |                 1 | 1850.00 |     1850.00
-         CNC-Fraese Alpha | Werkzeughalter ISO40    |                 6 |  145.00 |      870.00
-         Drehbank Delta   | Drehfutter 250mm        |                 1 |  890.00 |      890.00
-         Drehbank Delta   | Kuehlmittelpumpe        |                 1 |  320.50 |      320.50
-        (6 rows)
-        ```
-
-        **Erklärung:** Durch das Verbinden von drei Tabellen können wir die n:m-Beziehung zwischen Maschinen und Ersatzteilen auflösen und alle Informationen zusammenführen.
 
 
 ???+ question "Aufgabe 5: Komplexe Abfrage - Produktionsübersicht"
@@ -737,32 +632,6 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Gruppiere nach Maschine
     - Sortiere nach Maschinenname
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            COUNT(DISTINCT p.auftrag_id) AS anzahl_auftraege,
-            COUNT(DISTINCT w.wartungs_id) AS anzahl_wartungen,
-            SUM(w.kosten) AS gesamtwartungskosten
-        FROM maschinen m
-        LEFT JOIN produktionsauftraege p ON m.maschinen_id = p.maschinen_id
-        LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
-        GROUP BY m.maschinenname
-        ORDER BY m.maschinenname;
-        ```
-
-        ```sql title="Output"
-         maschinenname        | anzahl_auftraege | anzahl_wartungen | gesamtwartungskosten
-        ----------------------+------------------+------------------+----------------------
-         CNC-Fraese Alpha     |                2 |                2 |              1100.00
-         Drehbank Delta       |                4 |                2 |               300.00
-         Presse Gamma         |                0 |                0 |                 0.00
-         Schweissroboter Beta |                2 |                0 |                 0.00
-        (4 rows)
-        ```
-
-        **Erklärung:** Diese komplexe Abfrage kombiniert zwei LEFT JOINs und mehrere Aggregationen. `COUNT(DISTINCT ...)` verhindert Doppelzählungen, die bei mehreren JOINs auftreten können.
 
 ---
 

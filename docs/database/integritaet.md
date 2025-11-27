@@ -538,23 +538,6 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
     Mit dem Befehl `\d produktionsauftraege` können wir die Struktur der Tabelle `produktionsauftraege` anzeigen und Beschränkungen anzeigen.
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- Zuerst mit Produktionsplanung DB verbinden
-        \c produktionsplanung_db
-
-        -- NOT NULL für auftragsnummer hinzufügen
-        ALTER TABLE produktionsauftraege
-        ALTER COLUMN auftragsnummer SET NOT NULL;
-
-        -- NOT NULL für startdatum hinzufügen
-        ALTER TABLE produktionsauftraege
-        ALTER COLUMN startdatum SET NOT NULL;
-
-        -- Überprüfen
-        \d produktionsauftraege
-        ```
 
 ???+ question "Aufgabe 2: CHECK Constraint für Wartungsintervalle"
 
@@ -564,52 +547,12 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
     **Tipp:** Verwende einen aussagekräftigen Namen für den Constraint (z.B. `ck_wartungsintervall_gueltig`). Wieder können wir mit dem Befehl `\d maschinen` die Struktur der Tabelle `maschinen` anzeigen und Beschränkungen anzeigen.
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- CHECK Constraint hinzufügen
-        ALTER TABLE maschinen
-        ADD CONSTRAINT ck_wartungsintervall_gueltig
-        CHECK (wartungsintervall_tage >= 30 AND wartungsintervall_tage <= 365);
-
-        -- Test: Versuche einen ungültigen Wert einzufügen (sollte fehlschlagen)
-        UPDATE maschinen
-        SET wartungsintervall_tage = 10
-        WHERE maschinen_id = 1;
-        ```
-
-        ```title="Output"
-        FEHLER:  neue Zeile für Relation »maschinen« verletzt Check-Constraint »ck_wartungsintervall_gueltig«
-        DETAIL:  Fehlgeschlagene Zeile enthält (...)
-        ```
 
 ???+ question "Aufgabe 3: Multi-Column UNIQUE Constraint"
 
     In der Tabelle `wartungsprotokolle` möchtest du verhindern, dass **dieselbe Maschine zweimal am selben Tag** gewartet wird.
 
     Füge einen UNIQUE Constraint hinzu, der die Kombination aus `maschinen_id` und `wartungsdatum` eindeutig macht.
-
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- UNIQUE Constraint für Kombination hinzufügen
-        ALTER TABLE wartungsprotokolle
-        ADD CONSTRAINT uq_maschine_wartungsdatum UNIQUE (maschinen_id, wartungsdatum);
-
-        -- Test: Versuche zweimal die gleiche Maschine am gleichen Tag zu warten
-        -- Erste Wartung: OK
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (1, '2025-12-01', 'Routinewartung 1', 250);
-
-        -- Zweite Wartung am gleichen Tag: FEHLER!
-        INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
-        VALUES (1, '2025-12-01', 'Routinewartung 2', 300);
-        ```
-
-        ```title="Output"
-        FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »uq_maschine_wartungsdatum«
-        DETAIL:  Schlüssel »(maschinen_id, wartungsdatum)=(1, 2025-12-01)« existiert bereits.
-        ```
 
 
 ---

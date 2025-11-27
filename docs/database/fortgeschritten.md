@@ -901,29 +901,6 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Nur Wartungen über dem Durchschnitt
     - Sortiere nach Kosten absteigend
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            w.wartungsdatum,
-            w.beschreibung,
-            w.kosten
-        FROM wartungsprotokolle w
-        INNER JOIN maschinen m ON w.maschinen_id = m.maschinen_id
-        WHERE w.kosten > (SELECT AVG(kosten) FROM wartungsprotokolle)
-        ORDER BY w.kosten DESC;
-        ```
-
-        ```sql title="Output"
-         maschinenname    | wartungsdatum |      beschreibung       | kosten
-        ------------------+---------------+-------------------------+--------
-         CNC-Fraese Alpha | 2024-02-10    | Reparatur Spindelmotor  | 850.00
-         CNC-Fraese Alpha | 2024-01-15    | Routinewartung-Oelwechsel | 250.00
-        (2 rows)
-        ```
-
-        **Erklärung:** Die Unterabfrage berechnet die durchschnittlichen Kosten aller Wartungen. Die äußere Abfrage filtert dann nur Wartungen, die teurer sind.
 
 ???+ question "Aufgabe 2: IN - Maschinen mit bestimmten Ersatzteilen"
 
@@ -935,32 +912,6 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Zeige: Maschinenname, Maschinentyp
     - Keine Duplikate (DISTINCT)
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT DISTINCT
-            m.maschinenname,
-            m.maschinentyp
-        FROM maschinen m
-        WHERE m.maschinen_id IN (
-            SELECT me.maschinen_id
-            FROM maschinen_ersatzteile me
-            INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
-            WHERE e.teilename LIKE '%Spindelmotor%'
-               OR e.teilename LIKE '%Kuehlmittelpumpe%'
-        )
-        ORDER BY m.maschinenname;
-        ```
-
-        ```sql title="Output"
-         maschinenname    | maschinentyp
-        ------------------+--------------
-         CNC-Fraese Alpha | CNC-Fraese
-         Drehbank Delta   | Drehbank
-        (2 rows)
-        ```
-
-        **Erklärung:** Die Unterabfrage findet alle maschinen_id, die Spindelmotoren oder Kühlmittelpumpen benötigen. Die äußere Abfrage filtert dann die Maschinen mit diesen IDs.
 
 ???+ question "Aufgabe 3: EXISTS - Maschinen mit Wartungsprotokollen"
 
@@ -972,31 +923,6 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Zeige: Maschinenname, Maschinentyp, Anzahl Wartungen
     - Sortiere nach Anzahl Wartungen absteigend
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            m.maschinentyp,
-            (SELECT COUNT(*) FROM wartungsprotokolle w WHERE w.maschinen_id = m.maschinen_id) AS anzahl_wartungen
-        FROM maschinen m
-        WHERE EXISTS (
-            SELECT 1
-            FROM wartungsprotokolle w
-            WHERE w.maschinen_id = m.maschinen_id
-        )
-        ORDER BY anzahl_wartungen DESC;
-        ```
-
-        ```sql title="Output"
-         maschinenname    | maschinentyp | anzahl_wartungen
-        ------------------+--------------+------------------
-         CNC-Fraese Alpha | CNC-Fraese   |                2
-         Drehbank Delta   | Drehbank     |                2
-        (2 rows)
-        ```
-
-        **Erklärung:** EXISTS prüft, ob mindestens eine Wartung existiert. Die Unterabfrage im SELECT zählt die Anzahl der Wartungen pro Maschine.
 
 ???+ question "Aufgabe 4: String-Funktionen - Maschinencodes generieren"
 
@@ -1008,32 +934,6 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Maschinen-ID mit führenden Nullen auf 3 Stellen
     - Verwende: UPPER, SUBSTRING, LPAD
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            maschinenname,
-            maschinentyp,
-            CONCAT(
-                UPPER(SUBSTRING(maschinentyp, 1, 3)),
-                '-',
-                LPAD(maschinen_id::TEXT, 3, '0')
-            ) AS maschinencode
-        FROM maschinen
-        ORDER BY maschinen_id;
-        ```
-
-        ```sql title="Output"
-         maschinenname        | maschinentyp    | maschinencode
-        ----------------------+-----------------+---------------
-         CNC-Fraese Alpha     | CNC-Fraese      | CNC-001
-         Drehbank Delta       | Drehbank        | DRE-002
-         Presse Gamma         | Presse          | PRE-003
-         Schweissroboter Beta | Schweissroboter | SCH-004
-        (4 rows)
-        ```
-
-        **Erklärung:** SUBSTRING extrahiert die ersten 3 Zeichen, UPPER wandelt in Großbuchstaben um, LPAD füllt die ID mit Nullen auf.
 
 ???+ question "Aufgabe 5: Datumsfunktionen - Wartungsalter"
 
@@ -1046,34 +946,6 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Zeige auch Maschinen ohne Wartungen
     - Sortiere nach Tagen absteigend
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            MAX(w.wartungsdatum) AS letzte_wartung,
-            COALESCE(
-                CURRENT_DATE - MAX(w.wartungsdatum),
-                999
-            ) AS tage_seit_wartung
-        FROM maschinen m
-        LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
-        GROUP BY m.maschinenname
-        HAVING COALESCE(CURRENT_DATE - MAX(w.wartungsdatum), 999) > 90
-        ORDER BY tage_seit_wartung DESC;
-        ```
-
-        ```sql title="Output (abhängig vom aktuellen Datum)"
-         maschinenname        | letzte_wartung | tage_seit_wartung
-        ----------------------+----------------+-------------------
-         Presse Gamma         |           NULL |               999
-         Schweissroboter Beta |           NULL |               999
-         CNC-Fraese Alpha     | 2024-02-10     |               289
-         Drehbank Delta       | 2024-03-05     |               265
-        (4 rows)
-        ```
-
-        **Erklärung:** Wir berechnen die Differenz in Tagen zwischen heute und der letzten Wartung. Maschinen ohne Wartung erhalten 999 Tage (Fallback-Wert).
 
 ???+ question "Aufgabe 6: CASE WHEN - Produktionsauftragskategorien"
 
@@ -1085,56 +957,6 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Zeige: Auftragsnummer, Kunde, Produkt, Menge, Kategorie
     - Zähle Aufträge pro Kategorie (zweite Abfrage)
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        -- Alle Aufträge mit Kategorien
-        SELECT
-            auftragsnummer,
-            kunde,
-            produkt,
-            menge,
-            CASE
-                WHEN menge < 200 THEN 'Klein'
-                WHEN menge BETWEEN 200 AND 400 THEN 'Mittel'
-                ELSE 'Groß'
-            END AS auftragskategorie
-        FROM produktionsauftraege
-        ORDER BY menge DESC;
-        ```
-
-        ```sql title="Output"
-         auftragsnummer |     kunde     |     produkt     | menge | auftragskategorie
-        ----------------+---------------+-----------------+-------+-------------------
-         AUF-2024-001   | BMW AG        | Getriebegehäuse |   500 | Groß
-         AUF-2024-006   | Volkswagen AG | Kolben          |   400 | Mittel
-         AUF-2024-003   | Mercedes-Benz | Pleuelstange    |   350 | Mittel
-         AUF-2024-010   | BMW AG        | Kolben          |   350 | Mittel
-         AUF-2024-005   | BMW AG        | Kurbelwelle     |   300 | Mittel
-         AUF-2024-007   | Mercedes-Benz | Getriebegehäuse |   250 | Mittel
-         AUF-2024-002   | Audi AG       | Kurbelwelle     |   200 | Mittel
-         AUF-2024-008   | Audi AG       | Pleuelstange    |   180 | Klein
-         AUF-2024-004   | Porsche AG    | Kolben          |   150 | Klein
-         AUF-2024-009   | Porsche AG    | Kurbelwelle     |   120 | Klein
-        (10 rows)
-        ```
-
-        ```sql
-        -- Anzahl Aufträge pro Kategorie
-        SELECT
-            COUNT(CASE WHEN menge < 200 THEN 1 END) AS klein,
-            COUNT(CASE WHEN menge BETWEEN 200 AND 400 THEN 1 END) AS mittel,
-            COUNT(CASE WHEN menge > 400 THEN 1 END) AS gross,
-            COUNT(*) AS gesamt
-        FROM produktionsauftraege;
-        ```
-
-        ```sql title="Output"
-         klein | mittel | gross | gesamt
-        -------+--------+-------+--------
-             3 |      6 |     1 |     10
-        (1 row)
-        ```
 
 ???+ question "Aufgabe 7: COALESCE - Wartungsintervalle"
 
@@ -1146,35 +968,6 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Zeige: Maschinenname, Wartungsintervall (oder "Nicht definiert")
     - Berechne nächste Wartung basierend auf letzter Wartung + Intervall
 
-    ??? tip "Lösung anzeigen"
-
-        ```sql
-        SELECT
-            m.maschinenname,
-            COALESCE(m.wartungsintervall_tage::TEXT, 'Nicht definiert') AS wartungsintervall,
-            MAX(w.wartungsdatum) AS letzte_wartung,
-            CASE
-                WHEN m.wartungsintervall_tage IS NOT NULL AND MAX(w.wartungsdatum) IS NOT NULL
-                THEN MAX(w.wartungsdatum) + m.wartungsintervall_tage
-                ELSE NULL
-            END AS naechste_wartung_faellig
-        FROM maschinen m
-        LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
-        GROUP BY m.maschinenname, m.wartungsintervall_tage
-        ORDER BY m.maschinenname;
-        ```
-
-        ```sql title="Output"
-         maschinenname        | wartungsintervall | letzte_wartung | naechste_wartung_faellig
-        ----------------------+-------------------+----------------+--------------------------
-         CNC-Fraese Alpha     | 90                | 2024-02-10     | 2024-05-10
-         Drehbank Delta       | 120               | 2024-03-05     | 2024-07-03
-         Presse Gamma         | 60                |           NULL |                     NULL
-         Schweissroboter Beta | 90                |           NULL |                     NULL
-        (4 rows)
-        ```
-
-        **Erklärung:** COALESCE ersetzt NULL-Werte im Wartungsintervall durch "Nicht definiert". Die nächste Wartung wird berechnet, falls Intervall und letzte Wartung bekannt sind.
 
 ---
 

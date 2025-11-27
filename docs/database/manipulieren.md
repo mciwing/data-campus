@@ -1074,38 +1074,6 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
 
     **Wichtig:** Prüfe immer erst mit `SELECT`, bevor du `UPDATE` ausführst!
 
-    ??? info "💡 Lösung anzeigen"
-
-        ```sql
-        -- 1. AUF-2024-002 Status ändern
-        SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-002';  -- Safety check
-        UPDATE produktionsauftraege
-        SET status = 'In Produktion'
-        WHERE auftragsnummer = 'AUF-2024-002';
-
-        -- 2. AUF-2024-007 Lieferdatum ändern
-        SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-007';  -- Safety check
-        UPDATE produktionsauftraege
-        SET lieferdatum = '2024-05-02'
-        WHERE auftragsnummer = 'AUF-2024-007';
-
-        -- 3. Alle "Geplant" → "In Vorbereitung"
-        SELECT * FROM produktionsauftraege WHERE status = 'Geplant';  -- Safety check
-        UPDATE produktionsauftraege
-        SET status = 'In Vorbereitung'
-        WHERE status = 'Geplant';
-
-        -- 4. AUF-2024-006 Maschine wechseln
-        SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-006';  -- Safety check
-        UPDATE produktionsauftraege
-        SET maschinen_id = 1
-        WHERE auftragsnummer = 'AUF-2024-006';
-
-        -- Ergebnis prüfen
-        SELECT auftragsnummer, kunde, status, lieferdatum, maschinen_id
-        FROM produktionsauftraege
-        ORDER BY auftrag_id;
-        ```
 
 ???+ question "Aufgabe 2: UPDATE - Maschinen aktualisieren"
 
@@ -1121,36 +1089,6 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
 
     **Wichtig:** Prüfe immer erst mit `SELECT`, bevor du `UPDATE` ausführst!
 
-    ??? info "💡 Lösung anzeigen"
-
-        ```sql
-        -- 1. Presse Gamma Wartung abgeschlossen
-        SELECT * FROM maschinen WHERE maschinen_id = 3;  -- Safety check
-        UPDATE maschinen
-        SET maschinenstatus = 'Aktiv'
-        WHERE maschinen_id = 3;
-
-        -- 2. CNC-Fraese Alpha in Wartung setzen
-        SELECT * FROM maschinen WHERE maschinen_id = 1;  -- Safety check
-        UPDATE maschinen
-        SET maschinenstatus = 'Wartung'
-        WHERE maschinen_id = 1;
-
-        -- 3. Drehbank Delta verlegen
-        SELECT * FROM maschinen WHERE maschinen_id = 2;  -- Safety check
-        UPDATE maschinen
-        SET produktionshalle = 'Halle D'
-        WHERE maschinen_id = 2;
-
-        -- 4. Alle Maschinen in Halle C: Wartungsintervall verlängern
-        SELECT * FROM maschinen WHERE produktionshalle = 'Halle C';  -- Safety check
-        UPDATE maschinen
-        SET wartungsintervall_tage = 120
-        WHERE produktionshalle = 'Halle C';
-
-        -- Ergebnis prüfen
-        SELECT * FROM maschinen ORDER BY maschinen_id;
-        ```
 
 ???+ question "Aufgabe 3: UPDATE mit Berechnungen und String-Operationen"
 
@@ -1166,33 +1104,6 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
 
     **Tipp:** Nutze Berechnungen (`+`, `-`) und String-Funktionen (`REPLACE`, `CONCAT`).
 
-    ??? info "💡 Lösung anzeigen"
-
-        ```sql
-        -- 1. Kleine Aufträge um 50 Stück erhöhen
-        SELECT * FROM produktionsauftraege WHERE menge < 200;  -- Safety check
-        UPDATE produktionsauftraege
-        SET menge = menge + 50
-        WHERE menge < 200;
-
-        -- 2. Produktionshallen umbenennen
-        UPDATE maschinen
-        SET produktionshalle = REPLACE(produktionshalle, 'Halle', 'Produktionshalle');
-
-        -- 3. Wartungsintervall für Drehbänke verkürzen
-        SELECT * FROM maschinen WHERE maschinentyp = 'Drehbank';  -- Safety check
-        UPDATE maschinen
-        SET wartungsintervall_tage = wartungsintervall_tage - 20
-        WHERE maschinentyp = 'Drehbank';
-
-        -- 4. Präfix für alle Auftragsnummern
-        UPDATE produktionsauftraege
-        SET auftragsnummer = CONCAT('TEC-', auftragsnummer);
-
-        -- Ergebnisse prüfen
-        SELECT auftragsnummer, produkt, menge FROM produktionsauftraege ORDER BY auftrag_id;
-        SELECT maschinenname, maschinentyp, produktionshalle, wartungsintervall_tage FROM maschinen ORDER BY maschinen_id;
-        ```
 
 ???+ question "Aufgabe 4: DELETE - Datensätze löschen"
 
@@ -1205,33 +1116,6 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
     3. Lösche alle Aufträge mit einer **Menge kleiner als 100**.
 
     **Goldene Regel:** Immer erst `SELECT` mit der gleichen WHERE-Bedingung, dann `DELETE`!
-
-    ??? info "💡 Lösung anzeigen"
-
-        ```sql
-        -- 1. Abgeschlossene Aufträge löschen
-        SELECT * FROM produktionsauftraege WHERE status = 'Abgeschlossen';  -- Safety check
-        DELETE FROM produktionsauftraege WHERE status = 'Abgeschlossen';
-
-        -- 2. Presse Gamma löschen
-        SELECT * FROM maschinen WHERE maschinen_id = 3;  -- Safety check
-        DELETE FROM maschinen WHERE maschinen_id = 3;
-
-        -- 3. Kleine Aufträge löschen (< 100 Stück)
-        SELECT * FROM produktionsauftraege WHERE menge < 100;  -- Safety check
-        DELETE FROM produktionsauftraege WHERE menge < 100;
-
-        -- WICHTIGER SICHERHEITSHINWEIS (NICHT AUSFÜHREN!)
-        -- DELETE FROM produktionsauftraege; würde ALLE Aufträge löschen!
-        -- DELETE FROM maschinen; würde ALLE Maschinen löschen!
-        -- NIEMALS ohne WHERE-Klausel verwenden!
-
-        -- Verbleibende Daten anzeigen
-        SELECT * FROM produktionsauftraege ORDER BY auftrag_id;
-        SELECT * FROM maschinen ORDER BY maschinen_id;
-        ```
-
-        **Wichtig:** Diese Löschungen sind **dauerhaft**! Es gibt kein "Rückgängig" in SQL!
 
 ---
 
