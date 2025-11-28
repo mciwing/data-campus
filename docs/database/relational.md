@@ -241,11 +241,11 @@ Bevor wir starten, erstellen wir eine neue Datenbank für unser Beispiel. Dazu v
         <img src="../../assets/database/relationen/connect.png" alt="" style="width: 70%; margin-bottom: 0em;">
     </div>
 
-    **Option 2: Terminal (cmd)**
+    **Option 2: Terminal / Kommandozeile**
 
-    Alternativ kannst du über das Windows Terminal die Verbindung herstellen:
+    Alternativ kannst du über das Terminal (macOS) oder die Kommandozeile (Windows) die Verbindung herstellen:
 
-    ```cmd
+    ```bash
     psql -h localhost -p 5432 -U postgres -d produktions_db
     ```
 

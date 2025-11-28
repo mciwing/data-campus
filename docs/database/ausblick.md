@@ -647,7 +647,7 @@ Typische PostgreSQL Backup-Methoden sind:
 </div>
 
 ???+ example "Backup mit pg_dump verwenden"
-    Folgende Befehle müssen in der Powershell/CMD eingegeben werden. Port (hier 5433) und Server (hier localhost) müssen gegebenenfalls angepasst werden.
+    Folgende Befehle müssen im Terminal (macOS) oder in der Powershell/CMD (Windows) eingegeben werden. Port (hier 5433) und Server (hier localhost) müssen gegebenenfalls angepasst werden.
 
     **Gesamte Datenbank sichern:**
 

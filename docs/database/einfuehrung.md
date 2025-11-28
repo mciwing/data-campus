@@ -424,7 +424,9 @@ Jetzt verbinden wir pgAdmin mit unserer PostgreSQL-Datenbank.
 ???+ tip "Verbindungsprobleme?"
     Wenn die Verbindung fehlschlägt, prüfe:
 
-    - Läuft PostgreSQL?
+    - **Läuft PostgreSQL?**
+        - Windows: Task-Manager → Dienste → "postgresql-x64-18"
+        - macOS: Terminal öffnen und eingeben: `pg_isready`
     - Ist das **PostgreSQL-Passwort** korrekt
     - Ist der Port (meistens 5432) frei und nicht von einer Firewall blockiert?
 
