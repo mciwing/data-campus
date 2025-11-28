@@ -237,9 +237,85 @@ Bevor wir mit Datenbanken arbeiten können, müssen wir **PostgreSQL** und ein *
 
 === ":fontawesome-brands-apple: macOS"
     
-    
-    XXXX FOLGT XXXX
+    1. Lade den Installer von [postgresql.org/download/macosx](https://www.postgresql.org/download/macosx/) herunter (beim Erstellen der Unterlagen Version 18)
+    2. Führe die Installation aus (alle Standardeinstellungen sind OK)
+    3. **Wichtig:** Notiere dir das Passwort für den Benutzer `postgres`!
+    4. Port: `5432` (Standard)
 
+
+    **Installationsschritte:**
+
+    <div class="image-slideshow" markdown="1">
+        <div class="slideshow-container">
+            <div class="slideshow-slide active" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;">
+                <div class="slide-caption">==ACHTUNG: Passwort merken==</div>
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall7.png" alt="Port auswählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall8.png" alt="Sprache auswählen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall9.png" alt="Zusammenfassung & Installation starten" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/macinstall10.png" alt="Installation läuft" style="width: 70%; display: inline-block;">
+            </div>
+        </div>
+        <div class="slideshow-nav">
+            <button class="slideshow-btn slideshow-prev">← Zurück</button>
+            <div class="slideshow-counter">Schritt 1 von 2</div>
+            <button class="slideshow-btn slideshow-next">Weiter →</button>
+        </div>
+        <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+    </div>
+    **Installation kontrollieren:**
+
+    1. Öffne den **Terminal** (++cmd+space++, dann "Terminal" eingeben)
+    2. Füge PostgreSQL zum PATH hinzu (damit du `psql` direkt aufrufen kannst):
+       ```bash
+       echo 'export PATH="/Library/PostgreSQL/18/bin:$PATH"' >> ~/.zshrc
+       source ~/.zshrc
+       ```
+    3. Prüfe die Installation mit:
+       ```bash
+       psql --version
+       ```
+       Es sollte die installierte Version angezeigt werden (z.B. `psql (PostgreSQL) 18.x`)
+
+    4. Verbinde dich mit der Datenbank:
+       ```bash
+       psql -U postgres
+       ```
+    5. Gib dein bei der Installation gewähltes Passwort ein und teste mit folgendem SQL-Befehl:
+       ```sql
+       SELECT version();
+       ```
+    6. Als Ergebnis sollte die installierte Version wie nachfolgend angeführt werden.
+
+    <div style="text-align: center;">
+        <img src="../../assets/database/einfuehrung/sql_verifymac.png" alt="" style="width: 100%; display: inline-block;">
+    </div>
+
+    ???+ tip "Wichtig: Shell-Neustart"
+        Falls `psql --version` nicht funktioniert, schließe das Terminal-Fenster komplett und öffne ein neues. Alternativ kannst du auch `source ~/.zshrc` nochmals ausführen.
 
 
 ---
@@ -291,8 +367,27 @@ Um mit PostgreSQL zu arbeiten, können wir neben der Komandozeile (CLI) auch ein
 
 === ":fontawesome-brands-apple: macOS"
     
-    
-    XXXX FOLGT XXXX
+    1. Gehe zu [pgadmin.org/download](https://www.pgadmin.org/download/)
+    2. Wähle dein Betriebssystem (macOS)
+    3. Lade den Installer herunter (beim Erstellen der Unterlagen Version 9.9)
+    4. Führe die Installation aus (alle Standardeinstellungen sind OK)
+
+    <div class="image-slideshow" markdown="1">
+        <div class="slideshow-container">
+            <div class="slideshow-slide active" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/pgAdminMac1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;">
+            </div>
+            <div class="slideshow-slide" style="text-align: center;">
+                <img src="../../assets/database/einfuehrung/pgAdminMac2.png" alt="Installation starten" style="width: 70%; display: inline-block;">
+            </div>
+        </div>
+        <div class="slideshow-nav">
+            <button class="slideshow-btn slideshow-prev">← Zurück</button>
+            <div class="slideshow-counter"> </div>
+            <button class="slideshow-btn slideshow-next">Weiter →</button>
+        </div>
+        <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+    </div>
 
 ---
 
@@ -329,9 +424,9 @@ Jetzt verbinden wir pgAdmin mit unserer PostgreSQL-Datenbank.
 ???+ tip "Verbindungsprobleme?"
     Wenn die Verbindung fehlschlägt, prüfe:
 
-    - Läuft PostgreSQL? (Windows: Task-Manager → Dienste → "postgresql-x64-XX", macOS/Linux: `pg_isready`)
+    - Läuft PostgreSQL?
     - Ist das **PostgreSQL-Passwort** korrekt
-    - Ist Port 5432 frei und nicht von einer Firewall blockiert?
+    - Ist der Port (meistens 5432) frei und nicht von einer Firewall blockiert?
 
 ---
 
