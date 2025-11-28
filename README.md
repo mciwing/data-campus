@@ -16,7 +16,7 @@ This site offers a variety of courses focused on Data, including:
 - Databases with PostgreSQL
 - Excel
 
-📚 Visit the site [here](https://code-campus.at/data-campus)!
+📚 Visit the site [here](https://learn-data.at)!
 
 ## Local development
 
