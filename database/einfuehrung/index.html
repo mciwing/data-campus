@@ -1,0 +1,1709 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://learn-data.at/database/einfuehrung/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../relational/">
+      
+      
+      <link rel="icon" href="../../assets/icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Einführung - Data Campus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/colors.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/slideshow.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#einfuhrung-in-datenbanken" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Data Campus" class="md-header__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Campus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Einführung
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Daten
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Datenbanken
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
+    
+        
+      
+  
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Data Campus" class="md-nav__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    Data Campus
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Daten
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daten
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/datenerfassung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenerfassung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/zahlensysteme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenverarbeitung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/speicherung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speicherung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Datenbanken
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Datenbanken
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#warum-datenbanken" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warum Datenbanken?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#was-ist-eine-datenbank" class="md-nav__link">
+    <span class="md-ellipsis">
+      Was ist eine Datenbank?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datenbank-vs-datenbankmanagementsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datenbank vs. Datenbankmanagementsystem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#postgresql-unser-werkzeug" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL - Unser Werkzeug
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PostgreSQL - Unser Werkzeug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation &amp; Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation &amp; Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schritt-1-postgresql-installieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schritt 1: PostgreSQL installieren
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schritt-2-client-tool-installieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schritt 2: Client-Tool installieren
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schritt-3-erste-verbindung-herstellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schritt 3: Erste Verbindung herstellen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deine-erste-datenbank" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deine erste Datenbank
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relationale Datenbanken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../abfragen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulieren/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modellierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenmodellierung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../join/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fortgeschritten/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integritaet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaktionen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ausblick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ausblick
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#warum-datenbanken" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warum Datenbanken?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#was-ist-eine-datenbank" class="md-nav__link">
+    <span class="md-ellipsis">
+      Was ist eine Datenbank?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datenbank-vs-datenbankmanagementsystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datenbank vs. Datenbankmanagementsystem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#postgresql-unser-werkzeug" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL - Unser Werkzeug
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PostgreSQL - Unser Werkzeug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation &amp; Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation &amp; Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schritt-1-postgresql-installieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schritt 1: PostgreSQL installieren
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schritt-2-client-tool-installieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schritt 2: Client-Tool installieren
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#schritt-3-erste-verbindung-herstellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Schritt 3: Erste Verbindung herstellen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deine-erste-datenbank" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deine erste Datenbank
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+  
+    
+                  
+
+
+  
+  
+
+
+<h1 id="einfuhrung-in-datenbanken">Einführung in Datenbanken</h1>
+<p>In den vorherigen Kapiteln haben wir uns mit <strong><a href="../../data/">Datenerfassung, -verarbeitung und -speicherung</a></strong> beschäftigt. Wir haben gesehen, wie Daten von Sensoren erfasst, in binärer Form verarbeitet und auf verschiedenen Speichermedien wie RAM, SSD oder HDD gesichert werden.</p>
+<p>Doch was passiert, wenn wir <strong>große Datenmengen strukturiert organisieren, effizient durchsuchen und gleichzeitig von mehreren Anwendungen nutzen</strong> möchten? </p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://i.imgflip.com/64tqdl.png" data-desc-position="bottom"><img src="https://i.imgflip.com/64tqdl.png" alt="" style="width:220px; margin-bottom: 1em;"></a>
+</div>
+
+<p>Hier stoßen einfache Dateisysteme schnell an ihre Grenzen.</p>
+<p>Die Lösung: <strong>Datenbanken</strong> - spezialisierte Systeme zur strukturierten Verwaltung von Daten.</p>
+<hr>
+<h2 id="warum-datenbanken">Warum Datenbanken?</h2>
+<p>Stellen wir uns vor, ein Produktionsbetrieb verwaltet seine Maschinendaten und Wartungsprotokolle in einer <strong>einfachen Excel-Tabelle</strong> oder einer <strong>CSV-Datei</strong>:</p>
+<div class="highlight"><pre><span></span><code>Maschinen-ID,Name,Standort,Anschaffungsjahr,Letzte_Wartung
+M001,CNC-Fräse Alpha,Halle A,2019,2024-08-15
+M002,Drehbank Beta,Halle A,2021,2024-09-03
+M003,Schweißroboter Gamma,Halle B,2020,2024-07-22
+</code></pre></div>
+<p>Das funktioniert am Anfang gut, aber sobald die Daten wachsen oder mehrere Personen gleichzeitig darauf zugreifen möchten, treten Probleme auf:</p>
+<ul>
+<li><strong>Keine Zugriffskontrolle</strong> - Jeder kann alle Daten sehen und ändern (auch sensible Kostendaten)</li>
+<li><strong>Datenverlust bei gleichzeitigem Schreiben</strong> - Wenn Wartungstechniker und Schichtleiter gleichzeitig Daten aktualisieren, können Informationen verloren gehen</li>
+<li><strong>Inkonsistente Daten</strong> - Es gibt keine Regeln, die verhindern, dass ungültige Daten eingegeben werden (z.B. Anschaffungsjahr = 2050)</li>
+<li><strong>Schwierige Abfragen</strong> - Komplexe Fragen wie "Welche Maschinen in Halle A benötigen in den nächsten 30 Tagen eine Wartung?" sind umständlich</li>
+<li><strong>Keine Beziehungen</strong> - Verbindungen zwischen Datensätzen (z.B. Maschinen ↔ Wartungsprotokolle ↔ Ersatzteile) lassen sich kaum abbilden</li>
+</ul>
+<p><strong>Datenbanken lösen genau diese Probleme!</strong></p>
+<blockquote class="reddit-embed-bq" style="height:500px" data-embed-height="739"><a href="https://www.reddit.com/r/computerscience/comments/hr37ys/snapchat_gotta_start_learning_sql/">Snapchat gotta start learning SQL</a><br> by<a href="https://www.reddit.com/user/Pranjaljhathegr8/">u/Pranjaljhathegr8</a> in<a href="https://www.reddit.com/r/computerscience/">computerscience</a></blockquote>
+<script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
+
+<hr>
+<h2 id="was-ist-eine-datenbank">Was ist eine Datenbank?</h2>
+<p>Bevor wir tiefer einsteigen, klären wir zunächst die grundlegenden Begriffe:</p>
+<details class="defi" open="open">
+<summary>Datenbank</summary>
+<p>Eine <strong>Datenbank</strong> ist eine <strong>organisierte Sammlung von strukturierten Daten</strong>, die elektronisch auf einem Computersystem gespeichert sind. Sie enthält die eigentlichen Informationen - die Inhalte.</p>
+<p><strong>Beispiele aus dem industriellen Umfeld:</strong></p>
+<ul>
+<li>Maschinendaten und Wartungsprotokolle in einer Produktionshalle</li>
+<li>Lagerbestandsdaten und Materialfluss in einem Logistikzentrum</li>
+<li>Produktionsdaten und Qualitätskennzahlen (OEE, Ausschuss, Durchlaufzeiten)</li>
+<li>Lieferanten- und Bestelldaten im Einkauf</li>
+</ul>
+</details>
+<p>Man kann sich eine Datenbank wie eine <strong>digitale Ablage</strong> vorstellen: Die Daten sind in einer bestimmten Struktur organisiert (z. B. in Tabellen, Dokumenten oder Graphen), damit sie effizient gespeichert, gefunden und verarbeitet werden können.</p>
+<p><strong>Wichtig:</strong> Eine Datenbank ist <strong>nicht dasselbe</strong> wie eine einfache Datei (z. B. Excel, CSV). Sie ist speziell für die Verwaltung großer, komplexer Datenmengen konzipiert und bietet Funktionen wie:</p>
+<ul>
+<li><strong>Strukturierte Organisation</strong> - Daten sind logisch geordnet (z. B. in Tabellen mit Spalten und Zeilen)</li>
+<li><strong>Beziehungen</strong> - Verknüpfungen zwischen verschiedenen Datensätzen (z. B. Maschinen ↔ Wartungsprotokolle ↔ Ersatzteile)</li>
+<li><strong>Persistenz</strong> - Daten bleiben dauerhaft erhalten, auch nach dem Neustart des Systems</li>
+</ul>
+<hr>
+<h2 id="datenbank-vs-datenbankmanagementsystem">Datenbank vs. Datenbankmanagementsystem</h2>
+<p>Die Begriffe <strong>Datenbank</strong> und <strong>Datenbankmanagementsystem</strong> werden oft synonym verwendet, haben aber eine wichtige Unterscheidung:</p>
+<details class="defi" open="open">
+<summary>Datenbankmanagementsystem (DBMS)</summary>
+<p>Ein <strong>Datenbankmanagementsystem (DBMS)</strong> ist die <strong>Software</strong>, die Datenbanken erstellt, verwaltet und den Zugriff darauf ermöglicht. Es ist die "Verwaltungszentrale", die zwischen den Anwendungen und den Daten vermittelt.</p>
+</details>
+<pre class="mermaid"><code>flowchart TB
+    A[Benutzer / Anwendungen]:::peach --&gt; B[DBMS&lt;br/&gt;PostgreSQL, MySQL, MongoDB]:::teal
+    B --&gt; C[Datenbank 1&lt;br/&gt;produktions_db]:::peach
+    B --&gt; D[Datenbank 2&lt;br/&gt;lager_db]:::peach
+    B --&gt; E[Datenbank 3&lt;br/&gt;qualitaet_db]:::peach
+
+    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
+    classDef teal fill:#009485aa,stroke:#333,stroke-width:2px;</code></pre>
+<p><strong>Unterschied auf einen Blick:</strong></p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" aria-label="Datenbank vs DBMS" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;"></th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Datenbank</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">DBMS</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;"><strong>Was ist es?</strong></td>
+        <td style="text-align:left; padding:10px 14px;">Die <strong>Daten selbst</strong></td>
+        <td style="text-align:left; padding:10px 14px;">Die <strong>Software zur Verwaltung</strong></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;"><strong>Beispiel</strong></td>
+        <td style="text-align:left; padding:10px 14px;"><code>produktions_db</code>, <code>lager_db</code></td>
+        <td style="text-align:left; padding:10px 14px;">PostgreSQL, MySQL, MongoDB</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;"><strong>Analogie</strong></td>
+        <td style="text-align:left; padding:10px 14px;">Die Teile im Lager</td>
+        <td style="text-align:left; padding:10px 14px;">Das Lagerverwaltungssystem (ERP, Bestandsführung, Nachverfolgung)</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:left; padding:10px 14px;"><strong>Funktion</strong></td>
+        <td style="text-align:left; padding:10px 14px;">Speichert die Informationen</td>
+        <td style="text-align:left; padding:10px 14px;">Ermöglicht Zugriff, Sicherheit, Abfragen</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p><strong>Was macht ein DBMS?</strong></p>
+<p>Ein DBMS bietet eine Vielzahl von Funktionen, die weit über einfache Dateispeicherung hinausgehen:</p>
+<ul>
+<li><strong>Datenverwaltung</strong> - Strukturiertes Speichern in Tabellen, Dokumenten oder Graphen</li>
+<li><strong>Zugriffskontrolle</strong> - Wer darf welche Daten sehen oder ändern?</li>
+<li><strong>Konsistenzsicherung</strong> - Nur gültige Daten werden gespeichert (z. B. keine negativen Semester)</li>
+<li><strong>Mehrbenutzerzugriff</strong> - Mehrere Benutzer können gleichzeitig arbeiten, ohne sich gegenseitig zu stören</li>
+<li><strong>Transaktionsverwaltung</strong> - Änderungen werden atomar durchgeführt (alles oder nichts)</li>
+<li><strong>Abfragesprache</strong> - SQL ermöglicht flexible und mächtige Datenabfragen</li>
+<li><strong>Datensicherheit</strong> - Backups, Wiederherstellung bei Fehlern</li>
+<li><strong>Performance-Optimierung</strong> - Indizes und Caching für schnelle Abfragen</li>
+</ul>
+<p>Das DBMS ist die <strong>Vermittlungsschicht</strong> zwischen Anwendungen und den eigentlichen Daten. Es sorgt dafür, dass alle Zugriffe koordiniert, sicher und effizient ablaufen.</p>
+<details class="example" open="open">
+<summary>Produktionsdatenbank</summary>
+<ul>
+<li><strong>Die Datenbank</strong> (z.B. <code>produktions_db</code>) enthält alle Maschinendaten, Wartungsprotokolle, Produktionsaufträge etc.</li>
+<li><strong>Das DBMS</strong> (z.B. PostgreSQL) verwaltet diese Datenbank:<ul>
+<li>Stellt sicher, dass keine ungültigen Maschinen-IDs oder unmögliche Wartungsdaten eingegeben werden</li>
+<li>Erlaubt der Instandhaltung, Wartungsprotokolle zu aktualisieren</li>
+<li>Ermöglicht dem Schichtleiter, Produktionsdaten abzurufen (aber keine Wartungskosten einzusehen!)</li>
+<li>Sorgt dafür, dass bei gleichzeitigen Zugriffen von MES, ERP und Wartungs-Apps keine Daten verloren gehen</li>
+</ul>
+</li>
+</ul>
+</details>
+<hr>
+<h2 id="postgresql-unser-werkzeug">PostgreSQL - Unser Werkzeug</h2>
+<p>In diesem Kurs verwenden wir <strong>PostgreSQL</strong>, eines der leistungsfähigsten und beliebtesten <strong>relationalen Datenbankmanagementsysteme</strong> (RDBMS) (was dies bedeutet, erfahren wir in einem späteren Kapitel).</p>
+<details class="adv" open="open">
+<summary>Vorteile von PostgreSQL</summary>
+<ul>
+<li><strong>Open Source &amp; kostenlos</strong> - Kann von jedem frei verwendet werden</li>
+<li><strong>Plattformunabhängig</strong> - Läuft auf Windows, macOS und Linux</li>
+<li><strong>Hohe Datenintegrität</strong> - Strenge Einhaltung von SQL-Standards</li>
+<li><strong>Leistungsstark</strong> - Auch für große Datenmengen geeignet</li>
+<li><strong>Weit verbreitet</strong> - Wird in der Industrie häufig eingesetzt</li>
+</ul>
+</details>
+<p>PostgreSQL speichert Daten in <strong>Tabellen</strong> - ähnlich wie Excel, aber mit viel mehr Funktionen und Sicherheit.</p>
+<hr>
+<h3 id="installation-setup">Installation &amp; Setup</h3>
+<p>Bevor wir mit Datenbanken arbeiten können, müssen wir <strong>PostgreSQL</strong> und ein <strong>Client-Tool</strong> installieren.</p>
+<details class="question" open="open">
+<summary>Installation, Setup &amp; erster Test</summary>
+<p>Nachfolgend werden wir sehen, wie wir alle notwendigen Tools zum Umgang mit PostgreSQL aufsetzen und auch testen können. Folge der Anleitung und versuche alle Schritte erfolgreich durchzuführen. </p>
+</details>
+<h4 id="schritt-1-postgresql-installieren">Schritt 1: PostgreSQL installieren</h4>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio"><input id="__tabbed_1_2" name="__tabbed_1" type="radio"><div class="tabbed-labels"><label for="__tabbed_1_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="m0 93.7 183.6-25.3v177.4H0zm0 324.6 183.6 25.3V268.4H0zm203.8 28L448 480V268.4H203.8zm0-380.6v180.1H448V32z"></path></svg></span> Windows</label><label for="__tabbed_1_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M319.1 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7-55.8.9-115.1 44.5-115.1 133.2 0 26.2 4.8 53.3 14.4 81.2 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9m-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3"></path></svg></span> macOS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ol>
+<li>Lade den Installer von <a href="https://www.postgresql.org/download/windows/">postgresql.org/download/windows</a> herunter (beim Erstellen der Unterlagen Version 18)</li>
+<li>Führe die Installation aus (alle Standardeinstellungen sind OK)</li>
+<li><strong>Wichtig:</strong> Notiere dir das Passwort für den Benutzer <code>postgres</code>!</li>
+<li>Port: <code>5432</code> (Standard)</li>
+</ol>
+<p><strong>Installationsschritte:</strong></p>
+<p></p><div class="image-slideshow" markdown="1">
+    <div class="slideshow-container">
+        <div class="slideshow-slide active" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall1.png" data-title="PostgreSQL Installer herunterladen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall2.png" data-title="Installation starten" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall2.png" alt="Installation starten" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall3.png" data-title="Installationsziel wählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall4.png" data-title="Komponenten auswählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall5.png" data-title="Datenverzeichnis angeben" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;"></a>
+            <div class="slide-caption"><mark>ACHTUNG: Passwort merken</mark></div>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall6.png" data-title="Passwort vergeben" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall7.png" data-title="Port auswählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall7.png" alt="Port auswählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall8.png" data-title="Sprache auswählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall8.png" alt="Sprache auswählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall9.png" data-title="Zusammenfassung &amp; Installation starten" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall9.png" alt="Zusammenfassung &amp; Installation starten" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/wininstall10.png" data-title="Installation läuft" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/wininstall10.png" alt="Installation läuft" style="width: 70%; display: inline-block;"></a>
+        </div>
+    </div>
+    <div class="slideshow-nav">
+        <button class="slideshow-btn slideshow-prev">← Zurück</button>
+        <div class="slideshow-counter">Schritt 1 von 2</div>
+        <button class="slideshow-btn slideshow-next">Weiter →</button>
+    </div>
+    <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+</div>
+<strong>Installation kontrollieren:</strong><p></p>
+<ol>
+<li>Suche in der Windows Suchleiste nach <strong>psql</strong>. Es öffnet sich ein Shell Fenster.</li>
+<li>Hier müssen wir mehrere Informationen eingeben. Dabei können alle Standardeinstellungen übernommen werden (einfach Enter klicken). Lediglich bei <em>Password</em> müssen wir unser in der Installation gewähltes Passwort eingeben. </li>
+<li>Anschließend geben wir folgenden Befehl ein
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">version</span><span class="p">();</span>
+</code></pre></div></li>
+<li>Als Ergebnis sollte die installierte Version wie nachfolgend angeführt werden.</li>
+</ol>
+<p></p><div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/sql_verify.png" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/sql_verify.png" alt="" style="width: 70%; display: inline-block;"></a>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>Lade den Installer von <a href="https://www.postgresql.org/download/macosx/">postgresql.org/download/macosx</a> herunter (beim Erstellen der Unterlagen Version 18)</li>
+<li>Führe die Installation aus (alle Standardeinstellungen sind OK)</li>
+<li><strong>Wichtig:</strong> Notiere dir das Passwort für den Benutzer <code>postgres</code>!</li>
+<li>Port: <code>5432</code> (Standard)</li>
+</ol>
+<p><strong>Installationsschritte:</strong></p>
+<p></p><div class="image-slideshow" markdown="1">
+    <div class="slideshow-container">
+        <div class="slideshow-slide active" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall1.png" data-title="PostgreSQL Installer herunterladen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall2.png" data-title="Installation starten" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall2.png" alt="Installation starten" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall3.png" data-title="Installationsziel wählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall4.png" data-title="Komponenten auswählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall5.png" data-title="Datenverzeichnis angeben" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;"></a>
+            <div class="slide-caption"><mark>ACHTUNG: Passwort merken</mark></div>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall6.png" data-title="Passwort vergeben" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall7.png" data-title="Port auswählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall7.png" alt="Port auswählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall8.png" data-title="Sprache auswählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall8.png" alt="Sprache auswählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall9.png" data-title="Zusammenfassung &amp; Installation starten" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall9.png" alt="Zusammenfassung &amp; Installation starten" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/macinstall10.png" data-title="Installation läuft" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/macinstall10.png" alt="Installation läuft" style="width: 70%; display: inline-block;"></a>
+        </div>
+    </div>
+    <div class="slideshow-nav">
+        <button class="slideshow-btn slideshow-prev">← Zurück</button>
+        <div class="slideshow-counter">Schritt 1 von 2</div>
+        <button class="slideshow-btn slideshow-next">Weiter →</button>
+    </div>
+    <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+</div>
+<strong>Installation kontrollieren:</strong><p></p>
+<ol>
+<li>Öffne den <strong>Terminal</strong> (<span class="keys"><kbd class="key-command">Cmd</kbd><span>+</span><kbd class="key-space">Space</kbd></span>, dann "Terminal" eingeben)</li>
+<li>Füge PostgreSQL zum PATH hinzu (damit du <code>psql</code> direkt aufrufen kannst):
+   <div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">'export PATH="/Library/PostgreSQL/18/bin:$PATH"'</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
+<span class="nb">source</span><span class="w"> </span>~/.zshrc
+</code></pre></div></li>
+<li>
+<p>Prüfe die Installation mit:
+   </p><div class="highlight"><pre><span></span><code>psql<span class="w"> </span>--version
+</code></pre></div>
+   Es sollte die installierte Version angezeigt werden (z.B. <code>psql (PostgreSQL) 18.x</code>)<p></p>
+</li>
+<li>
+<p>Verbinde dich mit der Datenbank:
+   </p><div class="highlight"><pre><span></span><code>psql<span class="w"> </span>-U<span class="w"> </span>postgres
+</code></pre></div><p></p>
+</li>
+<li>Gib dein bei der Installation gewähltes Passwort ein und teste mit folgendem SQL-Befehl:
+   <div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">version</span><span class="p">();</span>
+</code></pre></div></li>
+<li>Als Ergebnis sollte die installierte Version wie nachfolgend angeführt werden.</li>
+</ol>
+<p></p><div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/sql_verifymac.png" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/sql_verifymac.png" alt="" style="width: 100%; display: inline-block;"></a>
+</div><p></p>
+<details class="tip" open="open">
+<summary>Wichtig: Shell-Neustart</summary>
+<p>Falls <code>psql --version</code> nicht funktioniert, schließe das Terminal-Fenster komplett und öffne ein neues. Alternativ kannst du auch <code>source ~/.zshrc</code> nochmals ausführen.</p>
+</details>
+</div>
+</div>
+</div>
+<hr>
+<h4 id="schritt-2-client-tool-installieren">Schritt 2: Client-Tool installieren</h4>
+<p>Um mit PostgreSQL zu arbeiten, können wir neben der Komandozeile (CLI) auch ein <strong>Client-Tool</strong> verwenden. Der Vorteil besteht darin, dass das Client-Tool eine grafische Oberfläche (GUI) besitzt und wir uns gewisse Dinge auch grafisch darstellen lassen können. Wir verwenden <strong>pgAdmin 4</strong> - das offizielle, kostenlose PostgreSQL-Verwaltungstool. </p>
+<details class="info" open="open">
+<summary>CLI vs GUI</summary>
+<p>Wir werden in weiterer Folge vermehrt die Komandozeile verwenden. Dabei ist es uns möglich, die benötigten Befehle kennenzulernen und diese auch besser zu verstehen. Spätestens wenn man in Zukunft eine Software rund um die Datenbank bauen möchte (sei es mit Python oder Javascript) werden diese Befehle benötigt. Das Client-Tool verwenden wir zur Kontrolle und zum besseren Verständnis.</p>
+</details>
+<p><strong>pgAdmin 4 installieren</strong></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio"><input id="__tabbed_2_2" name="__tabbed_2" type="radio"><div class="tabbed-labels"><label for="__tabbed_2_1"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="m0 93.7 183.6-25.3v177.4H0zm0 324.6 183.6 25.3V268.4H0zm203.8 28L448 480V268.4H203.8zm0-380.6v180.1H448V32z"></path></svg></span> Windows</label><label for="__tabbed_2_2"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M319.1 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7-55.8.9-115.1 44.5-115.1 133.2 0 26.2 4.8 53.3 14.4 81.2 12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9m-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3"></path></svg></span> macOS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ol>
+<li>Gehe zu <a href="https://www.pgadmin.org/download/">pgadmin.org/download</a></li>
+<li>Wähle dein Betriebssystem (Windows)</li>
+<li>Lade den Installer herunter (beim Erstellen der Unterlagen Version 9.9)</li>
+<li>Führe die Installation aus (alle Standardeinstellungen sind OK)</li>
+</ol>
+<p></p><div class="image-slideshow" markdown="1">
+    <div class="slideshow-container">
+        <div class="slideshow-slide active" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin1.png" data-title="PostgreSQL Installer herunterladen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin2.png" data-title="Installation starten" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin2.png" alt="Installation starten" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin3.png" data-title="Installationsziel wählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin3.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin4.png" data-title="Komponenten auswählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin4.png" alt="Komponenten auswählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin5.png" data-title="Datenverzeichnis angeben" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin5.png" alt="Datenverzeichnis angeben" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin6.png" data-title="Passwort vergeben" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin6.png" alt="Passwort vergeben" style="width: 70%; display: inline-block;"></a>
+        </div>
+    </div>
+    <div class="slideshow-nav">
+        <button class="slideshow-btn slideshow-prev">← Zurück</button>
+        <div class="slideshow-counter"> </div>
+        <button class="slideshow-btn slideshow-next">Weiter →</button>
+    </div>
+    <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+</div><p></p>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>Gehe zu <a href="https://www.pgadmin.org/download/">pgadmin.org/download</a></li>
+<li>Wähle dein Betriebssystem (macOS)</li>
+<li>Lade den Installer herunter (beim Erstellen der Unterlagen Version 9.9)</li>
+<li>Führe die Installation aus (alle Standardeinstellungen sind OK)</li>
+</ol>
+<p></p><div class="image-slideshow" markdown="1">
+    <div class="slideshow-container">
+        <div class="slideshow-slide active" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdminMac1.png" data-title="PostgreSQL Installer herunterladen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdminMac1.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdminMac2.png" data-title="Installation starten" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdminMac2.png" alt="Installation starten" style="width: 70%; display: inline-block;"></a>
+        </div>
+    </div>
+    <div class="slideshow-nav">
+        <button class="slideshow-btn slideshow-prev">← Zurück</button>
+        <div class="slideshow-counter"> </div>
+        <button class="slideshow-btn slideshow-next">Weiter →</button>
+    </div>
+    <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+</div><p></p>
+</div>
+</div>
+</div>
+<hr>
+<h4 id="schritt-3-erste-verbindung-herstellen">Schritt 3: Erste Verbindung herstellen</h4>
+<p>Jetzt verbinden wir pgAdmin mit unserer PostgreSQL-Datenbank.</p>
+<ol>
+<li><strong>pgAdmin 4 öffnen</strong></li>
+<li>In der linken Sidebar: Bei "Servers" auf den Pfeil klicken, um bereits verfügbare Server aufzulisten.</li>
+<li>Da wir bei der Installation von PostgreSQL bereits eine lokalen Server erzeugt haben, sollte hier nun bereits 'PostgreSQL 18' stehen. </li>
+<li>
+<p>Nach Eingabe des Passworts (welches wir bei der Installation gewählt haben) sind wir erfolgreich mit dem Server verbunden.</p>
+<p></p><div class="image-slideshow" markdown="1">
+    <div class="slideshow-container">
+        <div class="slideshow-slide active" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin8.png" data-title="PostgreSQL Installer herunterladen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin8.png" alt="PostgreSQL Installer herunterladen" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin9.png" data-title="Installation starten" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin9.png" alt="Installation starten" style="width: 70%; display: inline-block;"></a>
+        </div>
+        <div class="slideshow-slide" style="text-align: center;">
+            <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin10.png" data-title="Installationsziel wählen" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin10.png" alt="Installationsziel wählen" style="width: 70%; display: inline-block;"></a>
+        </div>
+    </div>
+    <div class="slideshow-nav">
+        <button class="slideshow-btn slideshow-prev">← Zurück</button>
+        <div class="slideshow-counter"> </div>
+        <button class="slideshow-btn slideshow-next">Weiter →</button>
+    </div>
+    <div class="keyboard-hint">💡 Tipp: Nutze Pfeiltasten ← → zum Navigieren</div>
+</div><p></p>
+</li>
+</ol>
+<details class="tip" open="open">
+<summary>Verbindungsprobleme?</summary>
+<p>Wenn die Verbindung fehlschlägt, prüfe:</p>
+<ul>
+<li><strong>Läuft PostgreSQL?</strong><ul>
+<li>Windows: Task-Manager → Dienste → "postgresql-x64-18"</li>
+<li>macOS: Terminal öffnen und eingeben: <code>pg_isready</code></li>
+</ul>
+</li>
+<li>Ist das <strong>PostgreSQL-Passwort</strong> korrekt</li>
+<li>Ist der Port (meistens 5432) frei und nicht von einer Firewall blockiert?</li>
+</ul>
+</details>
+<hr>
+<h2 id="deine-erste-datenbank">Deine erste Datenbank</h2>
+<p>Jetzt erstellen wir unsere erste eigene Datenbank! </p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://www.blazesql.com/images/memes/caps_lock.jpeg" data-title="CapsLock" data-desc-position="bottom"><img src="https://www.blazesql.com/images/memes/caps_lock.jpeg" alt="CapsLock" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://www.blazesql.com/images/memes/caps_lock.jpeg">blazesql</a></figcaption>
+</div>
+
+<p>In pgAdmin klicken wir auf der linken Seite auf 'PSQL Tool Workspace' und wählen unseren bereits existierenden Server aus. Anschließend klicken wir auf 'Connect &amp; Open PSQL' (es kann sein, dass wir nochmals das Passwort eingeben müssen)</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin11.png" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin11.png" alt="" style="width: 70%; display: inline-block;"></a>
+</div>
+
+<p>Nun sind wir wieder in unserer Komandozeilen Darstellung und können einen ersten SQL-Befehl kennenlernen: </p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">produktions_db</span><span class="p">;</span>
+</code></pre></div>
+<details class="defi" open="open">
+<summary>Was ist SQL?</summary>
+<p><strong>SQL (Structured Query Language)</strong> ist die Sprache, mit der wir mit Datenbanken kommunizieren. Alle Befehle - vom Erstellen einer Tabelle bis zur Abfrage von Daten - werden in SQL geschrieben.</p>
+</details>
+<p>Wenn man sich den Befehl ansieht, erkennt man, dass eine neue Datenbank erzeugt werden soll und diese den namen <code>produktions_db</code> haben soll. Wenn wir diesen Befehl in die Komandozeile eingeben, wird die neue Datenbank erstellt. </p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin12.png" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin12.png" alt="" style="width: 50%; display: inline-block;"></a>
+</div>
+
+<p>Wenn wir wieder in die vorige Darstellung von pgAdmin wechseln (Default Workspace) sollen wir nun unter <em>PostgreSQL 18</em> &gt; <em>Databases</em> unsere neue Datenbank sehen. </p>
+<details class="info" open="open">
+<summary>Refresh</summary>
+<p>Wenn die neu erzeugte Datenbank nicht angezeigt wird, kann es daran liegen, dass die Darstellung noch nicht aktualisiert wurde. Durch Rechtsklick auf <em>PostgreSQL 18</em> kann man <em>Refresh</em> auswählen (oder Taste F5)</p>
+</details>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/einfuehrung/pgAdmin13.png" data-desc-position="bottom"><img src="../../assets/database/einfuehrung/pgAdmin13.png" alt="" style="width: 50%; display: inline-block;"></a>
+</div>
+
+<p><strong>🎉 Gratulation:</strong> Du hast nun deine erste Datenbank erstellt. </p>
+<hr>
+<h2 id="zusammenfassung">Zusammenfassung 📌</h2>
+<ul>
+<li><strong>Datenbanken</strong> lösen die Probleme einfacher Dateispeicherung: strukturierte Datenhaltung, Zugriffskontrolle, Konsistenz, gleichzeitige Zugriffe</li>
+<li>Ein <strong>DBMS</strong> (Datenbankmanagementsystem) verwaltet und koordiniert alle Zugriffe auf die Daten</li>
+<li><strong>PostgreSQL</strong> ist ein mächtiges, kostenloses und weit verbreitetes relationales DBMS</li>
+<li><strong>pgAdmin 4</strong> ist das offizielle PostgreSQL-Verwaltungstool mit grafischer Oberfläche und Query-Editor</li>
+<li><strong>SQL</strong> ist die Sprache, mit der wir Datenbanken abfragen und manipulieren</li>
+<li>Du hast PostgreSQL und pgAdmin installiert, eine Verbindung hergestellt und deine erste Datenbank erstellt</li>
+</ul>
+<hr>
+<p>Im nächsten Kapitel lernen wir das <strong>relationale Modell</strong> kennen - wie Daten in Tabellen organisiert werden und welche Datentypen PostgreSQL bietet. Wir werden unsere erste Tabelle erstellen und Daten einfügen!</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://media.tenor.com/81tG-DO8BcAAAAAM/omg-oh-my-god.gif" data-desc-position="bottom"><img src="https://media.tenor.com/81tG-DO8BcAAAAAM/omg-oh-my-god.gif" alt="" style="width:220px; margin-bottom: 1em;"></a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../relational/" class="md-footer__link md-footer__link--next" aria-label="Next: Relationale Datenbanken">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Relationale Datenbanken
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate", "navigation.footer", "navigation.top", "header.autohide", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/slideshow.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

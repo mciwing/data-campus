@@ -1,0 +1,2248 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://learn-data.at/database/manipulieren/">
+      
+      
+        <link rel="prev" href="../abfragen/">
+      
+      
+        <link rel="next" href="../modellierung/">
+      
+      
+      <link rel="icon" href="../../assets/icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Daten Manipulieren - Data Campus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/colors.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/slideshow.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#daten-manipulieren" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Data Campus" class="md-header__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Campus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Daten Manipulieren
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Daten
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Datenbanken
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
+    
+        
+      
+  
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Data Campus" class="md-nav__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    Data Campus
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Daten
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daten
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/datenerfassung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenerfassung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/zahlensysteme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenverarbeitung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/speicherung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speicherung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Datenbanken
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Datenbanken
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relationale Datenbanken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../abfragen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#daten-einfugen-mit-insert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daten einfügen mit INSERT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daten einfügen mit INSERT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-werte" class="md-nav__link">
+    <span class="md-ellipsis">
+      DEFAULT-Werte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pflichtfeld-mit-not-null" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pflichtfeld mit NOT NULL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daten-aktualisieren-mit-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daten aktualisieren mit UPDATE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daten aktualisieren mit UPDATE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#erweiterte-update-techniken" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erweiterte UPDATE-Techniken
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daten-loschen-mit-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daten löschen mit DELETE
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exkurs-alter-tabellen-nachtraglich-andern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exkurs: ALTER - Tabellen nachträglich ändern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exkurs: ALTER - Tabellen nachträglich ändern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spalten-bearbeiten" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spalten bearbeiten
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datentyp-andern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datentyp ändern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beschrankungen-andern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beschränkungen ändern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabelle-umbenennen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tabelle umbenennen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modellierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenmodellierung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../join/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fortgeschritten/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integritaet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaktionen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ausblick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ausblick
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#daten-einfugen-mit-insert" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daten einfügen mit INSERT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daten einfügen mit INSERT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#default-werte" class="md-nav__link">
+    <span class="md-ellipsis">
+      DEFAULT-Werte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pflichtfeld-mit-not-null" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pflichtfeld mit NOT NULL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daten-aktualisieren-mit-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daten aktualisieren mit UPDATE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Daten aktualisieren mit UPDATE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#erweiterte-update-techniken" class="md-nav__link">
+    <span class="md-ellipsis">
+      Erweiterte UPDATE-Techniken
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daten-loschen-mit-delete" class="md-nav__link">
+    <span class="md-ellipsis">
+      Daten löschen mit DELETE
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exkurs-alter-tabellen-nachtraglich-andern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exkurs: ALTER - Tabellen nachträglich ändern
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exkurs: ALTER - Tabellen nachträglich ändern">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spalten-bearbeiten" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spalten bearbeiten
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datentyp-andern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datentyp ändern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beschrankungen-andern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Beschränkungen ändern
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabelle-umbenennen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tabelle umbenennen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+  
+    
+                  
+
+
+  
+  
+
+
+<h1 id="daten-manipulieren">Daten manipulieren</h1>
+<p>In den vorangigen Kapiteln haben wir gelernt, wie man eine Datenbank erstellt, Daten <strong>einfügt</strong> und <strong>abfragt</strong>. 
+Dabei haben wir speziell den Fokus auf die <a href="../abfragen/">Abfrage von Daten</a> gelegt und uns diese im Detail betrachtet. 
+Doch was passiert, wenn sich Daten ändern müssen? Wenn eine Maschine in die Wartung geht, der Standort wechselt oder ausgemustert wird?</p>
+<p>In der Welt der Datenbanken begegnet uns oft der Begriff <strong>CRUD</strong>. </p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/database/manipulieren/crud.png" data-title="CRUD" data-desc-position="bottom"><img alt="CRUD" src="../../assets/database/manipulieren/crud.png"></a></p>
+<p>CRUD ist ein Akronym und steht für die Grundoperationen der Datenverwaltung.</p>
+<ul>
+<li><strong>C</strong>reate → <code>CREATE</code> &amp; <code>INSERT</code> - Neue Tabellen und Datensätze erstellen</li>
+<li><strong>R</strong>ead → <code>SELECT</code> - Datensätze abfragen</li>
+<li><strong>U</strong>pdate → <code>UPDATE</code> - Bestehende Datensätze ändern</li>
+<li><strong>D</strong>elete → <code>DELETE</code> - Datensätze löschen</li>
+</ul>
+<p>Wie bereits erwähnt, haben wir die Abfrage von Daten - und damit die <strong>R</strong>ead-Operation - im vorherigen Kapitel bereits detailreichkennengelernt. Nun wollen wir uns den restlichen drei Operationen widmen.</p>
+<hr>
+<details class="info" open="open">
+<summary>Datenbank-Setup</summary>
+<p>Für die Beispiele in diesem Kapitel verwenden wir eine <strong>Lagerverwaltungs-Datenbank</strong> (<code>lager_db</code>), die typische Artikel in einem Warenlager verwaltet. Diese Datenbank hilft uns, die verschiedenen Manipulationsoperationen praxisnah zu üben.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Datenbank erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">lager_db</span><span class="p">;</span>
+
+<span class="c1">-- Zur Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">lager_db</span>
+
+<span class="c1">-- Tabelle für Artikel erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">artikel_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">artikelname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kategorie</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">bestand</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">mindestbestand</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">preis</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">lagerort</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Beispieldaten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">bestand</span><span class="p">,</span><span class="w"> </span><span class="n">mindestbestand</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">,</span><span class="w"> </span><span class="n">lagerort</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schrauben M6x20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Befestigungsmaterial'</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">05</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal A1'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Muttern M6'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Befestigungsmaterial'</span><span class="p">,</span><span class="w"> </span><span class="mi">4500</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">03</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal A1'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kugellager 6201'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">.</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal B3'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Dichtungsring 50mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Dichtungen'</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal C2'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hydraulikoel 5L'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Betriebsstoffe'</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gefahrstofflager'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schmierfett 1kg'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Betriebsstoffe'</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="mi">18</span><span class="p">.</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal D1'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'Zahnriemen HTD-5M'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">35</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal B2'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sicherungsring 25mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Befestigungsmaterial'</span><span class="p">,</span><span class="w"> </span><span class="mi">1200</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal A2'</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Hinweis:</strong> Diese Lagerverwaltung wird für alle Beispiele in diesem Kapitel verwendet.</p>
+</details>
+<hr>
+<h2 id="daten-einfugen-mit-insert">Daten einfügen mit <code>INSERT</code></h2>
+<p>Wir kennen <strong>INSERT</strong> bereits aus dem <a href="../relational/#daten-einfugen-insert">vorherigen Kapitel</a>, doch nun wollen wir hier nochmal die wichtigsten Grundlagen wiederholen und erweitern.</p>
+<p>Mit <code>INSERT</code> fügen wir neue Datensätze in eine Tabelle ein. Es gibt verschiedene Varianten, je nachdem wie viele Datensätze wir einfügen möchten und welche Spalten wir befüllen wollen.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">tabellenname</span><span class="w"> </span><span class="p">(</span><span class="n">spalte1</span><span class="p">,</span><span class="w"> </span><span class="n">spalte2</span><span class="p">,</span><span class="w"> </span><span class="n">spalte3</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="n">wert1</span><span class="p">,</span><span class="w"> </span><span class="n">wert2</span><span class="p">,</span><span class="w"> </span><span class="n">wert3</span><span class="p">);</span>
+</code></pre></div>
+<details class="example" open="open">
+<summary>Mehrere Artikel gleichzeitig einfügen</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Mehrere Artikel gleichzeitig einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">bestand</span><span class="p">,</span><span class="w"> </span><span class="n">mindestbestand</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">,</span><span class="w"> </span><span class="n">lagerort</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'Keilriemen A-13'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">.</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal B2'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gewindestange M10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Befestigungsmaterial'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal A3'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="w"> </span><span class="s1">'O-Ring 30mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Dichtungen'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal C1'</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>INSERT 0 3
+</code></pre></div>
+<p><strong>Erklärung:</strong> Mehrere Datensätze werden mit einem einzigen INSERT-Befehl eingefügt - effizienter als einzelne INSERT-Befehle.</p>
+</details>
+<details class="question" open="open">
+<summary>Fehlende Werte</summary>
+<p>Was passiert eigentlich, wenn man nicht alle Spalten befüllt? Probieren wir es aus und sehen, was passiert:</p>
+<ol>
+<li>
+<p>Wir fügen einen neuen Artikel hinzu, aber <strong>lassen die Spalte <code>lagerort</code> weg</strong>:
+   </p><div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">bestand</span><span class="p">,</span><span class="w"> </span><span class="n">mindestbestand</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="s1">'Distanzhuelse 15mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">50</span><span class="p">);</span>
+</code></pre></div><p></p>
+</li>
+<li>
+<p>Wir fügen einen weiteren Artikel hinzu und setzen <code>lagerort</code> <strong>explizit auf NULL</strong>:
+   </p><div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">bestand</span><span class="p">,</span><span class="w"> </span><span class="n">mindestbestand</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">,</span><span class="w"> </span><span class="n">lagerort</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="s1">'Passfeder 8x7x28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+</code></pre></div><p></p>
+</li>
+<li>
+<p>Wir prüfen mit <code>SELECT</code>, welche Werte die beiden Artikel für <code>lagerort</code> haben:
+   </p><div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">artikel_id</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">);</span>
+</code></pre></div><p></p>
+</li>
+</ol>
+<p><strong>Fragen zum Nachdenken:</strong></p>
+<ul>
+<li>Was steht in der <code>lagerort</code>-Spalte bei Artikel 12?</li>
+<li>Was steht in der <code>lagerort</code>-Spalte bei Artikel 13?</li>
+<li>Gibt es einen Unterschied? Warum (nicht)?</li>
+</ul>
+<details class="info">
+<summary>Lösung</summary>
+<p><strong>Beobachtung:</strong> Beide Artikel haben wahrscheinlich <code>NULL</code> als Lagerort (es wird nichts angezeigt).</p>
+<p><strong>Erklärung:</strong></p>
+<ul>
+<li><strong>Artikel 12:</strong> Die Spalte <code>lagerort</code> wurde <strong>weggelassen</strong> → Sie enthält den Wert <code>NULL</code></li>
+<li><strong>Artikel 13:</strong> Die Spalte <code>lagerort</code> wurde <strong>explizit auf NULL gesetzt</strong> → Sie enthält den Wert <code>NULL</code></li>
+</ul>
+</details>
+</details>
+<p>Wir haben gesehen, dass in unserem Fall beide Vorgehen zum gleichen Ergebnis führen. Doch gibt es auch einen Unterschied? Ja, den kann es geben. Doch dafür müssen wir uns nochmals genauer ansehen, wie wir die Tabelle erstellt haben.</p>
+<h3 id="default-werte"><code>DEFAULT</code>-Werte</h3>
+<p>Beim Erstellen einer Tabelle können wir für Spalten <strong>Standardwerte</strong> definieren. Diese werden automatisch verwendet, wenn beim <code>INSERT</code> kein Wert angegeben wird.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">spalte1</span><span class="w"> </span><span class="n">typ</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">spalte2</span><span class="w"> </span><span class="n">typ</span><span class="p">,</span>
+<span class="w">    </span><span class="n">spalte3</span><span class="w"> </span><span class="n">typ</span><span class="p">,</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="hll"><span class="w">    </span><span class="n">spalteN</span><span class="w"> </span><span class="n">typ</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Wert'</span><span class="w">  </span><span class="c1">-- Standardwert definiert!</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p>Standardwerte sind besonders nützlich für:</p>
+<ul>
+<li>Status-Felder (z.B. Standard: 'Aktiv')</li>
+<li>Zeitstempel (z.B. Standard: aktuelles Datum)</li>
+<li>Zähler (z.B. Standard: 0)</li>
+<li>Flags (z.B. Standard: FALSE)</li>
+</ul>
+<details class="question" open="open">
+<summary><code>DEFAULT</code>-Werte in Aktion</summary>
+<p>Probieren wir <code>DEFAULT</code>-Werte praktisch aus! Erstelle eine neue Tabelle <code>werkzeuge</code> mit <code>DEFAULT</code>-Werten:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Neue Tabelle mit DEFAULT-Werten erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">werkzeuge</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">werkzeug_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">werkzeugname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="hll"><span class="w">    </span><span class="n">kategorie</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Allgemein'</span><span class="p">,</span>
+</span><span class="hll"><span class="w">    </span><span class="n">anzahl</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span class="hll"><span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Verfuegbar'</span><span class="p">,</span>
+</span><span class="hll"><span class="w">    </span><span class="n">standort</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Werkzeugausgabe'</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p>Testen wir nun wieder die verschiedene INSERT-Szenarien von zuvor: </p>
+<ol>
+<li>
+<p>Wir fügen ein neues Werkzeug hinzu, aber lassen die Spalten <code>kategorie</code>, <code>anzahl</code>, <code>status</code> und <code>standort</code> weg.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Test 1: Alle Spalten weglassen (außer Pflichtfelder)</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">werkzeuge</span><span class="w"> </span><span class="p">(</span><span class="n">werkzeug_id</span><span class="p">,</span><span class="w"> </span><span class="n">werkzeugname</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Akkuschrauber'</span><span class="p">);</span>
+</code></pre></div>
+</li>
+<li>
+<p>Wir fügen ein weiteres Werkzeug hinzu und setzen die Spalte <code>anzahl</code> <strong>explizitauf <code>NULL</code></strong>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Test 2: Nur manche Spalten angeben</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">werkzeuge</span><span class="w"> </span><span class="p">(</span><span class="n">werkzeug_id</span><span class="p">,</span><span class="w"> </span><span class="n">werkzeugname</span><span class="p">,</span><span class="w"> </span><span class="n">anzahl</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hammer'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+</code></pre></div>
+</li>
+<li>
+<p>Wir prüfen mit <code>SELECT</code>, welche Werte die beiden Werkzeuge für <code>anzahl</code> haben.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">werkzeuge</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">werkzeug_id</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Fragen zum Nachdenken:</strong></p>
+<ul>
+<li>Wie sieht das Ergebnis nun aus?</li>
+<li>Wie unterscheidet es sich von dem, was wir zuvor gesehen haben?</li>
+</ul>
+<details class="info">
+<summary>Lösung</summary>
+<p></p><div style="text-align:center; max-width:100%; margin:16px auto; overflow-x:auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px;">ID</th>
+        <th style="text-align:left; padding:12px 14px;">Werkzeugname</th>
+        <th style="text-align:left; padding:12px 14px;">Kategorie</th>
+        <th style="text-align:left; padding:12px 14px;">Anzahl</th>
+        <th style="text-align:left; padding:12px 14px;">Status</th>
+        <th style="text-align:left; padding:12px 14px;">Standort</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="padding:10px 14px;">1</td>
+        <td style="padding:10px 14px;">Akkuschrauber</td>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Allgemein</strong> (DEFAULT)</td>
+        <td style="background:#00948511; padding:10px 14px;"><strong>0</strong> (DEFAULT)</td>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Verfuegbar</strong> (DEFAULT)</td>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Werkzeugausgabe</strong> (DEFAULT)</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">2</td>
+        <td style="padding:10px 14px;">Hammer</td>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Allgemein</strong> (DEFAULT)</td>
+        <td style="padding:10px 14px;">NULL</td>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Verfuegbar</strong> (DEFAULT)</td>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Werkzeugausgabe</strong> (DEFAULT)</td>
+    </tr>
+    </tbody>
+</table>
+</div><p></p>
+<p><strong>Beobachtungen:</strong></p>
+<ul>
+<li><strong>Zeile 1:</strong> Alle nicht angegebenen Spalten haben ihre DEFAULT-Werte bekommen</li>
+<li><strong>Zeile 2:</strong> <code>anzahl</code> wurde explizit mit <code>NULL</code> angegeben, die restlichen Spalten bekamen DEFAULT-Werte</li>
+</ul>
+</details>
+</details>
+<p>Wir sehen also, dass es nun einen Unterschied macht, ob wir eine Spalte explizit mit <code>NULL</code> oder weglassen.</p>
+<div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+<div class="tenor-gif-embed" data-postid="139477105926016648" data-share-method="host" data-aspect-ratio="1.49306" data-width="50%"><a href="https://tenor.com/view/the-office-michael-scott-steve-carell-told-you-wink-gif-139477105926016648">The Office Michael Scott GIF</a>from <a href="https://tenor.com/search/the+office-gifs">The Office GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+</div>
+
+<p>Doch wenn wir uns ehrlich sind, dann haben wir uns mit der expliziten Angabe von <code>NULL</code> unsere schönen <code>DEFAULT</code>-Werte umgangen. Und da wir mit den <code>DEFAULT</code>-Werten ja vermeiden wollten, dass wir fehlende Werte in gewissen Spalten haben, sind wir noch nicht ganz zufrieden damit. </p>
+<h3 id="pflichtfeld-mit-not-null">Pflichtfeld mit <code>NOT NULL</code></h3>
+<p>Und genau an dieser Stelle kommt die Einschränkung <code>NOT NULL</code> ins Spiel. Mit <code>NOT NULL</code> können wir festlegen, dass eine Spalte <strong>niemals leer</strong> sein darf. Jede Zeile <strong>muss</strong> einen Wert in dieser Spalte haben.
+Man kann <code>NOT NULL</code> und <code>DEFAULT</code> auch kombinieren und dies macht in den meisten Fällen auch Sinn.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">spalte1</span><span class="w"> </span><span class="n">typ</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">spalte2</span><span class="w"> </span><span class="n">typ</span><span class="p">,</span>
+<span class="w">    </span><span class="n">spalte3</span><span class="w"> </span><span class="n">typ</span><span class="p">,</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="hll"><span class="w">    </span><span class="n">spalteN</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="n">typ</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="c1">-- Pflichtfeld</span>
+</span><span class="hll"><span class="w">    </span><span class="n">spalteN</span><span class="w"> </span><span class="n">typ</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Wert'</span><span class="w">  </span><span class="c1">-- Pflicht + Standardwert</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Vorteile:</strong></p>
+<ul>
+<li>Die Spalte darf nie <code>NULL</code> sein (Vorteil bei Datenqualität!)</li>
+<li>Wenn man die Spalte beim <code>INSERT</code> weglässt, wird der <code>DEFAULT</code>-Wert verwendet</li>
+<li>Man muss die Spalte beim <code>INSERT</code> nicht angeben</li>
+</ul>
+<details class="question" open="open">
+<summary><code>NOT NULL</code> in Aktion</summary>
+<p>Probieren wir die <code>NOT NULL</code>-Einschränkung praktisch aus! Erstelle eine neue Tabelle <code>werkzeuge_clean</code> mit <code>DEFAULT</code>-Werten und <code>NOT NULL</code>-Einschränkungen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Neue Tabelle mit DEFAULT-Werten erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">werkzeuge_clean</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">werkzeug_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">werkzeugname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="hll"><span class="w">    </span><span class="n">kategorie</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+</span><span class="hll"><span class="w">    </span><span class="n">anzahl</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span class="hll"><span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Verfuegbar'</span><span class="p">,</span>
+</span><span class="hll"><span class="w">    </span><span class="n">standort</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Werkzeugausgabe'</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p>Testen wir nun wieder verschiedene INSERT-Szenarien von zuvor: </p>
+<ol>
+<li>
+<p>Wir fügen ein neues Werkzeug hinzu, aber lassen die Spalten <code>kategorie</code>, <code>anzahl</code>, <code>status</code> und <code>standort</code> weg.</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">werkzeuge_clean</span><span class="w"> </span><span class="p">(</span><span class="n">werkzeug_id</span><span class="p">,</span><span class="w"> </span><span class="n">werkzeugname</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Akkuschrauber'</span><span class="p">);</span>
+</code></pre></div>
+</li>
+<li>
+<p>Wir fügen ein neues Werkzeug hinzu, aber lassen die Spalten <code>anzahl</code>, <code>status</code> und <code>standort</code> weg.</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">werkzeuge_clean</span><span class="w"> </span><span class="p">(</span><span class="n">werkzeug_id</span><span class="p">,</span><span class="w"> </span><span class="n">werkzeugname</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schlagbohrmaschine'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektrowerkzeug'</span><span class="p">);</span>
+</code></pre></div>
+</li>
+<li>
+<p>Wir fügen ein weiteres Werkzeug hinzu und setzen die Spalte <code>anzahl</code> <strong>explizitauf <code>NULL</code></strong>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">werkzeuge_clean</span><span class="w"> </span><span class="p">(</span><span class="n">werkzeug_id</span><span class="p">,</span><span class="w"> </span><span class="n">werkzeugname</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">anzahl</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hammer'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Handwerkzeug'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span>
+</code></pre></div>
+</li>
+<li>
+<p>Wir prüfen mit <code>SELECT</code>, welche Werte die beiden Werkzeuge für <code>anzahl</code> haben.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">werkzeuge_clean</span><span class="p">;</span>
+</code></pre></div>
+</li>
+</ol>
+<p><strong>Fragen zum Nachdenken:</strong></p>
+<ul>
+<li>Wie sieht das Ergebnis nun aus?</li>
+<li>Wie unterscheidet es sich von dem, was wir zuvor gesehen haben?</li>
+</ul>
+<details class="info">
+<summary>Lösung</summary>
+<p><strong>Beobachtungen:</strong></p>
+<ul>
+<li>Bei Aufgabe 1 erhalten wir einen Fehler, da wir die Spalte <code>kategorie</code> nicht angegeben haben, diese aber mit <code>NOT NULL</code> eingeschränkt ist. Auch <code>anzahl</code> wurde nicht angegeben und ist mit <code>NOT NULL</code> eingeschränkt. Aber, da wir hier einen <code>DEFAULT</code>-Wert haben, würde hier der Wert <code>0</code> eingetragen werden.</li>
+<li>Aufgabe 2 funktioniert, da wir auch die Spalte <code>kategorie</code> angegeben haben. Alle fehlenden Spalten besitzten einen <code>DEFAULT</code>-Wert und werden daher mit diesen Werten eingetragen.</li>
+<li>Aufgabe 3 bringt auch wieder einen Fehler. Dieses mal bewirkt die Spalte <code>anzahl</code> einen Fehler, da sie mit <code>NOT NULL</code> eingeschränkt ist und explizit mit <code>NULL</code> gesetzt wurde.</li>
+</ul>
+</details>
+</details>
+<p>Wir haben nun mit <code>DEFAULT</code> und <code>NOT NULL</code> zwei Werkzeuge kennengelernt, welche uns helfen unsere Datenbank konsistent und sauber zu halten. </p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Constraint</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Weggelassen beim INSERT</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Explizit NULL beim INSERT</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Keine</td>
+        <td style="padding:10px 14px;"><code>NULL</code></td>
+        <td style="padding:10px 14px;"><code>NULL</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>DEFAULT 'Wert'</code></td>
+        <td style="padding:10px 14px;"><code>'Wert'</code> (Standard)</td>
+        <td style="padding:10px 14px;"><code>NULL</code> (überschreibt Standard)</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>NOT NULL</code></td>
+        <td style="padding:10px 14px;">❌ <strong>Fehler</strong></td>
+        <td style="padding:10px 14px;">❌ <strong>Fehler</strong></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>NOT NULL DEFAULT 'Wert'</code></td>
+        <td style="padding:10px 14px;"><code>'Wert'</code> (Standard)</td>
+        <td style="padding:10px 14px;">❌ <strong>Fehler</strong></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<hr>
+<h2 id="daten-aktualisieren-mit-update">Daten aktualisieren mit <code>UPDATE</code></h2>
+<p>Nachdem wir die ersten zwei Buchstaben von CRUD geklärt haben, wollen wir uns nun dem dritten Buchstaben widmen.
+Mit <strong>U</strong>pdate ändern wir bereits bestehende Datensätze in einer Tabelle. Beispielsweise können wir den Status einer Maschine ändern, wenn sie in die Wartung geht oder der Standort wechselt.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">UPDATE</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">spalte1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">neuer_wert1</span><span class="p">,</span>
+<span class="w">    </span><span class="n">spalte2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">neuer_wert2</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">bedingung</span><span class="p">;</span>
+</code></pre></div>
+<p>Wichtig ist hier, dass wir die <code>WHERE</code>-Klausel verwenden. Ohne diese, werden alle Datensätze in der Tabelle geändert.</p>
+<details class="danger" open="open">
+<summary>Verlorene Daten!</summary>
+<p>Ohne eine Sicherungskopie (Backup) wären die ursprünglichen Werte <strong>unwiderruflich verloren</strong>! Es gibt kein "Rückgängig" in SQL!</p>
+</details>
+<p><strong>Goldene Regel</strong> lautet demnach: Teste immer erst mit <code>SELECT</code>, ob deine WHERE-Bedingung die richtigen Zeilen findet und verwende anschließend das <code>UPDATE</code> in Kombination mit der <code>WHERE</code>-Klausel.</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://www.blazesql.com/images/memes/wrong_db.jpeg" data-title="Affected" data-desc-position="bottom"><img src="https://www.blazesql.com/images/memes/wrong_db.jpeg" alt="Affected" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://www.blazesql.com/images/memes/wrong_db.jpeg">blazesql</a></figcaption>
+</div>
+
+<details class="example" open="open">
+<summary>Einzelner Datensatz ändern</summary>
+<p></p><div class="highlight"><pre><span></span><code><span class="c1">-- Safety Check</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">lagerort</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">artikel_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> artikel_id |   artikelname   | lagerort
+------------+-----------------+----------
+          3 | Kugellager 6201 | Regal B3
+(1 row)
+</code></pre></div><p></p>
+<p>Wir überprüfen zuerst, ob wir wirklich den richtigen Artikel finden. Wenn ja, können wir mit dem <code>UPDATE</code> beginnen.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Kugellager 6201 wurde umgelagert und Bestand korrigiert</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">lagerort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Regal B5'</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bestand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">175</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">artikel_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>UPDATE 1
+</code></pre></div>
+<p><strong>Erklärung:</strong> Mit Kommas getrennt können mehrere Spalten gleichzeitig geändert werden.</p>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Mehrere Datensätze ändern</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Befestigungsmaterialien in Regal A1 auf Mindestbestand 800 setzen</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">mindestbestand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">800</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Befestigungsmaterial'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">lagerort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Regal A1'</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Alle Datensätze, die die WHERE-Bedingung erfüllen, werden geändert - in diesem Fall alle Befestigungsmaterialien in Regal A1.</p>
+</details>
+</details>
+<hr>
+<h3 id="erweiterte-update-techniken">Erweiterte <code>UPDATE</code>-Techniken</h3>
+<p>Neben einfachen Wertzuweisungen können wir in <code>UPDATE</code> auch Berechnungen durchführen und String-Operationen anwenden.</p>
+<p><strong>Numerische Berechnungen</strong></p>
+<p>Wir können mit dem aktuellen Wert rechnen und daraus den neuen Wert berechnen:</p>
+<details class="example" open="open">
+<summary>Numerische Berechnungen im <code>UPDATE</code></summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Safety Check</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> artikel_id |    artikelname     |   kategorie    | bestand | mindestbestand | preis | lagerort
+------------+--------------------+----------------+---------+----------------+-------+----------
+          7 | Zahnriemen HTD-5M  | Maschinenteile |      25 |             10 | 35.00 | Regal B2
+          9 | Keilriemen A-13    | Maschinenteile |      80 |             20 |  8.50 | Regal B2
+         12 | Distanzhuelse 15mm | Maschinenteile |     200 |             50 |  1.50 |
+         13 | Passfeder 8x7x28   | Maschinenteile |     150 |             40 |  0.90 |
+          3 | Kugellager 6201    | Maschinenteile |     175 |             50 | 12.50 | Regal B5
+(5 rows)
+</code></pre></div>
+<p>Nun können wir beispielsweise den Preis für alle Maschinenteile um 10% erhöhen.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Preise um 10% erhöhen (z.B. Inflationsanpassung)</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">preis</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">preis</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">10</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Der neue Wert wird aus dem alten Wert * 1.10 berechnet (Erhöhung um 10%).</p>
+</details>
+<p><strong>String-Operationen</strong></p>
+<p>SQL bietet verschiedene Funktionen zur Bearbeitung von Textwerten. Eine gute Übersicht findet man <a href="../fortgeschritten/#string-funktionen">hier</a>.</p>
+<details class="example" open="open">
+<summary>String-Operationen im <code>UPDATE</code></summary>
+<p>Stellen wir uns vor, die Lagerorte haben neue Namen bekommen. Anstelle von "Regal A1" soll "Lagerplatz A1" stehen.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- 'Regal' durch 'Lagerplatz' ersetzen</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">lagerort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">REPLACE</span><span class="p">(</span><span class="n">lagerort</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lagerplatz'</span><span class="p">);</span>
+</code></pre></div>
+<p>Mit einer kleinen Abfrage überprüfen wir, ob alle Änderungen richtig durchgeführt wurden.</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">lagerort</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> artikel_id |     artikelname     |     lagerort
+------------+---------------------+------------------
+          4 | Dichtungsring 50mm  | Lagerplatz C2
+          5 | Hydraulikoel 5L     | Gefahrstofflager
+          6 | Schmierfett 1kg     | Lagerplatz D1
+          8 | Sicherungsring 25mm | Lagerplatz A2
+         10 | Gewindestange M10   | Lagerplatz A3
+         11 | O-Ring 30mm         | Lagerplatz C1
+          1 | Schrauben M6x20     | Lagerplatz A1
+          2 | Muttern M6          | Lagerplatz A1
+          7 | Zahnriemen HTD-5M   | Lagerplatz B2
+          9 | Keilriemen A-13     | Lagerplatz B2
+         12 | Distanzhuelse 15mm  |
+         13 | Passfeder 8x7x28    |
+          3 | Kugellager 6201     | Lagerplatz B5
+(13 rows)
+</code></pre></div>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Kategorie-Prefix zum Artikelnamen hinzufügen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Kategorie-Prefix zum Artikelnamen hinzufügen</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">artikelname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CONCAT</span><span class="p">(</span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="s1">': '</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">)</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Maschinenteile'</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Der neue Wert wird aus dem alten Wert und der Kategorie berechnet.</p>
+<hr>
+<p><strong>Kategorie in Großbuchstaben umwandeln</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Kategorie in Großbuchstaben umwandeln</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">UPPER</span><span class="p">(</span><span class="n">kategorie</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Der neue Wert besteht aus dem alten Wert in Großbuchstaben.</p>
+<hr>
+<p><strong>Führende/abschließende Leerzeichen entfernen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Führende/abschließende Leerzeichen entfernen</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">artikelname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">TRIM</span><span class="p">(</span><span class="n">artikelname</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Der neue Wert besteht aus dem alten Wert ohne führende und abschließende Leerzeichen.</p>
+</details>
+</details>
+<hr>
+<h2 id="daten-loschen-mit-delete">Daten löschen mit <code>DELETE</code></h2>
+<p>Nun sind wir am Ende unserer CRUD-Reihe angelangt. Mit <strong>D</strong>elete lernen wir nun kennen, wie wir Datensätze <strong>dauerhaft</strong> aus einer Tabelle löschen können. </p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">bedingung</span><span class="p">;</span>
+</code></pre></div>
+<p>Wie auch bei <code>UPDATE</code> zuvor ist es extrem wichtig, dass wir <code>DELETE</code> in Kombination mit der <code>WHERE</code>-Klausel verwenden. Ohne diese, werden alle Datensätze in der Tabelle gelöscht. Auch hier gibt es <strong>kein Zurück</strong>.</p>
+<details class="example" open="open">
+<summary>Artikel löschen</summary>
+<p>Wir möchten nun den Artikel mit der ID 8 löschen. Dazu überprüfen wir zuerst, ob wir wirklich den richtigen Artikel finden.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Safety Check</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">lagerort</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">artikel_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> artikel_id |     artikelname     |   lagerort
+------------+---------------------+---------------
+          8 | Sicherungsring 25mm | Lagerplatz A2
+(1 row)
+</code></pre></div>
+<p>Wenn wir wirklich den richtigen Artikel finden, können wir mit dem <code>DELETE</code> beginnen.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Artikel mit ID 8 löschen (z.B. weil nicht mehr geführt)</span>
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">artikel_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>DELETE 1
+</code></pre></div>
+<p><strong>Erklärung:</strong> Die <code>WHERE</code>-Klausel sorgt dafür, dass nur der Artikel mit ID 8 gelöscht wird. Da es sich bei der ID um den Primärschlüssel handelt, wird nur dieser Datensatz gelöscht. Dies ist der sicherste Weg, um einen Datensatz zu löschen.</p>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Alle Artikel mit Bestand 0 löschen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Artikel mit Bestand 0 löschen (z.B. ausgelaufene Artikel)</span>
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">bestand</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Alle Datensätze, die die WHERE-Bedingung erfüllen, werden gelöscht.</p>
+<hr>
+<p><strong>Artikel in Regal C2 mit Bestand unter Mindestbestand löschen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Artikel in Regal C2 mit Bestand unter Mindestbestand löschen</span>
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">lagerort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Regal C2'</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">bestand</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">mindestbestand</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Beide Bedingungen müssen erfüllt sein (<code>AND</code>), damit ein Datensatz gelöscht wird.</p>
+</details>
+</details>
+<details class="warning" open="open">
+<summary>DELETE vs. DROP</summary>
+<p>Wichtiger Unterschied zwischen zwei ähnlich klingenden Befehlen:</p>
+<ul>
+<li>
+<p><code>DELETE FROM tabelle;</code> - Löscht alle <strong>Zeilen</strong>, die Tabellenstruktur bleibt bestehen</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- DELETE: Tabelle bleibt, aber ist leer</span>
+<span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Funktioniert, gibt 0 Zeilen zurück</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> artikel_id | artikelname | kategorie | bestand | mindestbestand | preis | lagerort
+------------+-------------+-----------+---------+----------------+-------+----------
+(0 rows)
+</code></pre></div>
+</li>
+<li>
+<p><code>DROP TABLE tabelle;</code> - Löscht die <strong>gesamte Tabelle</strong> inklusive Struktur und allen Daten
+    </p><div class="highlight"><pre><span></span><code><span class="c1">-- DROP: Tabelle existiert nicht mehr</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span><span class="w">  </span><span class="c1">-- FEHLER: Tabelle existiert nicht</span>
+</code></pre></div><p></p>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>FEHLER:  Relation »artikel« existiert nicht
+LINE 1: SELECT * FROM artikel;
+                    ^
+</code></pre></div>
+</li>
+</ul>
+</details>
+<hr>
+<h2 id="exkurs-alter-tabellen-nachtraglich-andern">Exkurs: <code>ALTER</code> - Tabellen nachträglich ändern</h2>
+<p>Bisher haben wir gelernt, wie man Daten manipuliert (<strong>INSERT</strong>, <strong>UPDATE</strong>, <strong>DELETE</strong>). Doch was passiert, wenn sich die <strong>Anforderungen ändern</strong> und wir die Tabellenstruktur selbst anpassen müssen?</p>
+<p>Stell dir vor:</p>
+<ul>
+<li>Du möchtest eine <strong>neue Spalte</strong> hinzufügen (z.B. "email" für Kunden)</li>
+<li>Du musst eine <strong>Spalte umbenennen</strong> (z.B. "name" → "kundenname")</li>
+<li>Du willst eine <strong>Spalte löschen</strong> (z.B. nicht mehr benötigte Daten)</li>
+<li>Du musst den <strong>Datentyp ändern</strong> (z.B. VARCHAR(50) → VARCHAR(100))</li>
+</ul>
+<p>Für all diese Änderungen verwenden wir den <code>ALTER TABLE</code> Befehl.</p>
+<details class="danger" open="open">
+<summary>Wichtiger Hinweis</summary>
+<p><code>ALTER TABLE</code> ändert die Tabellenstruktur <strong>dauerhaft</strong>! Bei Produktivdatenbanken solltest du vorher <strong>Backups</strong> anlegen und Änderungen zunächst in einer Testumgebung testen.</p>
+</details>
+<hr>
+<h3 id="spalten-bearbeiten">Spalten bearbeiten</h3>
+<p>Mit <code>ALTER TABLE</code> können wir nachträglich Spalten zu einer bestehenden Tabelle hinzufügen, löschen oder umbenennen. Der Syntax ist wie folgt:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">ADD</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">RENAME</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spaltenname</span><span class="w"> </span><span class="p">[</span><span class="n">datentyp</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">constraints</span><span class="p">];</span>
+</code></pre></div>
+<p>Die Anweisung startet mit <code>ALTER TABLE</code> und dem Tabellennamen. Es folgt die Aktion (<code>ADD</code>, <code>RENAME</code>, <code>DROP</code>) inklusive <code>COLUMN</code> und der Spaltenname. Bei bedarf können auch noch der Datentyp und die Constraints angegeben werden.</p>
+<details class="example" open="open">
+<summary>Neue Spalte hinzufügen</summary>
+<p>Wir möchten zu unseren Artikeln eine <strong>Email-Adresse des Lieferanten</strong> hinzufügen. Da wir die gesamte Tabelle zuvor bereits gelöscht haben, müssen wir diese erneut erstellen (siehe Datenbank-Setup am Anfang des Kapitels).</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Neue Spalte für Lieferanten-Email hinzufügen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">lieferant_email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>ALTER TABLE
+</code></pre></div>
+<p>Wir können die Tabellenstruktur mit folgendem psql Befehl überprüfen:</p>
+<div class="highlight"><pre><span></span><code><span class="err">\</span><span class="n">d</span><span class="w"> </span><span class="n">artikel</span>
+</code></pre></div>
+<p>Die neue Spalte <code>lieferant_email</code> ist jetzt sichtbar. <strong>Alle bestehenden Zeilen</strong> haben für diese Spalte den Wert <code>NULL</code>.</p>
+<p><strong>Mit Constraints und DEFAULT:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Spalte mit DEFAULT-Wert hinzufügen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">gepruefte_qualitaet</span><span class="w"> </span><span class="nb">BOOLEAN</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">FALSE</span><span class="p">;</span>
+
+<span class="c1">-- Spalte mit NOT NULL und DEFAULT hinzufügen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">hersteller</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Unbekannt'</span><span class="p">;</span>
+</code></pre></div>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<details class="example">
+<summary>Spalte umbenennen</summary>
+<p>Der Name "artikelname" ist zu generisch. Wir möchten ihn in "produktbezeichnung" umbenennen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Spaltenname ändern</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">RENAME</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">artikelname</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">produktbezeichnung</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>ALTER TABLE
+</code></pre></div>
+<p><strong>Wichtig:</strong> Alle Abfragen, die den alten Spaltennamen verwenden, funktionieren danach nicht mehr!</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Funktioniert nicht mehr:</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">artikelname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span><span class="w">  </span><span class="c1">-- ❌ FEHLER</span>
+
+<span class="c1">-- Funktioniert:</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">produktbezeichnung</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span><span class="w">  </span><span class="c1">-- ✅</span>
+</code></pre></div>
+</details>
+<details class="example">
+<summary>Spalte löschen</summary>
+<p>Die Spalte <code>lieferant_email</code> wird doch nicht benötigt:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Spalte löschen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">lieferant_email</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>ALTER TABLE
+</code></pre></div>
+<p><strong>Achtung:</strong> Alle Daten in dieser Spalte sind <strong>unwiederbringlich verloren</strong>!</p>
+<details class="danger" open="open">
+<summary>CASCADE vs. RESTRICT</summary>
+<p>Wenn andere Tabellen auf diese Spalte verweisen (z.B. durch Foreign Keys), musst du entscheiden:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Fehler, wenn Abhängigkeiten bestehen (sicherer!)</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spalte</span><span class="w"> </span><span class="k">RESTRICT</span><span class="p">;</span>
+
+<span class="c1">-- Löscht auch abhängige Objekte (gefährlich!)</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spalte</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
+</code></pre></div>
+</details>
+</details>
+</details>
+</details>
+<hr>
+<h3 id="datentyp-andern">Datentyp ändern</h3>
+<p>Mit <code>ALTER TABLE ... ALTER COLUMN ... TYPE</code> können wir den Datentyp einer Spalte ändern.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spaltenname</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="n">neuer_datentyp</span><span class="p">;</span>
+</code></pre></div>
+<details class="example" open="open">
+<summary>Datentyp ändern</summary>
+<p>Die <code>kategorie</code>-Spalte ist aktuell <code>VARCHAR(50)</code>, aber wir brauchen mehr Platz:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Datentyp von VARCHAR(50) auf VARCHAR(150) ändern</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">150</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>ALTER TABLE
+</code></pre></div>
+</details>
+<details class="warning" open="open">
+<summary>Datenkonvertierung</summary>
+<p>Wenn bereits Daten in der Spalte vorhanden sind, versucht die Datenbank, diese in den neuen Datentyp zu konvertieren. Dies kann zu Fehlern führen, wenn die Daten nicht kompatibel sind (z.B. Text in eine Integer-Spalte umwandeln). Im Erfolgsfall werden die Daten entsprechend dem neuen Typ angepasst. Sei hier besonders vorsichtig und teste solche Änderungen immer zuerst in einer Testumgebung!</p>
+</details>
+<hr>
+<h3 id="beschrankungen-andern">Beschränkungen ändern</h3>
+<p>Neben dem Datentyp können wir auch Beschränkungen welche wir in diesem Kapitel kennengelernt haben (<code>DEFAULT</code>, <code>NOT NULL</code>) ändern.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="c1">-- NOT NULL hinzufügen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spaltenname</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
+
+<span class="c1">-- NOT NULL entfernen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spaltenname</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
+
+<span class="c1">-- DEFAULT hinzufügen/ändern</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spaltenname</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">wert</span><span class="p">;</span>
+
+<span class="c1">-- DEFAULT entfernen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">spaltenname</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="p">;</span>
+</code></pre></div>
+<p>Hierbei ist zu beachten, dass wenn wir ein <code>DEFAULT</code> hinzufügen oder ändern, dieser nur für neue Zeilen gilt. Bestehende Zeilen werden nicht geändert. Bei Änderungen von <code>NOT NULL</code> müssen wir zuerst die NULL-Werte beheben. Ansonsten wird ein Fehler beim Hinzufügen der NOT NULL-Einschränkung auftreten.</p>
+<details class="example" open="open">
+<summary>NOT NULL hinzufügen</summary>
+<p>Wir möchten sicherstellen, dass jeder Artikel eine Kategorie hat:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Erst prüfen, ob NULL-Werte existieren</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> count
+-------
+     0
+</code></pre></div>
+<p>Wenn keine NULL-Werte vorhanden sind, können wir NOT NULL hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- NOT NULL-Einschränkung hinzufügen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">kategorie</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
+</code></pre></div>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<details class="example" open="open">
+<summary>DEFAULT hinzufügen</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- DEFAULT-Wert für mindestbestand setzen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">mindestbestand</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Wichtig:</strong> Der DEFAULT gilt <strong>nur für neue Zeilen</strong>! Bestehende Zeilen werden <strong>nicht</strong> geändert.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Bestehende Zeilen behalten ihre Werte</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">mindestbestand</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>artikel_id | mindestbestand
+------------+----------------
+        1 |           1000
+        2 |           1000
+        3 |             50
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Neue Zeile bekommt DEFAULT-Wert</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">produktbezeichnung</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">bestand</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">,</span><span class="w"> </span><span class="n">lagerort</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="s1">'Testprodukt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Test'</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Regal Z1'</span><span class="p">);</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">mindestbestand</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">artikel_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>artikel_id | mindestbestand
+------------+----------------
+        20 |            100
+</code></pre></div>
+</details>
+</details>
+</details>
+<hr>
+<h3 id="tabelle-umbenennen">Tabelle umbenennen</h3>
+<p>Mit <code>ALTER TABLE ... RENAME TO</code> können wir eine gesamte Tabelle umbenennen.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">alter_tabellenname</span>
+<span class="k">RENAME</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">neuer_tabellenname</span><span class="p">;</span>
+</code></pre></div>
+<details class="example" open="open">
+<summary>Tabelle umbenennen</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Tabelle "artikel" in "lagerartikel" umbenennen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="k">RENAME</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">lagerartikel</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>ALTER TABLE
+</code></pre></div>
+<p>Ab jetzt müssen alle Abfragen den neuen Namen verwenden:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lagerartikel</span><span class="p">;</span><span class="w">  </span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">artikel</span><span class="p">;</span><span class="w">       </span><span class="c1">--  FEHLER: heißt jetzt lagerartikel</span>
+</code></pre></div>
+</details>
+<hr>
+<details class="info" open="open">
+<summary>Mehrere Änderungen kombinieren</summary>
+<p>Mehrere ALTER-Befehle können <strong>nicht</strong> in einem Statement kombiniert werden. Jede Änderung benötigt ein eigenes <code>ALTER TABLE</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- FALSCH: Funktioniert nicht!</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span>
+<span class="w">    </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">neue_spalte</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">alte_spalte</span><span class="p">;</span><span class="w">  </span><span class="c1">-- ❌ Syntax-Fehler</span>
+
+<span class="c1">-- RICHTIG: Separate Befehle</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">neue_spalte</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="k">DROP</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">alte_spalte</span><span class="p">;</span>
+</code></pre></div>
+</details>
+<hr>
+<p>In nachfolgender Tabelle findest du eine Übersicht gängiger ALTER-Befehle.</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Operation</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Befehl</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Spalte hinzufügen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ADD COLUMN c typ;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Spalte löschen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t DROP COLUMN c;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Spalte umbenennen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t RENAME COLUMN alt TO neu;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Datentyp ändern</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c TYPE typ;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">NOT NULL setzen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c SET NOT NULL;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">NOT NULL entfernen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c DROP NOT NULL;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">DEFAULT setzen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c SET DEFAULT wert;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">DEFAULT entfernen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE t ALTER COLUMN c DROP DEFAULT;</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;">Tabelle umbenennen</td>
+        <td style="padding:10px 14px;"><code>ALTER TABLE alt RENAME TO neu;</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<hr>
+<h2 id="ubung">Übung ✍️</h2>
+<p>Nun üben wir wieder an unserem bestehenden Projekt. Die <strong>TecGuy GmbH</strong> möchte ihr Produktionsplanungssystem weiter ausbauen und Daten pflegen.</p>
+<p>Im vorherigen Kapitel haben wir Daten <strong>abgefragt und analysiert</strong>. Jetzt lernen wir, wie man Daten <strong>ändert, löscht und Tabellenstrukturen anpasst</strong>.</p>
+<hr>
+<details class="info" open="open">
+<summary>Übungsvorbereitung - Datenbank zurücksetzen</summary>
+<p>Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
+korrekten Ausgangszustand für dieses Kapitel.</p>
+<details class="code">
+<summary>Setup</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zu anderer Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">postgres</span>
+
+<span class="c1">-- Zur Datenbank wechseln (oder neu erstellen)</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">produktionsplanung_db</span>
+
+<span class="c1">-- Tabelle für Maschinen erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinentyp</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produktionshalle</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">anschaffungsjahr</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenstatus</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">wartungsintervall_tage</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle für Produktionsaufträge erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">auftrag_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">auftragsnummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kunde</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produkt</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">startdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- Maschinen-Daten einfügen (aus Kapitel 1 &amp; 2)</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese Alpha'</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank Delta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse Gamma'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle B'</span><span class="p">,</span><span class="w"> </span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="s1">'Wartung'</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter Beta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle C'</span><span class="p">,</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">);</span>
+
+<span class="c1">-- Produktionsaufträge-Daten einfügen (alle 10 aus Kapitel 2)</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-01'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-18'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-25'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Volkswagen AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-007'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-30'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Abgeschlossen'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-008'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-08'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-16'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Abgeschlossen'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-009'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-05-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-010'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-19'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+</code></pre></div>
+</details>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 1: UPDATE - Produktionsaufträge aktualisieren</summary>
+<p>In der TecGuy GmbH haben sich Änderungen an Produktionsaufträgen ergeben:</p>
+<ol>
+<li>
+<p>Auftrag <strong>AUF-2024-002</strong> (Audi AG, Kurbelwelle) ist jetzt <strong>"In Produktion"</strong>. Ändere den Status.</p>
+</li>
+<li>
+<p>Auftrag <strong>AUF-2024-007</strong> (Mercedes-Benz, Getriebegehäuse) wurde mit Verspätung geliefert. Ändere das Lieferdatum auf <code>'2024-05-02'</code>.</p>
+</li>
+<li>
+<p>Alle Aufträge mit Status <strong>"Geplant"</strong> sollen den Status <strong>"In Vorbereitung"</strong> bekommen.</p>
+</li>
+<li>
+<p>Der Auftrag <strong>AUF-2024-006</strong> (VW, Kolben) wurde auf eine andere Maschine verlegt. Ändere <code>maschinen_id</code> auf <code>1</code>.</p>
+</li>
+</ol>
+<p><strong>Wichtig:</strong> Prüfe immer erst mit <code>SELECT</code>, bevor du <code>UPDATE</code> ausführst!</p>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 2: UPDATE - Maschinen aktualisieren</summary>
+<p>In der TecGuy GmbH haben sich Änderungen an Maschinen ergeben:</p>
+<ol>
+<li>
+<p><strong>Presse Gamma</strong> (ID 3) ist fertig gewartet. Setze den Status auf <code>'Aktiv'</code>.</p>
+</li>
+<li>
+<p><strong>CNC-Fraese Alpha</strong> (ID 1) geht in Wartung. Ändere den Status auf <code>'Wartung'</code>.</p>
+</li>
+<li>
+<p><strong>Drehbank Delta</strong> (ID 2) wird verlegt. Ändere die Halle auf <code>'Halle D'</code>.</p>
+</li>
+<li>
+<p>Alle Maschinen in <strong>Halle C</strong> sollen das Wartungsintervall auf <code>120</code> Tage verlängert bekommen.</p>
+</li>
+</ol>
+<p><strong>Wichtig:</strong> Prüfe immer erst mit <code>SELECT</code>, bevor du <code>UPDATE</code> ausführst!</p>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 3: UPDATE mit Berechnungen und String-Operationen</summary>
+<p>Erweiterte UPDATE-Operationen mit Berechnungen und String-Funktionen:</p>
+<ol>
+<li>
+<p>Alle Aufträge mit einer <strong>Menge kleiner als 200</strong> sollen um <strong>50 Stück erhöht</strong> werden. (Berechnung: <code>menge = menge + 50</code>)</p>
+</li>
+<li>
+<p>Alle Produktionshallen in der <code>maschinen</code> Tabelle sollen umbenannt werden: Ersetze <code>'Halle'</code> durch <code>'Produktionshalle'</code>.</p>
+</li>
+<li>
+<p>Das Wartungsintervall für Maschinen vom Typ <code>'Drehbank'</code> soll um <strong>20 Tage verkürzt</strong> werden.</p>
+</li>
+<li>
+<p>Alle Auftragsnummern sollen das Präfix <code>'TEC-'</code> bekommen (z.B. <code>'AUF-2024-001'</code> → <code>'TEC-AUF-2024-001'</code>).</p>
+</li>
+</ol>
+<p><strong>Tipp:</strong> Nutze Berechnungen (<code>+</code>, <code>-</code>) und String-Funktionen (<code>REPLACE</code>, <code>CONCAT</code>).</p>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 4: DELETE - Datensätze löschen</summary>
+<p>Die TecGuy GmbH muss Daten bereinigen:</p>
+<ol>
+<li>
+<p>Alle <strong>abgeschlossenen Aufträge</strong> (<code>status = 'Abgeschlossen'</code>) sollen aus der Datenbank gelöscht werden.</p>
+</li>
+<li>
+<p>Lösche die Maschine <strong>Presse Gamma</strong> (ID 3).</p>
+</li>
+<li>
+<p>Lösche alle Aufträge mit einer <strong>Menge kleiner als 100</strong>.</p>
+</li>
+</ol>
+<p><strong>Goldene Regel:</strong> Immer erst <code>SELECT</code> mit der gleichen WHERE-Bedingung, dann <code>DELETE</code>!</p>
+</details>
+<hr>
+<h2 id="zusammenfassung">Zusammenfassung 📌</h2>
+<p>In diesem Kapitel haben wir das CRUD Konzept kennengelernt und dabei folgende Erkenntnisse gewonnen:</p>
+<ul>
+<li><code>INSERT</code> fügt neue Datensätze hinzu - entweder einzeln oder mehrere gleichzeitig</li>
+<li><code>UPDATE</code> ändert bestehende Datensätze - <strong>IMMER mit WHERE</strong> (außer du willst wirklich alle ändern)</li>
+<li><code>DELETE</code> löscht Datensätze <strong>dauerhaft</strong> - <strong>IMMER mit WHERE</strong> (außer du willst wirklich alle löschen)</li>
+<li><code>DEFAULT</code>-Werte helfen, Standardwerte automatisch zu setzen</li>
+<li><code>NOT NULL</code> stellt sicher, dass wichtige Felder niemals leer sind</li>
+<li><strong>Es gibt kein "Rückgängig"</strong> bei UPDATE und DELETE - einmal ausgeführt, sind die Daten verloren!</li>
+<li>WHERE-Klausel vergessen = potentielle Katastrophe!</li>
+</ul>
+<hr>
+<p>Nun geht es weiter! Im nächsten Kapitel lernen wir <strong>Datenmodellierung &amp; Beziehungen</strong> kennen - wie man Daten in einer Datenbank organisiert und Beziehungen zwischen Tabellen herstellt!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../abfragen/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Abfragen von Daten">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Abfragen von Daten
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../modellierung/" class="md-footer__link md-footer__link--next" aria-label="Next: Datenmodellierung">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Datenmodellierung
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate", "navigation.footer", "navigation.top", "header.autohide", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/slideshow.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

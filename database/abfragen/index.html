@@ -1,0 +1,2619 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://learn-data.at/database/abfragen/">
+      
+      
+        <link rel="prev" href="../relational/">
+      
+      
+        <link rel="next" href="../manipulieren/">
+      
+      
+      <link rel="icon" href="../../assets/icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Abfragen von Daten - Data Campus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/colors.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/slideshow.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#daten-abfragen-mit-sql" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Data Campus" class="md-header__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Campus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Abfragen von Daten
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Daten
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Datenbanken
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
+    
+        
+      
+  
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Data Campus" class="md-nav__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    Data Campus
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Daten
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daten
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/datenerfassung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenerfassung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/zahlensysteme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenverarbeitung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/speicherung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speicherung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Datenbanken
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Datenbanken
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relationale Datenbanken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#die-grundstruktur-von-select" class="md-nav__link">
+    <span class="md-ellipsis">
+      Die Grundstruktur von SELECT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filtern-mit-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtern mit WHERE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Filtern mit WHERE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#einfache-vergleiche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Einfache Vergleiche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verknupfte-vergleiche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verknüpfte Vergleiche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#muster-mit-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      Muster mit LIKE
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sortieren-mit-order-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sortieren mit ORDER BY
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ergebnismenge-begrenzen-mit-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ergebnismenge begrenzen mit LIMIT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ergebnismenge begrenzen mit LIMIT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grundlegende-verwendung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grundlegende Verwendung
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zeilen-uberspringen-mit-offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zeilen überspringen mit OFFSET
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregatfunktionen-daten-zusammenfassen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregatfunktionen - Daten zusammenfassen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gruppieren-mit-group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gruppieren mit GROUP BY
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gruppen-filtern-mit-having" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gruppen filtern mit HAVING
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eindeutige-werte-mit-distinct" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eindeutige Werte mit DISTINCT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulieren/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modellierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenmodellierung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../join/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fortgeschritten/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integritaet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaktionen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ausblick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ausblick
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#die-grundstruktur-von-select" class="md-nav__link">
+    <span class="md-ellipsis">
+      Die Grundstruktur von SELECT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filtern-mit-where" class="md-nav__link">
+    <span class="md-ellipsis">
+      Filtern mit WHERE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Filtern mit WHERE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#einfache-vergleiche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Einfache Vergleiche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verknupfte-vergleiche" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verknüpfte Vergleiche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#muster-mit-like" class="md-nav__link">
+    <span class="md-ellipsis">
+      Muster mit LIKE
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sortieren-mit-order-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sortieren mit ORDER BY
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ergebnismenge-begrenzen-mit-limit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ergebnismenge begrenzen mit LIMIT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ergebnismenge begrenzen mit LIMIT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#grundlegende-verwendung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grundlegende Verwendung
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zeilen-uberspringen-mit-offset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zeilen überspringen mit OFFSET
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aggregatfunktionen-daten-zusammenfassen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregatfunktionen - Daten zusammenfassen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gruppieren-mit-group-by" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gruppieren mit GROUP BY
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gruppen-filtern-mit-having" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gruppen filtern mit HAVING
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eindeutige-werte-mit-distinct" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eindeutige Werte mit DISTINCT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+  
+    
+                  
+
+
+  
+  
+
+
+<h1 id="daten-abfragen-mit-sql">Daten abfragen mit SQL</h1>
+<p>Im vorherigen Kapitel haben wir gelernt, wie man Tabellen erstellt, Daten einfügt und Daten auch einfach ausliest. Jetzt gehen wir einen Schritt weiter: Wir lernen, wie man <strong>gezielt nach Daten sucht, sie filtert, sortiert und analysiert</strong> - das Herzstück jeder Datenbank!</p>
+<p>SQL ist eine <strong>deklarative Sprache</strong>: Wir beschreiben, <strong>was</strong> wir haben möchten, nicht <strong>wie</strong> die Datenbank es finden soll. Das macht SQL mächtig und gleichzeitig einfach zu lernen.</p>
+<hr>
+<h2 id="die-grundstruktur-von-select">Die Grundstruktur von <code>SELECT</code></h2>
+<p>Im vorigen Kapitel haben wir bereits den <code>SELECT</code> Befehl kennengelernt. Doch neben dieser einfachen gezeigten Abfrage können wir auch noch mehr damit machen. Eine SELECT-Abfrage hat folgende Grundstruktur:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">spalten</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle</span>
+<span class="c1">-- ↓↓ Weitere Klauseln ↓↓</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">bedingung</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sortierung</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Übersetzt bedeutet das:</strong></p>
+<blockquote>
+<p>"Wähle diese <strong>Spalten</strong> aus dieser <strong>Tabelle</strong>, aber nur die Zeilen, die diese <strong>Bedingung</strong> erfüllen, und sortiere das Ergebnis nach dieser <strong>Sortierung</strong>."</p>
+</blockquote>
+<p>Wir werden uns nun in diesem Kapitel ansehen, welche weiteren Möglichkeiten wir haben, um Daten aus einer Datenbank abzufragen und schon einfache Analysen durchführen.</p>
+<hr>
+<details class="info" open="open">
+<summary>Datenbank-Setup</summary>
+<p>Für die Beispiele in diesem Kapitel verwenden wir eine <strong>Lieferketten-Datenbank</strong>. Diese verwaltet Materiallieferungen für ein produzierendes Unternehmen - ein typisches Szenario im Wirtschaftsingenieurwesen.</p>
+<p>Führe folgenden Code aus, um die Beispieldatenbank zu erstellen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Datenbank erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">lieferkette_db</span><span class="p">;</span>
+
+<span class="c1">-- Zur Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">lieferkette_db</span>
+
+<span class="c1">-- Tabelle für Lieferungen erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">lieferungen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">lieferung_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferant</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">material</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">preis_pro_einheit</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">lieferdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">zielstandort</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Beispieldaten einfuegen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lieferungen</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Stahlwerk Salzgitter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Stahlblech 2mm'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">.</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Nord'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aluminium AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aluminiumprofile'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-18'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Sued'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kunststoff GmbH'</span><span class="p">,</span><span class="w"> </span><span class="s1">'PVC-Platten'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">.</span><span class="mi">75</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Transit'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Nord'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Stahlwerk Salzgitter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Stahlprofil IPE200'</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Bestellt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Ost'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schrauben Meyer'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sechskantschrauben M8'</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-16'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Nord'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aluminium AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aluminiumblech 3mm'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="mi">18</span><span class="p">.</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-25'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Bestellt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Sued'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik Weber'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sensoren Typ A'</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">.</span><span class="mi">90</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-19'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Ost'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kunststoff GmbH'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gummiband 10mm'</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">.</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-21'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Transit'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Nord'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schrauben Meyer'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Muttern M8'</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">08</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-17'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Nord'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik Weber'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kabelbaum 5m'</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-03-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Bestellt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Lager Ost'</span><span class="p">);</span>
+</code></pre></div>
+<p>Diese Tabelle enthält typische Lieferinformationen: Lieferant, Material, Menge, Preis, Lieferdatum, Status und Zielstandort.</p>
+</details>
+<hr>
+<h2 id="filtern-mit-where">Filtern mit <code>WHERE</code></h2>
+<p>Bislang haben wir bei der Abfrage von Daten entweder alles abgefragt (<code>*</code>) oder gewisse <strong>Spalten</strong> ausgewählt. Welche <strong>Zeilen</strong> / Tuples aber geladen werden sollen, haben wir bisher nicht eingrenzt. Daher wurden zuvor alle Zeilen geladen.</p>
+<p>Mit der <strong>WHERE-Klausel</strong> können wir aber nun Datensätze nach bestimmten Kriterien filtern. Der grundlegende Syntax lautet wiefolgt:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">bedingung</span><span class="p">;</span>
+</code></pre></div>
+<h3 id="einfache-vergleiche">Einfache Vergleiche</h3>
+<p>Wie auch in der Mathematik stehen uns für die Bedingungen verschiedenste Vergleichsoperatoren zur Verfügung.</p>
+<div style="text-align:center; max-width:700px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:center; padding:12px 14px; font-weight:700;">Operator</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>=</code></td>
+        <td style="padding:10px 14px;">Gleich</td>
+        <td style="padding:10px 14px;"><code>status = 'Geliefert'</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>!=</code> oder <code>&lt;&gt;</code></td>
+        <td style="padding:10px 14px;">Ungleich</td>
+        <td style="padding:10px 14px;"><code>status != 'Bestellt'</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&gt;</code></td>
+        <td style="padding:10px 14px;">Größer als</td>
+        <td style="padding:10px 14px;"><code>menge &gt; 100</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&lt;</code></td>
+        <td style="padding:10px 14px;">Kleiner als</td>
+        <td style="padding:10px 14px;"><code>preis_pro_einheit &lt; 10</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&gt;=</code></td>
+        <td style="padding:10px 14px;">Größer oder gleich</td>
+        <td style="padding:10px 14px;"><code>menge &gt;= 500</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>&lt;=</code></td>
+        <td style="padding:10px 14px;">Kleiner oder gleich</td>
+        <td style="padding:10px 14px;"><code>preis_pro_einheit &lt;= 5</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfrage der Daten festlegen.</p>
+<details class="example" open="open">
+<summary>Lieferungen von spezifischen Lieferanten</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Lieferungen von 'Stahlwerk Salzgitter'</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="hll"><span class="k">WHERE</span><span class="w"> </span><span class="n">lieferant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Stahlwerk Salzgitter'</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> lieferung_id |      lieferant       |      material       | menge | preis_pro_einheit | lieferdatum |  status  | zielstandort
+--------------+----------------------+---------------------+-------+-------------------+-------------+----------+--------------
+            1 | Stahlwerk Salzgitter | Stahlblech 2mm      |   500 |             12.50 | 2024-03-15  | Geliefert| Lager Nord
+            4 | Stahlwerk Salzgitter | Stahlprofil IPE200  |    80 |             45.00 | 2024-03-22  | Bestellt | Lager Ost
+(2 rows)
+</code></pre></div>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Menge größer 200</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Lieferungen mit Menge größer 200</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">menge</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">menge</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |       material        | menge
+----------------------+-----------------------+-------
+ Stahlwerk Salzgitter | Stahlblech 2mm        |   500
+ Schrauben Meyer      | Sechskantschrauben M8 |  5000
+ Aluminium AG         | Aluminiumblech 3mm    |   300
+ Kunststoff GmbH      | Gummiband 10mm        |   800
+ Schrauben Meyer      | Muttern M8            |  5000
+(5 rows)
+</code></pre></div>
+<hr>
+<p><strong>Alle außer gelieferte Lieferungen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle außer gelieferte Lieferungen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |      material      |   status
+----------------------+--------------------+------------
+ Kunststoff GmbH      | PVC-Platten        | In Transit
+ Stahlwerk Salzgitter | Stahlprofil IPE200 | Bestellt
+ Aluminium AG         | Aluminiumblech 3mm | Bestellt
+ Kunststoff GmbH      | Gummiband 10mm     | In Transit
+ Elektronik Weber     | Kabelbaum 5m       | Bestellt
+(5 rows)
+</code></pre></div>
+</details>
+</details>
+<hr>
+<h3 id="verknupfte-vergleiche">Verknüpfte Vergleiche</h3>
+<p>Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexeren verknüpften Vergleichen kombinieren. Dazu stehen uns <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>IN</code> und <code>BETWEEN</code> zur Verfügung.</p>
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:center; padding:12px 14px; font-weight:700;">Operator</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>AND</code></td>
+        <td style="padding:10px 14px;">Beide Bedingungen müssen erfüllt sein</td>
+        <td style="padding:10px 14px;"><code>menge &gt; 100 AND status = 'Geliefert'</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>OR</code></td>
+        <td style="padding:10px 14px;">Mindestens eine Bedingung muss erfüllt sein</td>
+        <td style="padding:10px 14px;"><code>status = 'In Transit' OR status = 'Bestellt'</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>NOT</code></td>
+        <td style="padding:10px 14px;">Negiert eine Bedingung</td>
+        <td style="padding:10px 14px;"><code>NOT status = 'Geliefert'</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>IN</code></td>
+        <td style="padding:10px 14px;">Prüft, ob Wert in einer Liste enthalten ist</td>
+        <td style="padding:10px 14px;"><code>lieferant IN ('Aluminium AG', 'Elektronik Weber')</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>BETWEEN</code></td>
+        <td style="padding:10px 14px;">Prüft, ob Wert in einem Bereich liegt (inklusiv)</td>
+        <td style="padding:10px 14px;"><code>menge BETWEEN 100 AND 500</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<details class="info" open="open">
+<summary>Inklusive</summary>
+<p><code>BETWEEN</code> ist inklusive - beide Grenzen sind mit eingeschlossen</p>
+</details>
+<details class="example" open="open">
+<summary>Große Lieferungen die bereits geliefert wurden</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Große Lieferungen (&gt; 200) die bereits geliefert wurden</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">menge</span><span class="p">,</span><span class="w"> </span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="hll"><span class="k">WHERE</span><span class="w"> </span><span class="n">menge</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |       material        | menge |  status
+----------------------+-----------------------+-------+-----------
+ Stahlwerk Salzgitter | Stahlblech 2mm        |   500 | Geliefert
+ Schrauben Meyer      | Sechskantschrauben M8 |  5000 | Geliefert
+ Schrauben Meyer      | Muttern M8            |  5000 | Geliefert
+(3 rows)
+</code></pre></div>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Lieferungen die in Transit oder Bestellt sind</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Lieferungen die in Transit oder Bestellt sind</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'In Transit'</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Bestellt'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |      material      |   status
+----------------------+--------------------+------------
+ Kunststoff GmbH      | PVC-Platten        | In Transit
+ Stahlwerk Salzgitter | Stahlprofil IPE200 | Bestellt
+ Aluminium AG         | Aluminiumblech 3mm | Bestellt
+ Kunststoff GmbH      | Gummiband 10mm     | In Transit
+ Elektronik Weber     | Kabelbaum 5m       | Bestellt
+(5 rows)
+</code></pre></div>
+<hr>
+<p><strong>Alle außer gelieferte Lieferungen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle außer gelieferte Lieferungen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |      material      |   status
+----------------------+--------------------+------------
+ Kunststoff GmbH      | PVC-Platten        | In Transit
+ Stahlwerk Salzgitter | Stahlprofil IPE200 | Bestellt
+ Aluminium AG         | Aluminiumblech 3mm | Bestellt
+ Kunststoff GmbH      | Gummiband 10mm     | In Transit
+ Elektronik Weber     | Kabelbaum 5m       | Bestellt
+(5 rows)
+</code></pre></div>
+<hr>
+<p><strong>Lieferungen zwischen 100 und 500 Einheiten</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Lieferungen zwischen 100 und 500 Einheiten</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">menge</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">menge</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="mi">100</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="mi">500</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |      material      | menge
+----------------------+--------------------+-------
+ Stahlwerk Salzgitter | Stahlblech 2mm     |   500
+ Aluminium AG         | Aluminiumprofile   |   200
+ Kunststoff GmbH      | PVC-Platten        |   150
+ Aluminium AG         | Aluminiumblech 3mm |   300
+ Elektronik Weber     | Sensoren Typ A     |   100
+(5 rows)
+</code></pre></div>
+<hr>
+<p><strong>Lieferungen von bestimmten Lieferanten</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Lieferungen von bestimmten Lieferanten</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">menge</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">lieferant</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Aluminium AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik Weber'</span><span class="p">);</span>
+</code></pre></div>
+<p>Das ist äquivalent zu:</p>
+<div class="highlight"><pre><span></span><code><span class="k">WHERE</span><span class="w"> </span><span class="n">lieferant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Aluminium AG'</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">lieferant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Elektronik Weber'</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>    lieferant     |      material      | menge
+------------------+--------------------+-------
+ Aluminium AG     | Aluminiumprofile   |   200
+ Aluminium AG     | Aluminiumblech 3mm |   300
+ Elektronik Weber | Sensoren Typ A     |   100
+ Elektronik Weber | Kabelbaum 5m       |    50
+(4 rows)
+</code></pre></div>
+</details>
+</details>
+<hr>
+<h3 id="muster-mit-like">Muster mit <code>LIKE</code></h3>
+<p>Oft wissen wir nicht genau, nach welchem exakten Wert wir suchen. Zum Beispiel:</p>
+<ul>
+<li>"Alle Materialien, die mit 'Stahl' beginnen"</li>
+<li>"Alle Lieferanten, die 'GmbH' im Namen haben"</li>
+<li>"Alle Materialien mit einem Namen der Länge 10"</li>
+</ul>
+<p>Für solche <strong>Mustersuchen</strong> verwenden wir den <strong><code>LIKE</code>-Operator</strong> zusammen mit <strong>Platzhaltern</strong>. Platzhalter sind spezielle Zeichen, welche für ein beliebiges oder mehrere beliebige Zeichen stehen. Die mag im ersten Moment etwas verwirrend klingen, ist aber in der Praxis durchaus praktisch. Im Grunde gibt es zwei verschiedene Platzhalter:</p>
+<div style="text-align:center; max-width:700px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:center; padding:12px 14px; font-weight:700;">Platzhalter</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>%</code></td>
+        <td style="padding:10px 14px;">Steht für beliebig viele Zeichen (auch 0)</td>
+        <td style="padding:10px 14px;"><code>'Stahl%'</code> findet "Stahlblech", "Stahlprofil"</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>_</code></td>
+        <td style="padding:10px 14px;">Steht für genau ein beliebiges Zeichen</td>
+        <td style="padding:10px 14px;"><code>'M_8'</code> findet "M08", "M18", "M88"</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfragen erstellen. Beispielhaft Muster für <code>LIKE</code> Abfragen sind</p>
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">LIKE-Muster</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LIKE 'Stahl%'</code></td>
+        <td style="padding:10px 14px;">Beginnt mit "Stahl"</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LIKE '%GmbH%'</code></td>
+        <td style="padding:10px 14px;">Enthält "GmbH" irgendwo im Text</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LIKE '%Weber'</code></td>
+        <td style="padding:10px 14px;">Endet mit "Weber"</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LIKE '_l%'</code></td>
+        <td style="padding:10px 14px;">Das zweite Zeichen ist "l"</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LIKE '____'</code></td>
+        <td style="padding:10px 14px;">Genau 4 Zeichen lang</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LIKE 'A___%'</code></td>
+        <td style="padding:10px 14px;">Beginnt mit "A" und hat mindestens 4 Zeichen</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<details class="example" open="open">
+<summary>Alle Lieferanten filtern</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Lieferanten mit 'GmbH' im Namen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="hll"><span class="k">WHERE</span><span class="w"> </span><span class="n">lieferant</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'%GmbH%'</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>    lieferant    |    material
+-----------------+----------------
+ Kunststoff GmbH | PVC-Platten
+ Kunststoff GmbH | Gummiband 10mm
+(2 rows)
+</code></pre></div>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Alle Materialien die mit 'Stahl' beginnen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Materialien die mit 'Stahl' beginnen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'Stahl%'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |      material
+----------------------+--------------------
+ Stahlwerk Salzgitter | Stahlblech 2mm
+ Stahlwerk Salzgitter | Stahlprofil IPE200
+(2 rows)
+</code></pre></div>
+<hr>
+<p><strong>Alle Lieferanten deren Name mit 'Weber' endet</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Lieferanten deren Name mit 'Weber' endet</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">lieferant</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'%Weber'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>    lieferant     |    material
+------------------+----------------
+ Elektronik Weber | Sensoren Typ A
+ Elektronik Weber | Kabelbaum 5m
+(2 rows)
+</code></pre></div>
+<hr>
+<p><strong>Alle Materialien die 'blech' im Namen enthalten</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Materialien die 'blech' enthalten</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">'%blech%'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |      material
+----------------------+--------------------
+ Stahlwerk Salzgitter | Stahlblech 2mm
+ Aluminium AG         | Aluminiumblech 3mm
+(2 rows)
+</code></pre></div>
+</details>
+</details>
+<details class="warning" open="open">
+<summary>Groß-/Kleinschreibung</summary>
+<p><strong><code>LIKE</code></strong> ist in PostgreSQL standardmäßig <strong>case-sensitive</strong>. Dies bedeutet, es wird sehr genau zwischen Groß- und Kleinschreibung unterschieden!</p>
+<ul>
+<li><code>LIKE 'stahl%'</code> findet NICHT "Stahlblech"</li>
+<li><code>LIKE 'Stahl%'</code> findet "Stahlblech"</li>
+</ul>
+<p>Für <strong>case-insensitive</strong> Suche verwende <strong>ILIKE</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="k">ILIKE</span><span class="w"> </span><span class="s1">'stahl%'</span><span class="p">;</span><span class="w">  </span><span class="c1">-- findet "Stahlblech"</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      material
+--------------------
+ Stahlblech 2mm
+ Stahlprofil IPE200
+(2 rows)
+</code></pre></div>
+</details>
+<hr>
+<h2 id="sortieren-mit-order-by">Sortieren mit <code>ORDER BY</code></h2>
+<p>Standardmäßig werden Abfrageergebnisse in <strong>keiner bestimmten Reihenfolge</strong> zurückgegeben - die Datenbank entscheidet selbst, wie sie die Daten ausgibt. Wenn wir eine <strong>definierte Sortierung</strong> benötigen (z.B. alphabetisch, nach Datum, nach Zahlen), verwenden wir <code>ORDER BY</code>.</p>
+<p>Mit <code>ORDER BY</code> können wir Ergebnisse nach einer oder mehreren Spalten sortieren - sowohl <strong>aufsteigend</strong> (A→Z, 0→9, alt→neu) als auch <strong>absteigend</strong> (Z→A, 9→0, neu→alt). Der grundlegende Syntax lautet wiefolgt:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabellenname</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">attribut</span><span class="w"> </span><span class="k">ASC</span><span class="p">;</span><span class="w"> </span><span class="c1">-- oder DESC</span>
+</code></pre></div>
+<p>Die zwei verschiedenen Sortierrichtungen können mit Hilfe zweier Schlüsselwörter ausgewählt werden:</p>
+<div style="text-align:center; max-width:700px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:center; padding:12px 14px; font-weight:700;">Schlüsselwort</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>ASC</code></td>
+        <td style="padding:10px 14px;">Aufsteigend (ascending) - <strong>Standard!</strong></td>
+        <td style="padding:10px 14px;">A→Z, 0→9, 2020→2024</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; text-align:center; padding:10px 14px;"><code>DESC</code></td>
+        <td style="padding:10px 14px;">Absteigend (descending)</td>
+        <td style="padding:10px 14px;">Z→A, 9→0, 2024→2020</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<details class="example" open="open">
+<summary>Lieferant und Menge sortieren</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Erst nach Lieferant (A-Z), dann nach Menge (größte zuerst)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">menge</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="hll"><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferant</span><span class="w"> </span><span class="k">ASC</span><span class="p">,</span><span class="w"> </span><span class="n">menge</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       |       material        | menge
+----------------------+-----------------------+-------
+ Aluminium AG         | Aluminiumblech 3mm    |   300
+ Aluminium AG         | Aluminiumprofile      |   200
+ Elektronik Weber     | Sensoren Typ A        |   100
+ Elektronik Weber     | Kabelbaum 5m          |    50
+ Kunststoff GmbH      | Gummiband 10mm        |   800
+ Kunststoff GmbH      | PVC-Platten           |   150
+ Schrauben Meyer      | Sechskantschrauben M8 |  5000
+ Schrauben Meyer      | Muttern M8            |  5000
+ Stahlwerk Salzgitter | Stahlblech 2mm        |   500
+ Stahlwerk Salzgitter | Stahlprofil IPE200    |    80
+(10 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Die Daten werden zuerst nach <code>lieferant</code> alphabetisch sortiert. Innerhalb jedes Lieferanten werden die Materialien nach <code>menge</code> absteigend sortiert (größte zuerst).</p>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Nach Material sortiert (A-Z)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Nach Material sortiert (A-Z)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">material</span><span class="p">;</span><span class="w">  </span><span class="c1">-- ASC ist Standard und kann weggelassen werden</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>       material        |      lieferant
+-----------------------+----------------------
+ Aluminiumblech 3mm    | Aluminium AG
+ Aluminiumprofile      | Aluminium AG
+ Gummiband 10mm        | Kunststoff GmbH
+ Kabelbaum 5m          | Elektronik Weber
+ Muttern M8            | Schrauben Meyer
+ PVC-Platten           | Kunststoff GmbH
+ Sechskantschrauben M8 | Schrauben Meyer
+ Sensoren Typ A        | Elektronik Weber
+ Stahlblech 2mm        | Stahlwerk Salzgitter
+ Stahlprofil IPE200    | Stahlwerk Salzgitter
+(10 rows)
+</code></pre></div>
+<hr>
+<p><strong>Nach Lieferdatum sortiert (neueste zuerst)</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Nach Lieferdatum sortiert (neueste zuerst)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">lieferdatum</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferdatum</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>       material        | lieferdatum
+-----------------------+-------------
+ Kabelbaum 5m          | 2024-03-28
+ Aluminiumblech 3mm    | 2024-03-25
+ Stahlprofil IPE200    | 2024-03-22
+ Gummiband 10mm        | 2024-03-21
+ PVC-Platten           | 2024-03-20
+ Sensoren Typ A        | 2024-03-19
+ Aluminiumprofile      | 2024-03-18
+ Muttern M8            | 2024-03-17
+ Sechskantschrauben M8 | 2024-03-16
+ Stahlblech 2mm        | 2024-03-15
+(10 rows)
+</code></pre></div>
+<p>Alternativ kann man auch die <strong>Position der Spalte</strong> im SELECT angeben:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">lieferdatum</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Sortiere nach der 3. Spalte (lieferdatum)</span>
+</code></pre></div>
+<details class="warning" open="open">
+<summary>Nicht empfohlen!</summary>
+<p>Diese Schreibweise ist <strong>weniger lesbar</strong> und sollte nur in Ausnahmefällen verwendet werden. Besser ist es, den Spaltennamen explizit anzugeben: <code>ORDER BY lieferdatum DESC</code></p>
+</details>
+</details>
+</details>
+<p><strong>Sortierung und NULL-Werte</strong></p>
+<p>Was passiert eigentlich, wenn eine Spalte <strong>NULL-Werte</strong> (leere Einträge) enthält?</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://devhumor.com/content/uploads/images/December2019/null.jpg" data-title="NULL" data-desc-position="bottom"><img src="https://devhumor.com/content/uploads/images/December2019/null.jpg" alt="NULL" style="max-width: 70%;"></a>
+    <figcaption>Quelle: <a href="https://devhumor.com/content/uploads/images/December2019/null.jpg">devhumor</a></figcaption>
+</div>
+
+<details class="info" open="open">
+<summary>Standardverhalten</summary>
+<p>Das Standardverhalten in PostgreSQL ist:</p>
+<ul>
+<li>Bei <code>ASC</code> (aufsteigend): NULL-Werte kommen <strong>am Ende</strong></li>
+<li>Bei <code>DESC</code> (absteigend): NULL-Werte kommen <strong>am Anfang</strong></li>
+</ul>
+</details>
+<p>Doch dieses Verhalten ist nicht in Stein gemeiselt. Wir können dies auch gezielt steuern und festlegen.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="c1">-- NULL-Werte zuerst, dann aufsteigend sortieren</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">spalte</span><span class="w"> </span><span class="k">ASC</span><span class="w"> </span><span class="n">NULLS</span><span class="w"> </span><span class="k">FIRST</span><span class="p">;</span>
+
+<span class="c1">-- NULL-Werte am Ende, dann aufsteigend sortieren</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">spalte</span><span class="w"> </span><span class="k">ASC</span><span class="w"> </span><span class="n">NULLS</span><span class="w"> </span><span class="k">LAST</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+<h2 id="ergebnismenge-begrenzen-mit-limit">Ergebnismenge begrenzen mit <code>LIMIT</code></h2>
+<p>Alle bisher kennengelernten Befehle liefern uns als Rückgabe sämtliche Datensätze - sofern diese die geforderten Bedingungen erfüllen. Manchmal möchten wir aber nur eine bestimmte Anzahl - zum Beispiel: <em>Die Top 5 der teuersten Lieferungen</em>.</p>
+<p>Dafür gibt es die Klausel <code>LIMIT</code> und optional dazugehörigt <code>OFFSET</code>.</p>
+<details class="tip" open="open">
+<summary>Klausel</summary>
+<p>Eine Klausel ist ein Teil einer SQL-Anweisung, der eine bestimmte Aufgabe hat. Beispielsweise:</p>
+<ul>
+<li><code>SELECT</code>-Klausel</li>
+<li><code>FROM</code>-Klausel</li>
+<li><code>WHERE</code>-Klausel</li>
+<li><code>GROUP BY</code>-Klausel</li>
+<li><code>HAVING</code>-Klausel</li>
+<li><code>ORDER BY</code>-Klausel</li>
+</ul>
+</details>
+<h3 id="grundlegende-verwendung">Grundlegende Verwendung</h3>
+<p>Wir starten mit der einfachen Verwendung von <code>LIMIT</code> zur Limitierung der Rückgabeergebnisse. Der grundlegende Syntax kann wiefolgt beschrieben werden:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">spalten</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sortierung</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="n">anzahl</span><span class="p">;</span>
+</code></pre></div>
+<p>Wenn wir diesem Syntax folgen können wir beispielsweise die ersten 3 Ergebnisse zurückgeben lassen.</p>
+<details class="example" open="open">
+<summary>Die 3 günstigsten Materialien</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Die 3 günstigsten Materialien (nach Preis pro Einheit)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">preis_pro_einheit</span><span class="p">,</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">preis_pro_einheit</span><span class="w"> </span><span class="k">ASC</span>
+<span class="hll"><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>       material        | preis_pro_einheit |    lieferant
+-----------------------+-------------------+-----------------
+ Muttern M8            |              0.08 | Schrauben Meyer
+ Sechskantschrauben M8 |              0.15 | Schrauben Meyer
+ Gummiband 10mm        |              2.30 | Kunststoff GmbH
+(3 rows)
+</code></pre></div>
+</details>
+<details class="warning" open="open">
+<summary>LIMIT ohne ORDER BY</summary>
+<p>Wenn du <code>LIMIT</code> ohne <code>ORDER BY</code> verwendest, ist das Ergebnis <strong>nicht vorhersehbar</strong> - die Datenbank gibt irgendwelche Zeilen zurück! Verwende daher <strong>immer ORDER BY zusammen mit LIMIT</strong>.</p>
+</details>
+<h3 id="zeilen-uberspringen-mit-offset">Zeilen überspringen mit <code>OFFSET</code></h3>
+<p>Nun kann es vorkommen, dass wir nicht die ersten <em>N</em> Ergebnisse auslesen möchten, sondern erst bei einem gewissen Wert beginnend. Mit <code>OFFSET</code> können wir die ersten <em>N</em> Zeilen <strong>überspringen</strong> und erst ab einer bestimmten Position Ergebnisse zurückgeben.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">spalten</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sortierung</span>
+<span class="k">LIMIT</span><span class="w"> </span><span class="n">anzahl</span><span class="w"> </span><span class="k">OFFSET</span><span class="w"> </span><span class="err">ü</span><span class="n">berspringen</span><span class="p">;</span>
+</code></pre></div>
+<details class="example" open="open">
+<summary>Werte ab 3. Position auslesen</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Überspringe die ersten 3, zeige die nächsten 3 Lieferungen (nach Datum)</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="n">lieferdatum</span><span class="p">,</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferdatum</span><span class="w"> </span><span class="k">ASC</span>
+<span class="hll"><span class="k">LIMIT</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">OFFSET</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>     material     | lieferdatum |    lieferant
+------------------+-------------+------------------
+ Aluminiumprofile | 2024-03-18  | Aluminium AG
+ Sensoren Typ A   | 2024-03-19  | Elektronik Weber
+ PVC-Platten      | 2024-03-20  | Kunststoff GmbH
+(3 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Die ersten 3 Lieferungen (15., 16., 17. März) werden übersprungen, dann werden die nächsten 3 zurückgegeben.</p>
+</details>
+<details class="info" open="open">
+<summary>Paginierung</summary>
+<p><code>LIMIT</code> und <code>OFFSET</code> werden häufig für <strong>Paginierung</strong> verwendet - z.B. wenn eine Webseite Ergebnisse seitenweise anzeigt.</p>
+<p>Bei sehr großen <strong>OFFSET-Werten</strong> (z.B. <code>OFFSET 10000</code>) kann die Performance leiden, da die Datenbank alle übersprungenen Zeilen dennoch laden und durchlaufen muss. Für große Datensätze gibt es bessere Ansätze (z.B. Cursor-basierte Paginierung).</p>
+</details>
+<hr>
+<h2 id="aggregatfunktionen-daten-zusammenfassen">Aggregatfunktionen - Daten zusammenfassen</h2>
+<p>Bisher haben wir einzelne Datensätze abgefragt - jede Zeile wurde einzeln zurückgegeben. Manchmal interessieren uns aber <strong>zusammengefasste Informationen</strong> über viele Datensätze:</p>
+<ul>
+<li><strong>Wie viele</strong> Lieferungen haben wir insgesamt?</li>
+<li>Was ist die <strong>durchschnittliche</strong> Menge?</li>
+<li>Was ist der <strong>höchste</strong> oder <strong>niedrigste</strong> Preis?</li>
+<li>Was ist die <strong>Summe</strong> aller Mengen?</li>
+</ul>
+<p>Für solche <strong>statistischen Auswertungen</strong> verwenden wir <strong>Aggregatfunktionen</strong>. Sie <strong>fassen mehrere Zeilen zu einem einzigen Ergebniswert zusammen</strong>.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">funktion</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ergebnisname</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle</span><span class="p">;</span>
+</code></pre></div>
+<p>Neben der Funktion ist es sinnvoll einen Alias Namen für das Ergebnis der Berechnung mittels <code>AS</code> zum vergeben.</p>
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Funktion</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Anwendungsfall</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>COUNT(*)</code></td>
+        <td style="padding:10px 14px;">Zählt alle Zeilen</td>
+        <td style="padding:10px 14px;">Wie viele Lieferungen gibt es?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>COUNT(spalte)</code></td>
+        <td style="padding:10px 14px;">Zählt Nicht-NULL-Werte</td>
+        <td style="padding:10px 14px;">Wie viele Lieferungen haben Status-Eintrag?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>SUM(spalte)</code></td>
+        <td style="padding:10px 14px;">Summe aller Werte</td>
+        <td style="padding:10px 14px;">Gesamtmenge aller Lieferungen?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>AVG(spalte)</code></td>
+        <td style="padding:10px 14px;">Durchschnittswert</td>
+        <td style="padding:10px 14px;">Durchschnittlicher Preis pro Einheit?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>MIN(spalte)</code></td>
+        <td style="padding:10px 14px;">Kleinster Wert</td>
+        <td style="padding:10px 14px;">Günstigster Preis?</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>MAX(spalte)</code></td>
+        <td style="padding:10px 14px;">Größter Wert</td>
+        <td style="padding:10px 14px;">Teuerster Preis?</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<details class="example" open="open">
+<summary>Günstigster und teuerster Preis pro Einheit</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Günstigster und teuerster Preis pro Einheit</span>
+<span class="k">SELECT</span>
+<span class="hll"><span class="w">    </span><span class="k">MIN</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">guenstigster_preis</span><span class="p">,</span>
+</span><span class="hll"><span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">teuerster_preis</span>
+</span><span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> guenstigster_preis | teuerster_preis
+--------------------+-----------------
+               0.08 |           45.00
+(1 row)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Wir wir sehen, können wir mehrere Aggregatfunktionen in einer Abfrage kombinieren.</p>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Wie viele Lieferungen gibt es insgesamt?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Wie viele Lieferungen gibt es insgesamt?</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl_lieferungen</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> anzahl_lieferungen
+--------------------
+                 10
+(1 row)
+</code></pre></div>
+<p><strong>Erklärung:</strong> <code>COUNT(*)</code> zählt alle Zeilen in der Tabelle - unabhängig vom Inhalt.</p>
+<hr>
+<p><strong>Wie viele Lieferungen sind bereits geliefert?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Wie viele Lieferungen sind bereits geliefert?</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl_geliefert</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> anzahl_geliefert
+------------------
+                5
+(1 row)
+</code></pre></div>
+<p><strong>Erklärung:</strong> <code>COUNT(*)</code> zählt alle Zeilen in der Tabelle - unabhängig vom Inhalt. <code>WHERE status = 'Geliefert'</code> filtert die Zeilen, die den Status "Geliefert" haben.</p>
+<hr>
+<p><strong>Durchschnittlicher Preis pro Einheit</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Durchschnittlicher Preis pro Einheit</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">durchschnittspreis</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> durchschnittspreis
+---------------------
+ 14.7180000000000000
+(1 row)
+</code></pre></div>
+<p><strong>Erklärung:</strong> <code>AVG()</code> berechnet den arithmetischen Mittelwert aller Preise pro Einheit.</p>
+<hr>
+<p><strong>Gesamtmenge aller Lieferungen</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Gesamtmenge aller Lieferungen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">menge</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gesamtmenge</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> gesamtmenge
+-------------
+       12180
+(1 row)
+</code></pre></div>
+<p><strong>Hinweis:</strong> <code>SUM()</code> funktioniert nur mit numerischen Spalten (INTEGER, NUMERIC, etc.)</p>
+</details>
+</details>
+<details class="warning" open="open">
+<summary>NULL-Werte werden ignoriert</summary>
+<p>Aggregatfunktionen (außer <code>COUNT(*)</code>) <strong>ignorieren NULL-Werte</strong>!</p>
+<ul>
+<li><code>COUNT(spalte)</code> zählt nur Nicht-NULL-Werte</li>
+<li><code>AVG(spalte)</code> berechnet den Durchschnitt nur aus vorhandenen Werten</li>
+<li><code>SUM(spalte)</code> summiert nur vorhandene Werte</li>
+</ul>
+</details>
+<hr>
+<h2 id="gruppieren-mit-group-by">Gruppieren mit <code>GROUP BY</code></h2>
+<p>Mit den Aggregatfunktionen können wir bereits einfache Analysen unseres Datensatzes durchführen. Wir können Summen bilden, Mittelwerte berechnen oder Werte zählen. Doch häufig kann es sein, dass wir diese Analysen nach gewissen Gruppen unterteilen wollen:</p>
+<ul>
+<li>Wie viele Lieferungen gibt es <strong>pro Lieferant</strong>?</li>
+<li>Was ist die durchschnittliche Menge <strong>pro Zielstandort</strong>?</li>
+<li>Wie viele Lieferungen gibt es <strong>pro Status</strong>?</li>
+</ul>
+<p>Um diese Fragen zu beantworten, verwenden wir <code>GROUP BY</code> - es fasst Zeilen mit gleichen Werten zusammen und erlaubt <strong>Aggregationen pro Gruppe</strong>.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">gruppenspalte</span><span class="p">,</span><span class="w"> </span><span class="n">aggregatfunktion</span><span class="p">(</span><span class="n">spalte</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">gruppenspalte</span><span class="p">;</span>
+</code></pre></div>
+<details class="example" open="open">
+<summary>Wie viele Lieferungen gibt es pro Lieferant?</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Wie viele Lieferungen gibt es pro Lieferant?</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferant</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       | anzahl
+----------------------+--------
+ Schrauben Meyer      |      2
+ Stahlwerk Salzgitter |      2
+ Elektronik Weber     |      2
+ Aluminium AG         |      2
+ Kunststoff GmbH      |      2
+(5 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Die Datenbank gruppiert alle Lieferungen nach <code>lieferant</code> und zählt, wie viele Lieferungen in jeder Gruppe sind.</p>
+<details class="code">
+<summary>weiteres Beispiel</summary>
+<p><strong>Günstigste und teuerste Lieferung pro Lieferant</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Günstigste und teuerste Lieferung pro Lieferant</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">lieferant</span><span class="p">,</span>
+<span class="w">    </span><span class="k">MIN</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">guenstigster</span><span class="p">,</span>
+<span class="w">    </span><span class="k">MAX</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">teuerster</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferant</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       | guenstigster | teuerster
+----------------------+--------------+-----------
+ Schrauben Meyer      |         0.08 |      0.15
+ Stahlwerk Salzgitter |        12.50 |     45.00
+ Elektronik Weber     |        12.90 |     22.00
+ Aluminium AG         |        18.50 |     25.00
+ Kunststoff GmbH      |         2.30 |      8.75
+(5 rows)
+</code></pre></div>
+</details>
+</details>
+<p>Die <code>GROUP BY</code> Klausel wird fast ausschließlich in Kombination mit einer Aggregatfunktion verwendet. Prinzipiell ist es syntaktisch erlaubt ein <code>GROUP BY</code> ohne Aggregation zu verwenden - semantisch ist es aber meist sinnlos. Das Ergebnis wäre ident mit jenem von <a href="#eindeutige-werte-mit-distinct"><code>DISTINCT</code></a> - es liefert nur die einzigartigen Werte einer Spalte.</p>
+<hr>
+<p>Spannend wird es, wenn wir <strong>mehrere Aggregatfunktionen</strong> gleichzeitig auf dieselbe Gruppierung anwenden. Damit können wir umfassendere Statistiken über unseren Datensatz erzeugen.</p>
+<details class="example" open="open">
+<summary>Umfassende Statistik pro Zielstandort</summary>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">zielstandort</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span><span class="p">,</span>
+<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">menge</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gesamtmenge</span><span class="p">,</span>
+<span class="w">    </span><span class="k">AVG</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">durchschnittspreis</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">zielstandort</span>
+</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">anzahl</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> zielstandort | anzahl | gesamtmenge | durchschnittspreis
+--------------+--------+-------------+---------------------
+ Lager Nord   |      5 |       11450 |  4.7560000000000000
+ Lager Ost    |      3 |         230 | 26.6333333333333333
+ Lager Sued   |      2 |         500 | 21.7500000000000000
+(3 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Für jeden Zielstandort sehen wir die Anzahl der Lieferungen, die Gesamtmenge und den durchschnittlichen Preis pro Einheit.</p>
+</details>
+<hr>
+<p>Um unsere Analyse noch weiter zu verfeinern, können wir auch <strong>mehreren Spalten gleichzeitig</strong> gruppieren. Dabei wird jede einzigartige Kombination der Spaltenwerte separat aufgeführt und die entsprechenden Analysen durchgeführt.</p>
+<details class="example" open="open">
+<summary>Gruppierung nach Zielstandort UND Status</summary>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">zielstandort</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="hll"><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">zielstandort</span><span class="p">,</span><span class="w"> </span><span class="n">status</span>
+</span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">anzahl</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> zielstandort |   status   | anzahl
+--------------+------------+--------
+ Lager Nord   | Geliefert  |      3
+ Lager Nord   | In Transit |      2
+ Lager Ost    | Bestellt   |      2
+ Lager Ost    | Geliefert  |      1
+ Lager Sued   | Bestellt   |      1
+ Lager Sued   | Geliefert  |      1
+(6 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Jede Kombination aus <code>zielstandort</code> und <code>status</code> bildet eine eigene Gruppe.</p>
+</details>
+<hr>
+<details class="warning" open="open">
+<summary>SELECT-Regel für GROUP BY</summary>
+<p>Wenn du <code>GROUP BY</code> verwendest, dürfen <strong>nur</strong> </p>
+<ol>
+<li><strong>Spalten, die in GROUP BY stehen</strong></li>
+<li><strong>Aggregatfunktionen</strong></li>
+</ol>
+<p>in der <code>SELECT</code> Klausel vorkommen. Dies bedeutet, dass nachfolgendes Beispiel zu einem Fehler führen würde:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="n">material</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span><span class="w">  </span><span class="c1">-- ✗ material steht nicht in GROUP BY!</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferant</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>ERROR:  Spalte »lieferungen.material« muss in der GROUP-BY-Klausel erscheinen oder in einer Aggregatfunktion verwendet werden
+LINE 1: SELECT lieferant, material, COUNT(*) AS anzahl  -- ? materia...
+                          ^
+</code></pre></div>
+<p><strong>Warum?</strong> Wenn wir nach <code>lieferant</code> gruppieren, gibt es in der Gruppe "Aluminium AG" zwei verschiedene Materialien ("Aluminiumprofile" und "Aluminiumblech 3mm"). Die Datenbank weiß nicht, welches sie anzeigen soll!</p>
+</details>
+<details class="info" open="open">
+<summary>ORDER BY mit GROUP BY</summary>
+<p>Nach der Gruppierung können wir das Ergebnis mit <code>ORDER BY</code> sortieren:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">anzahl</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Sortiere nach Anzahl (absteigend)</span>
+</code></pre></div>
+<p>Wir können nach:</p>
+<ul>
+<li>Der <strong>Gruppenspalte</strong> sortieren: <code>ORDER BY lieferant</code></li>
+<li>Einem <strong>Aggregat-Ergebnis</strong> sortieren: <code>ORDER BY anzahl DESC</code></li>
+</ul>
+</details>
+<hr>
+<h2 id="gruppen-filtern-mit-having">Gruppen filtern mit <code>HAVING</code></h2>
+<p>Mit <code>WHERE</code> haben wir bis jetzt <strong>einzelne Zeilen</strong> vor der Gruppierung filtern. Was aber, wenn wir <strong>Gruppen nach ihrer Aggregation</strong> filtern möchten?</p>
+<p>Zum Beispiel:</p>
+<ul>
+<li>Welche Lieferanten haben <strong>mehr als 100 Einheiten</strong> geliefert?</li>
+<li>Welche Zielstandorte haben einen <strong>durchschnittlichen Preis über 20 EUR</strong>?</li>
+</ul>
+<p>Hier kommt <code>HAVING</code> ins Spiel - es filtert <strong>Gruppen nach Aggregationsergebnissen</strong>.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">gruppenspalte</span><span class="p">,</span><span class="w"> </span><span class="n">aggregatfunktion</span><span class="p">(</span><span class="n">spalte</span><span class="p">)</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">gruppenspalte</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="n">bedingung_für_aggregat</span><span class="p">;</span>
+</code></pre></div>
+<p>Der Unterschied zwischen  <code>WHERE</code> und <code>HAVING</code> kann wiefolgt zusammengefasst werden</p>
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Aspekt</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">WHERE</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">HAVING</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Filtert</strong></td>
+        <td style="padding:10px 14px;">Einzelne Zeilen</td>
+        <td style="padding:10px 14px;">Gruppen (nach Aggregation)</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Zeitpunkt</strong></td>
+        <td style="padding:10px 14px;">Vor GROUP BY</td>
+        <td style="padding:10px 14px;">Nach GROUP BY</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Kann verwenden</strong></td>
+        <td style="padding:10px 14px;">Spalten, einfache Vergleiche</td>
+        <td style="padding:10px 14px;">Aggregatfunktionen (COUNT, AVG, etc.)</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>Beispiel</strong></td>
+        <td style="padding:10px 14px;"><code>WHERE status = 'Geliefert'</code></td>
+        <td style="padding:10px 14px;"><code>HAVING COUNT(*) &gt; 2</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<details class="example" open="open">
+<summary>Zielstandorte mit durchschnittlichem Preis &gt; 10 EUR</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zielstandorte mit durchschnittlichem Preis &gt; 10 EUR</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">zielstandort</span><span class="p">,</span>
+<span class="w">    </span><span class="k">AVG</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">durchschnittspreis</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">zielstandort</span>
+<span class="hll"><span class="k">HAVING</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> zielstandort | durchschnittspreis  | anzahl
+--------------+---------------------+--------
+ Lager Ost    | 26.6333333333333333 |      3
+ Lager Sued   | 21.7500000000000000 |      2
+(2 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Nur Zielstandorte, deren durchschnittlicher Preis über 10 EUR liegt, werden angezeigt.</p>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Lieferanten mit mehr als 1 Lieferung</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Lieferanten mit mehr als 1 Lieferung</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant       | anzahl
+----------------------+--------
+ Schrauben Meyer      |      2
+ Stahlwerk Salzgitter |      2
+ Elektronik Weber     |      2
+ Aluminium AG         |      2
+ Kunststoff GmbH      |      2
+(5 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Erst werden die Lieferungen nach Lieferant gruppiert und gezählt. Dann werden nur die Gruppen angezeigt, die mehr als 1 Lieferung haben.</p>
+<hr>
+<p><strong>Zielstandorte mit mehr als 1 gelieferter Lieferung</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zielstandorte mit mehr als 1 gelieferter Lieferung</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">zielstandort</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl_geliefert</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="w">      </span><span class="c1">-- Filtert Zeilen VOR Gruppierung</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">zielstandort</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">        </span><span class="c1">-- Filtert Gruppen NACH Aggregation</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> zielstandort | anzahl_geliefert
+--------------+------------------
+ Lager Nord   |                3
+(1 row)
+</code></pre></div>
+<p><strong>Ablauf:</strong></p>
+<ol>
+<li><code>WHERE</code> filtert alle Zeilen → nur Lieferungen mit Status "Geliefert"</li>
+<li><code>GROUP BY</code> gruppiert nach Zielstandort</li>
+<li><code>COUNT(*)</code> zählt Lieferungen pro Zielstandort</li>
+<li><code>HAVING</code> filtert Gruppen → nur Standorte mit mehr als 1 Lieferung</li>
+</ol>
+<hr>
+<p><strong>Lieferanten mit Gesamtmenge &gt; 200 UND durchschnittlichem Preis &lt; 20</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Lieferanten mit Gesamtmenge &gt; 200 UND durchschnittlichem Preis &lt; 20</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">lieferant</span><span class="p">,</span>
+<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">menge</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gesamtmenge</span><span class="p">,</span>
+<span class="w">    </span><span class="k">AVG</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">durchschnittspreis</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">menge</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">preis_pro_einheit</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>    lieferant    | gesamtmenge |   durchschnittspreis
+-----------------+-------------+------------------------
+ Schrauben Meyer |       10000 | 0.11500000000000000000
+ Kunststoff GmbH |         950 |     5.5250000000000000
+(2 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Kombiniert mehrere HAVING-Bedingungen mit <code>AND</code> - nur Lieferanten mit Gesamtmenge &gt; 200 UND durchschnittlichem Preis &lt; 20.</p>
+</details>
+</details>
+<details class="warning" open="open">
+<summary>HAVING ohne GROUP BY?</summary>
+<p>Technisch ist <code>HAVING</code> ohne <code>GROUP BY</code> erlaubt - die gesamte Tabelle wird dann als eine einzige Gruppe behandelt was in den allermeisten Fällen sinnlos ist:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+</details>
+<hr>
+<h2 id="eindeutige-werte-mit-distinct">Eindeutige Werte mit <code>DISTINCT</code></h2>
+<p>Manchmal möchten wir wissen, welche <strong>verschiedenen Werte</strong> in einer Spalte vorkommen - ohne Duplikate. Zum Beispiel: <em>Welche verschiedenen Lieferanten gibt es?</em></p>
+<p>Dafür verwenden wir <strong>DISTINCT</strong> - es entfernt Duplikate und zeigt jeden Wert nur <strong>einmal</strong>.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">spalte</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle</span><span class="p">;</span>
+</code></pre></div>
+<details class="example" open="open">
+<summary>Welche verschiedenen Lieferanten gibt es?</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Welche verschiedenen Lieferanten gibt es?</span>
+<span class="hll"><span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">lieferant</span>
+</span><span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant
+----------------------
+ Schrauben Meyer
+ Stahlwerk Salzgitter
+ Elektronik Weber
+ Aluminium AG
+ Kunststoff GmbH
+(5 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Obwohl es 10 Lieferungen gibt, werden nur die 5 verschiedenen Lieferanten angezeigt (ohne Wiederholungen).</p>
+<details class="code">
+<summary>weitere Beispiele</summary>
+<p><strong>Welche einzigartigen Kombinationen von Zielstandort und Status gibt es?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Welche einzigartigen Kombinationen von Zielstandort und Status gibt es?</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">zielstandort</span><span class="p">,</span><span class="w"> </span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">zielstandort</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> zielstandort |   status
+--------------+------------
+ Lager Nord   | Geliefert
+ Lager Nord   | In Transit
+ Lager Ost    | Bestellt
+ Lager Ost    | Geliefert
+ Lager Sued   | Bestellt
+ Lager Sued   | Geliefert
+(6 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> <code>DISTINCT</code> arbeitet hier auf der <strong>Kombination</strong> beider Spalten - jede einzigartige Kombination wird nur einmal angezeigt.</p>
+<hr>
+<p><strong>Alle Zielstandorte alphabetisch sortiert</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Alle Zielstandorte alphabetisch sortiert</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">zielstandort</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">zielstandort</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> zielstandort
+--------------
+ Lager Nord
+ Lager Ost
+ Lager Sued
+(3 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> <code>DISTINCT</code> kann mit <code>ORDER BY</code> kombiniert werden, um die eindeutigen Werte sortiert auszugeben.</p>
+<hr>
+<p><strong>Welche Lieferanten haben bereits geliefert?</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Welche Lieferanten haben bereits geliefert?</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      lieferant
+----------------------
+ Aluminium AG
+ Elektronik Weber
+ Schrauben Meyer
+ Stahlwerk Salzgitter
+(4 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Erst werden die Zeilen mit <code>WHERE</code> gefiltert, dann werden die eindeutigen Lieferanten ermittelt.</p>
+</details>
+</details>
+<details class="warning" open="open">
+<summary>Performance-Hinweis</summary>
+<p><code>DISTINCT</code> kann bei großen Tabellen <strong>langsam</strong> sein, da die Datenbank alle Zeilen verarbeiten und Duplikate entfernen muss. Wenn möglich, kombiniere es mit <code>WHERE</code>, um die Datenmenge vorher zu reduzieren:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Besser: Erst filtern, dann DISTINCT</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">lieferant</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferungen</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">preis_pro_einheit</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Reduziert Datenmenge</span>
+</code></pre></div>
+</details>
+<hr>
+<h2 id="ubung">Übung ✍️</h2>
+<p>Nun ist es an der Zeit, unser erlerntes Wissen auf unser Gesamtprojekt anzuwenden! In diesem Kapitel erweitern wir das <strong>Produktionsplanungssystem für TecGuy GmbH</strong>.</p>
+<p>Im vorherigen Kapitel haben wir die Datenbank <code>produktionsplanung_db</code> mit den Tabellen <code>produktionsauftraege</code> und <code>maschinen</code> erstellt.</p>
+<hr>
+<details class="info" open="open">
+<summary>Übungsvorbereitung - Datenbank zurücksetzen</summary>
+<p>Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+führe nachfolgendes Setup aus. Es löscht alle bestehenden Daten und erstellt den
+korrekten Ausgangszustand für dieses Kapitel.</p>
+<details class="code">
+<summary>Setup</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zu anderer Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">postgres</span>
+
+<span class="c1">-- Zur Datenbank wechseln (oder neu erstellen)</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">produktionsplanung_db</span>
+
+<span class="c1">-- Tabelle für Maschinen erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinentyp</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produktionshalle</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">anschaffungsjahr</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenstatus</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">wartungsintervall_tage</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle für Produktionsaufträge erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">auftrag_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">auftragsnummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kunde</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produkt</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">startdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- Maschinen-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese Alpha'</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank Delta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse Gamma'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle B'</span><span class="p">,</span><span class="w"> </span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="s1">'Wartung'</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter Beta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle C'</span><span class="p">,</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">);</span>
+
+<span class="c1">-- Produktionsaufträge-Daten einfügen (erste 4 aus Kapitel 1)</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-01'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-18'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-25'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+</code></pre></div>
+</details>
+<hr>
+<p>Wir erweitern nun unsere Tabelle mit zusätzlichen Produktionsaufträgen, um unsere Analysen aussagekräftiger zu machen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Weitere Produktionsaufträge hinzufügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Volkswagen AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-007'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-30'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Abgeschlossen'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-008'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-08'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-16'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Abgeschlossen'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-009'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-05-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geplant'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-010'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-19'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+</code></pre></div>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 1: Einfache Abfragen mit WHERE</summary>
+<p>Zeige alle Aufträge ...</p>
+<ol>
+<li>... von <strong>BMW AG</strong></li>
+<li>... mit Status <strong>"In Produktion"</strong></li>
+<li>... mit einer Menge <strong>größer als 200</strong></li>
+<li>... für das Produkt <strong>"Kolben"</strong></li>
+</ol>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 2: Verknüpfte Bedingungen</summary>
+<p>Zeige alle Aufträge ...</p>
+<ol>
+<li>... von <strong>BMW AG</strong>, die <strong>in Produktion</strong> sind</li>
+<li>... mit <strong>Lieferdatum zwischen</strong> dem <strong>15. und 20. April</strong></li>
+<li>... von <strong>BMW AG, Audi AG oder Mercedes-Benz</strong></li>
+<li>... die <strong>nicht</strong> den Status <strong>"Geplant"</strong> haben</li>
+</ol>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 3: Sortierung und Begrenzung</summary>
+<ol>
+<li>Sortiere alle Aufträge nach <strong>Lieferdatum</strong> (früheste zuerst)</li>
+<li>Zeige die <strong>3 größten Aufträge</strong> (nach Menge)</li>
+<li>Sortiere alle Aufträge erst nach <strong>Kunde</strong> (A-Z), dann nach <strong>Menge</strong> (größte zuerst)</li>
+<li>Zeige die Aufträge 4-6, wenn nach <strong>Lieferdatum</strong> sortiert</li>
+</ol>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 4: Aggregationen und Statistiken</summary>
+<ol>
+<li><strong>Wie viele</strong> Produktionsaufträge gibt es insgesamt?</li>
+<li>Was ist die <strong>Gesamtmenge</strong> aller Aufträge?</li>
+<li>Was ist die <strong>durchschnittliche Menge</strong> pro Auftrag?</li>
+<li>Was ist die <strong>kleinste</strong> und <strong>größte</strong> Menge in einem Auftrag?</li>
+</ol>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 5: Gruppierungen und Analysen</summary>
+<ol>
+<li>Wie viele Aufträge gibt es <strong>pro Kunde</strong>?</li>
+<li>Was ist die <strong>Gesamtmenge pro Produkt</strong>?</li>
+<li>Wie viele Aufträge gibt es <strong>pro Status</strong>?</li>
+<li>Was ist die <strong>durchschnittliche Menge pro Kunde</strong>?</li>
+</ol>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 6: Erweiterte Analysen mit HAVING</summary>
+<ol>
+<li>Welche <strong>Kunden</strong> haben mehr als <strong>2 Aufträge</strong>?</li>
+<li>Welche <strong>Produkte</strong> haben eine <strong>Gesamtmenge über 600</strong>?</li>
+<li>Welche <strong>Kunden</strong> haben eine <strong>durchschnittliche Menge über 250</strong>?</li>
+<li>Welche <strong>Produkte</strong> haben mehr als <strong>1 Auftrag</strong> UND eine <strong>Gesamtmenge über 700</strong>?</li>
+</ol>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 7: Komplexe Abfragen (Kombinationen)</summary>
+<ol>
+<li>Zeige alle <strong>BMW AG Aufträge</strong>, die <strong>in Produktion</strong> sind, <strong>sortiert nach Lieferdatum</strong></li>
+<li>Zeige die <strong>Top 3 Kunden</strong> nach <strong>Gesamtmenge</strong> (absteigend)</li>
+<li>Wie viele Aufträge haben <strong>Status "In Produktion"</strong> pro <strong>Produkt</strong>?</li>
+</ol>
+</details>
+<hr>
+<h2 id="zusammenfassung">Zusammenfassung 📌</h2>
+<ul>
+<li><strong>WHERE</strong> filtert Zeilen nach Bedingungen (<code>=</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>)</li>
+<li><strong>AND</strong>, <strong>OR</strong>, <strong>NOT</strong> kombinieren Bedingungen</li>
+<li><strong>BETWEEN</strong> prüft Wertebereiche, <strong>IN</strong> prüft gegen eine Liste</li>
+<li><strong>LIKE</strong> ermöglicht Mustersuche (<code>%</code> und <code>_</code> als Platzhalter)</li>
+<li><strong>ORDER BY</strong> sortiert Ergebnisse (ASC aufsteigend, DESC absteigend)</li>
+<li><strong>LIMIT</strong> begrenzt die Anzahl der Ergebnisse, <strong>OFFSET</strong> überspringt Zeilen</li>
+<li><strong>Aggregatfunktionen</strong> (COUNT, SUM, AVG, MIN, MAX) fassen Daten zusammen</li>
+<li><strong>GROUP BY</strong> gruppiert Zeilen für Aggregationen</li>
+<li><strong>HAVING</strong> filtert Gruppen (ähnlich wie WHERE, aber für Gruppen)</li>
+<li><strong>DISTINCT</strong> entfernt Duplikate</li>
+</ul>
+<hr>
+<p>Im nächsten Kapitel werden wir lernen, wie man Daten <strong>verändert</strong> (INSERT, UPDATE, DELETE) und unser Produktionsplanungssystem weiter ausbauen!</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://i.imgflip.com/abrhqj.jpg" data-title="SQL Queries" data-desc-position="bottom"><img src="https://i.imgflip.com/abrhqj.jpg" alt="SQL Queries" style="max-width: 70%;"></a>
+    <figcaption>Quelle: <a href="https://i.imgflip.com/abrhqj.jpg">imgflip</a></figcaption>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../relational/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Relationale Datenbanken">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Relationale Datenbanken
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../manipulieren/" class="md-footer__link md-footer__link--next" aria-label="Next: Daten Manipulieren">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Daten Manipulieren
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate", "navigation.footer", "navigation.top", "header.autohide", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/slideshow.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

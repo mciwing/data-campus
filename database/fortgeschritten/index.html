@@ -1,0 +1,2161 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://learn-data.at/database/fortgeschritten/">
+      
+      
+        <link rel="prev" href="../join/">
+      
+      
+        <link rel="next" href="../integritaet/">
+      
+      
+      <link rel="icon" href="../../assets/icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Fortgeschrittene Techniken - Data Campus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/colors.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/slideshow.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fortgeschrittene-abfragen" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Data Campus" class="md-header__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Campus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fortgeschrittene Techniken
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Daten
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Datenbanken
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
+    
+        
+      
+  
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Data Campus" class="md-nav__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    Data Campus
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Daten
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daten
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/datenerfassung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenerfassung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/zahlensysteme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenverarbeitung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/speicherung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speicherung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Datenbanken
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Datenbanken
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relationale Datenbanken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../abfragen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulieren/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modellierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenmodellierung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../join/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#unterabfragen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unterabfragen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unterabfragen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#in-und-not-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      IN und NOT IN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists-und-not-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXISTS und NOT EXISTS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unterabfragen-in-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unterabfragen in FROM
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-funktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      String-Funktionen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datumsfunktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datumsfunktionen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#case-when-bedingte-logik" class="md-nav__link">
+    <span class="md-ellipsis">
+      CASE WHEN - Bedingte Logik
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CASE WHEN - Bedingte Logik">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#case-in-aggregationen" class="md-nav__link">
+    <span class="md-ellipsis">
+      CASE in Aggregationen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coalesce-null-werte-behandeln" class="md-nav__link">
+    <span class="md-ellipsis">
+      COALESCE - NULL-Werte behandeln
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathematische-funktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematische Funktionen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integritaet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaktionen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ausblick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ausblick
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#unterabfragen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unterabfragen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unterabfragen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#in-und-not-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      IN und NOT IN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists-und-not-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      EXISTS und NOT EXISTS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unterabfragen-in-from" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unterabfragen in FROM
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#string-funktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      String-Funktionen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datumsfunktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Datumsfunktionen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#case-when-bedingte-logik" class="md-nav__link">
+    <span class="md-ellipsis">
+      CASE WHEN - Bedingte Logik
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CASE WHEN - Bedingte Logik">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#case-in-aggregationen" class="md-nav__link">
+    <span class="md-ellipsis">
+      CASE in Aggregationen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coalesce-null-werte-behandeln" class="md-nav__link">
+    <span class="md-ellipsis">
+      COALESCE - NULL-Werte behandeln
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathematische-funktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematische Funktionen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+  
+    
+                  
+
+
+  
+  
+
+
+<h1 id="fortgeschrittene-abfragen">Fortgeschrittene Abfragen</h1>
+<p>In den vorangegangenen Kapiteln haben wir die Grundlagen von SQL kennengelernt: Vom <a href="../relational/">Erstellen von Tabellen</a>, über das <a href="../abfragen/">Abfragen</a> und <a href="../manipulieren/">Manipulieren von Daten</a>, bis hin zur <a href="../modellierung/">Modellierung von Beziehungen</a> und dem <a href="../join/">Verknüpfen mehrerer Tabellen mit JOINs</a>. Die Grundlagen sind gelegt!</p>
+<p>Jetzt wird es Zeit für <strong>fortgeschrittene SQL-Techniken</strong>, die unsere Abfragen noch mächtiger machen. Diese Techniken werden uns helfen, komplexe Anfragen elegant zu lösen und unsere Daten auf neue Art und Weise zu analysieren.</p>
+<p>In diesem Kapitel lernen wir:</p>
+<ul>
+<li><strong>Unterabfragen (Subqueries)</strong> – Abfragen in Abfragen</li>
+<li><strong>String-Funktionen</strong> – Texte manipulieren</li>
+<li><strong>Datumsfunktionen</strong> – Mit Datum und Zeit arbeiten</li>
+<li><strong>CASE-WHEN</strong> – Bedingte Logik in SQL</li>
+<li><strong>COALESCE</strong> – <code>NULL</code>-Werte elegant behandeln</li>
+</ul>
+<hr>
+<h2 id="unterabfragen">Unterabfragen</h2>
+<p>Eine <strong>Unterabfrage</strong> (Subquery) ist eine <code>SELECT</code>-Abfrage <strong>innerhalb</strong> einer anderen Abfrage. Diese Technik erlaubt es uns, komplexe Fragestellungen in einem einzigen SQL-Statement zu lösen, ohne temporäre Ergebnisse manuell weiterverarbeiten zu müssen. Unterabfragen sind besonders nützlich, wenn wir das Ergebnis einer Berechnung direkt in einer anderen Abfrage verwenden möchten.</p>
+<details class="info" open="open">
+<summary>Datenbank-Setup</summary>
+<p>Für die Beispiele in diesem Kapitel verwenden wir eine <strong>Personal-Datenbank</strong> (<code>personal_db</code>), die ein typisches HR-System eines Unternehmens abbildet. Diese Datenbank hilft uns, fortgeschrittene SQL-Techniken praxisnah zu üben.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Datenbank erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">personal_db</span><span class="p">;</span>
+
+<span class="c1">-- Zur Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">personal_db</span>
+
+<span class="c1">-- Tabelle: Abteilungen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">abteilungen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">abteilung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">abteilungsname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">standort</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">budget</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Mitarbeiter</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">mitarbeiter_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">vorname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nachname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">email</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">eintrittsdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gehalt</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bonus</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">abteilung_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">geburtstag</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">abteilung_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">abteilungen</span><span class="p">(</span><span class="n">abteilung_id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Testdaten: Abteilungen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">abteilungen</span><span class="w"> </span><span class="p">(</span><span class="n">abteilungsname</span><span class="p">,</span><span class="w"> </span><span class="n">standort</span><span class="p">,</span><span class="w"> </span><span class="n">budget</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Produktion'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">500000</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Entwicklung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gebaeude Nord'</span><span class="p">,</span><span class="w"> </span><span class="mi">800000</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Vertrieb'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gebaeude Sued'</span><span class="p">,</span><span class="w"> </span><span class="mi">600000</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Verwaltung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hauptgebaeude'</span><span class="p">,</span><span class="w"> </span><span class="mi">400000</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Qualitaetssicherung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle B'</span><span class="p">,</span><span class="w"> </span><span class="mi">350000</span><span class="p">.</span><span class="mi">00</span><span class="p">);</span>
+
+<span class="c1">-- Testdaten: Mitarbeiter</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="w"> </span><span class="p">(</span><span class="n">vorname</span><span class="p">,</span><span class="w"> </span><span class="n">nachname</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">,</span><span class="w"> </span><span class="n">eintrittsdatum</span><span class="p">,</span><span class="w"> </span><span class="n">gehalt</span><span class="p">,</span><span class="w"> </span><span class="n">bonus</span><span class="p">,</span><span class="w"> </span><span class="n">abteilung_id</span><span class="p">,</span><span class="w"> </span><span class="n">geburtstag</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Thomas'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mueller'</span><span class="p">,</span><span class="w"> </span><span class="s1">'thomas.mueller@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2018-03-15'</span><span class="p">,</span><span class="w"> </span><span class="mi">65000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'1985-06-20'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Sandra'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schmidt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'sandra.schmidt@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2019-07-01'</span><span class="p">,</span><span class="w"> </span><span class="mi">72000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">6000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'1987-11-12'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Klaus'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Weber'</span><span class="p">,</span><span class="w"> </span><span class="s1">'klaus.weber@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2015-01-10'</span><span class="p">,</span><span class="w"> </span><span class="mi">58000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'1980-04-08'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Anna'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Fischer'</span><span class="p">,</span><span class="w"> </span><span class="s1">'anna.fischer@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2020-09-01'</span><span class="p">,</span><span class="w"> </span><span class="mi">68000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">4500</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'1990-09-25'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Michael'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Becker'</span><span class="p">,</span><span class="w"> </span><span class="s1">'michael.becker@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2021-02-15'</span><span class="p">,</span><span class="w"> </span><span class="mi">55000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">3000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1992-02-14'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Julia'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Wagner'</span><span class="p">,</span><span class="w"> </span><span class="s1">'julia.wagner@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2017-11-20'</span><span class="p">,</span><span class="w"> </span><span class="mi">62000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'1988-07-30'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hoffmann'</span><span class="p">,</span><span class="w"> </span><span class="s1">'peter.hoffmann@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2022-05-01'</span><span class="p">,</span><span class="w"> </span><span class="mi">51000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'1995-03-18'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Lisa'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schulz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'lisa.schulz@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2016-08-12'</span><span class="p">,</span><span class="w"> </span><span class="mi">70000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">7000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'1984-12-05'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Martin'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Koch'</span><span class="p">,</span><span class="w"> </span><span class="s1">'martin.koch@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2023-01-15'</span><span class="p">,</span><span class="w"> </span><span class="mi">48000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'1998-05-22'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Sarah'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Zimmermann'</span><span class="p">,</span><span class="w"> </span><span class="s1">'sarah.zimmermann@firma.de'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2019-04-20'</span><span class="p">,</span><span class="w"> </span><span class="mi">66000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">5500</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'1989-10-11'</span><span class="p">);</span>
+</code></pre></div>
+<p>Diese Tabellen enthalten typische HR-Daten: Mitarbeiterinformationen, Gehälter, Bonuszahlungen und Abteilungszuordnungen.</p>
+</details>
+<hr>
+<p>Um uns Unterabfragen besser vorstellen zu können, betrachten wir folgendes Beispiel. Stellen wir uns vor, wir haben folgende Frage:</p>
+<blockquote>
+<p>Welche Mitarbeiter verdienen mehr als das durchschnittliche Gehalt?</p>
+</blockquote>
+<p>Die Frage an sich ist relativ einfach zu beantworten. Wir können den Durchschnitt der Gehälter berechnen und dann die Mitarbeiter filtern, die mehr verdienen. In einem <strong>zweistufigen Vorgehen</strong> könnte dies so aussehen:</p>
+<details class="example" open="open">
+<summary>Zweistufiges Vorgehen</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- 1. Durchschnitt berechnen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">gehalt</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Ergebnis: 61500.00</span>
+
+<span class="c1">-- 2. Dann das Ergebnis manuell verwenden</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">vorname</span><span class="p">,</span><span class="w"> </span><span class="n">nachname</span><span class="p">,</span><span class="w"> </span><span class="n">gehalt</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">61500</span><span class="p">.</span><span class="mi">00</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname |  nachname  |  gehalt
+---------+------------+----------
+ Thomas  | Mueller    | 65000.00
+ Sandra  | Schmidt    | 72000.00
+ Anna    | Fischer    | 68000.00
+ Julia   | Wagner     | 62000.00
+ Lisa    | Schulz     | 70000.00
+ Sarah   | Zimmermann | 66000.00
+(6 rows)
+</code></pre></div>
+</details>
+<p>So würden wir in der ersten Abfrage das Durchschnittsgehalt berechnen und in einer zweiten Abfrage schlussendlich das eigentliche Ergebnis erhalten - die Mitarbeiter, die überdurchschnittlich verdienen.</p>
+<p>Da Programmierer von Haus aus faul sind, wollen wir diese Aufgabe natürlich in einem Schritt lösen. Dazu verwenden wir eine <strong>Unterabfrage</strong>.</p>
+<details class="example" open="open">
+<summary>Unterabfrage</summary>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">vorname</span><span class="p">,</span><span class="w"> </span><span class="n">nachname</span><span class="p">,</span><span class="w"> </span><span class="n">gehalt</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">gehalt</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname |  nachname  |  gehalt
+---------+------------+----------
+ Sandra  | Schmidt    | 72000.00
+ Lisa    | Schulz     | 70000.00
+ Anna    | Fischer    | 68000.00
+ Sarah   | Zimmermann | 66000.00
+ Thomas  | Mueller    | 65000.00
+ Julia   | Wagner     | 62000.00
+(6 rows)
+</code></pre></div>
+<p>Die innere Abfrage <code>(SELECT AVG(gehalt) FROM mitarbeiter)</code> wird <strong>zuerst</strong> ausgeführt und liefert einen Wert (61500.00), der dann in der äußeren Abfrage verwendet wird. Das ist der große Vorteil von Unterabfragen: Wir müssen nicht erst manuell den Durchschnitt berechnen und dann in eine zweite Abfrage einsetzen - SQL erledigt dies automatisch für uns in einem einzigen Schritt.</p>
+</details>
+<hr>
+<h3 id="in-und-not-in"><code>IN</code> und <code>NOT IN</code></h3>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://i.imgflip.com/ac45wn.jpg" data-title="IN und NOT IN" data-desc-position="bottom"><img src="https://i.imgflip.com/ac45wn.jpg" alt="IN und NOT IN" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://i.imgflip.com/ac45wn.jpg">imgflip</a></figcaption>
+</div>
+
+<p>Eine besondere Art von Unterabfrage sind die <strong><code>IN</code>- und <code>NOT IN</code>-Operatoren</strong>. Diese Operatoren erlauben es uns, zu prüfen, ob ein Wert in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Dies ist besonders nützlich, wenn die Unterabfrage mehrere Ergebniszeilen liefert und wir prüfen wollen, ob unser Wert in dieser Liste vorkommt. Statt eines einzelnen Wertes wie beim einfachen Vergleich, gibt die Unterabfrage hier unter Umständen eine ganze Liste von Werten zurück.</p>
+<details class="example" open="open">
+<summary>Mitarbeiter in technischen Abteilungen</summary>
+<p>Schauen wir uns das Ganze wieder anhand eines Beispiels an. Wir möchten gerne wissen, welche Mitarbeiter in den technischen Abteilungen (Produktion, Entwicklung, Qualitätssicherung) arbeiten.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Mitarbeiter in technischen Abteilungen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">vorname</span><span class="p">,</span><span class="w"> </span><span class="n">nachname</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">abteilung_id</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">abteilung_id</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">abteilungen</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">abteilungsname</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Produktion'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Entwicklung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Qualitaetssicherung'</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname |  nachname
+---------+------------
+ Thomas  | Mueller
+ Sandra  | Schmidt
+ Klaus   | Weber
+ Anna    | Fischer
+ Lisa    | Schulz
+ Martin  | Koch
+ Sarah   | Zimmermann
+(7 rows)
+</code></pre></div>
+<p>Der Ablauf dieser Abfrage kann man wie folgt beschreiben:</p>
+<ol>
+<li><strong>Innere Abfrage:</strong><ul>
+<li>filtert die Abteilungen nach Namen (Produktion, Entwicklung, Qualitätssicherung)</li>
+<li>liefert eine Liste von <code>abteilung_id</code> zurück (z.B. 1, 2, 5)</li>
+</ul>
+</li>
+<li><strong>Äußere Abfrage:</strong><ul>
+<li>filtert die Mitarbeiter, deren <code>abteilung_id</code> in der Liste der inneren Abfrage ist</li>
+<li>liefert Vor- und Nachnamen der Mitarbeiter zurück</li>
+</ul>
+</li>
+</ol>
+</details>
+<p>Neben dem <code>IN</code>-Operator gibt es auch den <code>NOT IN</code>-Operator. Dieser Operator überprüft, ob ein Wert <strong>NICHT</strong> in einer Menge von Werten (aus einer Unterabfrage) enthalten ist. Das Vorgehen und deren Verwendung ist analog.</p>
+<details class="example" open="open">
+<summary>Mitarbeiter NICHT in technischen Abteilungen</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Mitarbeiter NICHT in technischen Abteilungen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">vorname</span><span class="p">,</span><span class="w"> </span><span class="n">nachname</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">abteilung_id</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">abteilung_id</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">abteilungen</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">abteilungsname</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Produktion'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Entwicklung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Qualitaetssicherung'</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname | nachname
+---------+----------
+ Michael | Becker
+ Julia   | Wagner
+ Peter   | Hoffmann
+(3 rows)
+</code></pre></div>
+</details>
+<hr>
+<h3 id="exists-und-not-exists">EXISTS und NOT EXISTS</h3>
+<p><strong>EXISTS</strong> prüft, ob eine Unterabfrage <strong>mindestens ein Ergebnis</strong> liefert. Im Gegensatz zu <code>IN</code>, das die gesamte Ergebnisliste der Unterabfrage durchgeht, stoppt <code>EXISTS</code> bereits, sobald das erste passende Ergebnis gefunden wurde. Das macht <code>EXISTS</code> oft performanter, besonders bei großen Datenmengen. </p>
+<details class="tip" open="open">
+<summary><code>EXISTS</code> vs <code>NOT IN</code></summary>
+<p>Ein weiterer Vorteil: <code>EXISTS</code> hat keine Probleme mit <code>NULL</code>-Werten, die bei <code>NOT IN</code> zu unerwartetem Verhalten führen können.</p>
+</details>
+<p>Betrachten wir die Operatoren wieder anhand von Beispielen: </p>
+<div class="grid cards">
+<ul>
+<li>
+<p><strong>EXISTS</strong></p>
+<hr>
+<details class="example" open="open">
+<summary>Mindestens einen Mitarbeiter</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Welche Abteilungen haben mindestens einen Mitarbeiter?</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">abteilungsname</span><span class="p">,</span><span class="w"> </span><span class="n">standort</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">abteilungen</span><span class="w"> </span><span class="n">a</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="w"> </span><span class="n">m</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">abteilung_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">abteilung_id</span>
+<span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>   abteilungsname    |   standort
+---------------------+---------------
+ Produktion          | Halle A
+ Entwicklung         | Gebaeude Nord
+ Vertrieb            | Gebaeude Sued
+ Verwaltung          | Hauptgebaeude
+ Qualitaetssicherung | Halle B
+(5 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Für jede Abteilung prüft die Unterabfrage, ob es zugeordnete Mitarbeiter gibt. <code>EXISTS</code> ist wahr, sobald <strong>mindestens eine Zeile</strong> gefunden wird.</p>
+</details>
+</li>
+<li>
+<p><strong>NOT EXISTS</strong></p>
+<hr>
+<details class="example" open="open">
+<summary>Abteilungen ohne Mitarbeiter</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Abteilungen OHNE Mitarbeiter finden</span>
+<span class="c1">-- (Beispiel: Wenn wir eine leere Abteilung einfügen)</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">abteilungen</span><span class="w"> </span><span class="p">(</span><span class="n">abteilungsname</span><span class="p">,</span><span class="w"> </span><span class="n">standort</span><span class="p">,</span><span class="w"> </span><span class="n">budget</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'Forschung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Gebaeude West'</span><span class="p">,</span><span class="w"> </span><span class="mi">1000000</span><span class="p">.</span><span class="mi">00</span><span class="p">);</span>
+
+<span class="c1">-- Jetzt suchen wir leere Abteilungen</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">abteilungsname</span><span class="p">,</span><span class="w"> </span><span class="n">standort</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">abteilungen</span><span class="w"> </span><span class="n">a</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="w"> </span><span class="n">m</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">abteilung_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">abteilung_id</span>
+<span class="p">);</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">Output</span><pre><span></span><code><span class="w"> </span><span class="n">abteilungsname</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="n">standort</span>
+<span class="c1">----------------+---------------</span>
+<span class="w"> </span><span class="n">Forschung</span><span class="w">      </span><span class="o">|</span><span class="w"> </span><span class="n">Gebaeude</span><span class="w"> </span><span class="n">West</span>
+<span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="k">row</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Erklärung:</strong> Für jede Abteilung prüft die Unterabfrage, ob es keine zugeordneten Mitarbeiter gibt. <code>NOT EXISTS</code> ist wahr, sobald <strong>keine Zeile</strong> gefunden wird.</p>
+</details>
+</li>
+</ul>
+</div>
+<hr>
+<h3 id="unterabfragen-in-from">Unterabfragen in <code>FROM</code></h3>
+<p>Man kann eine Unterabfrage auch in der <strong><code>FROM</code>-Klausel</strong> verwenden – als wäre sie eine Tabelle! Diese sogenannten "Derived Tables" oder "Inline Views" sind besonders nützlich, wenn wir mit aggregierten Daten weiterarbeiten möchten. Da wir in der <code>WHERE</code>-Klausel keine Aggregatfunktionen direkt verwenden können, erstellen wir eine Unterabfrage, die die Aggregation durchführt, und können dann auf deren Ergebnis filtern.</p>
+<details class="example" open="open">
+<summary>Unterabfragen in <code>FROM</code></summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Durchschnittliches Gehalt pro Abteilung, aber nur Abteilungen mit Durchschnitt &gt; 60000</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="n">abteilung</span><span class="p">,</span><span class="w"> </span><span class="n">avg_gehalt</span>
+<span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">SELECT</span>
+<span class="w">        </span><span class="n">a</span><span class="p">.</span><span class="n">abteilungsname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">abteilung</span><span class="p">,</span>
+<span class="w">        </span><span class="k">AVG</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">gehalt</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">avg_gehalt</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="w"> </span><span class="n">m</span>
+<span class="w">    </span><span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">abteilungen</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">abteilung_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">abteilung_id</span>
+<span class="w">    </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">abteilungsname</span>
+<span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">abteilungs_gehaelter</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">avg_gehalt</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">60000</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">avg_gehalt</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>      abteilung      |     avg_gehalt
+---------------------+--------------------
+ Qualitaetssicherung | 70000.000000000000
+ Entwicklung         | 68666.666666666667
+ Verwaltung          | 62000.00000000000
+(3 rows)
+</code></pre></div>
+</details>
+<details class="warning" open="open">
+<summary>Wichtig</summary>
+<p>Die Unterabfrage <strong>muss einen Alias</strong> haben (hier: <code>AS abteilungs_gehaelter</code>)!</p>
+</details>
+<hr>
+<h2 id="string-funktionen">String-Funktionen</h2>
+<p>SQL bietet viele Funktionen zur Textverarbeitung. Diese sind besonders nützlich, um Daten zu bereinigen, zu formatieren oder für Reports aufzubereiten. Ob wir Texte zusammenfügen, Groß-/Kleinschreibung ändern oder Teile eines Strings extrahieren möchten - für fast jede Anforderung gibt es eine passende Funktion.</p>
+<p>Die wichtigsten String-Funktionen sind nachfolgend aufgelistet:</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Funktion</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>CONCAT(s1, s2, ...)</code></td>
+        <td style="padding:10px 14px;">Strings zusammenfügen</td>
+        <td style="padding:10px 14px;"><code>CONCAT('Max', ' ', 'Müller')</code> → 'Max Müller'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>UPPER(s)</code></td>
+        <td style="padding:10px 14px;">In Großbuchstaben</td>
+        <td style="padding:10px 14px;"><code>UPPER('Anna')</code> → 'ANNA'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LOWER(s)</code></td>
+        <td style="padding:10px 14px;">In Kleinbuchstaben</td>
+        <td style="padding:10px 14px;"><code>LOWER('LISA')</code> → 'lisa'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>SUBSTRING(s, start, len)</code></td>
+        <td style="padding:10px 14px;">Teil eines Strings</td>
+        <td style="padding:10px 14px;"><code>SUBSTRING('Hallo', 1, 3)</code> → 'Hal'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LENGTH(s)</code></td>
+        <td style="padding:10px 14px;">Länge eines Strings</td>
+        <td style="padding:10px 14px;"><code>LENGTH('Hallo')</code> → 5</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>TRIM(s)</code></td>
+        <td style="padding:10px 14px;">Leerzeichen entfernen</td>
+        <td style="padding:10px 14px;"><code>TRIM('  Hi  ')</code> → 'Hi'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>REPLACE(s, von, zu)</code></td>
+        <td style="padding:10px 14px;">Text ersetzen</td>
+        <td style="padding:10px 14px;"><code>REPLACE('Hallo', 'a', 'e')</code> → 'Hello'</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Nun schauen wir uns an, wie wir diese String-Funktionen in der Praxis einsetzen können. Die folgenden Beispiele zeigen typische Anwendungsfälle aus dem Alltag:</p>
+<details class="example" open="open">
+<summary>Vollständiger Name</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Vollständiger Name aus Vor- und Nachname</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">CONCAT</span><span class="p">(</span><span class="n">vorname</span><span class="p">,</span><span class="w"> </span><span class="s1">' '</span><span class="p">,</span><span class="w"> </span><span class="n">nachname</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">vollstaendiger_name</span><span class="p">,</span>
+<span class="w">    </span><span class="n">email</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vollstaendiger_name |           email
+---------------------+---------------------------
+ Thomas Mueller      | thomas.mueller@firma.de
+ Sandra Schmidt      | sandra.schmidt@firma.de
+ Klaus Weber         | klaus.weber@firma.de
+ Anna Fischer        | anna.fischer@firma.de
+ Michael Becker      | michael.becker@firma.de
+ Julia Wagner        | julia.wagner@firma.de
+ Peter Hoffmann      | peter.hoffmann@firma.de
+ Lisa Schulz         | lisa.schulz@firma.de
+ Martin Koch         | martin.koch@firma.de
+ Sarah Zimmermann    | sarah.zimmermann@firma.de
+(10 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Wir fügen Vor- und Nachname mit einem Leerzeichen zusammen zu einem vollständigen Namen.</p>
+<details class="code">
+<summary>Weitere Beispiele</summary>
+<details class="example" open="open">
+<summary>Kombination mehrerer Funktionen</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Mitarbeiter-Codes generieren (Format: INITIALEN-JAHR-ID)</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">vorname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nachname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">CONCAT</span><span class="p">(</span>
+<span class="w">        </span><span class="k">UPPER</span><span class="p">(</span><span class="k">SUBSTRING</span><span class="p">(</span><span class="n">vorname</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)),</span>
+<span class="w">        </span><span class="k">UPPER</span><span class="p">(</span><span class="k">SUBSTRING</span><span class="p">(</span><span class="n">nachname</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)),</span>
+<span class="w">        </span><span class="s1">'-'</span><span class="p">,</span>
+<span class="w">        </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">YEAR</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">eintrittsdatum</span><span class="p">),</span>
+<span class="w">        </span><span class="s1">'-'</span><span class="p">,</span>
+<span class="w">        </span><span class="n">LPAD</span><span class="p">(</span><span class="n">mitarbeiter_id</span><span class="p">::</span><span class="nb">TEXT</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'0'</span><span class="p">)</span>
+<span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mitarbeitercode</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">mitarbeiter_id</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname |  nachname  | mitarbeitercode
+---------+------------+-----------------
+ Thomas  | Mueller    | TM-2018-001
+ Sandra  | Schmidt    | SS-2019-002
+ Klaus   | Weber      | KW-2015-003
+ Anna    | Fischer    | AF-2020-004
+ Michael | Becker     | MB-2021-005
+ Julia   | Wagner     | JW-2017-006
+ Peter   | Hoffmann   | PH-2022-007
+ Lisa    | Schulz     | LS-2016-008
+ Martin  | Koch       | MK-2023-009
+ Sarah   | Zimmermann | SZ-2019-010
+(10 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Wir generieren einen Mitarbeitercode. Die Initialen (erster Buchstabe von Vor- und Nachname) werden in Großbuchstaben umgewandelt, das Eintrittsjahr und die ID (mit Nullen aufgefüllt auf 3 Stellen) werden angehängt.</p>
+</details>
+</details>
+</details>
+<p>Mit diesen String-Funktionen können wir also sehr einfach und effizient Texte verarbeiten und formatieren und müssen dies nicht in der Anwendungsschicht tun. Und wie sieht es bei Daten im Datumsformat aus?</p>
+<hr>
+<h2 id="datumsfunktionen">Datumsfunktionen</h2>
+<p>PostgreSQL bietet auch - neben den String-Funktionen - umfangreiche Funktionen für Datum und Zeit. Die Arbeit mit Datums- und Zeitwerten ist in vielen Anwendungen zentral - sei es für Protokolle, Zeitstempel, Berechnungen von Zeiträumen oder für zeitbasierte Analysen. Mit den Datumsfunktionen können wir das aktuelle Datum abrufen, Teile eines Datums extrahieren oder Zeitdifferenzen berechnen. Die wichtigsten Datumsfunktionen sind nachfolgend aufgelistet:</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Funktion</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>CURRENT_DATE</code></td>
+        <td style="padding:10px 14px;">Heutiges Datum</td>
+        <td style="padding:10px 14px;"><code>2024-03-15</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>CURRENT_TIME</code></td>
+        <td style="padding:10px 14px;">Aktuelle Uhrzeit</td>
+        <td style="padding:10px 14px;"><code>14:30:00</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>NOW()</code></td>
+        <td style="padding:10px 14px;">Datum und Zeit</td>
+        <td style="padding:10px 14px;"><code>2024-03-15 14:30:00</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>EXTRACT(teil FROM datum)</code></td>
+        <td style="padding:10px 14px;">Jahr, Monat, Tag extrahieren</td>
+        <td style="padding:10px 14px;"><code>EXTRACT(YEAR FROM datum)</code></td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>AGE(datum1, datum2)</code></td>
+        <td style="padding:10px 14px;">Zeitunterschied</td>
+        <td style="padding:10px 14px;"><code>AGE('2024-01-01', '2020-01-01')</code></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Nun wollen wir uns praktische Anwendungsfälle ansehen. Unsere Mitarbeitertabelle enthält bereits die Felder <code>eintrittsdatum</code> und <code>geburtstag</code>, mit denen wir arbeiten können. </p>
+<details class="example" open="open">
+<summary>EXTRACT &amp; AGE - Betriebszugehörigkeit</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Betriebszugehörigkeit in Jahren berechnen</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">vorname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nachname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">eintrittsdatum</span><span class="p">,</span>
+<span class="w">    </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">YEAR</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">AGE</span><span class="p">(</span><span class="k">CURRENT_DATE</span><span class="p">,</span><span class="w"> </span><span class="n">eintrittsdatum</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">jahre_im_unternehmen</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">jahre_im_unternehmen</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname |  nachname  | eintrittsdatum | jahre_im_unternehmen
+---------+------------+----------------+----------------------
+ Klaus   | Weber      | 2015-01-10     |                   10
+ Lisa    | Schulz     | 2016-08-12     |                    9
+ Julia   | Wagner     | 2017-11-20     |                    8
+ Thomas  | Mueller    | 2018-03-15     |                    7
+ Sandra  | Schmidt    | 2019-07-01     |                    6
+ Sarah   | Zimmermann | 2019-04-20     |                    6
+ Anna    | Fischer    | 2020-09-01     |                    5
+ Michael | Becker     | 2021-02-15     |                    4
+ Peter   | Hoffmann   | 2022-05-01     |                    3
+ Martin  | Koch       | 2023-01-15     |                    2
+(10 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Wir berechnen die Betriebszugehörigkeit in Jahren, indem wir die Differenz zwischen dem aktuellen Datum und dem Eintrittsdatum berechnen. <code>AGE</code> gibt die Zeitdifferenz zurück, aus der wir mit <code>EXTRACT(YEAR ...)</code> die Jahre extrahieren.</p>
+<details class="code">
+<summary>Weitere Beispiele</summary>
+<details class="example" open="open">
+<summary>Mitarbeiter, die diesen Monat Geburtstag haben</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Mitarbeiter, die diesen Monat Geburtstag haben</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">vorname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nachname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">geburtstag</span><span class="p">,</span>
+<span class="w">    </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">YEAR</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">AGE</span><span class="p">(</span><span class="k">CURRENT_DATE</span><span class="p">,</span><span class="w"> </span><span class="n">geburtstag</span><span class="p">))</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="k">alter</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">MONTH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">geburtstag</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">MONTH</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="k">CURRENT_DATE</span><span class="p">)</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">DAY</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">geburtstag</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>vorname |  nachname  | geburtstag | alter
+---------+------------+------------+-------
+Sandra  | Schmidt    | 1987-11-12 |    38
+(1 row)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Wir filtern Mitarbeiter, deren Geburtsmonat mit dem aktuellen Monat übereinstimmt. Zusätzlich berechnen wir das Alter und sortieren nach dem Geburtstag im Monat.</p>
+</details>
+</details>
+</details>
+<hr>
+<h2 id="case-when-bedingte-logik"><code>CASE WHEN</code> - Bedingte Logik</h2>
+<p>Mit <code>CASE WHEN</code> können wir bedingte Logik direkt in SQL einbauen – ähnlich wie <code>if-else</code> in Programmiersprachen. Dies ist besonders nützlich, um Daten zu kategorisieren, Berechnungen basierend auf Bedingungen durchzuführen oder benutzerdefinierte Ausgaben zu erzeugen. Statt die Logik in der Anwendungsschicht zu implementieren, können wir sie direkt in der Datenbankabfrage unterbringen, was oft effizienter und lesbarer ist.</p>
+<p>Der allgemeine Syntax ist wie folgt:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">CASE</span>
+<span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">bedingung1</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">ergebnis1</span>
+<span class="w">    </span><span class="k">WHEN</span><span class="w"> </span><span class="n">bedingung2</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="n">ergebnis2</span>
+<span class="w">    </span><span class="k">ELSE</span><span class="w"> </span><span class="n">standard_ergebnis</span>
+<span class="k">END</span>
+</code></pre></div>
+<p>Bei der Verwendung von <code>CASE</code> können wir beliebig viele Bedingungen angeben und ein Standardergebnis festlegen, das verwendet wird, wenn keine der Bedingungen erfüllt ist. Betrachten wir das wieder anhand eines praktischen Beispiels.</p>
+<details class="example" open="open">
+<summary>Gehaltsstufen kategorisieren</summary>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">vorname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nachname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gehalt</span><span class="p">,</span>
+<span class="w">    </span><span class="k">CASE</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'Senior'</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'Mid-Level'</span>
+<span class="w">        </span><span class="k">WHEN</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="s1">'Junior'</span>
+<span class="w">        </span><span class="k">ELSE</span><span class="w"> </span><span class="s1">'Einsteiger'</span>
+<span class="w">    </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gehaltsstufe</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname |  nachname  |  gehalt  | gehaltsstufe
+---------+------------+----------+--------------
+ Sandra  | Schmidt    | 72000.00 | Senior
+ Lisa    | Schulz     | 70000.00 | Senior
+ Anna    | Fischer    | 68000.00 | Mid-Level
+ Sarah   | Zimmermann | 66000.00 | Mid-Level
+ Thomas  | Mueller    | 65000.00 | Mid-Level
+ Julia   | Wagner     | 62000.00 | Mid-Level
+ Klaus   | Weber      | 58000.00 | Junior
+ Michael | Becker     | 55000.00 | Junior
+ Peter   | Hoffmann   | 51000.00 | Junior
+ Martin  | Koch       | 48000.00 | Einsteiger
+(10 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Wir kategorisieren Mitarbeiter nach ihrem Gehalt in Gehaltsstufen: Senior (≥70.000€), Mid-Level (≥60.000€), Junior (≥50.000€) oder Einsteiger (&lt;50.000€).</p>
+</details>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://miro.medium.com/v2/1*xuPHZyJRdG6j4-3e6cR65A.jpeg" data-title="CapsLock" data-desc-position="bottom"><img src="https://miro.medium.com/v2/1*xuPHZyJRdG6j4-3e6cR65A.jpeg" alt="CapsLock" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://miro.medium.com/v2/1*xuPHZyJRdG6j4-3e6cR65A.jpeg">Medium</a></figcaption>
+</div>
+
+<h3 id="case-in-aggregationen">CASE in Aggregationen</h3>
+<p>CASE WHEN kann auch innerhalb von <a href="../abfragen/#aggregatfunktionen-daten-zusammenfassen">Aggregatfunktionen</a> verwendet werden, um selektive Zählungen durchzuführen. Dies ist besonders nützlich für Auswertungen und Berichte:</p>
+<details class="example" open="open">
+<summary>Mitarbeiter pro Gehaltsstufe</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Wie viele Mitarbeiter gibt es pro Gehaltsstufe?</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">END</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">senior</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60000</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">70000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">END</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">mid_level</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">50000</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">60000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">END</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">junior</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">CASE</span><span class="w"> </span><span class="k">WHEN</span><span class="w"> </span><span class="n">gehalt</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">50000</span><span class="w"> </span><span class="k">THEN</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">END</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">einsteiger</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gesamt</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> senior | mid_level | junior | einsteiger | gesamt
+--------+-----------+--------+------------+--------
+      2 |         4 |      3 |          1 |     10
+(1 row)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Wir zählen die Mitarbeiter pro Gehaltsstufe. Dies ist besonders nützlich für HR-Berichte und Gehaltsanalysen.</p>
+</details>
+<hr>
+<h2 id="coalesce-null-werte-behandeln">COALESCE - NULL-Werte behandeln</h2>
+<p><strong>COALESCE</strong> gibt den ersten <strong>nicht-NULL-Wert</strong> aus einer Liste zurück. Diese Funktion ist extrem nützlich im Umgang mit NULL-Werten, die in Datenbanken häufig vorkommen. Statt komplizierte CASE-WHEN-Konstrukte zu schreiben oder NULL-Werte in der Anwendung zu behandeln, bietet COALESCE eine elegante und lesbare Lösung, um Standardwerte für fehlende Daten bereitzustellen. Der Allgemeine Syntax ist wie folgt:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">COALESCE</span><span class="p">(</span><span class="n">wert1</span><span class="p">,</span><span class="w"> </span><span class="n">wert2</span><span class="p">,</span><span class="w"> </span><span class="n">wert3</span><span class="p">,</span><span class="w"> </span><span class="p">...,</span><span class="w"> </span><span class="n">standard</span><span class="p">)</span>
+</code></pre></div>
+<p>Wir sehen, dass wir mehrere Werte (im Normalfall Funktionen oder andere Spaltenwerte) angeben können und der erste nicht-NULL-Wert wird zurückgegeben. Wenn alle Werte NULL sind, wird der Standardwert zurückgegeben. Betrachten wir wieder ein praktisches Beispiel. </p>
+<details class="example" open="open">
+<summary>Bonuszahlungen mit Standardwert</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Gesamtvergütung inklusive Bonus (NULL-Bonuswerte als 0 behandeln)</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">vorname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">nachname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gehalt</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bonus</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">bonus</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">bonus_bereinigt</span><span class="p">,</span>
+<span class="w">    </span><span class="n">gehalt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">COALESCE</span><span class="p">(</span><span class="n">bonus</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gesamtverguetung</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">mitarbeiter</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">gesamtverguetung</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> vorname |  nachname  |  gehalt  |  bonus  | bonus_bereinigt | gesamtverguetung
+---------+------------+----------+---------+-----------------+------------------
+ Sandra  | Schmidt    | 72000.00 | 6000.00 |         6000.00 |         78000.00
+ Lisa    | Schulz     | 70000.00 | 7000.00 |         7000.00 |         77000.00
+ Anna    | Fischer    | 68000.00 | 4500.00 |         4500.00 |         72500.00
+ Sarah   | Zimmermann | 66000.00 | 5500.00 |         5500.00 |         71500.00
+ Thomas  | Mueller    | 65000.00 | 5000.00 |         5000.00 |         70000.00
+ Julia   | Wagner     | 62000.00 |         |               0 |         62000.00
+ Michael | Becker     | 55000.00 | 3000.00 |         3000.00 |         58000.00
+ Klaus   | Weber      | 58000.00 |         |               0 |         58000.00
+ Peter   | Hoffmann   | 51000.00 | 2000.00 |         2000.00 |         53000.00
+ Martin  | Koch       | 48000.00 |         |               0 |         48000.00
+(10 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> <code>COALESCE(bonus, 0)</code> ersetzt NULL-Werte in der Bonus-Spalte durch 0. Dadurch können wir problemlos die Gesamtvergütung berechnen, ohne dass NULL-Werte die Berechnung stören. </p>
+</details>
+<hr>
+<h2 id="mathematische-funktionen">Mathematische Funktionen</h2>
+<p>Neben String- und Datumsfunktionen bietet SQL auch eine Vielzahl mathematischer Funktionen für numerische Werte. Diese sind besonders nützlich für Berechnungen, Rundungen und statistische Auswertungen direkt in der Datenbank.</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Funktion</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beschreibung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>ROUND(x, n)</code></td>
+        <td style="padding:10px 14px;">Runden auf n Nachkommastellen</td>
+        <td style="padding:10px 14px;"><code>ROUND(3.14159, 2)</code> → 3.14</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>CEIL(x)</code></td>
+        <td style="padding:10px 14px;">Aufrunden</td>
+        <td style="padding:10px 14px;"><code>CEIL(3.2)</code> → 4</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>FLOOR(x)</code></td>
+        <td style="padding:10px 14px;">Abrunden</td>
+        <td style="padding:10px 14px;"><code>FLOOR(3.8)</code> → 3</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>ABS(x)</code></td>
+        <td style="padding:10px 14px;">Absolutwert</td>
+        <td style="padding:10px 14px;"><code>ABS(-5)</code> → 5</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>POWER(x, y)</code></td>
+        <td style="padding:10px 14px;">x hoch y</td>
+        <td style="padding:10px 14px;"><code>POWER(2, 3)</code> → 8</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>SQRT(x)</code></td>
+        <td style="padding:10px 14px;">Quadratwurzel</td>
+        <td style="padding:10px 14px;"><code>SQRT(16)</code> → 4</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Ein häufiger Anwendungsfall für mathematische Funktionen ist das Runden von Berechnungsergebnissen für eine übersichtliche Darstellung:</p>
+<details class="example" open="open">
+<summary>Gehaltsberechnungen runden</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Durchschnittsgehalt pro Abteilung gerundet</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">a</span><span class="p">.</span><span class="n">abteilungsname</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">mitarbeiter_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl_mitarbeiter</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="k">AVG</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">gehalt</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">durchschnittsgehalt</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="k">MIN</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">gehalt</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">min_gehalt</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ROUND</span><span class="p">(</span><span class="k">MAX</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="n">gehalt</span><span class="p">),</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">max_gehalt</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">abteilungen</span><span class="w"> </span><span class="n">a</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">mitarbeiter</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">abteilung_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">abteilung_id</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">abteilungsname</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">durchschnittsgehalt</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>   abteilungsname    | anzahl_mitarbeiter | durchschnittsgehalt | min_gehalt | max_gehalt
+---------------------+--------------------+---------------------+------------+------------
+ Forschung           |                  0 |                     |            |
+ Qualitaetssicherung |                  1 |            70000.00 |   70000.00 |   70000.00
+ Entwicklung         |                  3 |            68666.67 |   66000.00 |   72000.00
+ Verwaltung          |                  1 |            62000.00 |   62000.00 |   62000.00
+ Produktion          |                  3 |            57000.00 |   48000.00 |   65000.00
+ Vertrieb            |                  2 |            53000.00 |   51000.00 |   55000.00
+(6 rows)
+</code></pre></div>
+<p><strong>Erklärung:</strong> Mit <code>ROUND()</code> können wir Berechnungsergebnisse auf 2 Nachkommastellen runden für eine übersichtliche Darstellung in HR-Berichten. </p>
+</details>
+<hr>
+<h2 id="ubung">Übung ✍️</h2>
+<p>Nun wenden wir die <strong>fortgeschrittenen SQL-Techniken</strong> auf unser <strong>TecGuy GmbH Produktionsplanungssystem</strong> an! Die Übungen decken Unterabfragen, String-/Datumsfunktionen, CASE WHEN, COALESCE und komplexe Analysen ab.</p>
+<p>Im vorherigen Kapitel haben wir <strong>JOINs</strong> gelernt. Jetzt erweitern wir unser Wissen mit <strong>Subqueries, String-/Date-Funktionen und bedingter Logik</strong>.</p>
+<hr>
+<details class="info" open="open">
+<summary>Übungsvorbereitung - Datenbank zurücksetzen</summary>
+<p>Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
+korrekten Ausgangszustand für dieses Kapitel.</p>
+<details class="code">
+<summary>Setup</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zu anderer Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">postgres</span>
+
+<span class="c1">-- Zur Datenbank wechseln (oder neu erstellen)</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">produktionsplanung_db</span>
+
+<span class="c1">-- 1. Tabelle für Maschinen erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinentyp</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produktionshalle</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">anschaffungsjahr</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenstatus</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">wartungsintervall_tage</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- 2. Tabelle für Produktionsaufträge erstellen (MIT FK-Constraint)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">auftrag_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">auftragsnummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kunde</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produkt</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">startdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span>
+<span class="p">);</span>
+
+<span class="c1">-- 3. Tabelle für Wartungsprotokolle erstellen (MIT FK-Constraint)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">wartungs_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">wartungsdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">beschreibung</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">techniker</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kosten</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- 4. Tabelle für Ersatzteile erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">teil_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">teilename</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">hersteller</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">preis</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- 5. Junction Table für n:m Beziehung (Maschinen ↔ Ersatzteile)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">zuordnung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">teil_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">benoetigte_anzahl</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">teil_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">ersatzteile</span><span class="p">(</span><span class="n">teil_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- Maschinen-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese Alpha'</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank Delta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse Gamma'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle B'</span><span class="p">,</span><span class="w"> </span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter Beta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle C'</span><span class="p">,</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">);</span>
+
+<span class="c1">-- Produktionsaufträge-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-01'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-18'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-25'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Volkswagen AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-009'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-05-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-010'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-19'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+
+<span class="c1">-- Wartungsprotokolle-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span><span class="n">wartungsdatum</span><span class="p">,</span><span class="w"> </span><span class="n">beschreibung</span><span class="p">,</span><span class="w"> </span><span class="n">techniker</span><span class="p">,</span><span class="w"> </span><span class="n">kosten</span><span class="p">,</span><span class="w"> </span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'2024-01-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Routinewartung - Oelwechsel'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M. Schneider'</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-02-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Reparatur Spindelmotor'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L. Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">850</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-01-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Routinewartung - Kalibrierung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M. Schneider'</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-03-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Austausch Keilriemen'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L. Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">-- Ersatzteile-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="p">(</span><span class="n">teilename</span><span class="p">,</span><span class="w"> </span><span class="n">hersteller</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Spindelmotor 5kW'</span><span class="p">,</span><span class="w"> </span><span class="s1">'MotorTech GmbH'</span><span class="p">,</span><span class="w"> </span><span class="mi">1850</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Kuehlmittelpumpe'</span><span class="p">,</span><span class="w"> </span><span class="s1">'PumpCo AG'</span><span class="p">,</span><span class="w"> </span><span class="mi">320</span><span class="p">.</span><span class="mi">50</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Linearfuehrung 500mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Precision Parts'</span><span class="p">,</span><span class="w"> </span><span class="mi">680</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Werkzeughalter ISO40'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ToolSupply GmbH'</span><span class="p">,</span><span class="w"> </span><span class="mi">145</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Drehfutter 250mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ChuckMaster'</span><span class="p">,</span><span class="w"> </span><span class="mi">890</span><span class="p">.</span><span class="mi">00</span><span class="p">);</span>
+
+<span class="c1">-- Maschinen-Ersatzteile Zuordnungen einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">,</span><span class="w"> </span><span class="n">teil_id</span><span class="p">,</span><span class="w"> </span><span class="n">benoetigte_anzahl</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 1x Spindelmotor</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 2x Kuehlmittelpumpe</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 4x Linearfuehrung</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 6x Werkzeughalter</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- Drehbank braucht 1x Kuehlmittelpumpe</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="c1">-- Drehbank braucht 1x Drehfutter</span>
+</code></pre></div>
+<p><strong>Hinweis:</strong> Alle Foreign Key Constraints sind aktiv. Die Tabellen sind nun vollständig verknüpft!</p>
+</details>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 1: Unterabfragen - Überdurchschnittliche Wartungskosten</summary>
+<p>Finde alle Wartungen, die teurer waren als die durchschnittlichen Wartungskosten.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Zeige: Maschinennamen (mit JOIN), Wartungsdatum, Beschreibung, Kosten</li>
+<li>Nur Wartungen über dem Durchschnitt</li>
+<li>Sortiere nach Kosten absteigend</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 2: IN - Maschinen mit bestimmten Ersatzteilen</summary>
+<p>Finde alle Maschinen, die entweder Spindelmotoren oder Kühlmittelpumpen benötigen.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Verwende IN mit Unterabfrage</li>
+<li>Zeige: Maschinenname, Maschinentyp</li>
+<li>Keine Duplikate (DISTINCT)</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 3: EXISTS - Maschinen mit Wartungsprotokollen</summary>
+<p>Finde alle Maschinen, die mindestens eine Wartung haben.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Verwende EXISTS</li>
+<li>Zeige: Maschinenname, Maschinentyp, Anzahl Wartungen</li>
+<li>Sortiere nach Anzahl Wartungen absteigend</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 4: String-Funktionen - Maschinencodes generieren</summary>
+<p>Erstelle Maschinencodes im Format: <code>TYP-ID</code> (z.B. "CNC-001")</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Erste 3 Buchstaben des Maschinentyps in Großbuchstaben</li>
+<li>Maschinen-ID mit führenden Nullen auf 3 Stellen</li>
+<li>Verwende: UPPER, SUBSTRING, LPAD</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 5: Datumsfunktionen - Wartungsalter</summary>
+<p>Berechne, wie viele Tage seit der letzten Wartung jeder Maschine vergangen sind. Zeige nur Maschinen, die länger als 90 Tage keine Wartung hatten.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Berechne Tage seit letzter Wartung mit CURRENT_DATE</li>
+<li>Filtere: Nur Maschinen mit letzter Wartung &gt; 90 Tage</li>
+<li>Zeige auch Maschinen ohne Wartungen</li>
+<li>Sortiere nach Tagen absteigend</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 6: CASE WHEN - Produktionsauftragskategorien</summary>
+<p>Kategorisiere Produktionsaufträge nach Menge: Klein (&lt;200), Mittel (200-400), Groß (&gt;400).</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Verwende CASE WHEN</li>
+<li>Zeige: Auftragsnummer, Kunde, Produkt, Menge, Kategorie</li>
+<li>Zähle Aufträge pro Kategorie (zweite Abfrage)</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 7: COALESCE - Wartungsintervalle</summary>
+<p>Zeige alle Maschinen mit ihrem Wartungsintervall. Falls NULL, zeige "Nicht definiert".</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Verwende COALESCE für wartungsintervall_tage</li>
+<li>Zeige: Maschinenname, Wartungsintervall (oder "Nicht definiert")</li>
+<li>Berechne nächste Wartung basierend auf letzter Wartung + Intervall</li>
+</ul>
+</details>
+<hr>
+<h2 id="zusammenfassung">Zusammenfassung 📌</h2>
+<p>Mit den fortgeschrittenen SQL-Techniken aus diesem Kapitel haben wir unser Werkzeugkasten deutlich erweitert. Diese Techniken erlauben es uns, komplexe Abfragen elegant zu formulieren und Daten direkt in der Datenbank zu transformieren und zu analysieren, ohne auf Anwendungslogik zurückgreifen zu müssen.</p>
+<p>Die wichtigsten Erkenntnisse:</p>
+<ul>
+<li><strong>Unterabfragen</strong> erlauben Abfragen innerhalb von Abfragen und machen komplexe Fragestellungen in einem Statement lösbar</li>
+<li><strong>IN / NOT IN</strong> prüft Mitgliedschaft in einer Menge, aber Achtung bei NULL-Werten</li>
+<li><strong>EXISTS / NOT EXISTS</strong> prüft, ob eine Unterabfrage Ergebnisse liefert - oft schneller als IN und ohne NULL-Probleme</li>
+<li><strong>String-Funktionen</strong> (CONCAT, UPPER, LOWER, SUBSTRING, LENGTH, TRIM, REPLACE) zur Textverarbeitung</li>
+<li><strong>Datumsfunktionen</strong> (CURRENT_DATE, NOW, EXTRACT, AGE) für zeitbasierte Analysen</li>
+<li><strong>CASE WHEN</strong> bringt if-else-Logik nach SQL und ermöglicht Kategorisierungen</li>
+<li><strong>COALESCE</strong> behandelt NULL-Werte elegant ohne komplizierte Konstrukte</li>
+<li><strong>Mathematische Funktionen</strong> (ROUND, CEIL, FLOOR, ABS, POWER, SQRT) für Berechnungen</li>
+</ul>
+<hr>
+<p>Im nächsten Kapitel lernen wir über <strong>Datenintegrität &amp; Constraints</strong> – wie wir sicherstellen, dass nur gültige Daten in unsere Datenbank gelangen! Mit den hier gelernten Techniken können wir nun auch komplexe Abfragen formulieren, doch die Qualität unserer Daten ist ebenso wichtig wie unsere Fähigkeit, sie abzufragen.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../join/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Daten Zusammenführen">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Daten Zusammenführen
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../integritaet/" class="md-footer__link md-footer__link--next" aria-label="Next: Datenintegrität">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Datenintegrität
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate", "navigation.footer", "navigation.top", "header.autohide", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/slideshow.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

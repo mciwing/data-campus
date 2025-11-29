@@ -1,0 +1,1721 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://learn-data.at/database/integritaet/">
+      
+      
+        <link rel="prev" href="../fortgeschritten/">
+      
+      
+        <link rel="next" href="../transaktionen/">
+      
+      
+      <link rel="icon" href="../../assets/icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Datenintegrität - Data Campus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/colors.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/slideshow.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#datenintegritat-constraints" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Data Campus" class="md-header__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Campus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Datenintegrität
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Daten
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Datenbanken
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
+    
+        
+      
+  
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Data Campus" class="md-nav__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    Data Campus
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Daten
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daten
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/datenerfassung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenerfassung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/zahlensysteme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenverarbeitung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/speicherung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speicherung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Datenbanken
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Datenbanken
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relationale Datenbanken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../abfragen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulieren/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modellierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenmodellierung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../join/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fortgeschritten/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#warum-ist-datenintegritat-wichtig" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warum ist Datenintegrität wichtig
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#die-wichtigsten-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Die wichtigsten Constraints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Die wichtigsten Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eindeutigkeit-erzwingen-unique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eindeutigkeit erzwingen (UNIQUE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eigene-regeln-definieren-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eigene Regeln definieren (CHECK)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#praktisches-arbeiten-mit-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Praktisches Arbeiten mit Constraints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Praktisches Arbeiten mit Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-von-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position von Constraints
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constraints-benennen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constraints benennen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nachtraglichs-hinzufugen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nachträglichs hinzufügen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaktionen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ausblick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ausblick
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#warum-ist-datenintegritat-wichtig" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warum ist Datenintegrität wichtig
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#die-wichtigsten-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Die wichtigsten Constraints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Die wichtigsten Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eindeutigkeit-erzwingen-unique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eindeutigkeit erzwingen (UNIQUE)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eigene-regeln-definieren-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eigene Regeln definieren (CHECK)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#praktisches-arbeiten-mit-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Praktisches Arbeiten mit Constraints
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Praktisches Arbeiten mit Constraints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-von-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position von Constraints
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#constraints-benennen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Constraints benennen
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nachtraglichs-hinzufugen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nachträglichs hinzufügen
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+  
+    
+                  
+
+
+  
+  
+
+
+<h1 id="datenintegritat-constraints">Datenintegrität &amp; Constraints</h1>
+<p>Stell dir vor, jemand gibt in deine Datenbank ein: <code>pruefergebnis = 150</code> (bei einer Skala von 0-100) oder <code>temperatur = -500</code>. Dies wären offensichtlich unsinnige Daten! Wie können wir solche <strong>Datenfehler verhindern</strong>?</p>
+<p>Die Antwort: <strong>Constraints</strong> (Integritätsbedingungen)!</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://despair.com/cdn/shop/products/integrity.jpg" data-title="Integrity" data-desc-position="bottom"><img src="https://despair.com/cdn/shop/products/integrity.jpg" alt="Integrity" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://despair.com/cdn/shop/products/integrity.jpg">Despair</a></figcaption>
+</div>
+
+<p>Constraints sind <strong>Regeln</strong>, die sicherstellen, dass nur <strong>gültige Daten</strong> in die Datenbank gelangen. Sie sind die erste Verteidigungslinie gegen fehlerhafte Daten.</p>
+<hr>
+<h2 id="warum-ist-datenintegritat-wichtig">Warum ist Datenintegrität wichtig</h2>
+<p><strong>Garbage In, Garbage Out</strong> – Diesen Spruch hört man sehr häufig im Zusammenhang mit Daten. Und auch wenn er unscheinbar klingen mag, so steckt doch viel Wahrheit in ihm. Schlechte Daten führen immer zu schlechten Ergebnissen. Und schlechte Ergebnisse führen zu schlechten Entscheidungen. Beispiele für schlechte Daten sind</p>
+<ul>
+<li>❌ Ein negatives Alter</li>
+<li>❌ Ein leerer Name bei einem Pflichtfeld</li>
+<li>❌ Eine ungültige E-Mail-Adresse</li>
+<li>❌ Ein Fremdschlüssel, der auf nichts verweist</li>
+</ul>
+<p><strong>Constraints</strong> verhindern diese Probleme <strong>automatisch auf Datenbankebene</strong> – unabhängig davon, welche Anwendung auf die Datenbank zugreift.</p>
+<hr>
+<h2 id="die-wichtigsten-constraints">Die wichtigsten Constraints</h2>
+<p>Nachfolgende Tabelle gibt einen Überblick über die wichtigsten und gängisten Constraints.</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Constraint</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>NOT NULL</code></td>
+        <td style="padding:10px 14px;">Darf nicht leer sein</td>
+        <td style="padding:10px 14px;">Name, E-Mail</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>UNIQUE</code></td>
+        <td style="padding:10px 14px;">Muss eindeutig sein</td>
+        <td style="padding:10px 14px;">Seriennummer, Teilnummer</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>PRIMARY KEY</code></td>
+        <td style="padding:10px 14px;">NOT NULL + UNIQUE</td>
+        <td style="padding:10px 14px;">ID-Spalten</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>FOREIGN KEY</code></td>
+        <td style="padding:10px 14px;">Verweist auf andere Tabelle</td>
+        <td style="padding:10px 14px;">techniker_id</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>CHECK</code></td>
+        <td style="padding:10px 14px;">Eigene Bedingung</td>
+        <td style="padding:10px 14px;">alter &gt;= 0</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>DEFAULT</code></td>
+        <td style="padding:10px 14px;">Standardwert</td>
+        <td style="padding:10px 14px;">'Aktiv', 'Unbekannt'</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Wollen uns nun einige der Constraints genauer ansehen.</p>
+<p>Prinzipiell ist es so, dass Constraints beim Erstellen einer Tabelle definiert werden. Damit wird sichergestellt, dass von Anfang an alle Daten die gewünschten Eigenschaften haben. Es gibt aber auch die Möglichkeit, Constraints nachträglich zu einer bestehenden Tabelle hinzuzufügen. Wir werden uns dies später noch genauer ansehen. Die zwei Constraints <code>NOT NULL</code> und <code>DEFAULT</code> haben wir bereits im Kapitel <a href="../manipulieren/">Daten Manipulieren</a> kennengelernt. Daher werden wir uns in diesem Kapitel auf die anderen Constraints konzentrieren.</p>
+<hr>
+<details class="info" open="open">
+<summary>Datenbank-Setup</summary>
+<p>Für die folgenden Beispiele erstellen wir eine <strong>Qualitätskontroll-Datenbank</strong>. In dieser Datenbank werden Produkte und ihre Prüfungen verwaltet.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Datenbank erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">qualitaetskontrolle_db</span><span class="p">;</span>
+
+<span class="c1">-- Zur Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">qualitaetskontrolle_db</span>
+
+<span class="c1">-- Tabelle: Produkte</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produkte</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produktname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produktcode</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">kategorie</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">mindestqualitaet</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">mindestqualitaet</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">mindestqualitaet</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Prüfungen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pruefungen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">pruefung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pruefdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'ausstehend'</span><span class="p">,</span>
+<span class="w">    </span><span class="n">temperatur</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">temperatur</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">temperatur</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">luftfeuchtigkeit</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">luftfeuchtigkeit</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">luftfeuchtigkeit</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">pruefername</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">produkt_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">produkte</span><span class="p">(</span><span class="n">produkt_id</span><span class="p">)</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- Testdaten: Produkte</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produkte</span><span class="w"> </span><span class="p">(</span><span class="n">produktname</span><span class="p">,</span><span class="w"> </span><span class="n">produktcode</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">mindestqualitaet</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Smartphone X500'</span><span class="p">,</span><span class="w"> </span><span class="s1">'SP-X500'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik'</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Laptop Pro 15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'LP-PRO15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Tablet Ultra'</span><span class="p">,</span><span class="w"> </span><span class="s1">'TB-ULTRA'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik'</span><span class="p">,</span><span class="w"> </span><span class="mi">92</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Gaming Monitor'</span><span class="p">,</span><span class="w"> </span><span class="s1">'GM-4K'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik'</span><span class="p">,</span><span class="w"> </span><span class="mi">88</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Mechanische Tastatur'</span><span class="p">,</span><span class="w"> </span><span class="s1">'KB-MECH'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Peripherie'</span><span class="p">,</span><span class="w"> </span><span class="mi">85</span><span class="p">);</span>
+
+<span class="c1">-- Testdaten: Prüfungen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pruefungen</span><span class="w"> </span><span class="p">(</span><span class="n">produkt_id</span><span class="p">,</span><span class="w"> </span><span class="n">pruefdatum</span><span class="p">,</span><span class="w"> </span><span class="n">pruefergebnis</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">temperatur</span><span class="p">,</span><span class="w"> </span><span class="n">luftfeuchtigkeit</span><span class="p">,</span><span class="w"> </span><span class="n">pruefername</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-01'</span><span class="p">,</span><span class="w"> </span><span class="mi">98</span><span class="p">,</span><span class="w"> </span><span class="s1">'bestanden'</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-15'</span><span class="p">,</span><span class="w"> </span><span class="mi">96</span><span class="p">,</span><span class="w"> </span><span class="s1">'bestanden'</span><span class="p">,</span><span class="w"> </span><span class="mi">23</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="s1">'Thomas Weber'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-02'</span><span class="p">,</span><span class="w"> </span><span class="mi">92</span><span class="p">,</span><span class="w"> </span><span class="s1">'bestanden'</span><span class="p">,</span><span class="w"> </span><span class="mi">21</span><span class="p">.</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-03'</span><span class="p">,</span><span class="w"> </span><span class="mi">85</span><span class="p">,</span><span class="w"> </span><span class="s1">'nachpruefung'</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">52</span><span class="p">,</span><span class="w"> </span><span class="s1">'Thomas Weber'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-05'</span><span class="p">,</span><span class="w"> </span><span class="mi">91</span><span class="p">,</span><span class="w"> </span><span class="s1">'bestanden'</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">.</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">47</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-10'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'ausstehend'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'Thomas Weber'</span><span class="p">);</span>
+</code></pre></div>
+</details>
+<hr>
+<h3 id="eindeutigkeit-erzwingen-unique">Eindeutigkeit erzwingen (<code>UNIQUE</code>)</h3>
+<p>Die <code>UNIQUE</code> Bedingung stellt sicher, dass ein Wert in einer Spalte <strong>nur einmal vorkommt</strong>. Generell liest sich der Syntax:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">spalte</span><span class="w"> </span><span class="n">DATENTYP</span><span class="w"> </span><span class="k">UNIQUE</span>
+<span class="p">);</span>
+</code></pre></div>
+<details class="example" open="open">
+<summary>Eindeutigkeit mit <code>UNIQUE</code></summary>
+<p>Zuerst erstellen wir eine neue Tabelle mit einer Spalte, die eindeutig sein muss.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produkte_test</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produktname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="hll"><span class="w">    </span><span class="n">produktcode</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span><span class="w">      </span><span class="c1">-- Jeder Produktcode nur einmal!</span>
+</span><span class="w">    </span><span class="n">kategorie</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>Was passiert nun, wenn wir versuchen, ein Produkt mit demselben Produktcode zu erstellen, wie ein bereits existierendes Produkt?</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Erste Einfügung: OK</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produkte_test</span><span class="w"> </span><span class="p">(</span><span class="n">produktname</span><span class="p">,</span><span class="w"> </span><span class="n">produktcode</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'Smartphone Alpha'</span><span class="p">,</span><span class="w"> </span><span class="s1">'SP-2025-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik'</span><span class="p">);</span>
+
+<span class="c1">-- Zweite Einfügung mit gleichem Produktcode: FEHLER!</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produkte_test</span><span class="w"> </span><span class="p">(</span><span class="n">produktname</span><span class="p">,</span><span class="w"> </span><span class="n">produktcode</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s1">'Smartphone Beta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'SP-2025-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Elektronik'</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>FEHLER:  doppelter Schlüsselwert verletzt Unique-Constraint »produkte_test_produktcode_key«
+DETAIL:  Schlüssel »(produktcode)=(SP-2025-001)« existiert bereits.
+</code></pre></div>
+<p>Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, ein Produkt mit demselben Produktcode zu erstellen, wie ein bereits existierendes Produkt.</p>
+</details>
+<p><code>UNIQUE</code> kann auch mit mehreren Spalten definiert werden. Dies ist beispielsweise dann sinnvoll, wenn wir eine Kombination aus zwei Spalten als eindeutig erkennen möchten.</p>
+<details class="example" open="open">
+<summary><code>UNIQUE</code> mit mehreren Spalten</summary>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pruefungen_test</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">pruefung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pruefdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pruefername</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="hll"><span class="w">    </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">produkt_id</span><span class="p">,</span><span class="w"> </span><span class="n">pruefdatum</span><span class="p">,</span><span class="w"> </span><span class="n">pruefername</span><span class="p">)</span><span class="w">  </span><span class="c1">-- Diese Kombination muss eindeutig sein</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p>Das erlaubt mehrere Prüfungen für ein Produkt, aber nicht zweimal am selben Tag vom selben Prüfer.</p>
+</details>
+<hr>
+<h3 id="eigene-regeln-definieren-check">Eigene Regeln definieren (<code>CHECK</code>)</h3>
+<p>Die <code>CHECK</code> Bedingung erlaubt es uns, <strong>beliebige Bedingungen</strong> zu definieren, die erfüllt sein müssen. Auch hier beginnen wir wieder mit dem generellen Aufbau der Befehle.</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">tabellenname</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">spalte</span><span class="w"> </span><span class="n">DATENTYP</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">bedingung</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<p>Wie man erkennt, wird lediglich eine Bedingung nach dem <code>CHECK</code> Schlüsselwort definiert. Schauen wir uns wieder ein Beispiel an. </p>
+<details class="example" open="open">
+<summary>Wertebereich prüfen</summary>
+<p>Wir erstellen eine neue Tabelle mit einer oder mehreren Spalten, die einen Wertebereich prüfen müssen.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">qualitaetsmessungen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">messung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">messdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="hll"><span class="w">    </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">),</span>
+</span><span class="hll"><span class="w">    </span><span class="n">temperatur</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">temperatur</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="o">-</span><span class="mi">20</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">temperatur</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">50</span><span class="p">),</span>
+</span><span class="hll"><span class="w">    </span><span class="n">luftfeuchtigkeit</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">luftfeuchtigkeit</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">luftfeuchtigkeit</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p>Nun erstellen wir eine Messung mit einem Prüfergebnis von 150 (ungültig).</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Fehler: Prüfergebnis 150 ist ungültig!</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">qualitaetsmessungen</span><span class="w"> </span><span class="p">(</span><span class="n">produkt_id</span><span class="p">,</span><span class="w"> </span><span class="n">messdatum</span><span class="p">,</span><span class="w"> </span><span class="n">pruefergebnis</span><span class="p">,</span><span class="w"> </span><span class="n">temperatur</span><span class="p">,</span><span class="w"> </span><span class="n">luftfeuchtigkeit</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-25'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>FEHLER:  neue Zeile für Relation »qualitaetsmessungen« verletzt Check-Constraint »qualitaetsmessungen_pruefergebnis_check«
+DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, 150, 22.0, 50).
+</code></pre></div>
+<p>Wir sehen also, dass die Einfügung fehlschlägt und wir eine Fehlermeldung erhalten. Dem User ist es also nicht möglich, eine Messung mit einem Prüfergebnis von 150 zu erstellen.</p>
+<details class="code">
+<summary>Weitere Beispiele</summary>
+<details class="example" open="open">
+<summary>CHECK mit Status-Werten</summary>
+<p>CHECK kann auch verwendet werden, um nur bestimmte Werte zuzulassen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pruefungen_mit_status</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">pruefung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pruefdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="hll"><span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">status</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'ausstehend'</span><span class="p">,</span><span class="w"> </span><span class="s1">'bestanden'</span><span class="p">,</span><span class="w"> </span><span class="s1">'durchgefallen'</span><span class="p">,</span><span class="w"> </span><span class="s1">'nachpruefung'</span><span class="p">))</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p>Versuchen wir nun einen ungültigen Status einzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Fehler: 'pending' ist kein gültiger Status</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">pruefungen_mit_status</span><span class="w"> </span><span class="p">(</span><span class="n">produkt_id</span><span class="p">,</span><span class="w"> </span><span class="n">pruefdatum</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'2025-11-25'</span><span class="p">,</span><span class="w"> </span><span class="s1">'pending'</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>FEHLER:  neue Zeile für Relation »pruefungen_mit_status« verletzt Check-Constraint »pruefungen_mit_status_status_check«
+DETAIL:  Fehlgeschlagene Zeile enthält (1, 1, 2025-11-25, null, pending).
+</code></pre></div>
+</details>
+</details>
+</details>
+<hr>
+<h2 id="praktisches-arbeiten-mit-constraints">Praktisches Arbeiten mit Constraints</h2>
+<p>Abschließend wollen wir uns noch einmal anschauen, wie wir mit Constraints in der Praxis arbeiten können.</p>
+<h3 id="position-von-constraints">Position von Constraints</h3>
+<p>Generell hat man bei <code>CHECK</code>-Constraints (und auch anderen) <strong>zwei Möglichkeiten</strong>, wo man sie platzieren kann:</p>
+<details class="example" open="open">
+<summary>Variante 1: Spalten-Constraint (inline)</summary>
+<p>Die Bedingung wird <strong>direkt bei der Spalte</strong> definiert:</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">messungen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">messung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="hll"><span class="w">    </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Vorteil:</strong> Übersichtlich bei einfachen Regeln, die nur eine Spalte betreffen.</p>
+</details>
+<details class="example" open="open">
+<summary>Variante 2: Tabellen-Constraint (separate Zeile)</summary>
+<p>Der Constraint wird <strong>am Ende der Tabelle</strong> als eigene Zeile definiert. Der Vorteil ist, dass man mehrere Spalten gleichzeitig prüfen kann.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pruefperioden</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">periode_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">startdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">enddatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">kosten</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+<span class="hll"><span class="w">    </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">startdatum</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">enddatum</span><span class="p">)</span><span class="w">  </span><span class="c1">-- Prüft 2 Spalten!</span>
+</span><span class="p">);</span>
+</code></pre></div>
+</details>
+<details class="tip" open="open">
+<summary>Wann welche Variante?</summary>
+<p><strong>Inline (bei der Spalte):</strong></p>
+<ul>
+<li>Für einfache Regeln, die nur <strong>eine Spalte</strong> betreffen</li>
+<li>Wenn du die Regel direkt bei der Spaltendefinition sehen möchtest</li>
+<li>Beispiel: <code>pruefergebnis INTEGER CHECK (pruefergebnis &gt;= 0 AND pruefergebnis &lt;= 100)</code></li>
+</ul>
+<p><strong>Separate Zeile (Tabellen-Constraint):</strong></p>
+<ul>
+<li>Wenn du <strong>mehrere Spalten</strong> gleichzeitig prüfen musst</li>
+<li>Für komplexere Bedingungen, die mehrere Felder vergleichen</li>
+<li>Beispiel: <code>CHECK (startdatum &lt; enddatum)</code></li>
+</ul>
+<p><strong>Fazit:</strong> Beides ist erlaubt! Wähle die Variante, die für deine Situation am übersichtlichsten ist.</p>
+</details>
+<h3 id="constraints-benennen">Constraints benennen</h3>
+<p>Constraints können von uns auch einen eigenen <strong>Namen bekommen</strong>, um sie später leichter zu identifizieren:</p>
+<details class="example" open="open">
+<summary>Benannte Constraints</summary>
+<p>Wir erstellen wieder eine neue Tabelle mit benannten Constraints.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produkte_benannt</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">produkt_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">produktcode</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">mindestqualitaet</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+
+<span class="hll"><span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk_produkte</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">produkt_id</span><span class="p">),</span>
+</span><span class="hll"><span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">uq_produktcode</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">produktcode</span><span class="p">),</span>
+</span><span class="hll"><span class="w">    </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">ck_mindestqualitaet</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">mindestqualitaet</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">mindestqualitaet</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span>
+</span><span class="p">);</span>
+</code></pre></div>
+<p>Nun versuchen wir absichtlich einen Fehler bei der Bedingung <code>ck_mindestqualitaet</code> hervorzurufen indem wir einen Wert von <code>150</code> einfügen.</p>
+<div class="highlight"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produkte_benannt</span><span class="w"> </span><span class="p">(</span><span class="n">produkt_id</span><span class="p">,</span><span class="w"> </span><span class="n">produktcode</span><span class="p">,</span><span class="w"> </span><span class="n">mindestqualitaet</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'SP-2025-001'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>FEHLER:  neue Zeile für Relation »produkte_benannt« verletzt Check-Constraint »ck_mindestqualitaet«
+DETAIL:  Fehlgeschlagene Zeile enthält (1, SP-2025-001, 150).
+</code></pre></div>
+<p>Wir sehen also, dass die Einfügung fehlschlägt und wir erhalten bei der Fehlermeldung den Namen des Constraints <code>ck_mindestqualitaet</code>.</p>
+</details>
+<hr>
+<h3 id="nachtraglichs-hinzufugen">Nachträglichs hinzufügen</h3>
+<p>Wie bereits erwähnt, sollten wir Constraints bereits bei der Erstellung der Tabelle definieren. Doch was passiert, wenn wir später feststellen, dass wir ein Constraint benötigen?</p>
+<p>Es gibt auch die Möglichkeit, Constraints zu bestehenden Tabellen nachträglich hinzuzufügen. Dies passiert allemein mit dem <code>ALTER TABLE</code> Befehl welchen wir bereits im Kapitel <a href="../manipulieren/#exkurs-alter-tabellen-nachtraglich-andern">Datenbanken manipulieren</a> kennengelernt haben.</p>
+<details class="example" open="open">
+<summary>Constraints mit ALTER TABLE</summary>
+<p><strong>NOT NULL hinzufügen:</strong>
+</p><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pruefungen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">pruefername</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span>
+</code></pre></div><p></p>
+<p><strong>UNIQUE hinzufügen:</strong>
+</p><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produkte</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">produktcode_unique</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="p">(</span><span class="n">produktcode</span><span class="p">);</span>
+</code></pre></div><p></p>
+<p><strong>CHECK hinzufügen:</strong>
+</p><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pruefungen</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pruefergebnis_check</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">pruefergebnis</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span>
+</code></pre></div><p></p>
+<p><strong>DEFAULT hinzufügen:</strong>
+</p><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">pruefungen</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'ausstehend'</span><span class="p">;</span>
+</code></pre></div><p></p>
+<p><strong>Constraint entfernen:</strong>
+</p><div class="highlight"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produkte</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">produktcode_unique</span><span class="p">;</span>
+</code></pre></div><p></p>
+</details>
+<hr>
+<h2 id="ubung">Übung ✍️</h2>
+<p>Nun wenden wir Constraints auf unser <strong>TecGuy GmbH Produktionsplanungssystem</strong> an! Die Übungen decken alle wichtigen Constraint-Typen ab und helfen dir, Datenintegrität in der Praxis durchzusetzen.</p>
+<details class="info" open="open">
+<summary>Übungsvorbereitung - Datenbank zurücksetzen</summary>
+<p>Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
+korrekten Ausgangszustand für dieses Kapitel.</p>
+<details class="code">
+<summary>Setup</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zu anderer Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">postgres</span>
+
+<span class="c1">-- Zur Datenbank wechseln (oder neu erstellen)</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">produktionsplanung_db</span>
+
+<span class="c1">-- 1. Tabelle für Maschinen erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinentyp</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produktionshalle</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">anschaffungsjahr</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenstatus</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">wartungsintervall_tage</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- 2. Tabelle für Produktionsaufträge erstellen (MIT FK-Constraint)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">auftrag_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">auftragsnummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kunde</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produkt</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">startdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span>
+<span class="p">);</span>
+
+<span class="c1">-- 3. Tabelle für Wartungsprotokolle erstellen (MIT FK-Constraint)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">wartungs_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">wartungsdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">beschreibung</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">techniker</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kosten</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- 4. Tabelle für Ersatzteile erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">teil_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">teilename</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">hersteller</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">preis</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- 5. Junction Table für n:m Beziehung (Maschinen ↔ Ersatzteile)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">zuordnung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">teil_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">benoetigte_anzahl</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">teil_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">ersatzteile</span><span class="p">(</span><span class="n">teil_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- Maschinen-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese Alpha'</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank Delta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse Gamma'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle B'</span><span class="p">,</span><span class="w"> </span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter Beta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle C'</span><span class="p">,</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">);</span>
+
+<span class="c1">-- Produktionsaufträge-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-01'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-18'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-25'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Volkswagen AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-009'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-05-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-010'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-19'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+
+<span class="c1">-- Wartungsprotokolle-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span><span class="n">wartungsdatum</span><span class="p">,</span><span class="w"> </span><span class="n">beschreibung</span><span class="p">,</span><span class="w"> </span><span class="n">techniker</span><span class="p">,</span><span class="w"> </span><span class="n">kosten</span><span class="p">,</span><span class="w"> </span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'2024-01-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Routinewartung - Oelwechsel'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M. Schneider'</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-02-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Reparatur Spindelmotor'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L. Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">850</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-01-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Routinewartung - Kalibrierung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M. Schneider'</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-03-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Austausch Keilriemen'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L. Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">-- Ersatzteile-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="p">(</span><span class="n">teilename</span><span class="p">,</span><span class="w"> </span><span class="n">hersteller</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Spindelmotor 5kW'</span><span class="p">,</span><span class="w"> </span><span class="s1">'MotorTech GmbH'</span><span class="p">,</span><span class="w"> </span><span class="mi">1850</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Kuehlmittelpumpe'</span><span class="p">,</span><span class="w"> </span><span class="s1">'PumpCo AG'</span><span class="p">,</span><span class="w"> </span><span class="mi">320</span><span class="p">.</span><span class="mi">50</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Linearfuehrung 500mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Precision Parts'</span><span class="p">,</span><span class="w"> </span><span class="mi">680</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Werkzeughalter ISO40'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ToolSupply GmbH'</span><span class="p">,</span><span class="w"> </span><span class="mi">145</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Drehfutter 250mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ChuckMaster'</span><span class="p">,</span><span class="w"> </span><span class="mi">890</span><span class="p">.</span><span class="mi">00</span><span class="p">);</span>
+
+<span class="c1">-- Maschinen-Ersatzteile Zuordnungen einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">,</span><span class="w"> </span><span class="n">teil_id</span><span class="p">,</span><span class="w"> </span><span class="n">benoetigte_anzahl</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 1x Spindelmotor</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 2x Kuehlmittelpumpe</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 4x Linearfuehrung</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 6x Werkzeughalter</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- Drehbank braucht 1x Kuehlmittelpumpe</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="c1">-- Drehbank braucht 1x Drehfutter</span>
+</code></pre></div>
+<p><strong>Hinweis:</strong> Alle Foreign Key Constraints sind aktiv. Die Tabellen sind nun vollständig verknüpft!</p>
+</details>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 1: NOT NULL Constraints hinzufügen</summary>
+<p>Die Tabelle <code>produktionsauftraege</code> hat aktuell einige Spalten, die leer sein dürfen, obwohl sie kritische Informationen enthalten. Füge folgende NOT NULL Constraints hinzu:</p>
+<ul>
+<li><code>auftragsnummer</code> soll nicht leer sein (jeder Auftrag braucht eine Nummer)</li>
+<li><code>startdatum</code> soll nicht leer sein (jeder Auftrag braucht ein Startdatum)</li>
+</ul>
+<p><strong>Hinweis</strong></p>
+<p>Mit dem Befehl <code>\d produktionsauftraege</code> können wir die Struktur der Tabelle <code>produktionsauftraege</code> anzeigen und Beschränkungen anzeigen.</p>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 2: CHECK Constraint für Wartungsintervalle</summary>
+<p>In der Tabelle <code>maschinen</code> gibt es eine Spalte <code>wartungsintervall_tage</code>, die angibt, nach wie vielen Tagen eine Wartung fällig ist.</p>
+<p>Füge einen CHECK Constraint hinzu, der sicherstellt, dass das Wartungsintervall <strong>mindestens 30 Tage und maximal 365 Tage</strong> beträgt.</p>
+<p><strong>Tipp:</strong> Verwende einen aussagekräftigen Namen für den Constraint (z.B. <code>ck_wartungsintervall_gueltig</code>). Wieder können wir mit dem Befehl <code>\d maschinen</code> die Struktur der Tabelle <code>maschinen</code> anzeigen und Beschränkungen anzeigen.</p>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 3: Multi-Column UNIQUE Constraint</summary>
+<p>In der Tabelle <code>wartungsprotokolle</code> möchtest du verhindern, dass <strong>dieselbe Maschine zweimal am selben Tag</strong> gewartet wird.</p>
+<p>Füge einen UNIQUE Constraint hinzu, der die Kombination aus <code>maschinen_id</code> und <code>wartungsdatum</code> eindeutig macht.</p>
+</details>
+<hr>
+<h2 id="zusammenfassung">Zusammenfassung 📌</h2>
+<ul>
+<li><strong>Constraints</strong> erzwingen Datenintegrität auf Datenbankebene</li>
+<li><strong>NOT NULL</strong> – Verhindert leere Werte</li>
+<li><strong>UNIQUE</strong> – Erzwingt Eindeutigkeit</li>
+<li><strong>PRIMARY KEY</strong> – Kombination aus NOT NULL und UNIQUE</li>
+<li><strong>FOREIGN KEY</strong> – Referenzielle Integrität</li>
+<li><strong>CHECK</strong> – Eigene Validierungsregeln</li>
+<li><strong>DEFAULT</strong> – Standardwerte bei fehlender Eingabe</li>
+<li>Constraints können mit <code>ALTER TABLE</code> nachträglich hinzugefügt/entfernt werden</li>
+<li>Constraints schützen vor ungültigen Daten, unabhängig von der Anwendung</li>
+</ul>
+<hr>
+<p>Im nächsten Kapitel lernen wir über <strong>Transaktionen &amp; ACID</strong> – wie wir Datenintegrität bei gleichzeitigen Zugriffen sicherstellen!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../fortgeschritten/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Fortgeschrittene Techniken">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Fortgeschrittene Techniken
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../transaktionen/" class="md-footer__link md-footer__link--next" aria-label="Next: Transaktionen">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Transaktionen
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate", "navigation.footer", "navigation.top", "header.autohide", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/slideshow.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

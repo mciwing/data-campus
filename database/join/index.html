@@ -1,0 +1,1771 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://learn-data.at/database/join/">
+      
+      
+        <link rel="prev" href="../modellierung/">
+      
+      
+        <link rel="next" href="../fortgeschritten/">
+      
+      
+      <link rel="icon" href="../../assets/icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Daten Zusammenführen - Data Campus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/colors.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/slideshow.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#joins-daten-aus-mehreren-tabellen-kombinieren" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Data Campus" class="md-header__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Campus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Daten Zusammenführen
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Daten
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Datenbanken
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
+    
+        
+      
+  
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Data Campus" class="md-nav__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    Data Campus
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Daten
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daten
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/datenerfassung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenerfassung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/zahlensysteme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenverarbeitung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/speicherung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speicherung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Datenbanken
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Datenbanken
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relationale Datenbanken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../abfragen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulieren/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modellierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenmodellierung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#grundlagen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grundlagen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#join-typen" class="md-nav__link">
+    <span class="md-ellipsis">
+      JOIN-Typen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JOIN-Typen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inner-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      INNER JOIN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exkurs-aliasse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exkurs: Aliasse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#left-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      LEFT JOIN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#right-full-outer-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      RIGHT &amp; FULL OUTER JOIN
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verbinde-mehrere-tabellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verbinde mehrere Tabellen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fortgeschritten/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integritaet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaktionen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ausblick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ausblick
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#grundlagen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Grundlagen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#join-typen" class="md-nav__link">
+    <span class="md-ellipsis">
+      JOIN-Typen
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="JOIN-Typen">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inner-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      INNER JOIN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exkurs-aliasse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exkurs: Aliasse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#left-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      LEFT JOIN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#right-full-outer-join" class="md-nav__link">
+    <span class="md-ellipsis">
+      RIGHT &amp; FULL OUTER JOIN
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verbinde-mehrere-tabellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verbinde mehrere Tabellen
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+  
+    
+                  
+
+
+  
+  
+
+
+<h1 id="joins-daten-aus-mehreren-tabellen-kombinieren">Joins - Daten aus mehreren Tabellen kombinieren</h1>
+<p>Im vorherigen Kapitel über <a href="../modellierung/">Datenmodellierung</a> haben wir gelernt, wie man <strong>Beziehungen zwischen Tabellen</strong> modelliert. Jetzt kommt der spannende Teil: Wie fragen wir Daten aus <strong>mehreren verknüpften Tabellen</strong> ab?</p>
+<p>Die Antwort lautet: <strong>JOINs</strong>!</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://i.imgflip.com/abzryz.jpg" data-title="Join" data-desc-position="bottom"><img src="https://i.imgflip.com/abzryz.jpg" alt="Join" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://i.imgflip.com/abzryz.jpg">imgflip</a></figcaption>
+</div>
+
+<p>JOINs sind ein wichtiger Bestandteil relationaler Datenbanken. Sie erlauben es uns, Daten aus verschiedenen Tabellen zu kombinieren und als eine zusammenhängende Ergebnistabelle anzuzeigen. Ohne JOINs würden wir die Vorteile der Aufteilung in mehrere Tabellen nicht nutzen können - wir hätten zwar sauber strukturierte Daten ohne Redundanz, könnten diese aber nicht sinnvoll miteinander verknüpfen und auswerten.</p>
+<p>In diesem Kapitel lernen wir die verschiedenen JOIN-Typen kennen und verstehen, wann welcher JOIN-Typ die richtige Wahl ist. Dabei werden wir sehen, wie mächtig relationale Datenbanken wirklich sind!</p>
+<hr>
+<details class="example" open="open">
+<summary>Beschaffungsmanagement Ausgangssituation</summary>
+<p>Um zu verstehen, warum JOINs so wichtig sind, betrachten wir ein konkretes Problem aus dem Beschaffungsmanagement:</p>
+<div class="no-copy highlight"><span class="filename">Ausgangssituation: zwei getrennte Tabellen</span><pre><span></span><code>-- Tabelle: lieferanten
+ lieferant_id | firmenname        | land        | bewertung
+--------------+-------------------+-------------+-----------
+            1 | Stahl GmbH        | Deutschland |       4.5
+            2 | MetalCorp         | Frankreich  |       4.2
+            3 | SteelWorld Inc    | USA         |       3.8
+
+-- Tabelle: bestellungen
+ bestell_id | bestelldatum | lieferant_id | gesamtwert | status
+------------+--------------+--------------+------------+-----------
+        101 | 2024-01-15   |            1 |   12500.00 | Geliefert
+        102 | 2024-01-20   |            2 |    8300.00 | In Transit
+        103 | 2024-01-22   |            1 |   15600.00 | Geliefert
+</code></pre></div>
+<p><strong>Problem:</strong> Wir wissen aus der Bestelltabelle nur die <code>lieferant_id</code>, aber nicht den <strong>Firmennamen</strong>. Wie zeigen wir Bestellungen <strong>mit</strong> den Lieferantennamen an?</p>
+<div class="no-copy highlight"><span class="filename">Gewünschtes Ergebnis: Gemeinsame Darstellung</span><pre><span></span><code> bestell_id | bestelldatum | firmenname   | gesamtwert | status
+------------+--------------+--------------+------------+-----------
+        101 | 2024-01-15   | Stahl GmbH   |   12500.00 | Geliefert
+        102 | 2024-01-20   | MetalCorp    |    8300.00 | In Transit
+        103 | 2024-01-22   | Stahl GmbH   |   15600.00 | Geliefert
+</code></pre></div>
+<p>Dafür brauchen wir einen <strong><code>JOIN</code></strong>! Ein <code>JOIN</code> ermöglicht es uns, die verstreuten Informationen aus beiden Tabellen wieder zusammenzuführen und in einer einzigen Ergebniszeile darzustellen. Die Verknüpfung erfolgt dabei über den Fremdschlüssel <code>lieferant_id</code> in der Bestellungen-Tabelle, der auf den Primärschlüssel <code>lieferant_id</code> in der Lieferanten-Tabelle verweist.</p>
+</details>
+<hr>
+<h2 id="grundlagen">Grundlagen</h2>
+<p>Bevor wir uns die verschiedenen JOIN-Typen im Detail ansehen, schauen wir uns die grundlegende Syntax an. Ein JOIN besteht immer aus mehreren Komponenten: der Auswahl der Tabellen (<code>FROM</code> und <code>JOIN</code>), der Verknüpfungsbedingung (<code>ON</code>) und optional weiteren Filterbedingungen (<code>WHERE</code>).</p>
+<div class="no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">spalten</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">haupttabelle</span>
+<span class="hll"><span class="p">[</span><span class="k">INNER</span><span class="o">|</span><span class="k">LEFT</span><span class="o">|</span><span class="k">RIGHT</span><span class="p">]</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">andere_tabelle</span>
+</span><span class="hll"><span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="n">haupttabelle</span><span class="p">.</span><span class="n">fk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">andere_tabelle</span><span class="p">.</span><span class="n">pk</span>
+</span><span class="k">WHERE</span><span class="w"> </span><span class="n">filter_bedingung</span><span class="p">;</span>
+</code></pre></div>
+<p>Bei der Spaltenauswahl im <code>SELECT</code> können wir auf <strong>alle Spalten aus beiden Tabellen</strong> zugreifen. Um eindeutig zu machen, von welcher Tabelle eine Spalte stammt, verwenden wir die Notation <code>tabellenname.spaltenname</code>. Das ist besonders wichtig, wenn beide Tabellen Spalten mit dem gleichen Namen haben (wie z.B. <code>lieferant_id</code> in beiden Tabellen).</p>
+<p>Ohne die explizite Angabe der Tabelle würde die Datenbank bei gleichnamigen Spalten (wie <code>lieferant_id</code>) einen Fehler werfen, da sie nicht weiß, welche Spalte gemeint ist. Daher ist die Notation <code>tabellenname.spaltenname</code> bei JOINs nicht nur guter Stil, sondern oft auch notwendig. Später werden wir sehen, wie <strong>Aliasse</strong> diese Schreibweise deutlich verkürzen.</p>
+<hr>
+<p>Es gibt verschiedene Arten von JOINs, die sich darin unterscheiden, welche Datensätze sie zurückgeben. Die Wahl des richtigen JOIN-Typs hängt davon ab, ob wir nur die Datensätze wollen, die in beiden Tabellen vorhanden sind, oder ob wir auch Datensätze ohne Übereinstimmung behalten möchten. Die folgende Tabelle gibt einen Überblick über die wichtigsten JOIN-Typen:</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Join-Typ</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Was wird zurückgegeben?</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Wann verwenden?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>INNER JOIN</code></td>
+        <td style="padding:10px 14px;">Nur Datensätze mit Übereinstimmung in <strong>beiden</strong> Tabellen</td>
+        <td style="padding:10px 14px;">Standard für die meisten Abfragen</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>LEFT JOIN</code></td>
+        <td style="padding:10px 14px;">Alle aus <strong>linker</strong> Tabelle + Übereinstimmungen rechts</td>
+        <td style="padding:10px 14px;">Wenn du alle aus Tabelle A willst, auch ohne Match</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>RIGHT JOIN</code></td>
+        <td style="padding:10px 14px;">Alle aus <strong>rechter</strong> Tabelle + Übereinstimmungen links</td>
+        <td style="padding:10px 14px;">Selten – meist als LEFT JOIN umformuliert</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>FULL OUTER JOIN</code></td>
+        <td style="padding:10px 14px;">Alle aus <strong>beiden</strong> Tabellen</td>
+        <td style="padding:10px 14px;">Sehr selten – PostgreSQL unterstützt es</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>In der Praxis ist der <strong>INNER JOIN</strong> der am häufigsten verwendete JOIN-Typ, da wir meist nur die Datensätze sehen möchten, die tatsächlich miteinander verknüpft sind. LEFT und RIGHT JOINs kommen zum Einsatz, wenn wir auch "verwaiste" Datensätze behalten möchten - also solche, die keine Entsprechung in der anderen Tabelle haben.</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://media.licdn.com/dms/image/v2/D4D22AQHeU4OzQVrH1g/feedshare-shrink_800/feedshare-shrink_800/0/1685862307804?e=1764806400&amp;v=beta&amp;t=VPS8sG7Z2gzgIZxcBXay1vTcepAXY4h6a4N_FgvVnq8" data-title="Join" data-desc-position="bottom"><img src="https://media.licdn.com/dms/image/v2/D4D22AQHeU4OzQVrH1g/feedshare-shrink_800/feedshare-shrink_800/0/1685862307804?e=1764806400&amp;v=beta&amp;t=VPS8sG7Z2gzgIZxcBXay1vTcepAXY4h6a4N_FgvVnq8" alt="Join" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://www.linkedin.com/posts/chandanagrawal23_meme-sql-leetcode-activity-7071019026377768960-PmQZ/">LinkedIn</a></figcaption>
+</div>
+
+<hr>
+<details class="info" open="open">
+<summary>Datenbank-Setup</summary>
+<p>Für die Beispiele in diesem Kapitel verwenden wir eine <strong>Beschaffungs-Datenbank</strong> (<code>beschaffung_db</code>), die typische Einkaufsprozesse eines produzierenden Unternehmens abbildet. Diese Datenbank hilft uns, JOINs praxisnah zu üben.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Datenbank erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">beschaffung_db</span><span class="p">;</span>
+
+<span class="c1">-- Zur Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">beschaffung_db</span>
+
+<span class="c1">-- Tabelle 1: Lieferanten</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">lieferant_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">firmenname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">land</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">bewertung</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle 2: Artikel</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">artikel_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">artikelname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">kategorie</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">einkaufspreis</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle 3: Bestellungen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">bestell_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bestelldatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferant_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">lieferant_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">lieferanten</span><span class="p">(</span><span class="n">lieferant_id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle 4: Bestellpositionen (Zwischentabelle für Bestellungen und Artikel)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">bestellpositionen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">position_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bestell_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">artikel_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">einzelpreis</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">bestell_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">bestellungen</span><span class="p">(</span><span class="n">bestell_id</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">artikel_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">artikel</span><span class="p">(</span><span class="n">artikel_id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Testdaten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="p">(</span><span class="n">firmenname</span><span class="p">,</span><span class="w"> </span><span class="n">land</span><span class="p">,</span><span class="w"> </span><span class="n">bewertung</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Stahl GmbH'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Deutschland'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">5</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'MetalCorp'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Frankreich'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">.</span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'SteelWorld Inc'</span><span class="p">,</span><span class="w"> </span><span class="s1">'USA'</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">.</span><span class="mi">8</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'IronWorks AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Deutschland'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">);</span><span class="w">  </span><span class="c1">-- Neuer Lieferant, noch keine Bewertung</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="p">(</span><span class="n">artikelname</span><span class="p">,</span><span class="w"> </span><span class="n">kategorie</span><span class="p">,</span><span class="w"> </span><span class="n">einkaufspreis</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Stahlblech 2mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Rohmaterial'</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">.</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Aluminiumprofile'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Rohmaterial'</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Schrauben M8'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Befestigung'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">15</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Muttern M8'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Befestigung'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">08</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'Dichtungsringe'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Zubehoer'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">20</span><span class="p">);</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="p">(</span><span class="n">bestelldatum</span><span class="p">,</span><span class="w"> </span><span class="n">lieferant_id</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'2024-01-15'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'2024-01-20'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Transit'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'2024-01-22'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'Geliefert'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'2024-01-25'</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Bestellt'</span><span class="p">),</span>
+<span class="w">    </span><span class="p">(</span><span class="s1">'2024-01-28'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'Entwurf'</span><span class="p">);</span><span class="w">  </span><span class="c1">-- Bestellung ohne Lieferant (noch in Planung)</span>
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">bestellpositionen</span><span class="w"> </span><span class="p">(</span><span class="n">bestell_id</span><span class="p">,</span><span class="w"> </span><span class="n">artikel_id</span><span class="p">,</span><span class="w"> </span><span class="n">menge</span><span class="p">,</span><span class="w"> </span><span class="n">einzelpreis</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">.</span><span class="mi">50</span><span class="p">),</span><span class="w">   </span><span class="c1">-- Bestell. 1: 500x Stahlblech</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">15</span><span class="p">),</span><span class="w">   </span><span class="c1">-- Bestell. 1: 5000x Schrauben</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span><span class="w">   </span><span class="c1">-- Bestell. 2: 200x Aluminiumprofile</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">.</span><span class="mi">50</span><span class="p">),</span><span class="w">   </span><span class="c1">-- Bestell. 3: 300x Stahlblech</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">08</span><span class="p">),</span><span class="w">   </span><span class="c1">-- Bestell. 3: 5000x Muttern</span>
+<span class="w">    </span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">800</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">.</span><span class="mi">20</span><span class="p">);</span><span class="w">    </span><span class="c1">-- Bestell. 4: 800x Dichtungsringe</span>
+</code></pre></div>
+<p><strong>Hinweis:</strong> Beachte, dass die Bestellung mit ID 5 bewusst keinen Lieferanten hat (<code>lieferant_id = NULL</code>) und der Lieferant "IronWorks AG" noch keine Bestellungen hat. Dies wird uns helfen, die Unterschiede zwischen INNER JOIN und LEFT JOIN zu verstehen.</p>
+</details>
+<hr>
+<h2 id="join-typen">JOIN-Typen</h2>
+<h3 id="inner-join"><code>INNER JOIN</code></h3>
+<p>Der <code>INNER JOIN</code> ist der Standard-JOIN und bildet die Schnittmenge zweier Tabellen. Er gibt nur Datensätze zurück, die in <strong>beiden</strong> Tabellen eine Übereinstimmung haben. Stellen Sie sich zwei Kreise vor, die sich überschneiden - der <code>INNER JOIN</code> liefert genau den Bereich, in dem sich beide Kreise treffen. Der Syntax für einen <code>INNER JOIN</code> ist wie folgt:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">spalten</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">tabelle1</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">tabelle2</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">tabelle1</span><span class="p">.</span><span class="n">fremdschlüssel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tabelle2</span><span class="p">.</span><span class="n">primärschlüssel</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">bedingung</span><span class="p">;</span>
+</code></pre></div>
+<hr>
+<p>Nun führen wir unseren ersten JOIN aus. </p>
+<details class="example" open="open">
+<summary><code>INNER JOIN</code> - Bestellungen mit Lieferantennamen</summary>
+<p>Wir wollen alle Bestellungen mit den zugehörigen Lieferantennamen anzeigen. Die <code>ON</code>-Klausel verbindet die beiden Tabellen über die Lieferanten-IDs:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">bestellungen</span><span class="p">.</span><span class="n">bestell_id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bestellungen</span><span class="p">.</span><span class="n">bestelldatum</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferanten</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bestellungen</span><span class="p">.</span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">bestellungen</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">bestellungen</span><span class="p">.</span><span class="n">lieferant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lieferanten</span><span class="p">.</span><span class="n">lieferant_id</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> bestell_id | bestelldatum |   firmenname   |   status
+------------+--------------+----------------+------------
+          1 | 2024-01-15   | Stahl GmbH     | Geliefert
+          2 | 2024-01-20   | MetalCorp      | In Transit
+          3 | 2024-01-22   | Stahl GmbH     | Geliefert
+          4 | 2024-01-25   | SteelWorld Inc | Bestellt
+(4 rows)
+</code></pre></div>
+<p>Wir erkennen nun, dass die <strong>Bestellung Nr. 5</strong> (Entwurf ohne Lieferant) und der Lieferant <strong>IronWorks AG</strong> (ohne Bestellungen) <strong>fehlen!</strong> Warum? Beide haben in der jeweils anderen Tabelle keinen passenden Datensatz gefunden. Da der <code>INNER JOIN</code> nur Zeilen zurückgibt, bei denen in beiden Tabellen ein passender Datensatz existiert, werden diese Einträge ignoriert. Dies ist ein wichtiges Verhalten: <code>INNER JOIN</code> ist restriktiv und zeigt nur vollständige Verknüpfungen.</p>
+</details>
+<details class="defi" open="open">
+<summary>Definition: <code>INNER JOIN</code></summary>
+<p><code>INNER JOIN</code> zeigt nur Datensätze, die in <strong>beiden</strong> Tabellen verknüpft sind. Datensätze ohne Übereinstimmung werden weggelassen.</p>
+</details>
+<hr>
+<h3 id="exkurs-aliasse">Exkurs: Aliasse</h3>
+<p>Bevor wir uns die weiteren JOIN-Typen ansehen, nehmen wir einen kleinen Exkurs und schauen uns an, wie wir Tabellennamen verkürzen können mit <strong>Aliassen</strong>.
+Wir haben Aliasse bereits im Kapitel <a href="../abfragen/#aggregatfunktionen-daten-zusammenfassen">Abfragen von Daten</a> kennengelernt.</p>
+<p>Je komplexer unsere Abfragen werden, desto unübersichtlicher werden lange Tabellennamen wie <code>bestellungen.bestelldatum</code> und <code>lieferanten.firmenname</code>. Hier kommen Aliasse ins Spiel.
+Bei JOINs schreiben wir oft lange Tabellennamen - <strong>Aliasse</strong> (Abkürzungen) machen das übersichtlicher und sind in der Praxis absolut üblich.
+Fast jede JOIN-Abfrage, die Sie in der Realität sehen werden, verwendet Aliasse.</p>
+<details class="example" open="open">
+<summary>Aliasse bei JOINs</summary>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">bestelldatum</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">land</span><span class="p">,</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">b</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">lieferant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">lieferant_id</span><span class="p">;</span>
+</code></pre></div>
+<p>oder noch kürzer (ohne <code>AS</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">bestelldatum</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="n">b</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">lieferant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">lieferant_id</span><span class="p">;</span>
+</code></pre></div>
+</details>
+<details class="tip" open="open">
+<summary>Best Practice</summary>
+<p>Verwende immer kurze, aussagekräftige Aliasse (z.B. <code>m</code>, <code>t</code>) bei JOINs – das macht die Abfrage viel lesbarer!</p>
+</details>
+<hr>
+<h3 id="left-join"><code>LEFT JOIN</code></h3>
+<p>Was aber, wenn wir <strong>alle</strong> Bestellungen sehen wollen, unabhängig davon, ob sie bereits einem Lieferanten zugeordnet sind oder nicht? Hier kommt der <code>LEFT JOIN</code> (auch <code>LEFT OUTER JOIN</code>) ins Spiel. Er gibt <strong>alle Datensätze der linken Tabelle</strong> zurück, auch wenn sie keine Übereinstimmung in der rechten Tabelle haben.</p>
+<p>Der Unterschied zum <code>INNER JOIN</code> ist subtil aber wichtig: Beim LEFT JOIN ist die linke Tabelle (in unserem Fall <code>bestellungen</code>) die "dominante" Tabelle - alle ihre Zeilen erscheinen im Ergebnis. Gibt es für eine Bestellung keinen passenden Lieferanten, werden die Spalten aus der Lieferanten-Tabelle einfach mit <code>NULL</code> gefüllt.</p>
+<details class="example" open="open">
+<summary><code>LEFT JOIN</code> - Bestellungen mit Lieferantennamen</summary>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span><span class="p">,</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">bestelldatum</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">land</span><span class="p">,</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">status</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="n">b</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">lieferant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">lieferant_id</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code> bestell_id | bestelldatum |   firmenname   |    land     |   status
+------------+--------------+----------------+-------------+------------
+          1 | 2024-01-15   | Stahl GmbH     | Deutschland | Geliefert
+          2 | 2024-01-20   | MetalCorp      | Frankreich  | In Transit
+          3 | 2024-01-22   | Stahl GmbH     | Deutschland | Geliefert
+          4 | 2024-01-25   | SteelWorld Inc | USA         | Bestellt
+          5 | 2024-01-28   |                |             | Entwurf
+(5 rows)
+</code></pre></div>
+<p>Und nun sehen wir, dass <strong>Bestellung Nr. 5</strong> dabei ist, obwohl kein Lieferant zugeordnet ist! An der Stelle, wo der Lieferantenname und das Land stehen sollten, steht <code>NULL</code>. Dies ist besonders nützlich, wenn wir beispielsweise alle Bestellungen auflisten wollen, die noch keinen Lieferanten zugewiesen haben, oder wenn wir eine Übersicht aller Bestellungen brauchen, unabhängig von ihrem Bearbeitungsstatus.</p>
+</details>
+<p><code>LEFT JOIN</code> wird in der Praxis oft verwendet, da es wichtig sein kann, auch "unvollständige" Datensätze zu sehen. Denken wir an Berichte oder Übersichten, wo wir nicht versehentlich Datensätze verschweigen wollen, nur weil eine Verknüpfung fehlt.</p>
+<details class="example" open="open">
+<summary><code>LEFT JOIN</code>: Lieferanten ohne Bestellungen finden</summary>
+<p>Ein weiterer häufiger Anwendungsfall: Welche Lieferanten haben noch <strong>keine</strong> Bestellungen erhalten?</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">land</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl_bestellungen</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="n">l</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">lieferant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">lieferant_id</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">land</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>  firmenname  |    land     | anzahl_bestellungen
+--------------+-------------+---------------------
+ IronWorks AG | Deutschland |                   0
+(1 row)
+</code></pre></div>
+<p>Mit LEFT JOIN und Aggregation können wir leicht herausfinden, welche Lieferanten noch nie eine Bestellung erhalten haben.</p>
+</details>
+<hr>
+<h3 id="right-full-outer-join"><code>RIGHT</code> &amp; <code>FULL OUTER JOIN</code></h3>
+<p>Der <code>RIGHT JOIN</code> (auch <code>RIGHT OUTER JOIN</code>) ist das Spiegelbild des <code>LEFT JOIN</code>: Alle Datensätze der <strong>rechten</strong> Tabelle werden zurückgegeben. Anstatt dass die linke Tabelle dominant ist, ist nun die rechte Tabelle die führende - alle ihre Zeilen erscheinen im Ergebnis, auch wenn es keine Übereinstimmung in der linken Tabelle gibt.</p>
+<p>In der Praxis wird <code>RIGHT JOIN</code> jedoch sehr selten verwendet, da man das gleiche Ergebnis durch Vertauschen der Tabellen und Verwendung eines <code>LEFT JOIN</code> erreichen kann. Die meisten Entwickler bevorzugen <code>LEFT JOIN</code>, weil es intuitiver ist: Man liest von links nach rechts und die "Haupttabelle" steht links. Aus diesem Grund werden Sie in professionellem Code kaum RIGHT JOINs finden - es ist einfach eine Konventionsfrage, und die Konvention hat sich klar für LEFT JOIN entschieden.</p>
+<p>Der <code>FULL OUTER JOIN</code> vereint <code>LEFT</code> und <code>RIGHT JOIN</code>: Er gibt <strong>alle</strong> Datensätze aus <strong>beiden</strong> Tabellen zurück, unabhängig davon, ob eine Verknüpfung existiert oder nicht. Fehlende Werte werden mit <code>NULL</code> gefüllt. Dieser JOIN-Typ ist noch seltener als <code>RIGHT JOIN</code> und wird nur in sehr spezifischen Szenarien benötigt - beispielsweise wenn man alle Datensätze aus beiden Tabellen sehen möchte, um Inkonsistenzen oder fehlende Verknüpfungen zu identifizieren.</p>
+<p>Für die allermeisten Anwendungsfälle reichen <code>INNER JOIN</code> und <code>LEFT JOIN</code> vollkommen aus. Diese beiden sollten wir gut beherrschen, während <code>RIGHT JOIN</code> und <code>FULL OUTER JOIN</code> eher Randerscheinungen sind, die wir kennen, aber selten verwenden werden.</p>
+<hr>
+<h2 id="verbinde-mehrere-tabellen">Verbinde mehrere Tabellen</h2>
+<p>Bisher haben wir in unseren Beispielen immer nur zwei Tabellen miteinander verknüpft. In der Realität sind Datenbanken jedoch oft komplexer strukturiert, und wir müssen Daten aus drei, vier oder sogar noch mehr Tabellen kombinieren. Die gute Nachricht: Man kann beliebig viele Tabellen in einer einzigen Abfrage joinen!</p>
+<p>Dies ist besonders bei komplexen Geschäftsprozessen wichtig. In unserem Beschaffungsszenario müssen wir beispielsweise Bestellungen, Lieferanten, Artikel und Bestellpositionen zusammenführen, um eine vollständige Übersicht zu erhalten.</p>
+<details class="example" open="open">
+<summary>Verbinde mehrere Tabellen</summary>
+<p>Stellen wir uns vor, wir möchten eine vollständige Übersicht aller Bestellpositionen mit Lieferant, Artikel und Gesamtkosten:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Welche Artikel wurden von welchem Lieferanten bestellt?</span>
+<span class="k">SELECT</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lieferant</span><span class="p">,</span>
+<span class="w">    </span><span class="n">b</span><span class="p">.</span><span class="n">bestelldatum</span><span class="p">,</span>
+<span class="w">    </span><span class="n">a</span><span class="p">.</span><span class="n">artikelname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bp</span><span class="p">.</span><span class="n">menge</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bp</span><span class="p">.</span><span class="n">einzelpreis</span><span class="p">,</span>
+<span class="w">    </span><span class="p">(</span><span class="n">bp</span><span class="p">.</span><span class="n">menge</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bp</span><span class="p">.</span><span class="n">einzelpreis</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">positionswert</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">bestellpositionen</span><span class="w"> </span><span class="n">bp</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">bp</span><span class="p">.</span><span class="n">bestell_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">lieferant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">lieferant_id</span>
+<span class="k">INNER</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">artikel</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">bp</span><span class="p">.</span><span class="n">artikel_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">artikel_id</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bestelldatum</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>   lieferant    | bestelldatum |   artikelname    | menge | einzelpreis | positionswert
+----------------+--------------+------------------+-------+-------------+---------------
+ Stahl GmbH     | 2024-01-15   | Stahlblech 2mm   |   500 |       12.50 |       6250.00
+ Stahl GmbH     | 2024-01-15   | Schrauben M8     |  5000 |        0.15 |        750.00
+ MetalCorp      | 2024-01-20   | Aluminiumprofile |   200 |       25.00 |       5000.00
+ Stahl GmbH     | 2024-01-22   | Stahlblech 2mm   |   300 |       12.50 |       3750.00
+ Stahl GmbH     | 2024-01-22   | Muttern M8       |  5000 |        0.08 |        400.00
+ SteelWorld Inc | 2024-01-25   | Dichtungsringe   |   800 |        1.20 |        960.00
+(6 rows)
+</code></pre></div>
+<p>Die Datenbank führt die JOINs sequenziell aus - erst wird das erste JOIN-Paar verarbeitet, dann das Ergebnis mit der nächsten Tabelle verknüpft:</p>
+<ol>
+<li><code>bestellpositionen</code> mit <code>bestellungen</code> joinen (über <code>bestell_id</code>)</li>
+<li>Das Zwischenergebnis mit <code>lieferanten</code> joinen (über <code>lieferant_id</code>)</li>
+<li>Das Zwischenergebnis mit <code>artikel</code> joinen (über <code>artikel_id</code>)</li>
+</ol>
+<p>In diesem Beispiel nutzen wir ausschließlich <code>INNER JOINs</code>, weil wir nur vollständige Datensätze sehen wollen. Würden wir auch Bestellungen ohne Lieferanten oder Positionen ohne Artikel sehen wollen, müssten wir <code>LEFT JOINs</code> verwenden.</p>
+</details>
+<hr>
+<details class="example" open="open">
+<summary>Kombination aus mehreren JOINs und Aggregationen</summary>
+<p>Besonders mächtig wird die Kombination aus mehreren JOINs und Aggregationen. Zum Beispiel: Welcher Lieferant hat das größte Bestellvolumen?</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span>
+<span class="w">    </span><span class="n">l</span><span class="p">.</span><span class="n">land</span><span class="p">,</span>
+<span class="w">    </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">anzahl_bestellungen</span><span class="p">,</span>
+<span class="w">    </span><span class="k">SUM</span><span class="p">(</span><span class="n">bp</span><span class="p">.</span><span class="n">menge</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">bp</span><span class="p">.</span><span class="n">einzelpreis</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">gesamtumsatz</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">lieferanten</span><span class="w"> </span><span class="n">l</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">bestellungen</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">lieferant_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">lieferant_id</span>
+<span class="k">LEFT</span><span class="w"> </span><span class="k">JOIN</span><span class="w"> </span><span class="n">bestellpositionen</span><span class="w"> </span><span class="n">bp</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">bestell_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bp</span><span class="p">.</span><span class="n">bestell_id</span>
+<span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">firmenname</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">.</span><span class="n">land</span>
+<span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">gesamtumsatz</span><span class="w"> </span><span class="k">DESC</span><span class="w"> </span><span class="n">NULLS</span><span class="w"> </span><span class="k">LAST</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>   firmenname   |    land     | anzahl_bestellungen | gesamtumsatz
+----------------+-------------+---------------------+--------------
+ Stahl GmbH     | Deutschland |                   2 |     11150.00
+ MetalCorp      | Frankreich  |                   1 |      5000.00
+ SteelWorld Inc | USA         |                   1 |       960.00
+ IronWorks AG   | Deutschland |                   0 |
+(4 rows)
+</code></pre></div>
+<p>Hier verwenden wir <code>LEFT JOIN</code>, um auch Lieferanten ohne Bestellungen (wie IronWorks AG) anzuzeigen. Die Aggregation zeigt uns dann, welche Lieferanten am wichtigsten sind.</p>
+</details>
+<hr>
+<h2 id="ubung">Übung ✍️</h2>
+<p>Nun wenden wir das Erlernte auf unser <strong>TecGuy GmbH Produktionsplanungssystem</strong> an! Wir nutzen die in den vorherigen Kapiteln erstellten Tabellen und verknüpfen sie mit <strong>JOINs</strong>, um aussagekräftige Berichte und Analysen zu erstellen.</p>
+<p>Im vorherigen Kapitel haben wir <strong>Foreign Keys</strong> und <strong>Beziehungen</strong> zwischen Tabellen erstellt. Jetzt lernen wir, wie man Daten aus <strong>mehreren verknüpften Tabellen</strong> abfragt.</p>
+<hr>
+<details class="info" open="open">
+<summary>Übungsvorbereitung - Datenbank zurücksetzen</summary>
+<p>Falls du das vorherige Kapitel nicht abgeschlossen hast oder neu starten möchtest,
+führe dieses Setup aus. Es löscht alle bestehenden Daten und erstellt den
+korrekten Ausgangszustand für dieses Kapitel.</p>
+<details class="code">
+<summary>Setup</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zu anderer Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">postgres</span>
+
+<span class="c1">-- Zur Datenbank wechseln (oder neu erstellen)</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">produktionsplanung_db</span>
+
+<span class="c1">-- 1. Tabelle für Maschinen erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinentyp</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produktionshalle</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">anschaffungsjahr</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenstatus</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">wartungsintervall_tage</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- 2. Tabelle für Produktionsaufträge erstellen (MIT FK-Constraint)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">auftrag_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">auftragsnummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kunde</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produkt</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">startdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span>
+<span class="p">);</span>
+
+<span class="c1">-- 3. Tabelle für Wartungsprotokolle erstellen (MIT FK-Constraint)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">wartungs_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">wartungsdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">beschreibung</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">techniker</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kosten</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- 4. Tabelle für Ersatzteile erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">teil_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">teilename</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">hersteller</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">preis</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- 5. Junction Table für n:m Beziehung (Maschinen ↔ Ersatzteile)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">zuordnung_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">teil_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">benoetigte_anzahl</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">teil_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">ersatzteile</span><span class="p">(</span><span class="n">teil_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- Maschinen-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese Alpha'</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank Delta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse Gamma'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle B'</span><span class="p">,</span><span class="w"> </span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter Beta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle C'</span><span class="p">,</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">);</span>
+
+<span class="c1">-- Produktionsaufträge-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-01'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-18'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-25'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Volkswagen AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-009'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-05-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-010'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-19'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+
+<span class="c1">-- Wartungsprotokolle-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span><span class="n">wartungsdatum</span><span class="p">,</span><span class="w"> </span><span class="n">beschreibung</span><span class="p">,</span><span class="w"> </span><span class="n">techniker</span><span class="p">,</span><span class="w"> </span><span class="n">kosten</span><span class="p">,</span><span class="w"> </span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'2024-01-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Routinewartung - Oelwechsel'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M. Schneider'</span><span class="p">,</span><span class="w"> </span><span class="mi">250</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-02-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Reparatur Spindelmotor'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L. Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">850</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-01-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Routinewartung - Kalibrierung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M. Schneider'</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-03-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Austausch Keilriemen'</span><span class="p">,</span><span class="w"> </span><span class="s1">'L. Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">-- Ersatzteile-Daten einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="p">(</span><span class="n">teilename</span><span class="p">,</span><span class="w"> </span><span class="n">hersteller</span><span class="p">,</span><span class="w"> </span><span class="n">preis</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Spindelmotor 5kW'</span><span class="p">,</span><span class="w"> </span><span class="s1">'MotorTech GmbH'</span><span class="p">,</span><span class="w"> </span><span class="mi">1850</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Kuehlmittelpumpe'</span><span class="p">,</span><span class="w"> </span><span class="s1">'PumpCo AG'</span><span class="p">,</span><span class="w"> </span><span class="mi">320</span><span class="p">.</span><span class="mi">50</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Linearfuehrung 500mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Precision Parts'</span><span class="p">,</span><span class="w"> </span><span class="mi">680</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Werkzeughalter ISO40'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ToolSupply GmbH'</span><span class="p">,</span><span class="w"> </span><span class="mi">145</span><span class="p">.</span><span class="mi">00</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Drehfutter 250mm'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ChuckMaster'</span><span class="p">,</span><span class="w"> </span><span class="mi">890</span><span class="p">.</span><span class="mi">00</span><span class="p">);</span>
+
+<span class="c1">-- Maschinen-Ersatzteile Zuordnungen einfügen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">,</span><span class="w"> </span><span class="n">teil_id</span><span class="p">,</span><span class="w"> </span><span class="n">benoetigte_anzahl</span><span class="p">)</span>
+<span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 1x Spindelmotor</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 2x Kuehlmittelpumpe</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 4x Linearfuehrung</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fraese braucht 6x Werkzeughalter</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- Drehbank braucht 1x Kuehlmittelpumpe</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="c1">-- Drehbank braucht 1x Drehfutter</span>
+</code></pre></div>
+<p><strong>Hinweis:</strong> Alle Foreign Key Constraints sind aktiv. Die Tabellen sind nun vollständig verknüpft!</p>
+</details>
+</details>
+<hr>
+<details class="question" open="open">
+<summary>Aufgabe 1: INNER JOIN - Produktionsaufträge mit Maschinen</summary>
+<p>Erstelle eine Übersicht aller Produktionsaufträge mit dem Namen der zugeordneten Maschine.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Zeige: Auftragsnummer, Kunde, Produkt, Maschinennamen, Status</li>
+<li>Sortiere nach Auftragsnummer</li>
+<li>Verwende Aliasse für bessere Lesbarkeit</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 2: LEFT JOIN - Alle Maschinen und ihre Aufträge</summary>
+<p>Zeige alle Maschinen und die Anzahl ihrer zugeordneten Produktionsaufträge. Auch Maschinen ohne Aufträge sollen angezeigt werden.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Zeige: Maschinenname, Maschinentyp, Anzahl Aufträge</li>
+<li>Es sollen auch Maschinen ohne Aufträge erscheinen</li>
+<li>Gruppiere nach Maschine</li>
+<li>Sortiere nach Anzahl Aufträge (absteigend)</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 3: INNER JOIN - Wartungsprotokolle mit Maschinen</summary>
+<p>Erstelle einen Wartungsbericht: Zeige alle Wartungen mit Maschinenname, sortiert nach Kosten (höchste zuerst).</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Zeige: Maschinenname, Wartungsdatum, Beschreibung, Techniker, Kosten</li>
+<li>Nur Wartungen, die tatsächlich einer Maschine zugeordnet sind</li>
+<li>Sortiere nach Kosten absteigend</li>
+<li>Filtere nur Wartungen mit Kosten &gt; 200 EUR</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 4: Mehrere Tabellen - Ersatzteile für Maschinen (n:m)</summary>
+<p>Zeige, welche Maschinen welche Ersatzteile benötigen. Berechne außerdem die Gesamtkosten pro Maschine.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Verknüpfe 3 Tabellen: <code>maschinen</code>, <code>maschinen_ersatzteile</code>, <code>ersatzteile</code></li>
+<li>Zeige: Maschinenname, Teilename, benötigte Anzahl, Einzelpreis, Gesamtpreis (Anzahl * Preis)</li>
+<li>Sortiere nach Maschine und Teilename</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 5: Komplexe Abfrage - Produktionsübersicht</summary>
+<p>Erstelle eine umfassende Übersicht pro Maschine: Anzahl Aufträge, Anzahl Wartungen und Gesamtwartungskosten.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Zeige: Maschinenname, Anzahl Produktionsaufträge, Anzahl Wartungen, Gesamtwartungskosten</li>
+<li>Verwende LEFT JOINs für beide Verknüpfungen</li>
+<li>Gruppiere nach Maschine</li>
+<li>Sortiere nach Maschinenname</li>
+</ul>
+</details>
+<hr>
+<h2 id="zusammenfassung">Zusammenfassung 📌</h2>
+<ul>
+<li><strong>JOINs</strong> kombinieren Daten aus mehreren Tabellen</li>
+<li><strong>INNER JOIN</strong> zeigt nur verknüpfte Datensätze (Schnittmenge)</li>
+<li><strong>LEFT JOIN</strong> zeigt alle aus der linken Tabelle + Matches rechts</li>
+<li><strong>RIGHT JOIN</strong> zeigt alle aus der rechten Tabelle + Matches links</li>
+<li><strong>Aliasse</strong> (z.B. <code>AS a</code>) machen JOINs übersichtlicher</li>
+<li>Man kann beliebig viele Tabellen joinen</li>
+</ul>
+<hr>
+<p>Im nächsten Kapitel lernen wir <strong>fortgeschrittene SQL-Techniken</strong>: Unterabfragen, String-Funktionen und mehr! Mit den JOINs haben Sie nun das Fundament gelegt, um auch komplexe Datenbankstrukturen effizient abzufragen.</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://www.blazesql.com/images/memes/can_i_join_you.webp" data-title="Join" data-desc-position="bottom"><img src="https://www.blazesql.com/images/memes/can_i_join_you.webp" alt="Join" style="width:50%; margin-bottom: 1em;"></a>
+        <figcaption>Quelle: <a href="https://www.blazesql.com/images/memes/can_i_join_you.webp">blazesql</a></figcaption>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../modellierung/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Datenmodellierung">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Datenmodellierung
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../fortgeschritten/" class="md-footer__link md-footer__link--next" aria-label="Next: Fortgeschrittene Techniken">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Fortgeschrittene Techniken
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate", "navigation.footer", "navigation.top", "header.autohide", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/slideshow.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>

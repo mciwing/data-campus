@@ -1,0 +1,1777 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://learn-data.at/database/transaktionen/">
+      
+      
+        <link rel="prev" href="../integritaet/">
+      
+      
+        <link rel="next" href="../ausblick/">
+      
+      
+      <link rel="icon" href="../../assets/icon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
+    
+    
+      
+        <title>Transaktionen - Data Campus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/colors.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/slideshow.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#transaktionen-acid" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Data Campus" class="md-header__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Campus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Transaktionen
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to dark mode" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom" aria-label="Switch to light mode" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Daten
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Datenbanken
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+  
+    
+        
+      
+  
+
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Data Campus" class="md-nav__button md-logo" aria-label="Data Campus" data-md-component="logo">
+      
+  <img src="../../assets/logo1.png" alt="logo">
+
+    </a>
+    Data Campus
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/mciwing/data-campus" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../data/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Daten
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Daten
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/datenerfassung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenerfassung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/zahlensysteme/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenverarbeitung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/speicherung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Speicherung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Datenbanken
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Datenbanken
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../einfuehrung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Einführung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../relational/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Relationale Datenbanken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../abfragen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Abfragen von Daten
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulieren/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Manipulieren
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modellierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenmodellierung
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../join/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Daten Zusammenführen
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fortgeschritten/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Fortgeschrittene Techniken
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integritaet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Datenintegrität
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transaktionen
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#was-ist-eine-transaktion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Was ist eine Transaktion?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warum-brauchen-wir-transaktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warum brauchen wir Transaktionen?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaktionen-in-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transaktionen in PostgreSQL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatisches-rollback-bei-fehlern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automatisches Rollback bei Fehlern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acid-prinzipien" class="md-nav__link">
+    <span class="md-ellipsis">
+      ACID-Prinzipien
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#savepoint-teilweiser-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAVEPOINT: Teilweiser Rollback
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ausblick/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Ausblick
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#was-ist-eine-transaktion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Was ist eine Transaktion?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#warum-brauchen-wir-transaktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      Warum brauchen wir Transaktionen?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transaktionen-in-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transaktionen in PostgreSQL
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#automatisches-rollback-bei-fehlern" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automatisches Rollback bei Fehlern
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acid-prinzipien" class="md-nav__link">
+    <span class="md-ellipsis">
+      ACID-Prinzipien
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#savepoint-teilweiser-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      SAVEPOINT: Teilweiser Rollback
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ubung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Übung ✍️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zusammenfassung" class="md-nav__link">
+    <span class="md-ellipsis">
+      Zusammenfassung 📌
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+  
+    
+                  
+
+
+  
+  
+
+
+<h1 id="transaktionen-acid">Transaktionen &amp; ACID</h1>
+<p>In den vorherigen Kapiteln haben wir gelernt, wie wir Daten in PostgreSQL strukturieren, abfragen und manipulieren können. Dabei haben wir immer angenommen, dass unsere Operationen erfolgreich ausgeführt werden und die Datenbank in einem konsistenten Zustand bleibt.</p>
+<p>Doch was passiert, wenn:</p>
+<ul>
+<li>Ein <strong>Fehler während einer Reihe von Änderungen</strong> auftritt?</li>
+<li>Mehrere <strong>Benutzer gleichzeitig</strong> auf dieselben Daten zugreifen?</li>
+<li>Das <strong>System abstürzt</strong>, während eine Operation läuft?</li>
+</ul>
+<p>In solchen Situationen reicht es nicht aus, einfach SQL-Befehle auszuführen. Wir benötigen einen Mechanismus, der sicherstellt, dass unsere Daten <strong>konsistent und zuverlässig</strong> bleiben. Dieser Mechanismus heißt <strong>Transaktion</strong>.</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://i.imgflip.com/acm26l.jpg" data-title="Transaction" data-desc-position="bottom"><img src="https://i.imgflip.com/acm26l.jpg" alt="Transaction" style="width:50%; margin-bottom: 1em; border-radius: 8px;"></a>
+    <figcaption>Quelle: <a href="https://i.imgflip.com/acm26l.jpg">imgflip</a></figcaption>
+</div>
+
+<p>In diesem Kapitel lernen wir, was Transaktionen sind, warum sie wichtig sind und wie wir sie in PostgreSQL verwenden. Außerdem schauen wir uns die <strong>ACID-Prinzipien</strong> an, die das Fundament für verlässliche Datenbanksysteme bilden.</p>
+<hr>
+<details class="info" open="open">
+<summary>Datenbank-Setup</summary>
+<p>Für die folgenden Beispiele erstellen wir eine <strong>Banking-Datenbank</strong>. In dieser Datenbank werden Bankkonten und Geldtransfers verwaltet.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Datenbank erstellen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">banking_db</span><span class="p">;</span>
+
+<span class="c1">-- Zur Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">banking_db</span>
+
+<span class="c1">-- Tabelle: Konten</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">konten</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">konto_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">kontonummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">22</span><span class="p">)</span><span class="w"> </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">saldo</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">saldo</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kontotyp</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'Girokonto'</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Transaktionslog</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">transaktionslog</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">transaktion_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">von_konto_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">konten</span><span class="p">(</span><span class="n">konto_id</span><span class="p">),</span>
+<span class="w">    </span><span class="n">zu_konto_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">konten</span><span class="p">(</span><span class="n">konto_id</span><span class="p">),</span>
+<span class="w">    </span><span class="n">betrag</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">betrag</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">),</span>
+<span class="w">    </span><span class="n">transaktionsdatum</span><span class="w"> </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">    </span><span class="n">beschreibung</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'abgeschlossen'</span>
+<span class="p">);</span>
+
+<span class="c1">-- Testdaten: Konten</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">konten</span><span class="w"> </span><span class="p">(</span><span class="n">kontoinhaber</span><span class="p">,</span><span class="w"> </span><span class="n">kontonummer</span><span class="p">,</span><span class="w"> </span><span class="n">saldo</span><span class="p">,</span><span class="w"> </span><span class="n">kontotyp</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Max Mustermann'</span><span class="p">,</span><span class="w"> </span><span class="s1">'DE89370400440532013000'</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Girokonto'</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Anna Schmidt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'DE89370400440532013001'</span><span class="p">,</span><span class="w"> </span><span class="mi">3000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Girokonto'</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Thomas Weber'</span><span class="p">,</span><span class="w"> </span><span class="s1">'DE89370400440532013002'</span><span class="p">,</span><span class="w"> </span><span class="mi">10000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sparkonto'</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Lisa Miller'</span><span class="p">,</span><span class="w"> </span><span class="s1">'DE89370400440532013003'</span><span class="p">,</span><span class="w"> </span><span class="mi">1500</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Girokonto'</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Peter Klein'</span><span class="p">,</span><span class="w"> </span><span class="s1">'DE89370400440532013004'</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sparkonto'</span><span class="p">);</span>
+</code></pre></div>
+</details>
+<hr>
+<h2 id="was-ist-eine-transaktion">Was ist eine Transaktion?</h2>
+<p>Eine <strong>Transaktion</strong> ist eine <strong>logische Einheit von Datenbankoperationen</strong>, die entweder <strong>vollständig ausgeführt</strong> oder <strong>vollständig rückgängig gemacht</strong> wird.</p>
+<p>Man kann sich eine Transaktion wie eine <strong>All-or-Nothing-Operation</strong> vorstellen:</p>
+<ul>
+<li>✅ Entweder werden <strong>alle Änderungen</strong> erfolgreich durchgeführt</li>
+<li>❌ Oder <strong>keine der Änderungen</strong> wird übernommen</li>
+</ul>
+<pre class="mermaid"><code>flowchart LR
+    A[Transaktion starten]:::peach --&gt; B{Alle Operationen erfolgreich?}:::teal
+    B --&gt;|Ja| C[COMMIT: Änderungen speichern]:::peach
+    B --&gt;|Nein| D[ROLLBACK: Änderungen verwerfen]:::peach
+    C --&gt; E[Konsistenter Zustand]:::teal
+    D --&gt; E
+
+    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
+    classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;</code></pre>
+<hr>
+<h2 id="warum-brauchen-wir-transaktionen">Warum brauchen wir Transaktionen?</h2>
+<p>Ohne Transaktionen können <strong>inkonsistente Zustände</strong> entstehen, die zu schwerwiegenden Problemen führen.</p>
+<details class="example" open="open">
+<summary>Geldtransfer ohne Transaktion</summary>
+<p>Stell dir vor, wir überweisen 500€ vom Konto von Max Mustermann an Anna Schmidt:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Schritt 1: Geld vom Sender-Konto abbuchen</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">500</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+
+<span class="c1">-- Schritt 2: Geld auf Empfänger-Konto gutschreiben</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">500</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>❌ Problem: Was passiert, wenn zwischen diesen beiden Schritten ein Fehler auftritt?</strong></p>
+<ul>
+<li>Das Geld wäre vom <strong>Sender-Konto abgebucht</strong></li>
+<li>Aber <strong>nicht auf dem Empfänger-Konto angekommen</strong></li>
+<li>500€ wären einfach verschwunden! 💸</li>
+</ul>
+<p>Mit einer <strong>Transaktion</strong> stellen wir sicher, dass <strong>entweder beide</strong> Operationen erfolgreich sind, <strong>oder keine von beiden</strong>.</p>
+</details>
+<hr>
+<h2 id="transaktionen-in-postgresql">Transaktionen in PostgreSQL</h2>
+<p>In PostgreSQL verwenden wir drei Hauptbefehle für Transaktionen:</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Befehl</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Verwendung</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>BEGIN</code></td>
+        <td style="padding:10px 14px;">Startet eine neue Transaktion</td>
+        <td style="padding:10px 14px;">Am Anfang einer Transaktionsfolge</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>COMMIT</code></td>
+        <td style="padding:10px 14px;">Speichert alle Änderungen dauerhaft</td>
+        <td style="padding:10px 14px;">Nach erfolgreicher Ausführung aller Operationen</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>ROLLBACK</code></td>
+        <td style="padding:10px 14px;">Verwirft alle Änderungen seit BEGIN</td>
+        <td style="padding:10px 14px;">Bei Fehlern oder bewusstem Abbruch</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Der Allgemeine Aufbau einer Transaktion ist wie folgt:</p>
+<div class="yaml no-copy highlight"><pre><span></span><code><span class="k">BEGIN</span><span class="p">;</span>
+
+<span class="c1">-- SQL-Befehle</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="p">...</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="p">...</span>
+<span class="k">DELETE</span><span class="w"> </span><span class="p">...</span>
+<span class="k">SELECT</span><span class="w"> </span><span class="p">...</span>
+
+<span class="k">COMMIT</span><span class="p">;</span><span class="w">  </span><span class="c1">-- oder ROLLBACK;</span>
+</code></pre></div>
+<p>Der <code>BEGIN</code> Befehl startet zunächst eine neue Transaktion. Alle nachfolgenden SQL-Befehle werden in dieser Transaktion ausgeführt. Sollte eine Transaktion fehlschlagen, hat man anschließend die Möglichkeit die Transaktion mit <code>ROLLBACK</code> rückgängig zu machen. Sollte die Transaktion erfolgreich ausgeführt werden, kann man die Transaktion mit <code>COMMIT</code> abschließen.</p>
+<hr>
+<p>Betrachten wir zum besseren Verständnis wieder ein praktisches Beispiel.</p>
+<details class="example" open="open">
+<summary>Transaktion mit <code>COMMIT</code> abschließen</summary>
+<p>Überprüfen wir zunächst die aktuellen Kontostände:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="p">,</span><span class="w"> </span><span class="n">kontonummer</span><span class="p">,</span><span class="w"> </span><span class="n">saldo</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Max Mustermann'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>  kontoinhaber  |      kontonummer       |  saldo
+----------------+------------------------+---------
+ Max Mustermann | DE89370400440532013000 | 4500.00
+ Anna Schmidt   | DE89370400440532013001 | 3500.00
+(2 rows)
+</code></pre></div>
+<p>Jetzt führen wir die Überweisung <strong>mit einer Transaktion</strong> durch:</p>
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="k">BEGIN</span><span class="p">;</span>
+</span>
+<span class="c1">-- Schritt 1: Geld vom Sender-Konto abbuchen</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">500</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+
+<span class="c1">-- Schritt 2: Geld auf Empfänger-Konto gutschreiben</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">500</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">;</span>
+</code></pre></div>
+<p>Überprüfen wir das Ergebnis (noch innerhalb der Transaktion):</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="p">,</span><span class="w"> </span><span class="n">saldo</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Max Mustermann'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">);</span>
+</code></pre></div>
+<div class="highlight"><span class="filename">Output</span><pre><span></span><code>  kontoinhaber  |  saldo
+----------------+---------
+ Max Mustermann | 4000.00
+ Anna Schmidt   | 4000.00
+(2 rows)
+</code></pre></div>
+<p>Sollte alles wie gewünscht funktioniert haben, können wir die Transaktion abschließen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">COMMIT</span><span class="p">;</span>
+</code></pre></div>
+<p>✅ <strong>Beide Änderungen</strong> wurden erfolgreich durchgeführt! Die Gesamtsumme (8000€) bleibt gleich.</p>
+</details>
+<details class="tip" open="open">
+<summary>Best Practice: Transaktionen verwenden</summary>
+<p>Verwende Transaktionen immer dann, wenn:</p>
+<ul>
+<li>Mehrere zusammenhängende Operationen durchgeführt werden</li>
+<li>Daten zwischen Tabellen verschoben werden</li>
+<li>Kritische Geschäftslogik umgesetzt wird</li>
+<li>Datenintegrität oberste Priorität hat</li>
+</ul>
+</details>
+<hr>
+<p>Was passiert aber, wenn wir einen <strong>Fehler bemerken</strong> oder die Transaktion <strong>abbrechen möchten</strong>?</p>
+<details class="example" open="open">
+<summary>Transaktion mit <code>ROLLBACK</code> abbrechen</summary>
+<p>Arbeiten wir am vorherigen Beispiel weiter und versuchen einen Transfer, den wir dann abbrechen:</p>
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="k">BEGIN</span><span class="p">;</span>
+</span>
+<span class="c1">-- Versuch einer Überweisung</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1000</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+
+<span class="c1">-- Ups, falscher Betrag! Abbrechen:</span>
+<span class="hll"><span class="k">ROLLBACK</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Überprüfen wir nun wieder den Kontostand:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="p">,</span><span class="w"> </span><span class="n">saldo</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>  kontoinhaber  |  saldo
+----------------+---------
+ Max Mustermann | 4000.00
+(1 row)
+</code></pre></div>
+<p>Die Änderung wurde <strong>NICHT gespeichert</strong>! Der Kontostand ist immer noch bei 4000€.</p>
+</details>
+<p>Mit <code>ROLLBACK</code> werden also <strong>alle Änderungen seit BEGIN</strong> verworfen, als hätten sie nie stattgefunden.</p>
+<div style="text-align: center;">
+    <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsnn86slpc1wm97s8bgo9.png" data-title="Transaction" data-desc-position="bottom"><img src="https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsnn86slpc1wm97s8bgo9.png" alt="Transaction" style="width:100%; margin-bottom: 1em; border-radius: 8px;"></a>
+    <figcaption>Quelle: <a href="https://dev.to/lovestaco/acid-or-base-hjf">dev.to</a></figcaption>
+</div>
+
+<hr>
+<h2 id="automatisches-rollback-bei-fehlern">Automatisches Rollback bei Fehlern</h2>
+<p>PostgreSQL führt <strong>automatisch ein ROLLBACK</strong> durch, wenn während einer Transaktion ein Fehler auftritt.</p>
+<details class="example" open="open">
+<summary>Automatisches Rollback bei Constraint-Verletzung</summary>
+<p>Wir versuchen, mehr Geld abzuheben, als auf dem Konto vorhanden ist:</p>
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="k">BEGIN</span><span class="p">;</span>
+</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">200</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+
+<span class="c1">-- Dieser Befehl verletzt die CHECK-Constraint (Saldo darf nicht negativ sein)</span>
+<span class="hll"><span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span>
+</span><span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">5000</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span><span class="w">  </span><span class="c1">-- Fehler! Saldo würde negativ werden (-700)</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>FEHLER:  neue Zeile für Relation »konten« verletzt Check-Constraint »konten_saldo_check«
+DETAIL:  Fehlgeschlagene Zeile enthält (1, Max Mustermann, DE89370400440532013000, -1200.00, Girokonto)
+</code></pre></div>
+<p>Wenn wir nun in weiterer Folge einen Befehl eingeben - egal welchen - wird uns das System folgendes zurückmelden:</p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">konten</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>FEHLER:  aktuelle Transaktion wurde abgebrochen, Befehle werden bis zum Ende der Transaktion ignoriert
+</code></pre></div>
+<p>Was nun passiert ist, dass egal ob wir <code>COMMIT</code> oder <code>ROLLBACK</code> ausführen, PostgreSQL automatisch einen <code>ROLLBACK</code> durchführen wird. Dabei werden <strong>alle Änderungen</strong> rückgängig gemacht!
+Wir testen dies, indem wir ein <code>COMMIT</code> ausführen und anschließend nochmals die Daten überprüfen.</p>
+<div class="highlight"><pre><span></span><code><span class="k">COMMIT</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="p">,</span><span class="w"> </span><span class="n">saldo</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>  kontoinhaber  |  saldo
+----------------+---------
+ Max Mustermann | 4000.00
+(1 row)
+</code></pre></div>
+<p>✅ Das Konto hat seinen <strong>ursprünglichen Kontostand</strong> behalten!</p>
+</details>
+<details class="tip" open="open">
+<summary>Verwendet PostgreSQL automatisch Transaktionen?</summary>
+<p>Ja! Jeder einzelne SQL-Befehl wird <strong>implizit in einer eigenen Transaktion</strong> ausgeführt. Wenn du nur einen <code>UPDATE</code>-Befehl ausführst, wird automatisch ein <code>BEGIN</code> davor und ein <code>COMMIT</code> danach gesetzt.</p>
+<p>Explizite Transaktionen mit <code>BEGIN</code> und <code>COMMIT</code> brauchst du nur, wenn du <strong>mehrere Befehle</strong> zu einer logischen Einheit zusammenfassen möchtest.</p>
+</details>
+<hr>
+<h2 id="acid-prinzipien">ACID-Prinzipien</h2>
+<p>Transaktionen folgen den sogenannten <strong>ACID-Prinzipien</strong>. ACID ist ein Akronym für vier Eigenschaften, die jede zuverlässige Datenbank-Transaktion erfüllen muss:</p>
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table" style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Prinzip</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Bedeutung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Beispiel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>A</strong>tomicity</td>
+        <td style="padding:10px 14px;">Alles oder nichts</td>
+        <td style="padding:10px 14px;">Entweder beide Updates oder keines</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>C</strong>onsistency</td>
+        <td style="padding:10px 14px;">Datenbank bleibt konsistent</td>
+        <td style="padding:10px 14px;">Gesamtbestand bleibt gleich</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>I</strong>solation</td>
+        <td style="padding:10px 14px;">Transaktionen laufen unabhängig</td>
+        <td style="padding:10px 14px;">Andere User sehen Änderungen erst nach COMMIT</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><strong>D</strong>urability</td>
+        <td style="padding:10px 14px;">Änderungen bleiben dauerhaft</td>
+        <td style="padding:10px 14px;">Auch nach Systemabsturz erhalten</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+<p>Schauen wir uns die einzelnen Prinzipien genauer an:</p>
+<hr>
+<div class="grid cards">
+<ul>
+<li>
+<p><strong>A - Atomicity</strong></p>
+<hr>
+<p>Entweder werden <strong>alle Operationen</strong> ausgeführt, oder <strong>keine einzige Operation</strong> wird übernommen. Es gibt <strong>kein "teilweise erfolgreich"</strong></p>
+</li>
+<li>
+<p><strong>C - Consistency</strong></p>
+<hr>
+<p>Alle <strong>Integritätsbedingungen</strong> (Constraints) müssen erfüllt sein. Dies bedeutet, dass <strong>vor</strong> und <strong>nach</strong> der Transaktion die Datenbank in einem gültigen Zustand ist</p>
+</li>
+<li>
+<p><strong>I - Isolation</strong></p>
+<hr>
+<p>Jede Transaktion läuft <strong>isoliert</strong>, als wäre sie die einzige. Änderungen einer Transaktion sind für andere <strong>erst nach COMMIT sichtbar</strong></p>
+</li>
+<li>
+<p><strong>D - Durability</strong></p>
+<hr>
+<p>Nach einem <strong>COMMIT</strong> sind die Änderungen <strong>permanent gespeichert</strong>. Auch bei <strong>Systemabstürzen</strong> oder <strong>Stromausfällen</strong> gehen die Daten nicht verloren</p>
+</li>
+</ul>
+</div>
+<details class="info" open="open">
+<summary>Zwei Transaktionen gleichzeitig</summary>
+<p>Wenn man die ACID Regeln betrachtet, mag dem ein oder anderen die Frage aufkommen: Was passiert wenn es zwei Transaktionen gleichzeitig gibt? Speziell das Isolationsprinzip würde ja bedeuten, dass gleichzeitig auf den gleichen Daten etwas geändert werden kann. Hier verwendet PostgreSQL standardmäßig ein sogenannntes <strong>Row-Level Locking</strong>. Dies bedeutet, dass wenn in einer Transaktion eine Änderung an einer Zeile vorgenommen wird, diese für Änderungen in einer anderen Transaktion gesperrt wird. Das bedeutet, dass PostgreSQL nie zwei <code>UPDATE</code> Befehle gleichzeitig auf die selbe Zeile zulässt. </p>
+</details>
+<hr>
+<h2 id="savepoint-teilweiser-rollback"><code>SAVEPOINT</code>: Teilweiser Rollback</h2>
+<p>Ein <code>SAVEPOINT</code> ist ein Zwischenspeicherpunkt innerhalb einer Transaktion. Du kannst zu einem <code>SAVEPOINT</code> zurückrollen, ohne die gesamte Transaktion abzubrechen.</p>
+<details class="example" open="open">
+<summary><code>SAVEPOINT</code> verwenden</summary>
+<p>Betrachten wir nochmals kurz den aktuellen Kontostand von Thomas, Max und Anna: </p>
+<div class="highlight"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="p">,</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">konten</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">'Max Mustermann'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Thomas Weber'</span><span class="p">);</span>
+</code></pre></div>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>  kontoinhaber  |  saldo
+----------------+----------
+ Thomas Weber   | 10000.00
+ Max Mustermann |  4000.00
+ Anna Schmidt   |  4000.00
+(3 rows)
+</code></pre></div>
+<p>Stellen wir uns vor, wir führen mehrere Überweisungen durch, möchten aber nur eine davon rückgängig machen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">BEGIN</span><span class="p">;</span>
+
+<span class="c1">-- Erste Überweisung: 200€ von Max an Anna</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+<span class="hll"><span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">200</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">;</span>
+</span>
+<span class="n">SAVEPOINT</span><span class="w"> </span><span class="n">nach_erster_ueberweisung</span><span class="p">;</span>
+
+<span class="c1">-- Zweite Überweisung: 300€ von Max an Thomas</span>
+<span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">300</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Max Mustermann'</span><span class="p">;</span>
+<span class="hll"><span class="k">UPDATE</span><span class="w"> </span><span class="n">konten</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saldo</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">300</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">kontoinhaber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Thomas Weber'</span><span class="p">;</span>
+</span>
+<span class="c1">-- Ups, die zweite Überweisung war falsch! Nur diese rückgängig machen:</span>
+<span class="k">ROLLBACK</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">SAVEPOINT</span><span class="w"> </span><span class="n">nach_erster_ueberweisung</span><span class="p">;</span>
+
+<span class="c1">-- Die erste Überweisung bleibt erhalten, die zweite wurde rückgängig gemacht</span>
+<span class="k">COMMIT</span><span class="p">;</span>
+</code></pre></div>
+<p>Beim oben gezeigten Beispiel wird die erste Überweisung (200€ an Anna) durchgeführt, die zweite Überweisung (300€ an Thomas) aber verworfen. Lassen wir uns nochmals den aktuellen Kontostand anzeigen, erhalten wir: </p>
+<div class="no-copy highlight"><span class="filename">Output</span><pre><span></span><code>  kontoinhaber  |  saldo
+----------------+----------
+ Thomas Weber   | 10000.00
+ Max Mustermann |  3800.00
+ Anna Schmidt   |  4200.00
+(3 rows)
+</code></pre></div>
+</details>
+<hr>
+<h2 id="ubung">Übung ✍️</h2>
+<p>Nun wenden wir Transaktionen auf unser <strong>TecGuy GmbH Produktionsplanungssystem</strong> an! Die Übungen decken verschiedene Transaktionsszenarien ab und helfen dir, ACID-Prinzipien in der Praxis anzuwenden.</p>
+<details class="info" open="open">
+<summary>Übungsvorbereitung – Datenbank zurücksetzen</summary>
+<p>Für die nachfolgenden Übungen wollen wir nochmals auf die Ausgangsbasis zurückgehen und zusätzlich noch eine neue Lager Tabelle hinzufügen. Führe dazu das nachfolgende Setup aus.</p>
+<details class="code" open="open">
+<summary>Setup</summary>
+<div class="highlight"><pre><span></span><code><span class="c1">-- Zu anderer Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">postgres</span>
+
+<span class="c1">-- Datenbank löschen und neu erstellen</span>
+<span class="k">DROP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">produktionsplanung_db</span><span class="p">;</span>
+
+<span class="c1">-- Zur Datenbank wechseln</span>
+<span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="n">produktionsplanung_db</span>
+
+<span class="c1">-- Tabelle: Maschinen</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenname</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinentyp</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinencode</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produktionshalle</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span>
+<span class="w">    </span><span class="n">anschaffungsjahr</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">maschinenstatus</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">wartungsintervall_tage</span><span class="w"> </span><span class="nb">INTEGER</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Produktionsaufträge</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">auftrag_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">auftragsnummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kunde</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">produkt</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">menge</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">startdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lieferdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">enddatum</span><span class="w"> </span><span class="nb">DATE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">status</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">RESTRICT</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Wartungsprotokolle (1:n Beziehung zu Maschinen)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">wartungs_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">wartungsdatum</span><span class="w"> </span><span class="nb">DATE</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">beschreibung</span><span class="w"> </span><span class="nb">TEXT</span><span class="p">,</span>
+<span class="w">    </span><span class="n">techniker</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="w">    </span><span class="n">kosten</span><span class="w"> </span><span class="nb">NUMERIC</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Ersatzteile</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">ersatzteil_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">teilenummer</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">UNIQUE</span><span class="p">,</span>
+<span class="w">    </span><span class="n">bezeichnung</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">lagerbestand</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">mindestbestand</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">10</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Maschinen-Ersatzteile (n:m Beziehung)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">maschinen_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ersatzteil_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="n">menge_pro_wartung</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">,</span>
+<span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">,</span><span class="w"> </span><span class="n">ersatzteil_id</span><span class="p">),</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">maschinen</span><span class="p">(</span><span class="n">maschinen_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">,</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">ersatzteil_id</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">ersatzteile</span><span class="p">(</span><span class="n">ersatzteil_id</span><span class="p">)</span>
+<span class="w">        </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">);</span>
+
+<span class="c1">-- Tabelle: Lager (NEU für Transaktionsübungen)</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">lager</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">lager_id</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
+<span class="w">    </span><span class="n">standort</span><span class="w"> </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ersatzteil_id</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="n">ersatzteile</span><span class="p">(</span><span class="n">ersatzteil_id</span><span class="p">),</span>
+<span class="w">    </span><span class="n">bestand</span><span class="w"> </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">CHECK</span><span class="w"> </span><span class="p">(</span><span class="n">bestand</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="c1">-- Testdaten: Maschinen</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese Alpha'</span><span class="p">,</span><span class="w"> </span><span class="s1">'CNC-Fraese'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M-CNC-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank Delta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Drehbank'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M-DRE-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle A'</span><span class="p">,</span><span class="w"> </span><span class="mi">2018</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse Gamma'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Presse'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M-PRE-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle B'</span><span class="p">,</span><span class="w"> </span><span class="mi">2019</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter Beta'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Schweissroboter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'M-SCH-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Halle C'</span><span class="p">,</span><span class="w"> </span><span class="mi">2021</span><span class="p">,</span><span class="w"> </span><span class="s1">'Aktiv'</span><span class="p">,</span><span class="w"> </span><span class="mi">90</span><span class="p">);</span>
+
+<span class="c1">-- Testdaten: Produktionsaufträge</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">produktionsauftraege</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Getriebegehäuse'</span><span class="p">,</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-01'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Audi AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Mercedes-Benz'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Pleuelstange'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-18'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-17'</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-25'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-22'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-006'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Volkswagen AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-009'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Porsche AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kurbelwelle'</span><span class="p">,</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-28'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-05-05'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Vorbereitung'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s1">'AUF-2024-010'</span><span class="p">,</span><span class="w"> </span><span class="s1">'BMW AG'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Kolben'</span><span class="p">,</span><span class="w"> </span><span class="mi">350</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-12'</span><span class="p">,</span><span class="w"> </span><span class="s1">'2024-04-19'</span><span class="p">,</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"> </span><span class="s1">'In Produktion'</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span>
+
+<span class="c1">-- Testdaten: Wartungsprotokolle</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">wartungsprotokolle</span><span class="w"> </span><span class="p">(</span><span class="n">wartungsdatum</span><span class="p">,</span><span class="w"> </span><span class="n">beschreibung</span><span class="p">,</span><span class="w"> </span><span class="n">techniker</span><span class="p">,</span><span class="w"> </span><span class="n">kosten</span><span class="p">,</span><span class="w"> </span><span class="n">maschinen_id</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'2024-01-15'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Routinewartung - Ölwechsel und Filter'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Thomas Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">450</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-02-20'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Austausch Hydraulikschläuche'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">,</span><span class="w"> </span><span class="mi">320</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-03-10'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Software-Update CNC-Steuerung'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Thomas Weber'</span><span class="p">,</span><span class="w"> </span><span class="mi">180</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-03-22'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Inspektion nach 5000 Betriebsstunden'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Michael Klein'</span><span class="p">,</span><span class="w"> </span><span class="mi">520</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'2024-04-05'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Reparatur Kühlsystem'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Anna Schmidt'</span><span class="p">,</span><span class="w"> </span><span class="mi">890</span><span class="p">.</span><span class="mi">00</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">-- Testdaten: Ersatzteile</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">ersatzteile</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">'ET-001'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hydrauliköl 10L'</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'ET-002'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Ölfilter'</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">'ET-003'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Hydraulikschlauch 2m'</span><span class="p">,</span><span class="w"> </span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s1">'ET-004'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Dichtungssatz'</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">12</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s1">'ET-005'</span><span class="p">,</span><span class="w"> </span><span class="s1">'Sicherungsring Set'</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
+
+<span class="c1">-- Testdaten: Maschinen-Ersatzteile (Zuordnung)</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">maschinen_ersatzteile</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w">  </span><span class="c1">-- Spritzgussmaschine braucht Hydrauliköl</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- Spritzgussmaschine braucht Ölfilter</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- CNC-Fräse braucht Dichtungssatz</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">),</span><span class="w">  </span><span class="c1">-- Drehmaschine braucht Hydrauliköl</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">),</span><span class="w">  </span><span class="c1">-- Presse braucht Hydraulikschläuche</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w">  </span><span class="c1">-- Presse braucht Dichtungssatz</span>
+
+<span class="c1">-- Testdaten: Lager (für Transaktionsübungen)</span>
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">lager</span><span class="w"> </span><span class="p">(</span><span class="n">standort</span><span class="p">,</span><span class="w"> </span><span class="n">ersatzteil_id</span><span class="p">,</span><span class="w"> </span><span class="n">bestand</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span>
+<span class="p">(</span><span class="s1">'Hauptlager'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Hauptlager'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Hauptlager'</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">60</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Produktionslager'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Produktionslager'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">),</span>
+<span class="p">(</span><span class="s1">'Produktionslager'</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
+</code></pre></div>
+</details>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 1: Ersatzteile-Transfer zwischen Lagern</summary>
+<p>Transferiere 20 Einheiten eines Ersatzteils vom Hauptlager ins Produktionslager mit einer Transaktion.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Wähle ein beliebiges Ersatzteil</li>
+<li>Reduziere Bestand im Hauptlager um 20</li>
+<li>Erhöhe Bestand im Produktionslager um 20</li>
+<li>Verwende BEGIN und COMMIT</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 2: Produktionsauftrag mit Maschinenprüfung</summary>
+<p>Erstelle einen neuen Produktionsauftrag und weise ihm eine Maschine zu. Wenn die Maschine bereits einen aktiven Auftrag hat, soll die Transaktion abgebrochen werden.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Prüfe, ob die Maschine verfügbar ist (kein aktiver Auftrag mit status = 'in_produktion')</li>
+<li>Erstelle nur dann einen neuen Auftrag</li>
+<li>Verwende ROLLBACK, wenn die Maschine nicht verfügbar ist</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 3: SAVEPOINT für komplexe Wartung</summary>
+<p>Führe eine komplexe Wartung mit mehreren Schritten durch. Verwende SAVEPOINT, um nur einen Teil rückgängig zu machen.</p>
+<p><strong>Szenario:</strong></p>
+<ul>
+<li>Wartung beginnen und Kosten für Grundinspektion erfassen</li>
+<li>SAVEPOINT setzen</li>
+<li>Zusätzliche Reparatur erfassen</li>
+<li>SAVEPOINT setzen</li>
+<li>Dritte Reparatur (zu teuer!) → zurück zum zweiten SAVEPOINT</li>
+</ul>
+</details>
+<details class="question" open="open">
+<summary>Aufgabe 4: Automatisches ROLLBACK bei Constraint-Verletzung</summary>
+<p>Versuche, mehr Ersatzteile aus dem Lager zu entnehmen, als vorhanden sind. Beobachte das automatische ROLLBACK.</p>
+<p><strong>Anforderungen:</strong></p>
+<ul>
+<li>Starte eine Transaktion</li>
+<li>Versuche, 200 Einheiten zu entnehmen (obwohl nur z.B. 100 vorhanden sind)</li>
+<li>Beobachte die Fehlermeldung</li>
+<li>Überprüfe, dass keine Änderungen gespeichert wurden</li>
+</ul>
+</details>
+<hr>
+<h2 id="zusammenfassung">Zusammenfassung 📌</h2>
+<ul>
+<li>Eine <strong>Transaktion</strong> ist eine Gruppe von Operationen, die entweder vollständig ausgeführt oder vollständig rückgängig gemacht wird</li>
+<li><code>BEGIN</code> startet eine Transaktion</li>
+<li><code>COMMIT</code> speichert alle Änderungen dauerhaft</li>
+<li><code>ROLLBACK</code> verwirft alle Änderungen seit BEGIN</li>
+<li>Bei Fehlern führt PostgreSQL <strong>automatisch ein ROLLBACK</strong> durch</li>
+<li>Die <strong>ACID-Prinzipien</strong> garantieren:<ul>
+<li><strong>Atomicity</strong>: Alles oder nichts</li>
+<li><strong>Consistency</strong>: Datenbank bleibt konsistent</li>
+<li><strong>Isolation</strong>: Transaktionen laufen unabhängig</li>
+<li><strong>Durability</strong>: Änderungen bleiben dauerhaft erhalten</li>
+</ul>
+</li>
+<li><code>SAVEPOINT</code> ermöglicht teilweise Rollbacks innerhalb einer Transaktion</li>
+<li>Transaktionen sind besonders wichtig bei <strong>kritischen Operationen</strong> wie Lagertransfers, Maschinenregistrierungen oder anderen zusammenhängenden Änderungen</li>
+</ul>
+<hr>
+<p>Im nächsten und letzten Kapitel werfen wir einen <strong>Ausblick auf weiterführende Themen</strong> wie Views, Stored Procedures und NoSQL-Datenbanken.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+  
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer">
+        
+          
+          <a href="../integritaet/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Datenintegrität">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Datenintegrität
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../ausblick/" class="md-footer__link md-footer__link--next" aria-label="Next: Ausblick">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Ausblick
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"></path></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.tabs", "navigation.tabs.sticky", "content.code.copy", "content.code.annotate", "navigation.footer", "navigation.top", "header.autohide", "search.highlight"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="../../javascripts/slideshow.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
