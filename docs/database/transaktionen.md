@@ -274,6 +274,12 @@ Was passiert aber, wenn wir einen **Fehler bemerken** oder die Transaktion **abb
 
 Mit `ROLLBACK` werden also **alle Änderungen seit BEGIN** verworfen, als hätten sie nie stattgefunden.
 
+<div style="text-align: center;">
+    <img src="https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2Fsnn86slpc1wm97s8bgo9.png" alt="Transaction" style="width:100%; margin-bottom: 1em; border-radius: 8px;">
+    <figcaption>Quelle: <a href="https://dev.to/lovestaco/acid-or-base-hjf">dev.to</a></figcaption>
+</div>
+
+
 ---
 
 ## Automatisches Rollback bei Fehlern

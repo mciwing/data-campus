@@ -558,6 +558,9 @@ Nun wollen wir uns praktische Anwendungsfälle ansehen. Unsere Mitarbeitertabell
 ## `CASE WHEN` - Bedingte Logik
 
 Mit `CASE WHEN` können wir bedingte Logik direkt in SQL einbauen – ähnlich wie `if-else` in Programmiersprachen. Dies ist besonders nützlich, um Daten zu kategorisieren, Berechnungen basierend auf Bedingungen durchzuführen oder benutzerdefinierte Ausgaben zu erzeugen. Statt die Logik in der Anwendungsschicht zu implementieren, können wir sie direkt in der Datenbankabfrage unterbringen, was oft effizienter und lesbarer ist.
+
+
+
 Der allgemeine Syntax ist wie folgt:
 
 ```sql { .yaml .no-copy }
@@ -604,6 +607,11 @@ Bei der Verwendung von `CASE` können wir beliebig viele Bedingungen angeben und
 
     **Erklärung:** Wir kategorisieren Mitarbeiter nach ihrem Gehalt in Gehaltsstufen: Senior (≥70.000€), Mid-Level (≥60.000€), Junior (≥50.000€) oder Einsteiger (<50.000€).
 
+
+<div style="text-align: center;">
+    <img src="https://miro.medium.com/v2/1*xuPHZyJRdG6j4-3e6cR65A.jpeg" alt="CapsLock" style="width:50%; margin-bottom: 1em;">
+        <figcaption>Quelle: <a href="https://miro.medium.com/v2/1*xuPHZyJRdG6j4-3e6cR65A.jpeg">Medium</a></figcaption>
+</div>
 
 ### CASE in Aggregationen
 

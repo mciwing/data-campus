@@ -608,6 +608,10 @@ PostgreSQL bietet **native Unterstützung für JSON-Daten**, was flexible, semi-
 
     **Faustregel:** Verwende JSON für **optionale, flexible Daten**, aber **nicht für kritische Geschäftslogik**.
 
+
+<blockquote class="reddit-embed-bq" style="height:500px" data-embed-height="734"><a href="https://www.reddit.com/r/ProgrammerHumor/comments/umh99p/so_accurate/">So accurate..!!😓</a><br> by<a href="https://www.reddit.com/user/Abhi_mech007/">u/Abhi_mech007</a> in<a href="https://www.reddit.com/r/ProgrammerHumor/">ProgrammerHumor</a></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
+
+
 ---
 
 ## Backup & Recovery
@@ -720,7 +724,11 @@ Das **relationale Modell** mit SQL ist seit über 50 Jahren der Standard und wir
 
 ---
 
-<div style="text-align: center; margin-top: 3rem;">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDU3bGRwaWRmcW5jd3c5OW1lNWc2ZjBpOWR0MXh5dmYzcHJ5OWR6dCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26BRv0ThflsHCqDrG/giphy.gif" alt="The End" style="width:40%; border-radius: 8px;">
+<div style="display: flex; justify-content: center; margin: 2rem 0;">
+  <div class="tenor-gif-embed" data-postid="9198701" data-share-method="host" data-aspect-ratio="1" data-width="50%"></div>
+  <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+</div>
+
+<div style="text-align: center; margin-top: 3rem; width: 100%">
     <h3>Ende des Kurses – Aber nicht des Lernens!</h3>
 </div>

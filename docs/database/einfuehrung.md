@@ -35,6 +35,8 @@ Das funktioniert am Anfang gut, aber sobald die Daten wachsen oder mehrere Perso
 
 **Datenbanken lösen genau diese Probleme!**
 
+<blockquote class="reddit-embed-bq" style="height:500px" data-embed-height="739"><a href="https://www.reddit.com/r/computerscience/comments/hr37ys/snapchat_gotta_start_learning_sql/">Snapchat gotta start learning SQL</a><br> by<a href="https://www.reddit.com/user/Pranjaljhathegr8/">u/Pranjaljhathegr8</a> in<a href="https://www.reddit.com/r/computerscience/">computerscience</a></blockquote><script async="" src="https://embed.reddit.com/widgets.js" charset="UTF-8"></script>
+
 ---
 
 ## Was ist eine Datenbank?
@@ -435,6 +437,11 @@ Jetzt verbinden wir pgAdmin mit unserer PostgreSQL-Datenbank.
 ## Deine erste Datenbank
 
 Jetzt erstellen wir unsere erste eigene Datenbank! 
+
+<div style="text-align: center;">
+    <img src="https://www.blazesql.com/images/memes/caps_lock.jpeg" alt="CapsLock" style="width:50%; margin-bottom: 1em;">
+        <figcaption>Quelle: <a href="https://www.blazesql.com/images/memes/caps_lock.jpeg">blazesql</a></figcaption>
+</div>
 
 In pgAdmin klicken wir auf der linken Seite auf 'PSQL Tool Workspace' und wählen unseren bereits existierenden Server aus. Anschließend klicken wir auf 'Connect & Open PSQL' (es kann sein, dass wir nochmals das Passwort eingeben müssen)
 

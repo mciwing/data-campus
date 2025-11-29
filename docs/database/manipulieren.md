@@ -387,6 +387,11 @@ Wichtig ist hier, dass wir die `WHERE`-Klausel verwenden. Ohne diese, werden all
 
 **Goldene Regel** lautet demnach: Teste immer erst mit `SELECT`, ob deine WHERE-Bedingung die richtigen Zeilen findet und verwende anschließend das `UPDATE` in Kombination mit der `WHERE`-Klausel.
 
+<div style="text-align: center;">
+    <img src="https://www.blazesql.com/images/memes/wrong_db.jpeg" alt="Affected" style="width:50%; margin-bottom: 1em;">
+        <figcaption>Quelle: <a href="https://www.blazesql.com/images/memes/wrong_db.jpeg">blazesql</a></figcaption>
+</div>
+
 ???+ example "Einzelner Datensatz ändern"
 
     ```sql
@@ -1134,7 +1139,3 @@ In diesem Kapitel haben wir das CRUD Konzept kennengelernt und dabei folgende Er
 ---
 
 Nun geht es weiter! Im nächsten Kapitel lernen wir **Datenmodellierung & Beziehungen** kennen - wie man Daten in einer Datenbank organisiert und Beziehungen zwischen Tabellen herstellt!
-
-<div style="text-align: center;">
-    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXFxZ3V5dWxsZWwyOHJrOGdvZmtvZjR6dGZoZ2JoZmpoZmpoZmpoZmpoZGwmZXA9djFfZ2lmc19zZWFyY2gmY3Q9Zw/xT9IgzoKnwFNmISR8I/giphy.gif" alt="Success" style="width:220px; margin-bottom: 1em;">
-</div>
