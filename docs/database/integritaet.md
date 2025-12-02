@@ -527,9 +527,9 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
         **Hinweis:** Alle Foreign Key Constraints sind aktiv. Die Tabellen sind nun vollständig verknüpft!
 
 
-???+ question "Aufgabe 1: NOT NULL Constraints hinzufügen"
+???+ question "Aufgabe 1: `NOT NULL` Constraints hinzufügen"
 
-    Die Tabelle `produktionsauftraege` hat aktuell einige Spalten, die leer sein dürfen, obwohl sie kritische Informationen enthalten. Füge folgende NOT NULL Constraints hinzu:
+    Die Tabelle `produktionsauftraege` hat aktuell einige Spalten, die leer sein dürfen, obwohl sie kritische Informationen enthalten. Füge folgende `NOT NULL` Constraints hinzu:
 
     - `auftragsnummer` soll nicht leer sein (jeder Auftrag braucht eine Nummer)
     - `startdatum` soll nicht leer sein (jeder Auftrag braucht ein Startdatum)
@@ -538,6 +538,26 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
     Mit dem Befehl `\d produktionsauftraege` können wir die Struktur der Tabelle `produktionsauftraege` anzeigen und Beschränkungen anzeigen.
 
+    ??? info "💡 Tip anzeigen"
+        Dazu benötigen wir die Befehle: `ALTER TABLE` & `SET NOT NULL`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            -- Zuerst mit Produktionsplanung DB verbinden
+            \c produktionsplanung_db
+
+            -- NOT NULL für auftragsnummer hinzufügen
+            ALTER TABLE produktionsauftraege
+            ALTER COLUMN auftragsnummer SET NOT NULL;
+
+            -- NOT NULL für startdatum hinzufügen
+            ALTER TABLE produktionsauftraege
+            ALTER COLUMN startdatum SET NOT NULL;
+
+            -- Überprüfen
+            \d produktionsauftraege
+            ```
+
 
 ???+ question "Aufgabe 2: CHECK Constraint für Wartungsintervalle"
 
@@ -545,7 +565,31 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
 
     Füge einen CHECK Constraint hinzu, der sicherstellt, dass das Wartungsintervall **mindestens 30 Tage und maximal 365 Tage** beträgt.
 
+    Teste ob die Beschränkung richtig funktioniert: 
+
+    ```sql
+    UPDATE maschinen
+    SET wartungsintervall_tage = 10
+    WHERE maschinen_id = 1;
+    ```
+
     **Tipp:** Verwende einen aussagekräftigen Namen für den Constraint (z.B. `ck_wartungsintervall_gueltig`). Wieder können wir mit dem Befehl `\d maschinen` die Struktur der Tabelle `maschinen` anzeigen und Beschränkungen anzeigen.
+
+    ??? info "💡 Tip anzeigen"
+        Verwende zum Hinzufügen der Constraints `ALTER TABLE`, `ADD CONSTRAINT` & `CHECK`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            -- CHECK Constraint hinzufügen
+            ALTER TABLE maschinen
+            ADD CONSTRAINT ck_wartungsintervall_gueltig
+            CHECK (wartungsintervall_tage >= 30 AND wartungsintervall_tage <= 365);
+
+            -- Test: Versuche einen ungültigen Wert einzufügen (sollte fehlschlagen)
+            UPDATE maschinen
+            SET wartungsintervall_tage = 10
+            WHERE maschinen_id = 1;
+            ```
 
 
 ???+ question "Aufgabe 3: Multi-Column UNIQUE Constraint"
@@ -553,6 +597,37 @@ Nun wenden wir Constraints auf unser **TecGuy GmbH Produktionsplanungssystem** a
     In der Tabelle `wartungsprotokolle` möchtest du verhindern, dass **dieselbe Maschine zweimal am selben Tag** gewartet wird.
 
     Füge einen UNIQUE Constraint hinzu, der die Kombination aus `maschinen_id` und `wartungsdatum` eindeutig macht.
+
+    Teste, ob die Constraint richtig funktioniert: 
+    ```sql
+    -- Erste Wartung
+    INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+    VALUES (1, '2025-12-01', 'Routinewartung 1', 250);
+
+    -- Zweite Wartung am gleichen Tag
+    INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+    VALUES (1, '2025-12-01', 'Routinewartung 2', 300);
+    ```
+
+
+    ??? info "💡 Tip anzeigen"
+        Verwende zum Hinzufügen der Constraints `ALTER TABLE`, `ADD CONSTRAINT` & `UNIQUE`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            -- UNIQUE Constraint für Kombination hinzufügen
+            ALTER TABLE wartungsprotokolle
+            ADD CONSTRAINT uq_maschine_wartungsdatum UNIQUE (maschinen_id, wartungsdatum);
+
+            -- Test: Versuche zweimal die gleiche Maschine am gleichen Tag zu warten
+            -- Erste Wartung: OK
+            INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+            VALUES (1, '2025-12-01', 'Routinewartung 1', 250);
+
+            -- Zweite Wartung am gleichen Tag: Sollte Fehlschlagen!
+            INSERT INTO wartungsprotokolle (maschinen_id, wartungsdatum, beschreibung, kosten)
+            VALUES (1, '2025-12-01', 'Routinewartung 2', 300);
+            ```
 
 
 ---

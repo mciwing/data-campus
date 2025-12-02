@@ -909,6 +909,22 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Nur Wartungen über dem Durchschnitt
     - Sortiere nach Kosten absteigend
 
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `INNER JOIN ... ON`, `WHERE`, `AVG` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                m.maschinenname,
+                w.wartungsdatum,
+                w.beschreibung,
+                w.kosten
+            FROM wartungsprotokolle w
+            INNER JOIN maschinen m ON w.maschinen_id = m.maschinen_id
+            WHERE w.kosten > (SELECT AVG(kosten) FROM wartungsprotokolle)
+            ORDER BY w.kosten DESC;
+            ```
+
 
 ???+ question "Aufgabe 2: IN - Maschinen mit bestimmten Ersatzteilen"
 
@@ -919,6 +935,25 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Verwende IN mit Unterabfrage
     - Zeige: Maschinenname, Maschinentyp
     - Keine Duplikate (DISTINCT)
+
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `INNER JOIN ... ON`, `WHERE`, `LIKE`, `OR` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT DISTINCT
+                m.maschinenname,
+                m.maschinentyp
+            FROM maschinen m
+            WHERE m.maschinen_id IN (
+                SELECT me.maschinen_id
+                FROM maschinen_ersatzteile me
+                INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+                WHERE e.teilename LIKE '%Spindelmotor%'
+                OR e.teilename LIKE '%Kuehlmittelpumpe%'
+            )
+            ORDER BY m.maschinenname;
+            ```
 
 
 ???+ question "Aufgabe 3: EXISTS - Maschinen mit Wartungsprotokollen"
@@ -931,6 +966,24 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Zeige: Maschinenname, Maschinentyp, Anzahl Wartungen
     - Sortiere nach Anzahl Wartungen absteigend
 
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden:`WHERE`, `EXISTS`, `COUNT` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                m.maschinenname,
+                m.maschinentyp,
+                (SELECT COUNT(*) FROM wartungsprotokolle w WHERE w.maschinen_id = m.maschinen_id) AS anzahl_wartungen
+            FROM maschinen m
+            WHERE EXISTS (
+                SELECT 1
+                FROM wartungsprotokolle w
+                WHERE w.maschinen_id = m.maschinen_id
+            )
+            ORDER BY anzahl_wartungen DESC;
+            ```
+
 
 ???+ question "Aufgabe 4: String-Funktionen - Maschinencodes generieren"
 
@@ -942,8 +995,27 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Maschinen-ID mit führenden Nullen auf 3 Stellen
     - Verwende: UPPER, SUBSTRING, LPAD
 
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden:`CONCAT`, `UPPER`, `LPAD`, `SUBSTRING` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                maschinenname,
+                maschinentyp,
+                CONCAT(
+                    UPPER(SUBSTRING(maschinentyp, 1, 3)),
+                    '-',
+                    LPAD(maschinen_id::TEXT, 3, '0')
+                ) AS maschinencode
+            FROM maschinen
+            ORDER BY maschinen_id;
+            ```
+
 
 ???+ question "Aufgabe 5: Datumsfunktionen - Wartungsalter"
+
+    **ACHTUNG: Anspruchsvolle Aufgabe**
 
     Berechne, wie viele Tage seit der letzten Wartung jeder Maschine vergangen sind. Zeige nur Maschinen, die länger als 90 Tage keine Wartung hatten.
 
@@ -953,6 +1025,25 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Filtere: Nur Maschinen mit letzter Wartung > 90 Tage
     - Zeige auch Maschinen ohne Wartungen
     - Sortiere nach Tagen absteigend
+
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden:`MAX`, `COALESCE`, `CURRENT_DATE`, `LEFT JOIN ... ON`, `GROUP BY`, `HAVING` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                m.maschinenname,
+                MAX(w.wartungsdatum) AS letzte_wartung,
+                COALESCE(
+                    CURRENT_DATE - MAX(w.wartungsdatum),
+                    999
+                ) AS tage_seit_wartung
+            FROM maschinen m
+            LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
+            GROUP BY m.maschinenname
+            HAVING COALESCE(CURRENT_DATE - MAX(w.wartungsdatum), 999) > 90
+            ORDER BY tage_seit_wartung DESC;
+            ```
 
 
 ???+ question "Aufgabe 6: CASE WHEN - Produktionsauftragskategorien"
@@ -965,16 +1056,26 @@ Im vorherigen Kapitel haben wir **JOINs** gelernt. Jetzt erweitern wir unser Wis
     - Zeige: Auftragsnummer, Kunde, Produkt, Menge, Kategorie
     - Zähle Aufträge pro Kategorie (zweite Abfrage)
 
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `CASE`, `WHEN ... THEN`, `ELSE`, `BETWEEN ... AND` & `ORDER BY`
 
-???+ question "Aufgabe 7: COALESCE - Wartungsintervalle"
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            -- Alle Aufträge mit Kategorien
+            SELECT
+                auftragsnummer,
+                kunde,
+                produkt,
+                menge,
+                CASE
+                    WHEN menge < 200 THEN 'Klein'
+                    WHEN menge BETWEEN 200 AND 400 THEN 'Mittel'
+                    ELSE 'Groß'
+                END AS auftragskategorie
+            FROM produktionsauftraege
+            ORDER BY menge DESC;
+            ```
 
-    Zeige alle Maschinen mit ihrem Wartungsintervall. Falls NULL, zeige "Nicht definiert".
-
-    **Anforderungen:**
-
-    - Verwende COALESCE für wartungsintervall_tage
-    - Zeige: Maschinenname, Wartungsintervall (oder "Nicht definiert")
-    - Berechne nächste Wartung basierend auf letzter Wartung + Intervall
 
 
 ---

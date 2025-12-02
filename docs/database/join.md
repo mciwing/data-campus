@@ -585,6 +585,23 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Sortiere nach Auftragsnummer
     - Verwende Aliasse für bessere Lesbarkeit
 
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `INNER JOIN ... ON` & `ORDER BY`
+        
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                p.auftragsnummer,
+                p.kunde,
+                p.produkt,
+                m.maschinenname,
+                p.status
+            FROM produktionsauftraege p
+            INNER JOIN maschinen m ON p.maschinen_id = m.maschinen_id
+            ORDER BY p.auftragsnummer;
+            ```
+
 
 ???+ question "Aufgabe 2: LEFT JOIN - Alle Maschinen und ihre Aufträge"
 
@@ -596,6 +613,21 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Es sollen auch Maschinen ohne Aufträge erscheinen
     - Gruppiere nach Maschine
     - Sortiere nach Anzahl Aufträge (absteigend)
+
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `INNER JOIN ... ON`, `GROUP BY` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                m.maschinenname,
+                m.maschinentyp,
+                COUNT(p.auftrag_id) AS anzahl_auftraege
+            FROM maschinen m
+            LEFT JOIN produktionsauftraege p ON m.maschinen_id = p.maschinen_id
+            GROUP BY m.maschinenname, m.maschinentyp
+            ORDER BY anzahl_auftraege DESC;
+            ```
 
 
 ???+ question "Aufgabe 3: INNER JOIN - Wartungsprotokolle mit Maschinen"
@@ -609,6 +641,24 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Sortiere nach Kosten absteigend
     - Filtere nur Wartungen mit Kosten > 200 EUR
 
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `INNER JOIN ... ON`, `WHERE` & `ORDER BY`
+        
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                m.maschinenname,
+                w.wartungsdatum,
+                w.beschreibung,
+                w.techniker,
+                w.kosten
+            FROM wartungsprotokolle w
+            INNER JOIN maschinen m ON w.maschinen_id = m.maschinen_id
+            WHERE w.kosten > 200
+            ORDER BY w.kosten DESC;
+            ```
+
 ???+ question "Aufgabe 4: Mehrere Tabellen - Ersatzteile für Maschinen (n:m)"
 
     Zeige, welche Maschinen welche Ersatzteile benötigen. Berechne außerdem die Gesamtkosten pro Maschine.
@@ -618,6 +668,23 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Verknüpfe 3 Tabellen: `maschinen`, `maschinen_ersatzteile`, `ersatzteile`
     - Zeige: Maschinenname, Teilename, benötigte Anzahl, Einzelpreis, Gesamtpreis (Anzahl * Preis)
     - Sortiere nach Maschine und Teilename
+
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `INNER JOIN ... ON` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                m.maschinenname,
+                e.teilename,
+                me.benoetigte_anzahl,
+                e.preis,
+                (me.benoetigte_anzahl * e.preis) AS gesamtpreis
+            FROM maschinen m
+            INNER JOIN maschinen_ersatzteile me ON m.maschinen_id = me.maschinen_id
+            INNER JOIN ersatzteile e ON me.teil_id = e.teil_id
+            ORDER BY m.maschinenname, e.teilename;
+            ```
 
 
 
@@ -632,6 +699,22 @@ Im vorherigen Kapitel haben wir **Foreign Keys** und **Beziehungen** zwischen Ta
     - Gruppiere nach Maschine
     - Sortiere nach Maschinenname
 
+    ??? info "💡 Tip anzeigen"
+        Wir können folgende Befehle verwenden: `COUNT`, `SUM`, `LEFT JOIN ... ON`, `GROUP BY` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            ```sql
+            SELECT
+                m.maschinenname,
+                COUNT(DISTINCT p.auftrag_id) AS anzahl_auftraege,
+                COUNT(DISTINCT w.wartungs_id) AS anzahl_wartungen,
+                SUM(w.kosten) AS gesamtwartungskosten
+            FROM maschinen m
+            LEFT JOIN produktionsauftraege p ON m.maschinen_id = p.maschinen_id
+            LEFT JOIN wartungsprotokolle w ON m.maschinen_id = w.maschinen_id
+            GROUP BY m.maschinenname
+            ORDER BY m.maschinenname;
+            ```
 
 ---
 
