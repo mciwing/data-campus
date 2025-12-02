@@ -1079,6 +1079,47 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
 
     **Wichtig:** Prüfe immer erst mit `SELECT`, bevor du `UPDATE` ausführst!
 
+    ??? info "💡 Tip anzeigen"
+        Bei allen Aufgaben benötigen wir `UPDATE` , `SET` & `WHERE`
+
+        ??? info "⚡Lösung anzeigen"
+
+            1. AUF-2024-002 Status ändern
+                ```sql
+                SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-002';  -- Safety check
+                UPDATE produktionsauftraege
+                SET status = 'In Produktion'
+                WHERE auftragsnummer = 'AUF-2024-002';
+                ```
+            2. AUF-2024-007 Lieferdatum ändern
+                ```sql
+                SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-007';  -- Safety check
+                UPDATE produktionsauftraege
+                SET lieferdatum = '2024-05-02'
+                WHERE auftragsnummer = 'AUF-2024-007';
+                ```
+            3. Alle "Geplant" → "In Vorbereitung"
+                ```sql
+                SELECT * FROM produktionsauftraege WHERE status = 'Geplant';  -- Safety check
+                UPDATE produktionsauftraege
+                SET status = 'In Vorbereitung'
+                WHERE status = 'Geplant';
+                ```
+            4. AUF-2024-006 Maschine wechseln
+                ```sql
+                SELECT * FROM produktionsauftraege WHERE auftragsnummer = 'AUF-2024-006';  -- Safety check
+                UPDATE produktionsauftraege
+                SET maschinen_id = 1
+                WHERE auftragsnummer = 'AUF-2024-006';
+                ```
+
+            ```sql
+            -- Ergebnis prüfen
+            SELECT auftragsnummer, kunde, status, lieferdatum, maschinen_id
+            FROM produktionsauftraege
+            ORDER BY auftrag_id;
+            ```
+
 
 ???+ question "Aufgabe 2: UPDATE - Maschinen aktualisieren"
 
@@ -1094,6 +1135,46 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
 
     **Wichtig:** Prüfe immer erst mit `SELECT`, bevor du `UPDATE` ausführst!
 
+    ??? info "💡 Tip anzeigen"
+        Bei allen Aufgaben benötigen wir `UPDATE` , `SET` & `WHERE`
+
+        ??? info "⚡Lösung anzeigen"
+            1. Presse Gamma Wartung abgeschlossen
+                ```sql
+                SELECT * FROM maschinen WHERE maschinen_id = 3;  -- Safety check
+                UPDATE maschinen
+                SET maschinenstatus = 'Aktiv'
+                WHERE maschinen_id = 3;
+                ```
+
+            2. CNC-Fraese Alpha in Wartung setzen
+                ```sql
+                SELECT * FROM maschinen WHERE maschinen_id = 1;  -- Safety check
+                UPDATE maschinen
+                SET maschinenstatus = 'Wartung'
+                WHERE maschinen_id = 1;
+                ```
+
+            3. Drehbank Delta verlegen
+                ```sql
+                SELECT * FROM maschinen WHERE maschinen_id = 2;  -- Safety check
+                UPDATE maschinen
+                SET produktionshalle = 'Halle D'
+                WHERE maschinen_id = 2;
+                ```
+
+            4. Alle Maschinen in Halle C: Wartungsintervall verlängern
+                ```sql
+                SELECT * FROM maschinen WHERE produktionshalle = 'Halle C';  -- Safety check
+                UPDATE maschinen
+                SET wartungsintervall_tage = 120
+                WHERE produktionshalle = 'Halle C';
+                ```
+
+            ```sql
+            -- Ergebnis prüfen
+            SELECT * FROM maschinen ORDER BY maschinen_id;
+            ```
 
 ???+ question "Aufgabe 3: UPDATE mit Berechnungen und String-Operationen"
 
@@ -1109,6 +1190,44 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
 
     **Tipp:** Nutze Berechnungen (`+`, `-`) und String-Funktionen (`REPLACE`, `CONCAT`).
 
+    ??? info "💡 Tip anzeigen"
+        1. `UPDATE`, `SET` & `WHERE`
+        2. `UPDATE`, `SET` & `REPLACE`
+        3. `UPDATE`, `SET` & `WHERE`
+        4. `UPDATE`, `SET` & `CONCAT`
+
+        ??? info "⚡Lösung anzeigen"
+            1. Kleine Aufträge um 50 Stück erhöhen
+                ```sql
+                SELECT * FROM produktionsauftraege WHERE menge < 200;  -- Safety check
+                UPDATE produktionsauftraege
+                SET menge = menge + 50
+                WHERE menge < 200;
+                ```
+            2. Produktionshallen umbenennen
+                ```sql
+                UPDATE maschinen
+                SET produktionshalle = REPLACE(produktionshalle, 'Halle', 'Produktionshalle');
+                ```
+
+            3. Wartungsintervall für Drehbänke verkürzen
+                ```sql
+                SELECT * FROM maschinen WHERE maschinentyp = 'Drehbank';  -- Safety check
+                UPDATE maschinen
+                SET wartungsintervall_tage = wartungsintervall_tage - 20
+                WHERE maschinentyp = 'Drehbank';
+                ```
+            4. Präfix für alle Auftragsnummern
+                ```sql
+                UPDATE produktionsauftraege
+                SET auftragsnummer = CONCAT('TEC-', auftragsnummer);
+                ```
+            
+            ```sql
+            -- Ergebnisse prüfen
+            SELECT auftragsnummer, produkt, menge FROM produktionsauftraege ORDER BY auftrag_id;
+            SELECT maschinenname, maschinentyp, produktionshalle, wartungsintervall_tage FROM maschinen ORDER BY maschinen_id;
+            ```
 
 ???+ question "Aufgabe 4: DELETE - Datensätze löschen"
 
@@ -1122,6 +1241,32 @@ Im vorherigen Kapitel haben wir Daten **abgefragt und analysiert**. Jetzt lernen
 
     **Goldene Regel:** Immer erst `SELECT` mit der gleichen WHERE-Bedingung, dann `DELETE`!
 
+    ??? info "💡 Tip anzeigen"
+        Bei allen Aufgaben benötigen wir `DELETE` & `WHERE`
+
+        ??? info "⚡Lösung anzeigen"
+            1. Abgeschlossene Aufträge löschen
+                ```sql
+                SELECT * FROM produktionsauftraege WHERE status = 'Abgeschlossen';  -- Safety check
+                DELETE FROM produktionsauftraege WHERE status = 'Abgeschlossen';
+                ```
+
+            2. Presse Gamma löschen
+                ```sql
+                SELECT * FROM maschinen WHERE maschinen_id = 3;  -- Safety check
+                DELETE FROM maschinen WHERE maschinen_id = 3;
+                ```
+            3. Kleine Aufträge löschen (< 100 Stück)
+                ```sql
+                SELECT * FROM produktionsauftraege WHERE menge < 100;  -- Safety check
+                DELETE FROM produktionsauftraege WHERE menge < 100;
+                ```
+            
+            ```sql
+            -- Verbleibende Daten anzeigen
+            SELECT * FROM produktionsauftraege ORDER BY auftrag_id;
+            SELECT * FROM maschinen ORDER BY maschinen_id;
+            ```
 ---
 
 ## Zusammenfassung 📌
