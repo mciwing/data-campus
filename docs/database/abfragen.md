@@ -1503,6 +1503,33 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
     3. ... mit einer Menge **größer als 200**
     4. ... für das Produkt **"Kolben"**
 
+    ??? info "💡 Tip anzeigen"
+        1. `WHERE` & `=`
+        2. `WHERE` & `=`
+        3. `WHERE` & `>`
+        4. `WHERE` & `=`
+
+        ??? info "⚡ Lösung anzeigen"
+            1. BVW AG
+                ```sql
+                SELECT * FROM produktionsauftraege
+                WHERE kunde = 'BMW AG';
+                ```
+            2. In Produktion
+                ```sql
+                SELECT * FROM produktionsauftraege
+                WHERE status = 'In Produktion';
+                ```
+            3. Menge > 200
+                ```sql
+                SELECT * FROM produktionsauftraege
+                WHERE menge > 200;
+                ```
+            4. Kolben
+                ```sql
+                SELECT * FROM produktionsauftraege
+                WHERE produkt = 'Kolben';
+                ```
 
 ---
 
@@ -1514,7 +1541,39 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
     3. ... von **BMW AG, Audi AG oder Mercedes-Benz**
     4. ... die **nicht** den Status **"Geplant"** haben
 
+    ??? info "💡 Tip anzeigen"
+        1. `WHERE` & `AND`
+        2. `WHERE`, `AND` & `BETWEEN`
+        3. `WHERE` & `IN`
+        4. `WHERE NOT`
 
+        ??? info "⚡Lösung anzeigen"
+
+            1. BMW AG & in Produktion
+                ```sql
+                SELECT * FROM produktionsauftraege
+                WHERE kunde = 'BMW AG' AND status = 'In Produktion';
+                ```
+
+            2. Lieferdatum
+                ```sql
+                SELECT * FROM produktionsauftraege
+                WHERE lieferdatum BETWEEN '2024-04-15' AND '2024-04-20';
+                ```
+
+            3. BMW AG, Audi AG & Mercedes Benz
+                ```sql
+                SELECT * FROM produktionsauftraege
+                WHERE kunde IN ('BMW AG', 'Audi AG', 'Mercedes-Benz');
+                ```
+
+            4. Nicht Status geplant
+                ```sql
+                SELECT *  FROM produktionsauftraege
+                WHERE NOT status = 'Geplant';
+                -- Alternativ:
+                -- WHERE status != 'Geplant';
+                ```
 ---
 
 ???+ question "Aufgabe 3: Sortierung und Begrenzung"
@@ -1524,6 +1583,42 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
     3. Sortiere alle Aufträge erst nach **Kunde** (A-Z), dann nach **Menge** (größte zuerst)
     4. Zeige die Aufträge 4-6, wenn nach **Lieferdatum** sortiert
 
+    ??? info "💡 Tip anzeigen"
+        1. `ORDER BY` & `ASC`
+        2. `ORDER BY`, `DESC` & `LIMIT`
+        3. `ORDER BY`, `ASC` & `DESC`
+        4. `ORDER BY`, `ASC`, `LIMIT` & `OFFSET`
+
+        ??? info "⚡Lösung anzeigen"
+
+            1. Sortieren nach Lieferdatum (früheste zuerst)
+                ```sql
+                SELECT * FROM produktionsauftraege
+                ORDER BY lieferdatum ASC;
+                ```
+
+            2. Drei größten Aufträge
+                ```sql
+                SELECT auftragsnummer, kunde, produkt, menge
+                FROM produktionsauftraege
+                ORDER BY menge DESC
+                LIMIT 3;
+                ```
+
+            3. Sortiree nach Kunde (A-Z) und Menge (größte zuerst)
+                ```sql
+                SELECT kunde, produkt, menge
+                FROM produktionsauftraege
+                ORDER BY kunde ASC, menge DESC;
+                ```
+
+            4. Zeige Aufträge 4-6 nach Lieferdatum
+                ```sql
+                SELECT auftragsnummer, kunde, produkt, lieferdatum
+                FROM produktionsauftraege
+                ORDER BY lieferdatum ASC
+                LIMIT 3 OFFSET 3;
+                ```
 
 ---
 
@@ -1534,6 +1629,38 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
     3. Was ist die **durchschnittliche Menge** pro Auftrag?
     4. Was ist die **kleinste** und **größte** Menge in einem Auftrag?
 
+    ??? info "💡 Tip anzeigen"
+        1. `COUNT` & `AS`
+        2. `SUM` & `AS`
+        3. `AVG` & `AS`
+        4. `MIN`, `MAX` & `AS`
+
+        ??? info "⚡Lösung anzeigen"
+            1. Anzahl Produktionsaufträge
+                ```sql
+                SELECT COUNT(*) AS anzahl_auftraege
+                FROM produktionsauftraege;
+                ```
+
+            2. Gesamtmenge
+                ```sql
+                SELECT SUM(menge) AS gesamtmenge
+                FROM produktionsauftraege;
+                ```
+
+            3. Durchschnitt
+                ```sql
+                SELECT AVG(menge) AS durchschnittliche_menge
+                FROM produktionsauftraege;
+                ```
+
+            4. Kleinste und größte Menge
+                ```sql
+                SELECT
+                    MIN(menge) AS kleinste_menge,
+                    MAX(menge) AS groesste_menge
+                FROM produktionsauftraege;
+                ```
 
 ---
 
@@ -1544,7 +1671,48 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
     3. Wie viele Aufträge gibt es **pro Status**?
     4. Was ist die **durchschnittliche Menge pro Kunde**?
 
+    ??? info "💡 Tip anzeigen"
+        1. `COUNT`, `GROUP BY` & `ORDER BY`
+        2. `SUM`, `GROUP BY` & `ORDER BY`
+        3. `COUNT`, `GROUP BY` & `ORDER BY`
+        4. `AVG`, `COUNT`, `GROUP BY` & `ORDER BY`
 
+        ??? info "⚡Lösung anzeigen"
+
+            1. Aufträge pro Kunde
+                ```sql
+                SELECT kunde, COUNT(*) AS anzahl_auftraege
+                FROM produktionsauftraege
+                GROUP BY kunde
+                ORDER BY anzahl_auftraege DESC;
+                ```
+
+            2. Gesamtmenge pro Produkt
+                ```sql
+                SELECT produkt, SUM(menge) AS gesamtmenge
+                FROM produktionsauftraege
+                GROUP BY produkt
+                ORDER BY gesamtmenge DESC;
+                ```
+
+            3. Anzahl Aufträge pro Status
+                ```sql
+                SELECT status, COUNT(*) AS anzahl
+                FROM produktionsauftraege
+                GROUP BY status
+                ORDER BY anzahl DESC;
+                ```
+
+            4. Durchschnittliche Menge pro Kunde
+                ```sql
+                SELECT
+                    kunde,
+                    AVG(menge) AS durchschnittliche_menge,
+                    COUNT(*) AS anzahl_auftraege
+                FROM produktionsauftraege
+                GROUP BY kunde
+                ORDER BY durchschnittliche_menge DESC;
+                ```
 ---
 
 ???+ question "Aufgabe 6: Erweiterte Analysen mit HAVING"
@@ -1553,6 +1721,53 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
     2. Welche **Produkte** haben eine **Gesamtmenge über 600**?
     3. Welche **Kunden** haben eine **durchschnittliche Menge über 250**?
     4. Welche **Produkte** haben mehr als **1 Auftrag** UND eine **Gesamtmenge über 700**?
+
+    ??? info "💡 Tip anzeigen"
+        1. `GROUP BY`, `HAVING` & `COUNT`
+        2. `GROUP BY`, `HAVING` & `SUM`
+        3. `GROUP BY`, `HAVING`, `AVG` & `ORDER BY`
+        4. `GROUP BY`, `HAVING`, `COUNT`, `SUM` & `ORDER BY`
+
+        ??? info "⚡Lösung anzeigen"
+            1. Kunde mit mehr als 2 Aufträge
+                ```sql
+                SELECT kunde, COUNT(*) AS anzahl_auftraege
+                FROM produktionsauftraege
+                GROUP BY kunde
+                HAVING COUNT(*) > 2;
+                ```
+
+            2. Produkte mit Gesamtmenge > 600
+                ```sql
+                SELECT produkt, SUM(menge) AS gesamtmenge
+                FROM produktionsauftraege
+                GROUP BY produkt
+                HAVING SUM(menge) > 600;
+                ```
+
+            3. Kunden mit durchschnittlicher Menge > 250
+                ```sql
+                SELECT
+                    kunde,
+                    AVG(menge) AS durchschnittliche_menge,
+                    COUNT(*) AS anzahl_auftraege
+                FROM produktionsauftraege
+                GROUP BY kunde
+                HAVING AVG(menge) > 250
+                ORDER BY durchschnittliche_menge DESC;
+                ```
+
+            4. Produkte mit > 1 Auftrag UND Gesamtmenge > 700
+                ```sql
+                SELECT
+                    produkt,
+                    COUNT(*) AS anzahl_auftraege,
+                    SUM(menge) AS gesamtmenge
+                FROM produktionsauftraege
+                GROUP BY produkt
+                HAVING COUNT(*) > 1 AND SUM(menge) > 700
+                ORDER BY gesamtmenge DESC;
+                ```
 
 
 ---
@@ -1563,7 +1778,47 @@ Im vorherigen Kapitel haben wir die Datenbank `produktionsplanung_db` mit den Ta
     2. Zeige die **Top 3 Kunden** nach **Gesamtmenge** (absteigend)
     3. Wie viele Aufträge haben **Status "In Produktion"** pro **Produkt**?
 
-    
+    ??? info "💡 Tip anzeigen"
+        1. `WHERE` & `ORDER BY`
+        2. `SUM`, `GROUP BY`, `ORDER BY` & `LIMIT`
+        3. `COUNT`, `WHERE`, `GROUP BY`, `ORDER BY`
+        4. `COUNT`, `WHERE`, `GROUP BY`
+
+        ??? info "⚡Lösung anzeigen"
+
+            1. BMW AG Aufträge in Produktion, nach Lieferdatum
+                ```sql
+                SELECT auftragsnummer, produkt, menge, lieferdatum
+                FROM produktionsauftraege
+                WHERE kunde = 'BMW AG' AND status = 'In Produktion'
+                ORDER BY lieferdatum ASC;
+                ```
+
+            2. Top 3 Kunden nach Gesamtmenge
+                ```sql
+                SELECT kunde, SUM(menge) AS gesamtmenge
+                FROM produktionsauftraege
+                GROUP BY kunde
+                ORDER BY gesamtmenge DESC
+                LIMIT 3;
+                ```
+
+            3. Aufträge "In Produktion" pro Produkt
+                ```sql
+                SELECT produkt, COUNT(*) AS anzahl_in_produktion
+                FROM produktionsauftraege
+                WHERE status = 'In Produktion'
+                GROUP BY produkt
+                ORDER BY anzahl_in_produktion DESC;
+                ```
+
+            4. Kunden mit nur abgeschlossenen Aufträgen
+                ```sql
+                SELECT kunde, COUNT(*) AS anzahl_abgeschlossen
+                FROM produktionsauftraege
+                WHERE status = 'Abgeschlossen'
+                GROUP BY kunde;
+                ```
 
 ---
 

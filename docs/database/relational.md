@@ -456,6 +456,36 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
     - `maschinenstatus` (VARCHAR(20))
     - `wartungsintervall_tage` (INTEGER)
 
+    ??? info "💡 Tip anzeigen"
+        Verwende `CREATE TABLE`
+
+        ??? info "⚡ Lösung anzeigen"
+            ```sql
+            -- Tabelle für Produktionsaufträge
+            CREATE TABLE produktionsauftraege (
+                auftrag_id INTEGER PRIMARY KEY,
+                auftragsnummer VARCHAR(20),
+                kunde VARCHAR(100),
+                produkt VARCHAR(100),
+                menge INTEGER,
+                startdatum DATE,
+                lieferdatum DATE,
+                status VARCHAR(20),
+                maschinen_id INTEGER
+            );
+
+            -- Tabelle für Produktionsmaschinen
+            CREATE TABLE maschinen (
+                maschinen_id INTEGER PRIMARY KEY,
+                maschinenname VARCHAR(100),
+                maschinentyp VARCHAR(50),
+                produktionshalle VARCHAR(50),
+                anschaffungsjahr INTEGER,
+                maschinenstatus VARCHAR(20),
+                wartungsintervall_tage INTEGER
+            );
+            ```
+
     
 
 ???+ question "Aufgabe 2: Daten einfügen"
@@ -584,6 +614,34 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
     </table>
     </div>
 
+    ??? info "💡 Tip anzeigen"
+        Verwende `INSERT INTO` & `VALUES`
+
+        ??? info "⚡ Lösung anzeigen"
+            ```sql
+            -- Maschinen einfügen
+            INSERT INTO maschinen (
+                maschinen_id, maschinenname, maschinentyp, produktionshalle,
+                anschaffungsjahr, maschinenstatus, wartungsintervall_tage
+            )
+            VALUES
+            (1, 'CNC-Fraese Alpha', 'CNC-Fraese', 'Halle A', 2020, 'Aktiv', 90),
+            (2, 'Drehbank Delta', 'Drehbank', 'Halle A', 2018, 'Aktiv', 120),
+            (3, 'Presse Gamma', 'Presse', 'Halle B', 2019, 'Wartung', 60),
+            (4, 'Schweissroboter Beta', 'Schweissroboter', 'Halle C', 2021, 'Aktiv', 90);
+
+            -- Produktionsaufträge einfügen
+            INSERT INTO produktionsauftraege (
+                auftrag_id, auftragsnummer, kunde, produkt, menge,
+                startdatum, lieferdatum, status, maschinen_id
+            )
+            VALUES
+            (1, 'AUF-2024-001', 'BMW AG', 'Getriebegehäuse', 500, '2024-04-01', '2024-04-15', 'In Produktion', 1),
+            (2, 'AUF-2024-002', 'Audi AG', 'Kurbelwelle', 200, '2024-04-10', '2024-04-20', 'Geplant', 2),
+            (3, 'AUF-2024-003', 'Mercedes-Benz', 'Pleuelstange', 350, '2024-04-05', '2024-04-18', 'In Produktion', 2),
+            (4, 'AUF-2024-004', 'Porsche AG', 'Kolben', 150, '2024-04-12', '2024-04-25', 'Geplant', 4);
+            ```
+
     
 
 ???+ question "Aufgabe 3: Daten abfragen"
@@ -595,7 +653,33 @@ In diesem Kapitel startest du mit den **ersten beiden Tabellen**: Produktionsauf
     3. Zeige alle Maschinen an.
     4. Zeige nur Maschinenname und Maschinentyp der Maschinen an.
 
-   
+    ??? info "💡 Tip anzeigen"
+        1. `SELECT` & `*`
+        2. `SELECT`
+        3. `SELECT` & `*`
+        4. `SELECT`
+
+        ??? info "⚡ Lösung anzeigen"
+
+            1. Alle Produktionsaufträge:
+                ```sql
+                SELECT * FROM produktionsauftraege;
+                ```
+
+            2. Nur bestimmte Spalten:
+                ```sql
+                SELECT auftragsnummer, kunde, produkt FROM produktionsauftraege;
+                ```
+
+            3. Alle Maschinen:
+                ```sql
+                SELECT * FROM maschinen;
+                ```
+
+            4. Nur Maschinenname und Typ:
+                ```sql
+                SELECT maschinenname, maschinentyp FROM maschinen;
+                ```
 
 
 In den folgenden Kapiteln werden wir:
