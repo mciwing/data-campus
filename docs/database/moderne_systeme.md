@@ -5,9 +5,9 @@
     <figcaption style="margin-top: 0.5rem;"><i>"So viele Datenbanken, so wenig Zeit..."</i></figcaption>
 </div>
 
-## Einleitung: Warum gibt es so viele Datenbanksysteme?
+## Einleitung: Geänderte Anforderungen
 
-In den vorherigen Kapiteln haben wir **relationale Datenbanken** mit PostgreSQL kennengelernt. Du kannst jetzt Tabellen erstellen, Daten abfragen und komplexe Beziehungen modellieren. Relationale Datenbanken sind seit über 50 Jahren der Standard und werden es auch bleiben.
+In den vorherigen Kapiteln haben wir **relationale Datenbanken** mit PostgreSQL kennengelernt. Du kannst jetzt Tabellen erstellen, Daten abfragen und komplexe Beziehungen modellieren. Relationale Datenbanken sind seit über 50 Jahren der Standard und werden auch weiterhin ein wichtiger Teil unserer Datenverwaltung sein.
 
 **Aber:** In den letzten 20 Jahren hat sich die **Art und Weise, wie Software funktioniert**, dramatisch verändert:
 
@@ -36,33 +36,683 @@ Deshalb entstanden **alternative Datenbanksysteme**, die für spezifische Use Ca
 
 ---
 
-## Die Database Landscape
+## Warum eine Datenbank nicht reicht
 
-Moderne Anwendungen nutzen oft **mehrere Datenbanksysteme gleichzeitig** (Polyglot Persistence):
+Stellen wir uns folgende Frage: 
+
+> Könnten wir Instagram nur mit PostgreSQL bauen?
+
+Schauen wir uns dazu an, was Instagram täglich leisten muss:
+
+- **2+ Milliarden aktive Nutzer** weltweit
+- **95 Millionen Posts pro Tag** (Fotos, Videos, Reels, Stories)
+- **4,2 Milliarden Likes pro Tag**
+- **500 Millionen Stories täglich**
+- **Follower-Netzwerk:** Durchschnittlich 150 Follower pro Nutzer = 300 Milliarden Beziehungen
+- **Hashtag-Suche:** Millionen Suchen pro Sekunde
+- **Feed muss in < 100ms laden** (sonst verliert man Nutzer)
+
+### Probleme
+
+Wenn wir nun versuchen würden, Instagram **nur mit PostgreSQL** zu bauen, würden mehrere Schwierigkeiten auftreten. 
+
+???+ info "Problem 1: Feed laden"
+    
+    ```sql
+    -- Dein Instagram-Feed: Posts von allen Leuten, denen du folgst
+    SELECT posts.*
+    FROM posts
+    JOIN followers ON posts.user_id = followers.following_id
+    WHERE followers.follower_id = 12345  -- Deine User-ID
+    ORDER BY posts.created_at DESC
+    LIMIT 20;
+    ```
+
+    **Das Problem:**
+
+    - Du folgst 500 Leuten
+    - Diese haben in den letzten 24h 5000 Posts erstellt
+    - PostgreSQL muss **jedes Mal** alle 5000 Posts scannen und sortieren
+    - Bei 2 Milliarden Nutzern = **Datenbank-Kollaps** 💥
+
+    **Benötigte Antwortzeit:** < 100ms
+    **Tatsächliche Antwortzeit mit PostgreSQL:** 5-10 Sekunden (unbenutzbar!)
+
+???+ info "Problem 2: Stories"
+    
+    Stories haben **unterschiedliche Formate**:
+
+    - Normales Foto
+    - Video
+    - Umfragen
+    - Countdowns
+    - Musik
+    - ...
+
+    In PostgreSQL müsstest du:
+
+    ```sql
+    CREATE TABLE stories (
+        story_id SERIAL PRIMARY KEY,
+        user_id INTEGER,
+        type VARCHAR(50),
+        image_url VARCHAR(500),
+        video_url VARCHAR(500),      -- NULL bei Fotos
+        boomerang_frames TEXT,       -- NULL außer bei Boomerang
+        poll_question TEXT,          -- NULL außer bei Umfrage
+        poll_option_1 TEXT,
+        poll_option_2 TEXT,
+        poll_option_3 TEXT,
+        poll_option_4 TEXT,
+        countdown_end TIMESTAMP,     -- NULL außer bei Countdown
+        music_track_id INTEGER,      -- NULL außer bei Musik
+        quiz_question TEXT,
+        quiz_correct_answer INTEGER,
+        -- ... und 50 weitere Spalten für neue Features
+    );
+    ```
+
+    **Das Problem:**
+
+    - 90% der Spalten sind immer NULL
+    - Jedes neue Feature braucht `ALTER TABLE` (bei 500M Stories = Stunden Downtime!)
+    - Unflexibel und schwer wartbar
+
+???+ info "Problem 3: Empfehlungen"
+
+    > Leute, die du vielleicht kennst
+
+    ```sql
+    -- Freunde von Freunden finden (2 Ebenen)
+    SELECT DISTINCT f2.following_id
+    FROM followers f1
+    JOIN followers f2 ON f1.following_id = f2.follower_id
+    WHERE f1.follower_id = 12345;  -- Deine ID
+    ```
+
+    Das geht noch. Aber wie wäre es mit:
+
+    - Freunde von Freunden von Freunden (3 Ebenen)?
+    - 6 Ebenen (Kevin Bacon Theorie)?
+    - "Kürzester Pfad zwischen zwei Nutzern"?
+
+    In PostgreSQL: **Unmöglich performant zu lösen!**
+
+### Die Lösung: Polyglot Persistence
+Instagram nutzt **nicht eine**, sondern **mehrere spezialisierte Datenbanken** (Polyglot Persistence) gleichzeitig:
 
 ```mermaid
 flowchart TB
-    A[Moderne Web-App]
-    B[PostgreSQL - Transaktionale Daten]
-    C[Redis - Session und Cache]
-    D[Elasticsearch - Volltextsuche]
-    E[MongoDB - Produktkatalog]
-    F[Neo4j - Empfehlungen]
+    User[Instagram User]
 
-    A --> B
-    A --> C
-    A --> D
-    A --> E
-    A --> F
+    subgraph Frontend
+        App[Mobile App / Web]
+    end
+
+    subgraph Backend
+        API[API Gateway]
+    end
+
+    subgraph Datenbanken
+        Auth[Login / Registrierung]
+        Feed[Feed laden]
+        Post[Post hochladen]
+        Search[Hashtag suchen]
+        Discover[Neue Leute entdecken]
+        Story[Stories]
+
+        PG[(PostgreSQL)]
+        Redis[(Redis Cache)]
+        Cass[(Cassandra)]
+        ES[(Elasticsearch)]
+        Neo[(Neo4j)]
+        Mongo[(MongoDB)]
+    end
+
+    User --> App
+    App --> API
+    API --> Auth
+    API --> Feed
+    API --> Post
+    API --> Search
+    API --> Discover
+    API --> Story
+
+    Auth --> PG
+    Feed --> Redis
+    Post --> Cass
+    Search --> ES
+    Discover --> Neo
+    Story --> Mongo
 ```
 
-Jede Datenbank erfüllt einen **spezifischen Zweck**. Schauen wir uns die verschiedenen Typen an!
+Jede Datenbank macht das, wofür sie **optimal gebaut** wurde. Schauen wir uns an, wie das konkret funktioniert!
+
+???+ warning "Aufbau Instagram"
+    Der genaue Aufbau von Instagram kann nicht exakt beschrieben werden. In diesem Kapitel werden Beispiele gezeigt, wie es funktionieren könnte und was mögliche Softwaretools wären. 
 
 ---
 
-## NoSQL-Datenbanken
+## Verschiedene Datenbanken und deren Anwendung
+
+| Datenbank         | Datenmodell       | NoSQL? | In-Memory | ACID              | Skalierung       | Spezialrolle    |
+| ----------------- | ----------------- | ------ | --------- | ----------------- | ---------------- | --------------- |
+| **PostgreSQL**    | Relational + JSON | ❌      | ❌         | ✅                 | Vertikal + Citus | SQL, OLTP       |
+| **Redis**         | Key-Value         | ✅      | ✅         | ❌ (eingeschränkt) | Horizontal       | Cache, Sessions |
+| **Cassandra**     | Wide-Column       | ✅      | ❌         | ❌                 | ✅ horizontal     | Big Data, IoT   |
+| **Neo4j**         | Graph             | ✅      | ❌         | ✅                 | Eingeschränkt    | Beziehungen     |
+| **Elasticsearch** | Search Engine     | ✅      | ❌         | ❌                 | ✅                | Volltext, Logs  |
+| **MongoDB**       | Document          | ✅      | ❌         | ✅ (ab v4)         | ✅                | JSON-APIs       |
+
+
+### Relationale Datenbanken
+
+Über relationale Datenbanken haben wir uns nun ausgiebig in den vorangengangen Kapiteln unterhalten. Neben PostgreSQL gibt es noch eine Vielzahl an verschiedenen DBMS wie MySQL, MariaDB oder Microsoft SQL Server. Alle diese Systeme haben eines gemein: sie basieren auf Relationen (Tabellen).
+
+**Was speichert Instagram in einer relationalen Datenbank wie PostgreSQL?**
+
+- User-Accounts (E-Mail, Passwort-Hash, Username)
+- Account-Einstellungen (Privatsphäre, Benachrichtigungen)
+- Finanzielle Transaktionen (In-App-Käufe, Werbebuchungen)
+
+**Warum PostgreSQL?**
+
+✅ **ACID-Transaktionen** – Login-Daten dürfen niemals inkonsistent sein
+✅ **Strukturiert** – User-Daten haben feste Struktur
+✅ **Transaktionen** – Beim Registrieren müssen mehrere Operationen atomar sein
+✅ **Datenintegrität** – Keine zwei User mit gleicher E-Mail
+
+
+**Aber:** Nur ~1% aller Instagram-Daten liegen in PostgreSQL!
+
+---
+
+### NoSQL Datenbanken
 
 **NoSQL** steht für "Not Only SQL" – nicht als Ersatz, sondern als **Ergänzung** zu relationalen Datenbanken. NoSQL-Datenbanken verzichten auf starre Schemas und ACID-Garantien, um **Flexibilität und Skalierbarkeit** zu gewinnen.
+
+xxxxx
+
+#### MongoDB: Stories mit flexiblen Formaten
+
+**Das Story-Problem:**
+
+Stories haben **unterschiedliche Strukturen**:
+- Normales Foto: `{type: "photo", url: "..."}`
+- Video: `{type: "video", url: "...", duration: 15}`
+- Umfrage: `{type: "poll", question: "...", options: [...]}`
+- Countdown: `{type: "countdown", end_time: "...", title: "..."}`
+
+In PostgreSQL: Viele NULL-Spalten oder komplizierte Tabellen-Struktur.
+
+**Die Lösung:** MongoDB (Document Store)
+
+Flexible Schema in MongoDB
+
+**Story 1: Normales Foto**
+```json
+{
+  "_id": "story_12345",
+  "user_id": 789,
+  "type": "photo",
+  "url": "https://...",
+  "created_at": "2025-01-15T10:30:00Z",
+  "expires_at": "2025-01-16T10:30:00Z"
+}
+```
+
+**Story 2: Umfrage (komplett andere Struktur!)**
+```json
+{
+  "_id": "story_12346",
+  "user_id": 456,
+  "type": "poll",
+  "question": "Pizza oder Pasta?",
+  "options": [
+    {"text": "Pizza", "votes": 234},
+    {"text": "Pasta", "votes": 189}
+  ],
+  "created_at": "2025-01-15T11:00:00Z",
+  "expires_at": "2025-01-16T11:00:00Z"
+}
+```
+
+**Story 3: Countdown**
+```json
+{
+  "_id": "story_12347",
+  "user_id": 123,
+  "type": "countdown",
+  "title": "Bis zum Urlaub!",
+  "end_time": "2025-06-01T00:00:00Z",
+  "background_color": "#FF5733",
+  "created_at": "2025-01-15T12:00:00Z",
+  "expires_at": "2025-01-16T12:00:00Z"
+}
+```
+
+Warum MongoDB?
+
+✅ **Flexible Schemas** – Jedes Dokument kann anders aussehen
+✅ **Keine ALTER TABLE** – Neues Story-Format? Einfach speichern!
+✅ **JSON-nativ** – Stories sind eh JSON vom Frontend
+✅ **Schnelle Entwicklung** – Neue Features ohne DB-Migration
+
+**Vergleich:**
+
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Szenario</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">PostgreSQL</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">MongoDB</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="padding:10px 14px;">Neues Story-Format hinzufügen</td>
+        <td style="padding:10px 14px;">ALTER TABLE (Downtime!)</td>
+        <td style="padding:10px 14px;">Einfach speichern ✅</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Verschiedene Strukturen</td>
+        <td style="padding:10px 14px;">Viele NULL-Spalten</td>
+        <td style="padding:10px 14px;">Jedes Dokument individuell ✅</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">JSON vom Frontend</td>
+        <td style="padding:10px 14px;">Konvertierung nötig</td>
+        <td style="padding:10px 14px;">Direkt speicherbar ✅</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Transaktionen</td>
+        <td style="padding:10px 14px;">✅ Vollständig</td>
+        <td style="padding:10px 14px;">⚠️ Eingeschränkt</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+---
+
+#### Redis: Feed-Cache & Session-Management
+
+
+**Das Feed-Problem nochmal:**
+
+Jedes Mal wenn du Instagram öffnest, müssten 5000+ Posts abgefragt, sortiert und gefiltert werden. **Viel zu langsam!**
+
+**Die Lösung:** Dein Feed ist **vorberechnet** und in Redis gecacht.
+
+Wie funktioniert das?
+
+1. **Wenn jemand einen Post hochlädt:**
+   ```
+   User "max_mueller" postet ein Foto
+   → Instagram findet alle 10.000 Follower von max_mueller
+   → Für jeden Follower: Post in dessen Feed-Cache einfügen
+   ```
+
+2. **Wenn du Instagram öffnest:**
+   ```
+   Redis: "Gib mir die neuesten 20 Posts aus dem Feed von user_12345"
+   → Antwortzeit: < 1ms (im RAM!)
+   → Dein Feed lädt sofort 🚀
+   ```
+
+**Warum Redis?**
+
+✅ **In-Memory** – 100x schneller als Disk-Zugriff
+✅ **Key-Value** – Einfache Struktur: `feed:user_12345` → Liste von Post-IDs
+✅ **Temporär** – Feed-Cache muss nicht ewig gespeichert werden
+✅ **Atomic Operations** – Mehrere Nutzer können gleichzeitig Feed aktualisieren
+
+**Weitere Nutzung:**
+
+- **Session Management** – Wer ist gerade eingeloggt?
+- **Like-Counters** – Echtzeit-Zähler ohne DB-Last
+- **Rate Limiting** – Max 100 API-Requests pro Minute
+
+**Performance-Vergleich:**
+
+<div style="text-align:center; max-width:700px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Operation</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">PostgreSQL</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Redis</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="padding:10px 14px;">Feed laden (20 Posts)</td>
+        <td style="padding:10px 14px;">5000ms (5 Sekunden)</td>
+        <td style="padding:10px 14px;">< 1ms</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Like-Counter erhöhen</td>
+        <td style="padding:10px 14px;">50ms</td>
+        <td style="padding:10px 14px;">< 0.1ms</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Session prüfen</td>
+        <td style="padding:10px 14px;">10ms</td>
+        <td style="padding:10px 14px;">< 0.1ms</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+**Redis ist 50-5000x schneller!**
+
+---
+
+#### Cassandra: Posts, Photos & Videos
+
+**Das Speicherproblem:**
+
+- **95 Millionen Posts pro Tag**
+- **10 Jahre Speicherung** = 350 Milliarden Posts
+- PostgreSQL-Tabelle würde **Terabytes groß** werden
+- Queries über so viele Daten = **extrem langsam**
+
+**Die Lösung:** Cassandra (Column-Family Store)
+
+Warum Cassandra für Posts?
+
+✅ **Horizontal skalierbar** – Einfach mehr Server hinzufügen
+✅ **Optimiert für Writes** – 95M Posts/Tag kein Problem
+✅ **Time-Series optimiert** – Posts sind zeitbasiert
+✅ **Automatische Partitionierung** – Alte Posts auf separaten Servern
+✅ **Keine Single Point of Failure** – Daten repliziert
+
+Wie speichert Cassandra die Daten?
+
+Statt **zeilenorientiert** (PostgreSQL) speichert Cassandra **spaltenorientiert**:
+
+```
+PostgreSQL (zeilenorientiert):
+Zeile 1: [post_id=1, user_id=123, image_url=..., likes=42, created_at=...]
+Zeile 2: [post_id=2, user_id=456, image_url=..., likes=15, created_at=...]
+→ Alle Spalten zusammen gespeichert
+
+Cassandra (spaltenorientiert):
+post_id:     [1, 2, 3, 4, ...]
+user_id:     [123, 456, 789, 123, ...]
+likes:       [42, 15, 8, 234, ...]
+created_at:  [2025-01-15, 2025-01-15, ...]
+→ Jede Spalte separat gespeichert
+```
+
+**Vorteil:** Wenn Instagram nur `likes` abfragen will, muss nicht die ganze Zeile geladen werden!
+
+Partitionierung nach Zeit
+
+```
+Server 1: Posts von 2025-01 bis 2025-03
+Server 2: Posts von 2025-04 bis 2025-06
+Server 3: Posts von 2025-07 bis 2025-09
+...
+Server 40: Posts von 2015-01 bis 2015-03 (alte Daten, selten abgerufen)
+```
+
+**Ergebnis:**
+- Queries nur auf relevanten Zeitraum
+- Alte Daten können auf langsamerem/günstigerem Storage
+- 1 Million Writes/Sekunde möglich
+
+---
+
+#### Neo4j: Social Graph & Empfehlungen
+
+**Das Beziehungs-Problem:**
+
+Instagram muss verstehen:
+- Wem folgst du?
+- Wer folgt dir?
+- Freunde von Freunden?
+- Welcher gemeinsame Freund verbindet dich mit Person X?
+- "Leute, die du vielleicht kennst"
+
+In PostgreSQL: **Komplexe JOINs, die bei großer Tiefe zusammenbrechen.**
+
+**Die Lösung:** Neo4j (Graph-Datenbank)
+
+Wie funktioniert der Social Graph?
+
+Stell dir Instagram als riesiges Netzwerk vor:
+
+```
+     [Max]
+      |  \
+folgt |   \ folgt
+      |    \
+    [Lisa] [Anna]
+      |      |
+folgt |      | folgt
+      |      |
+    [Tom]  [Ben]
+      |      |
+       \    /
+     folgt | folgt
+          \|
+         [Sarah]
+```
+
+In PostgreSQL: Tabelle `followers` mit Millionen Zeilen
+In Neo4j: **Tatsächliches Graph-Netzwerk** mit direkten Verbindungen
+
+Beispiel-Abfragen in Neo4j
+
+**Abfrage 1:** "Leute, die du vielleicht kennst" (Freunde von Freunden)
+
+```cypher
+MATCH (du:User {id: 12345})-[:FOLGT]->(freund)-[:FOLGT]->(empfehlung)
+WHERE NOT (du)-[:FOLGT]->(empfehlung)
+  AND du <> empfehlung
+RETURN empfehlung.name, COUNT(freund) AS gemeinsame_freunde
+ORDER BY gemeinsame_freunde DESC
+LIMIT 10;
+```
+
+**Ergebnis:**
+```
+"Anna Schmidt" - 8 gemeinsame Freunde
+"Tom Weber" - 5 gemeinsame Freunde
+"Lisa Müller" - 3 gemeinsame Freunde
+```
+
+**Abfrage 2:** Kürzester Pfad zwischen zwei Nutzern
+
+```cypher
+MATCH path = shortestPath(
+  (du:User {id: 12345})-[:FOLGT*]-(andere:User {id: 67890})
+)
+RETURN length(path);
+```
+
+**Ergebnis:** "Du bist 4 Schritte von Person X entfernt"
+
+Warum Neo4j?
+
+<div style="text-align:center; max-width:900px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Aufgabe</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">PostgreSQL</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Neo4j</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="padding:10px 14px;">Direkte Follower finden</td>
+        <td style="padding:10px 14px;">✅ Schnell (1 Query)</td>
+        <td style="padding:10px 14px;">✅ Schnell</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Freunde von Freunden (2 Ebenen)</td>
+        <td style="padding:10px 14px;">⚠️ Langsamer (2 JOINs)</td>
+        <td style="padding:10px 14px;">✅ Schnell</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Netzwerk-Tiefe 6</td>
+        <td style="padding:10px 14px;">❌ Extrem langsam</td>
+        <td style="padding:10px 14px;">✅ Schnell</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Kürzester Pfad</td>
+        <td style="padding:10px 14px;">❌ Sehr komplex</td>
+        <td style="padding:10px 14px;">✅ Eingebauter Algorithmus</td>
+    </tr>
+    <tr>
+        <td style="padding:10px 14px;">Empfehlungen</td>
+        <td style="padding:10px 14px;">❌ Schwer zu berechnen</td>
+        <td style="padding:10px 14px;">✅ Graph-Algorithmen</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+**Neo4j ist perfekt für hochvernetzte Daten!**
+
+---
+
+### Search Engine
+
+#### Elasticsearch: Hashtag-Suche & User-Suche
+
+**Das Such-Problem:**
+
+- User sucht nach `#urlaub2025`
+- Instagram muss **Millionen Posts** durchsuchen
+- Ergebnis muss in < 100ms da sein
+- Suche muss **Tippfehler verzeihen** ("urlub" findet "urlaub")
+- Ranking nach Relevanz (nicht nur Datum)
+
+PostgreSQL:
+```sql
+SELECT * FROM posts
+WHERE caption LIKE '%urlaub%'
+ORDER BY created_at DESC;
+```
+
+**Problem:** `LIKE '%...%'` ist **extrem langsam** auf großen Tabellen!
+
+**Die Lösung:** Elasticsearch (spezialisierte Such-Engine)
+
+Warum Elasticsearch?
+
+✅ **Volltextsuche optimiert** – Inverted Index für blitzschnelle Suche
+✅ **Fuzzy Search** – Findet ähnliche Wörter (Tippfehler)
+✅ **Relevanz-Ranking** – Beste Ergebnisse zuerst
+✅ **Faceted Search** – Filter kombinieren (Hashtag + Ort + Datum)
+✅ **Echtzeit-Indexierung** – Neue Posts sofort durchsuchbar
+
+Wie funktioniert das?
+
+**Inverted Index** (wie in einem Buch-Index):
+
+```
+Normaler Index (PostgreSQL):
+Post 1 → "Schöner #urlaub in Italien 🇮🇹"
+Post 2 → "Mein #urlaub am Strand"
+Post 3 → "Italien ist toll!"
+
+Inverted Index (Elasticsearch):
+"urlaub" → [Post 1, Post 2]
+"italien" → [Post 1, Post 3]
+"strand" → [Post 2]
+```
+
+**Ergebnis:** Suche nach "urlaub" findet sofort Posts 1 und 2!
+
+Such-Features
+
+- **Hashtag-Suche:** `#urlaub` findet alle Posts mit diesem Hashtag
+- **User-Suche:** "anna schmidt" findet @anna_schmidt
+- **Ort-Suche:** "Berlin" findet Posts, die in Berlin getaggt sind
+- **Kombinierte Filter:** `#urlaub AND location:Italien AND date:2025`
+- **Autocomplete:** Während du tippst, werden Vorschläge angezeigt
+
+**Performance:** Millionen Posts durchsuchen in < 50ms! 🚀
+
+---
+
+
+
+
+## Das CAP-Theorem: Warum man nicht alles haben kann
+
+Das **CAP-Theorem** erklärt, warum es verschiedene Datenbanksysteme gibt. Es besagt:
+
+**Du kannst maximal 2 von 3 Eigenschaften gleichzeitig haben:**
+
+```mermaid
+graph TD
+    CAP[CAP-Theorem]
+    C[C = Consistency<br/>Konsistenz<br/><i>Alle Knoten sehen dieselben Daten</i>]
+    A[A = Availability<br/>Verfügbarkeit<br/><i>Jede Anfrage bekommt Antwort</i>]
+    P[P = Partition Tolerance<br/>Partitionstoleranz<br/><i>System funktioniert trotz Netzwerkausfall</i>]
+
+    CAP --> C
+    CAP --> A
+    CAP --> P
+
+    CA[CA: Konsistent + Verfügbar<br/>aber NICHT partition-tolerant<br/><b>Traditionelle RDBMS</b><br/><i>PostgreSQL, MySQL</i>]
+    CP[CP: Konsistent + Partition-tolerant<br/>aber NICHT immer verfügbar<br/><b>Strong Consistency</b><br/><i>MongoDB, HBase</i>]
+    AP[AP: Verfügbar + Partition-tolerant<br/>aber NICHT immer konsistent<br/><b>Eventual Consistency</b><br/><i>Cassandra, DynamoDB</i>]
+
+    C & A --> CA
+    C & P --> CP
+    A & P --> AP
+```
+
+### Entscheidungsbaum
+
+```mermaid
+flowchart TD
+    Start[Welche Datenbank?]
+
+    Start --> Q1{Brauche ich<br/>ACID-Transaktionen?}
+
+    Q1 -->|Ja, kritisch| Q2{Horizontale<br/>Skalierung nötig?}
+    Q1 -->|Nein| Q5{Welche Art<br/>von Daten?}
+
+    Q2 -->|Nein| SQL[PostgreSQL/MySQL]
+    Q2 -->|Ja| NewSQL[CockroachDB/Spanner]
+
+    Q5 -->|Dokumente/JSON| Q6{Schema flexibel?}
+    Q5 -->|Key-Value| KV[Redis/DynamoDB]
+    Q5 -->|Beziehungen/Graph| Graph[Neo4j]
+    Q5 -->|Time-Series| TS[Cassandra/TimescaleDB]
+    Q5 -->|Volltext| Search[Elasticsearch]
+
+    Q6 -->|Ja| Mongo[MongoDB]
+    Q6 -->|Nein| SQL2[PostgreSQL + JSONB]
+
+    style SQL fill:#009485aa
+    style NewSQL fill:#95E1D3aa
+    style KV fill:#FF6B6Baa
+    style Graph fill:#F38181aa
+    style TS fill:#F38181aa
+    style Search fill:#4ECDC4aa
+    style Mongo fill:#95E1D3aa
+    style SQL2 fill:#009485aa
+```
+
+---
+
+# xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+
+## NoSQL-Datenbanken
 
 ### Document Stores (MongoDB, CouchDB)
 
@@ -392,7 +1042,7 @@ druck:      [1013.2, 1012.8, 1013.5, ...]              ← Alle Druckwerte zusam
 
 ---
 
-## Graph-Datenbanken (Neo4j, Amazon Neptune)
+### Graph-Datenbanken (Neo4j, Amazon Neptune)
 
 Graph-Datenbanken speichern Daten als **Knoten (Nodes)** und **Beziehungen (Edges)**. Perfekt für **hochvernetzte Daten**.
 
@@ -1114,3 +1764,178 @@ Die richtige Datenbank zu wählen ist wie das richtige Werkzeug für eine Aufgab
     <h3>Du hast jetzt einen Überblick über die moderne Datenbanklandschaft! 🎉</h3>
     <p><i>Nutze dieses Wissen, um für jeden Use Case die optimale Lösung zu wählen.</i></p>
 </div>
+
+
+
+
+Sehr gute Auswahl an Systemen – damit deckst du praktisch **alle relevanten Datenbank-Paradigmen** ab. Eine saubere Klassifikation kannst du **mehrdimensional** machen (nicht nur *eine* Kategorie, da viele Systeme Hybrid-Eigenschaften haben).
+
+Ich zeige dir zuerst die **Hauptgruppen**, dann eine **klare Zuordnung deiner sechs Systeme**, und zum Schluss eine **didaktisch saubere Matrix**, die du z. B. auch für Unterricht oder Slides verwenden kannst.
+
+---
+
+## ✅ 1. Haupt-Klassifikationsdimensionen
+
+### **A) Datenmodell (wichtigste Einteilung)**
+
+| Kategorie             | Beschreibung                 |
+| --------------------- | ---------------------------- |
+| **Relational (SQL)**  | Tabellen, feste Schemata     |
+| **Key-Value**         | Schlüssel → Wert             |
+| **Document Store**    | JSON/BSON-Dokumente          |
+| **Wide-Column Store** | Spaltenfamilien statt Zeilen |
+| **Graph Database**    | Knoten + Kanten              |
+| **Search Engine DB**  | Volltext + Indexfokus        |
+
+---
+
+### **B) Speicherstrategie**
+
+| Kategorie      | Beschreibung     |
+| -------------- | ---------------- |
+| **In-Memory**  | RAM-basiert      |
+| **Disk-Based** | SSD/HDD          |
+| **Hybrid**     | RAM + Persistenz |
+
+---
+
+### **C) Konsistenzmodell**
+
+| Kategorie                       | Beschreibung                   |
+| ------------------------------- | ------------------------------ |
+| **ACID**                        | Strenge Transaktionssicherheit |
+| **BASE / Eventual Consistency** | Skalierbarkeit vor Konsistenz  |
+
+---
+
+### **D) Skalierungsstrategie**
+
+| Kategorie              | Beschreibung        |
+| ---------------------- | ------------------- |
+| **Vertical Scaling**   | Stärkere Maschine   |
+| **Horizontal Scaling** | Cluster, Verteilung |
+
+---
+
+## ✅ 2. Klare Zuordnung deiner Datenbanken
+
+| Datenbank         | Datenmodell       | NoSQL? | In-Memory | ACID              | Skalierung       | Spezialrolle    |
+| ----------------- | ----------------- | ------ | --------- | ----------------- | ---------------- | --------------- |
+| **PostgreSQL**    | Relational + JSON | ❌      | ❌         | ✅                 | Vertikal + Citus | SQL, OLTP       |
+| **Redis**         | Key-Value         | ✅      | ✅         | ❌ (eingeschränkt) | Horizontal       | Cache, Sessions |
+| **Cassandra**     | Wide-Column       | ✅      | ❌         | ❌                 | ✅ horizontal     | Big Data, IoT   |
+| **Neo4j**         | Graph             | ✅      | ❌         | ✅                 | Eingeschränkt    | Beziehungen     |
+| **Elasticsearch** | Search Engine     | ✅      | ❌         | ❌                 | ✅                | Volltext, Logs  |
+| **MongoDB**       | Document          | ✅      | ❌         | ✅ (ab v4)         | ✅                | JSON-APIs       |
+
+---
+
+## ✅ 3. Deine Datenbanken nach *klaren Gruppen* sortiert
+
+### 🟦 **Relationale Datenbank (SQL)**
+
+* ✅ PostgreSQL
+
+---
+
+### 🟩 **NoSQL-Datenbanken (Oberbegriff)**
+
+* ✅ Redis
+* ✅ Cassandra
+* ✅ Neo4j
+* ✅ MongoDB
+* ✅ ElasticSearch
+
+---
+
+### 🟨 **Key-Value Store**
+
+* ✅ Redis
+
+---
+
+### 🟧 **Document Store**
+
+* ✅ MongoDB
+* ✅ ElasticSearch *(intern dokumentenbasiert)*
+
+---
+
+### 🟥 **Wide-Column Store**
+
+* ✅ Cassandra
+
+---
+
+### 🟪 **Graph Database**
+
+* ✅ Neo4j
+
+---
+
+### ⚡ **In-Memory Datenbank**
+
+* ✅ Redis
+
+---
+
+### 🧊 **Disk-basierte Systeme**
+
+* PostgreSQL
+* Cassandra
+* MongoDB
+* Neo4j
+* ElasticSearch
+
+---
+
+### 🧬 **Hybrid-Systeme**
+
+* ✅ PostgreSQL (SQL + JSONB)
+* ✅ MongoDB (Dokument + Key-Value ähnliches Verhalten)
+* ✅ Redis (RAM + Disk-Persistenz)
+
+---
+
+## ✅ 4. Didaktisch perfekte Gesamtübersicht (eine Slide!)
+
+```
+                 Datenbanken
+                      |
+   ------------------------------------------------
+   |                      |                      |
+ Relational           NoSQL                 Search Engines
+   |                      |                      |
+PostgreSQL    ---------------------        ElasticSearch
+              |    |     |     |
+           Redis Mongo Cassandra Neo4j
+         (KV)   (Doc)   (Wide)  (Graph)
+```
+
+---
+
+## ✅ 5. Typische Einsatzgebiete (praxisnah)
+
+| Use Case              | Optimale DB   |
+| --------------------- | ------------- |
+| Web-Shop, Buchhaltung | PostgreSQL    |
+| Login-Sessions, Cache | Redis         |
+| IoT-Massendaten       | Cassandra     |
+| Soziale Netzwerke     | Neo4j         |
+| Log-Analyse           | ElasticSearch |
+| REST-APIs             | MongoDB       |
+
+---
+
+## ✅ 6. Wenn du willst, kann ich dir auch:
+
+✅ Eine **grafische Folie (PNG oder SVG)**
+✅ Ein **interaktives Klassifikationsdiagramm**
+✅ Eine **1-seitige Spickzettel-Übersicht für Schüler / Studenten**
+✅ Oder eine **Prüfungsfrage mit Musterlösung**
+
+erstellen.
+
+---
+
+👉 Möchtest du diese Klassifikation für **Unterricht, Vortrag, Prüfungsstoff oder für ein Projekt-Dokument** verwenden? Dann passe ich dir das exakt didaktisch an.
