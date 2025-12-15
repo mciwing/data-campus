@@ -246,7 +246,10 @@ In diesem Abschnitt schauen wir uns die verschiedenen **NoSQL-Datenbanksysteme**
 
 **Was macht jede Datenbank speziell?**
 
+
 - **PostgreSQL**: Der klassische Allrounder für strukturierte Daten mit ACID-Garantien. Perfekt für Business-Anwendungen, wo Datenkonsistenz kritisch ist (Buchhaltung, Bestellungen, Nutzerverwaltung).
+
+- **MongoDB**: Das Chamäleon für flexible JSON-Dokumente. Jedes Dokument kann eine andere Struktur haben - ideal für schnell evolvierende Features (Stories, Posts, Produkte), wo SQL starre Tabellen erzwingt.
 
 - **Redis**: Die schnellste Datenbank der Welt - alles liegt im RAM statt auf der Festplatte. Ideal für Caching, Session-Management und Daten, die sofort verfügbar sein müssen, auch wenn sie nach einem Neustart verloren gehen dürfen.
 
@@ -256,7 +259,7 @@ In diesem Abschnitt schauen wir uns die verschiedenen **NoSQL-Datenbanksysteme**
 
 - **Elasticsearch**: Der Volltext-Suchspezialist mit invertiertem Index. Findet in Millisekunden Texte in Millionen Dokumenten, korrigiert Tippfehler automatisch und rankt Ergebnisse nach Relevanz - SQL würde Minuten brauchen.
 
-- **MongoDB**: Das Chamäleon für flexible JSON-Dokumente. Jedes Dokument kann eine andere Struktur haben - ideal für schnell evolvierende Features (Stories, Posts, Produkte), wo SQL starre Tabellen erzwingt.
+
 
 ---
 
@@ -364,7 +367,14 @@ Der fundamentale Unterschied zwischen relationalen Datenbanken und Key-Value Sto
 
 Ein weiterer wichtiger Unterschied ist die **Einfachheit der Abfragen**. Während SQL komplexe Queries mit `WHERE`, `JOIN` und `GROUP BY` erlaubt, die von Parser, Optimizer und Executor verarbeitet werden müssen, kennt Redis nur die simpelsten Operationen: `GET key` und `SET key value`. Diese direkten Hash-Table-Zugriffe benötigen keine Query-Planung und sind dadurch extrem performant.
 
-Redis als bekanntester Vertreter der Key-Value Stores ist im Kern eine **In-Memory-HashMap** mit erweiterten Datentypen. Das Grundkonzept ist simpel: Ein Schlüssel (String) verweist auf einen Wert, wobei dieser Wert verschiedene Typen haben kann - einfache Strings, Listen (geordnete Arrays), Sets (ungeordnete eindeutige Werte), Hashes (verschachtelte Key-Value Paare) oder Sorted Sets (Sets mit Scores für Rankings). Alle diese Daten liegen heap-basiert im RAM und werden über Hash-Tabellen verwaltet. Redis ist dabei single-threaded und nutzt einen Event-Loop für maximale Performance ohne aufwendige Locks.
+Einer der bekanntesten Vertreter von Key-Value Stores ist **Redis**  - im Kern eine **In-Memory-HashMap** mit erweiterten Datentypen. Das Grundkonzept ist simpel: Ein Schlüssel (String) verweist auf einen Wert, wobei dieser Wert verschiedene Typen haben kann - einfache Strings, Listen (geordnete Arrays), Sets (ungeordnete eindeutige Werte), Hashes (verschachtelte Key-Value Paare) oder Sorted Sets (Sets mit Scores für Rankings). Alle diese Daten liegen im RAM und werden über Hash-Tabellen verwaltet.
+
+Sehr häufig kommt Redis in Kombination mit anderen Datenbanksystemen zum Einsatz
+
+<div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+    <img src="https://intellisoft.io/wp-content/uploads/2023/06/3-how-redis-typically-used.png.webp" alt="Redis" style="width:70%; margin-bottom: 1em;">
+    <figcaption style="margin-top: 0.5rem;">Quelle: <a href="https://intellisoft.io/inside-redis-navigating-the-high-speed-highway-of-data-structures/">Intellisoft</a></figcaption>
+</div>
 
 Ein besonderes Feature ist die **TTL (Time-to-Live)** Funktionalität - Schlüssel können automatisch ablaufen, was ideal für temporäre Daten wie Sessions ist (z.B. automatisches Löschen nach 30 Minuten). Optional kann Redis auch Snapshots auf der Festplatte speichern oder ein Append-Only-File führen, um Daten nach einem Neustart wiederherzustellen.
 
@@ -410,6 +420,7 @@ Ein besonderes Feature ist die **TTL (Time-to-Live)** Funktionalität - Schlüss
     ```
 
     **Der Trade-Off:**
+
     - **Vorteil**: Feed laden = 200x schneller (50ms → 0.2ms)
     - **Nachteil**: Mehr Speicher (Feed für alle Nutzer im RAM), Daten gehen bei Neustart verloren (wenn keine Persistence konfiguriert)
     - **Wann nutzen**: Für Daten, wo **Geschwindigkeit wichtiger als Dauerhaftigkeit** ist
@@ -418,29 +429,22 @@ Ein besonderes Feature ist die **TTL (Time-to-Live)** Funktionalität - Schlüss
 
 ### Wide-Column Stores (z.B. Cassandra)
 
-Der kritische Unterschied zwischen relationalen Datenbanken und Wide-Column Stores zeigt sich bei **massiven Schreiblasten**. PostgreSQL hat bei jedem `INSERT` einen fundamentalen Nachteil: Der B-Tree-Index muss sortiert eingefügt werden, was bei Millionen Writes pro Sekunde zum Bottleneck wird. Die typische Last liegt bei etwa 10.000 Writes/Sek pro Server. Cassandra hingegen hängt Daten einfach an (Append-Only Log), was extrem schnell ist und Millionen Writes/Sek über den gesamten Cluster ermöglicht.
+Der kritische Unterschied zwischen relationalen Datenbanken und Wide-Column Stores zeigt sich bei **massiven Schreiblasten**. PostgreSQL hat bei jedem `INSERT` einen fundamentalen Nachteil: Der [B-Tree-Index](https://www.datacamp.com/doc/mysql/mysql-b-tree) muss sortiert eingefügt werden, was bei Millionen Writes pro Sekunde zum Bottleneck wird. Die typische Last liegt bei etwa 10.000 Writes/Sek pro Server. Cassandra hingegen hängt Daten einfach an (Append-Only Log), was extrem schnell ist und Millionen Writes/Sek über den gesamten Cluster ermöglicht.
 
 ???+ defi "Konzept: Wide-Column Stores"
     Optimiert für **massive Schreiblasten** und **Verteilung** auf tausende Server. Daten sind in "Partitionen" organisiert, wobei jede Partition viele Spalten haben kann.
 
-Ein weiterer fundamentaler Unterschied liegt in der **Skalierung**. Relationale Datenbanken setzen primär auf vertikale Skalierung (größere, teurere Server) und haben mit Master-Slave-Architekturen einen Single Point of Failure - nur ein Server kann schreiben. Cassandra dagegen ist für horizontale Skalierung gebaut: Einfach mehr Server hinzufügen bedeutet linear mehr Leistung. Alle Knoten sind gleichberechtigt (masterless), es gibt keinen Single Point of Failure. Dies führt zu unterschiedlichen Prioritäten im CAP-Theorem: SQL bevorzugt Konsistenz (CP - lieber Ausfall als inkonsistente Daten), während Cassandra Verfügbarkeit priorisiert (AP - lieber alte Daten zeigen als offline sein).
 
 Cassandra organisiert Daten in einer **mehrdimensionalen Map-Struktur**. Die Hierarchie ist: Table → Partition (bestimmt durch Partition Key) → Row (bestimmt durch Clustering Key) → Columns. Der **Partition Key** bestimmt dabei, auf welchem Server (Node) die Daten liegen, während der **Clustering Key** die Zeilen innerhalb einer Partition sortiert. Ein typisches Schema sieht so aus:
 
-```sql
-CREATE TABLE posts (
-    user_id bigint,           -- Partition Key (alle Posts eines Users auf einem Node)
-    created_at timestamp,     -- Clustering Key (sortiert nach Zeit)
-    post_id uuid,
-    image_url text,
-    caption text,
-    PRIMARY KEY (user_id, created_at)  -- (Partition Key, Clustering Key)
-);
-```
+<div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+    <img src="https://www.instaclustr.com/wp-content/uploads/2021/10/Cassandra-Partitions-Partition-and-Clustering-Key.png" alt="Cassandra" style="width:100%; margin-bottom: 1em;">
+    <figcaption style="margin-top: 0.5rem;">Quelle: <a href="https://www.instaclustr.com/blog/cassandra-data-partitioning/">instaclustr</a></figcaption>
+</div>
 
 Das Speicher-Layout ist dann verteilt: `user_id=123` liegt auf Node 1, `user_id=456` auf Node 2, etc. - ein Hash-Algorithmus bestimmt den Node. Innerhalb jedes Nodes sind die Posts automatisch nach dem Clustering Key sortiert (neueste zuerst).
 
-Die extreme Schreibgeschwindigkeit kommt durch den **Write-Path**: Neue Daten gehen zunächst in die **MemTable** (RAM) und sind damit sofort gespeichert. Periodisch wird die MemTable auf die Festplatte als **SSTable** (Sorted String Table) geschrieben. Das Entscheidende: Es ist ein **Append-Only** System - alte Daten werden nie geändert, nur neue Dateien werden angehängt. Kombiniert mit der masterless Architektur (jeder Node schreibt unabhängig, keine Locks) und eventual consistency (Replikation läuft asynchron) erreicht Cassandra seine Geschwindigkeit.
+Die extreme Schreibgeschwindigkeit kommt durch den **Write-Path**: Neue Daten gehen zunächst in den RAM und sind damit sofort gespeichert. Periodisch wird die MemTable auf die Festplatte geschrieben. Das Entscheidende: Es ist ein **Append-Only** System - alte Daten werden nie geändert, nur neue Dateien werden angehängt.
 
 ???+ example "Der Instagram-Use-Case"
 
@@ -483,6 +487,7 @@ Die extreme Schreibgeschwindigkeit kommt durch den **Write-Path**: Neue Daten ge
     ```
 
     **Der Trade-Off:**
+
     - **Vorteil**: 1000x mehr Schreibdurchsatz, linear skalierbar
     - **Nachteil**: Abfragen **müssen** den Partition Key enthalten (keine flexiblen JOINs/Filter)
     - **Wann nutzen**: Time-Series-Daten, Event-Logs, IoT-Sensordaten
@@ -495,14 +500,24 @@ Die extreme Schreibgeschwindigkeit kommt durch den **Write-Path**: Neue Daten ge
 
 ### Graph-Datenbanken (z.B. Neo4j)
 
-Der fundamentale Unterschied zwischen relationalen Datenbanken und Graph-Datenbanken liegt in der **Behandlung von Beziehungen**. In SQL sind Beziehungen nur Fremdschlüssel - Verbindungen werden über `JOIN`s zur Laufzeit berechnet. Jeder "Hop" (A → B → C) verdoppelt ungefähr die Komplexität, und bei 3+ Levels wird die Query exponentiell langsam. "Freund von Freund von Freund" ist in SQL ein Performance-Killer. Der Fokus liegt auf Entitäten (Tabellen wie `users`), während Beziehungen nur Nebensache sind.
+In SQL sind **Beziehungen** nur Fremdschlüssel - Verbindungen werden über `JOIN`s zur Laufzeit berechnet. Jeder "Hop" (A → B → C) verdoppelt ungefähr die Komplexität, und bei 3+ Levels wird die Query exponentiell langsam. "Freund von Freund von Freund" ist in SQL ein Performance-Killer. Der Fokus liegt auf Entitäten (Tabellen wie `users`), während Beziehungen nur Nebensache sind.
 
 ???+ defi "Konzept: Graph-Datenbanken"
     Speichert **Knoten** (Entities) und **Kanten** (Beziehungen) als native Struktur. Die Beziehungen sind "first-class citizens" - genauso wichtig wie die Daten selbst.
 
-In Graph-Datenbanken sind **Beziehungen physisch gespeicherte Pointer** - es wird kein JOIN berechnet! Die Traversierung (das Folgen von Kanten) hat konstante Zeit O(1), egal wie groß der Graph ist. "Freund von Freund von Freund von Freund..." bleibt schnell, weil man einfach den Pointern folgt. Der Fokus liegt auf den Beziehungen - die Kanten (wie `FOLGT`, `LIKED`, `TAGGED_IN`) sind das Herzstück. Typische Queries fragen nicht "Gib mir alle Daten zu User 123", sondern "Wie ist User A mit User B verbunden?" - perfekt für Netzwerkanalyse.
+In Graph-Datenbanken sind **Beziehungen physisch gespeicherte Pointer** - es wird kein JOIN berechnet! Die Traversierung (das Folgen von Kanten) hat eine konstante Zeit, egal wie groß der Graph ist. "Freund von Freund von Freund von Freund..." bleibt schnell, weil man einfach den Pointern folgt. Der Fokus liegt auf den Beziehungen - die Kanten (wie `FOLGT`, `LIKED`, `TAGGED_IN`) sind das Herzstück. Typische Queries fragen nicht "Gib mir alle Daten zu User 123", sondern "Wie ist User A mit User B verbunden?" - das ist perfekt für Netzwerkanalysen.
+
+<div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+    <img src="https://phoenixnap.com/kb/wp-content/uploads/2021/04/Graph-vs-Relatioanal-visually.png" alt="Graphs" style="width:70%; margin-bottom: 1em;">
+    <figcaption style="margin-top: 0.5rem;">Quelle: <a href="https://geekflare.com/de/graph-database-solutions/">Geekflare</a></figcaption>
+</div>
 
 Neo4j als bekanntester Vertreter speichert Daten als **Property Graph** - ein gerichteter Graph mit Eigenschaften. Die Grundbausteine sind **Nodes (Knoten)**, die Entitäten repräsentieren (z.B. User, Post, Location) und ein oder mehrere Labels haben (`:User`, `:Post`) sowie Properties als Key-Value Paare (`{name: "Max", age: 25}`). Dazu kommen **Relationships (Kanten)**, die gerichtete Verbindungen zwischen Knoten darstellen - `(A)-[:FOLGT]->(B)` bedeutet "A folgt B". Diese Kanten haben einen Typ (`:FOLGT`, `:LIKED`, `:POSTED`) und können selbst Properties haben wie `{since: "2024-01-15", weight: 0.8}`.
+
+<div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+    <img src="https://dist.neo4j.com/wp-content/uploads/20240604025137/property-graph-model-1.png" alt="Graphs" style="width:70%; margin-bottom: 1em; background: #fff; padding: 1em; border-radius: 8px;">
+    <figcaption style="margin-top: 0.5rem;">Quelle: <a href="https://neo4j.com/blog/knowledge-graph/rdf-vs-property-graphs-knowledge-graphs/">Neo4j</a></figcaption>
+</div>
 
 Die **interne Speicherung** erklärt die Geschwindigkeit: Jeder Node Record enthält seine ID, Labels, Properties und - entscheidend - einen Pointer zur ersten Beziehung. Jeder Relationship Record hat eine ID, den Typ, Pointer zu Start- und End-Node, Properties und einen Pointer zur nächsten Beziehung. Die Traversierung bedeutet dann einfach: Den Pointern folgen. Kein Index-Lookup, kein JOIN - nur Pointer-Dereferenzierung, was extrem schnell ist.
 
@@ -563,6 +578,7 @@ Die **interne Speicherung** erklärt die Geschwindigkeit: Jeder Node Record enth
     ```
 
     **Der Trade-Off:**
+
     - **Vorteil**: Beziehungs-Queries sind 100-1000x schneller als SQL
     - **Nachteil**: Schlechte Performance bei Massendaten-Operationen ("Gib mir alle 2 Mrd. User")
     - **Wann nutzen**: Social Networks, Empfehlungen, Fraud Detection, Wissensgraphen
@@ -578,11 +594,23 @@ Der fundamentale Unterschied zwischen relationalen Datenbanken und Search Engine
 
 Elasticsearch dagegen arbeitet mit **Index-Lookup** - es weiß sofort, in welchen Dokumenten ein Wort vorkommt. Die Suche in Millionen Dokumenten dauert nur Millisekunden. Ergebnisse werden nach Relevanz-Scores (TF-IDF/BM25) sortiert ("Wie relevant ist das Dokument?"), Fuzzy-Search findet automatisch Tippfehler ("Appple", "Aple"), und Text-Analyse mit Stemming, Synonymen und N-Grammen findet semantisch ähnliche Begriffe.
 
-Elasticsearch basiert auf **Apache Lucene** und baut einen **Inverted Index**. Der Unterschied zum normalen Datenmodell (Forward Index wie in SQL) ist fundamental: Statt "Dokument 1 → 'Urlaub in Berlin war super'" zu speichern, wird umgedreht: `"urlaub" → [Dokument 1, Dokument 3]`, `"berlin" → [Dokument 1, Dokument 2]`, etc. Das funktioniert genau wie das Stichwortverzeichnis am Ende eines Buches.
+Elasticsearch baut intern einen **Inverted Index** auf. Der Unterschied zum normalen Datenmodell (Forward Index wie in SQL) ist fundamental: Statt "Dokument 1 → 'Urlaub in Berlin war super'" zu speichern, wird umgedreht: `"urlaub" → [Dokument 1, Dokument 3]`, `"berlin" → [Dokument 1, Dokument 2]`, etc. Das funktioniert genau wie das Stichwortverzeichnis am Ende eines Buches.
 
-Der **Aufbau-Prozess (Indexierung)** läuft in vier Schritten: Zuerst **Tokenization** - der Text "Urlaub in Berlin" wird in Wörter zerlegt: `["Urlaub", "in", "Berlin"]`. Dann **Normalisierung** - Kleinbuchstaben, Sonderzeichen entfernen: `"Urlaub" → "urlaub"`. Danach **Filtering** - Stopwords entfernen ("in", "der", "die") und Stemming anwenden: `"gelaufen" → "lauf"`. Schließlich **Indexierung** - für jedes Wort wird eine Liste der Dokument-IDs erstellt (Posting List), inklusive Positionen und Häufigkeit im Dokument.
+<div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
+    <img src="https://cdn.neurosys.com/wp-content/webp-express/webp-images/uploads/2022/09/elasticsearch_queries.png.webp" alt="Graphs" style="width:70%; margin-bottom: 1em;">
+    <figcaption style="margin-top: 0.5rem;">Quelle: <a href="https://neurosys.com/blog/elasticsearch-introduction">Neurosys</a></figcaption>
+</div>
 
-Die Geschwindigkeit kommt durch drei Faktoren: **Index-Lookup** ist O(log n) durch Binary Search im Term Dictionary (sortierte Liste aller Wörter), Elasticsearch liest **nie die Original-Texte** (nur den Index), und die **Posting Lists sind hochkomprimiert** (z.B. Delta-Encoding). Zusätzlich gibt es **Doc Values** (spalten-orientierte Speicherung) für schnelle Aggregationen und **Field Data** als In-Memory-Cache für Sortierung und Scoring.
+
+Der **Aufbau-Prozess (Indexierung)** läuft in vier Schritten: 
+
+1.  **Tokenization** - der Text "Urlaub in Berlin" wird in Wörter zerlegt: `["Urlaub", "in", "Berlin"]`. 
+2.  **Normalisierung** - Kleinbuchstaben, Sonderzeichen entfernen: `"Urlaub" → "urlaub"`. 
+3.  **Filtering** - Stopwords entfernen ("in", "der", "die") und Stemming anwenden: `"gelaufen" → "lauf"`. 
+4.  **Indexierung** - für jedes Wort wird eine Liste der Dokument-IDs erstellt (Posting List), inklusive Positionen und Häufigkeit im Dokument.
+
+
+
 
 ???+ example "Der Instagram-Use-Case"
 
@@ -667,6 +695,7 @@ Die Geschwindigkeit kommt durch drei Faktoren: **Index-Lookup** ist O(log n) dur
     ```
 
     **Der Trade-Off:**
+
     - **Vorteil**: Volltextsuche 100-1000x schneller, Fuzzy-Search, Relevanz-Ranking
     - **Nachteil**: Hoher Speicherbedarf (Index oft größer als Originaldaten), eventual consistency bei Updates
     - **Wann nutzen**: Volltextsuche, Log-Analyse, E-Commerce-Produktsuche, Monitoring-Dashboards
