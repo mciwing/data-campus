@@ -97,7 +97,5 @@ extra_javascript:
   - javascripts/slideshow.js
 
 plugins:
-  - glightbox:
-      auto_caption: true
-      caption_position: bottom
+  - glightbox
   - search

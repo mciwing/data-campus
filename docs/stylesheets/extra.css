@@ -4,16 +4,17 @@
   .md-typeset .admonition.code,
   .md-typeset details.code {
     border-color: rgb(132, 132, 132);
-  }
-  .md-typeset .code > .admonition-title,
-  .md-typeset .code > summary {
     background-color: rgba(132, 132, 132, 0.1);
   }
+  .md-typeset .code > .admonition-title,
   .md-typeset .code > .admonition-title::before,
   .md-typeset .code > summary::before {
     background-color: rgb(132, 132, 132);
     -webkit-mask-image: var(--md-admonition-icon--code);
             mask-image: var(--md-admonition-icon--code);
+  }
+  .md-typeset .code > summary::after {
+    background-color: rgb(132, 132, 132);
   }
 
 :root {
@@ -21,17 +22,17 @@
   }
   .md-typeset .admonition.defi,
   .md-typeset details.defi {
-    border-color: rgb(232, 127, 43);
-  }
-  .md-typeset .defi > .admonition-title,
-  .md-typeset .defi > summary {
     background-color: rgba(232, 127, 43, 0.1);
   }
+  .md-typeset .defi > .admonition-title,
   .md-typeset .defi > .admonition-title::before,
   .md-typeset .defi > summary::before {
     background-color: rgb(232, 127, 43);
     -webkit-mask-image: var(--md-admonition-icon--defi);
             mask-image: var(--md-admonition-icon--defi);
+  }
+  .md-typeset .defi > summary::after {
+    background-color: rgb(232, 127, 43);
   }
 
 
@@ -41,16 +42,17 @@
   .md-typeset .admonition.process,
   .md-typeset details.process {
     border-color: rgb(132, 132, 132);
-  }
-  .md-typeset .process > .admonition-title,
-  .md-typeset .process > summary {
     background-color: rgba(132, 132, 132, 0.1);
   }
+  .md-typeset .process > .admonition-title,
   .md-typeset .process > .admonition-title::before,
   .md-typeset .process > summary::before {
     background-color: rgb(132, 132, 132);
     -webkit-mask-image: var(--md-admonition-icon--process);
             mask-image: var(--md-admonition-icon--process);
+  }
+  .md-typeset .process > summary::after {
+    background-color: rgb(132, 132, 132);
   }
 
 
@@ -60,16 +62,17 @@
   .md-typeset .admonition.adv,
   .md-typeset details.adv {
     border-color: rgb(38, 126, 38);
-  }
-  .md-typeset .adv > .admonition-title,
-  .md-typeset .adv > summary {
     background-color: rgba(38, 126, 38, 0.1);
   }
+  .md-typeset .adv > .admonition-title,
   .md-typeset .adv > .admonition-title::before,
   .md-typeset .adv > summary::before {
     background-color: rgb(38, 126, 38);
     -webkit-mask-image: var(--md-admonition-icon--adv);
             mask-image: var(--md-admonition-icon--adv);
+  }
+  .md-typeset .adv > summary::after {
+    background-color: rgb(38, 126, 38);
   }
 
 :root {
@@ -78,17 +81,30 @@
   .md-typeset .admonition.disadv,
   .md-typeset details.disadv {
     border-color: rgb(255, 0, 0);
-  }
-  .md-typeset .disadv > .admonition-title,
-  .md-typeset .disadv > summary {
     background-color: rgba(255, 0, 0, 0.1);
   }
+  .md-typeset .disadv > .admonition-title,
   .md-typeset .disadv > .admonition-title::before,
   .md-typeset .disadv > summary::before {
     background-color: rgb(255, 0, 0);
     -webkit-mask-image: var(--md-admonition-icon--disadv);
             mask-image: var(--md-admonition-icon--disadv);
   }
+  .md-typeset .disadv > summary::after {
+    background-color: rgb(255, 0, 0);
+  }
+
+/* Glass-Header leicht in Brand-Peach tönen (überlagert die Default-Bg-Farbe,
+   backdrop-filter aus dem Modern-Theme bleibt erhalten) */
+.md-header {
+  background-color: rgba(255, 180, 130, 0.18);
+}
+
+/* Aktives Nav-Item: Brand-Peach statt Teal */
+.md-nav--primary .md-nav__item .md-nav__link--active {
+  background: rgba(255, 180, 130, 0.18);
+  color: var(--md-primary-fg-color);
+}
 
 .center-button {
     text-align: center;
