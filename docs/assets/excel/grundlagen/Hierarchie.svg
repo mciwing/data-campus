@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="226.65971mm"
+   height="150.54791mm"
+   viewBox="0 0 226.65971 150.54791"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="Hierarchie.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.84096521"
+     inkscape:cx="361.48939"
+     inkscape:cy="234.25464"
+     inkscape:window-width="1680"
+     inkscape:window-height="979"
+     inkscape:window-x="1672"
+     inkscape:window-y="29"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="true">
+    <sodipodi:guide
+       position="113.26371,150.4156"
+       orientation="1,0"
+       id="guide1762"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1650">
+      <g
+         id="g1654"
+         style="stroke-width:0.999999">
+        <rect
+           x="1.8649729"
+           y="63.991623"
+           width="226.74791"
+           height="150.54791"
+           id="rect1652"
+           style="stroke-width:0.999999" />
+      </g>
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1656">
+      <g
+         id="g1660"
+         style="stroke-width:0.999999">
+        <rect
+           x="1.8649729"
+           y="63.991623"
+           width="226.74791"
+           height="150.54791"
+           id="rect1658"
+           style="stroke-width:0.999999" />
+      </g>
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1662">
+      <g
+         id="g1666"
+         style="stroke-width:0.999999">
+        <rect
+           x="1.8649729"
+           y="63.991623"
+           width="226.74791"
+           height="150.54791"
+           id="rect1664"
+           style="stroke-width:0.999999" />
+      </g>
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1668">
+      <g
+         id="g1672"
+         style="stroke-width:0.999999">
+        <rect
+           x="1.8649729"
+           y="63.991623"
+           width="226.74791"
+           height="150.54791"
+           id="rect1670"
+           style="stroke-width:0.999999" />
+      </g>
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath1674">
+      <g
+         id="g1678"
+         style="stroke-width:0.999999">
+        <rect
+           x="1.8649729"
+           y="63.991623"
+           width="226.74791"
+           height="150.54791"
+           id="rect1676"
+           style="stroke-width:0.999999" />
+      </g>
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1.909071,-63.991623)">
+    <path
+       d="M 92.749347,94.02183 115.17278,64.12394 h 0.1323 l 22.42343,29.89789 z"
+       stroke="#ffffff"
+       stroke-width="0.352777"
+       stroke-miterlimit="8"
+       fill="#4472c4"
+       fill-rule="evenodd"
+       id="path691"
+       clip-path="url(#clipPath1674)"
+       style="fill:#e87f2b" />
+    <text
+       font-family="Calibri, Calibri_MSFontService, sans-serif"
+       font-weight="400"
+       font-size="12.4354px"
+       id="text693"
+       x="100.92455"
+       y="91.100395"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:Calibri, Calibri_MSFontService, sans-serif;-inkscape-font-specification:'Calibri, Calibri_MSFontService, sans-serif Bold';fill:#ffffff;stroke-width:0.264583"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold'"
+         id="tspan976">Zellen</tspan></text>
+    <path
+       d="M 69.99518,124.18433 92.617055,94.02183 H 137.8608 l 22.62188,30.1625 z"
+       stroke="#ffffff"
+       stroke-width="0.352777"
+       stroke-miterlimit="8"
+       fill="#4472c4"
+       fill-rule="evenodd"
+       id="path695"
+       clip-path="url(#clipPath1668)"
+       style="fill:#e87f2b" />
+    <text
+       font-family="Calibri, Calibri_MSFontService, sans-serif"
+       font-weight="400"
+       font-size="12.4354px"
+       id="text699"
+       x="98.184326"
+       y="104.83771"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.87778px;font-family:Calibri, Calibri_MSFontService, sans-serif;-inkscape-font-specification:'Calibri, Calibri_MSFontService, sans-serif Bold';fill:#ffffff;stroke-width:0.264583" />
+    <path
+       d="m 47.505597,154.34683 22.621875,-30.1625 h 90.222918 l 22.62187,30.1625 z"
+       stroke="#ffffff"
+       stroke-width="0.352777"
+       stroke-miterlimit="8"
+       fill="#4472c4"
+       fill-rule="evenodd"
+       id="path701"
+       clip-path="url(#clipPath1662)"
+       style="fill:#00416e" />
+    <text
+       font-family="Calibri, Calibri_MSFontService, sans-serif"
+       font-weight="400"
+       font-size="12.4354px"
+       id="text703"
+       x="87.141418"
+       y="142.41785"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;stroke-width:0.264583">Arbeitsblatt</text>
+    <path
+       d="m 25.016014,184.50933 22.621875,-30.1625 H 182.84024 l 22.62161,30.1625 z"
+       stroke="#ffffff"
+       stroke-width="0.352777"
+       stroke-miterlimit="8"
+       fill="#4472c4"
+       fill-rule="evenodd"
+       id="path705"
+       clip-path="url(#clipPath1656)"
+       style="fill:#00416e" />
+    <text
+       font-family="Calibri, Calibri_MSFontService, sans-serif"
+       font-weight="400"
+       font-size="12.4354px"
+       id="text707"
+       x="82.275574"
+       y="171.7928"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;stroke-width:0.264583">Arbeitsmappe</text>
+    <path
+       d="M 2.261848,214.40725 24.685285,184.50933 H 205.79257 l 22.42344,29.89792 z"
+       stroke="#ffffff"
+       stroke-width="0.352777"
+       stroke-miterlimit="8"
+       fill="#4472c4"
+       fill-rule="evenodd"
+       id="path709"
+       clip-path="url(#clipPath1650)"
+       style="fill:#343433" />
+    <text
+       font-family="Calibri, Calibri_MSFontService, sans-serif"
+       font-weight="400"
+       font-size="12.4354px"
+       id="text711"
+       x="74.193375"
+       y="201.823"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;stroke-width:0.264583">Excel Applikation</text>
+    <text
+       xml:space="preserve"
+       style="font-size:8.46667px;line-height:1.25;font-family:sans-serif;text-align:center;text-anchor:middle;fill:#ffffff;stroke-width:0.264583"
+       x="115.23893"
+       y="106.45724"
+       id="text972"><tspan
+         sodipodi:role="line"
+         id="tspan970"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;stroke-width:0.264583"
+         x="115.23893"
+         y="106.45724">Zeilen &amp; </tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff;stroke-width:0.264583"
+         x="115.23893"
+         y="117.04057"
+         id="tspan974">Spalten</tspan></text>
+  </g>
+</svg>

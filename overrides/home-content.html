@@ -90,9 +90,8 @@
         </article>
 
         <!-- Excel -->
-        <article class="module-card module-card--coming-soon" data-accent="excel">
+        <article class="module-card" data-accent="excel">
           <div class="card-glow"></div>
-          <span class="coming-soon-badge">Coming Soon</span>
           <header class="module-card__header">
             <span class="module-card__icon">
               {% include ".icons/fontawesome/solid/table.svg" %}
@@ -107,10 +106,10 @@
               <li>{% include ".icons/fontawesome/solid/check.svg" %} Diagramme & Dashboards</li>
             </ul>
           </div>
-          <div class="module-card__cta module-card__cta--disabled">
-            <span>In Arbeit</span>
-            <span class="arrow">{% include ".icons/fontawesome/solid/hourglass-half.svg" %}</span>
-          </div>
+          <a href="{{ 'excel/' | url }}" class="module-card__cta">
+            <span>Zum Modul</span>
+            <span class="arrow">{% include ".icons/fontawesome/solid/arrow-right.svg" %}</span>
+          </a>
         </article>
 
       </div>
