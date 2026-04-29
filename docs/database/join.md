@@ -109,8 +109,8 @@ Es gibt verschiedene Arten von JOINs, die sich darin unterscheiden, welche Daten
 In der Praxis ist der **INNER JOIN** der am häufigsten verwendete JOIN-Typ, da wir meist nur die Datensätze sehen möchten, die tatsächlich miteinander verknüpft sind. LEFT und RIGHT JOINs kommen zum Einsatz, wenn wir auch "verwaiste" Datensätze behalten möchten - also solche, die keine Entsprechung in der anderen Tabelle haben.
 
 <div style="text-align: center;">
-    <img src="https://media.licdn.com/dms/image/v2/D4D22AQHeU4OzQVrH1g/feedshare-shrink_800/feedshare-shrink_800/0/1685862307804?e=1764806400&v=beta&t=VPS8sG7Z2gzgIZxcBXay1vTcepAXY4h6a4N_FgvVnq8" alt="Join" style="width:50%; margin-bottom: 1em;">
-        <figcaption>Quelle: <a href="https://www.linkedin.com/posts/chandanagrawal23_meme-sql-leetcode-activity-7071019026377768960-PmQZ/">LinkedIn</a></figcaption>
+    <img src="https://media.licdn.com/dms/image/v2/D4D22AQHeU4OzQVrH1g/feedshare-shrink_2048_1536/feedshare-shrink_2048_1536/0/1685862307812?e=1779321600&v=beta&t=YUaQeRYDNyXzZSnHcNu5nTeunQbC_c27dxqK6ScXPIs" alt="Join" style="width:50%; margin-bottom: 1em;">
+        <figcaption>Quelle: <a href="https://www.linkedin.com/posts/chandanagrawal23_meme-sql-leetcode-share-7071019023173337088-k7BS/">LinkedIn</a></figcaption>
 </div>
 
 

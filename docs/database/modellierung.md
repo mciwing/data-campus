@@ -631,8 +631,8 @@ Das heißt, die oben hervorgehobene Code Zeile besagt, dass der Wert in `wartung
 
 
 <div style="text-align: center;">
-    <img src="https://www.meme-arsenal.com/memes/12d61ab7d3ea7bb4ef63c2bd481df6d0.jpg" alt="1:N" style="max-width: 50%;">
-    <figcaption>Quelle: <a href="https://www.meme-arsenal.com/create/meme/14336874">meme-arsenal</a></figcaption>
+    <img src="https://i.imgflip.com/aqfseq.jpg" alt="1:N" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://imgflip.com/i/aqfseq">imgflip</a></figcaption>
 </div>
 
 
