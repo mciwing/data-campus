@@ -114,3 +114,6 @@ ENV/
 # mkdocs
 /.cache
 /site
+
+# claude
+/.claude
