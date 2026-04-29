@@ -4,30 +4,64 @@ Damit wir Excel produktiv einsetzen können, brauchen wir zuerst ein solides Fun
 
 ## Tastenbelegung
 
-Um Excel — und auch andere Software — effizient bedienen zu können, lernen wir in den kommenden Kapiteln einige **Shortcuts** (deutsch: Tastenkombination) kennen. Zur Wiederholung findest du hier die wichtigsten Tasten einer klassischen QWERTZ-Tastatur:
+Um Excel - und auch andere Software - effizient bedienen zu können, lernen wir in den kommenden Kapiteln einige **Shortcuts** (deutsch: Tastenkombination) kennen. Zur Wiederholung findest du hier die wichtigsten Tasten einer klassischen QWERTZ-Tastatur:
 
-![Klassisches Layout einer QWERTZ-Tastatur](../assets/excel/grundlagen/Tastatur.svg)
+!!! info "Hinweis für Mac-User"
+    Die hier gezeigten Shortcuts beziehen sich auf eine **Windows-Tastatur**. Auf einem **Mac** und auf Mac-Tastaturen können sich einzelne Tastenkombinationen unterscheiden - typischerweise wird <kbd>STRG</kbd> durch <kbd>⌘ Cmd</kbd> ersetzt, und einige Funktionen liegen auf anderen Tasten.
 
-1. <kbd>ESC</kbd>: Escape, Menüfenster abbrechen
-2. <kbd>TAB</kbd>: Tabulator
-3. <kbd>CAPS LOCK</kbd>: Permanente Großschreibung ein/aus
-4. <kbd>SHIFT</kbd> (oder UMSCHALT): Zweite Funktion oder Großschreibung
-5. <kbd>STRG</kbd> (oder CTRL): Steuerungs- oder Controltaste
-6. <kbd>FN</kbd>: Funktions-Taste. Um die zweite Belegung zu nutzen, muss erst die Funktionstaste gedrückt werden.
-7. <kbd>START</kbd> (Windows-Taste)
-8. <kbd>ALT</kbd>: Alternativ-Taste
-9. <kbd>Leertaste</kbd>
-10. <kbd>ALT GR</kbd>: Alternativ-Groß-Taste
-11. <kbd>ENTER</kbd> (oder RETURN, EINGABE, BESTÄTIGUNG): Fenster mit OK bestätigen oder Absatzzeichen in der Textverarbeitung
-12. <kbd>BACKSPACE</kbd>: Löschen eines Zeichens links vom Cursor
-13. <kbd>ENTF</kbd> (oder DEL): Löschen eines Zeichens rechts vom Cursor
-14. <kbd>POS1</kbd>: Cursor an den Anfang der Zeile
-15. <kbd>ENDE</kbd>: Cursor ans Ende der Zeile
-16. <kbd>BILD ↑</kbd>: Einen Bildschirmausschnitt nach oben springen
-17. <kbd>BILD ↓</kbd>: Einen Bildschirmausschnitt nach unten springen
-18. **Pfeiltasten**: Cursor eine Spalte nach links/rechts bzw. eine Zeile nach oben/unten setzen
+    Eine ausführliche Übersicht für beide Systeme findest du auf [excelhero.de/excel-tastenkombinationen](https://excelhero.de/excel-tastenkombinationen/).
+
+<figure class="hotspot-image">
+  <img src="../assets/excel/grundlagen/Tastatur.svg" alt="Klassisches Layout einer QWERTZ-Tastatur">
+  <span class="hotspot" tabindex="0" style="top: 13%; left: 2%;">1<span class="hotspot__tip"><strong class="hotspot__title">ESC</strong><span class="hotspot__desc">Menüfenster abbrechen</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 26%; left: 2%;">2<span class="hotspot__tip"><strong class="hotspot__title">TAB</strong><span class="hotspot__desc">Tabulator</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 33.5%; left: 2%;">3<span class="hotspot__tip"><strong class="hotspot__title">CAPS LOCK</strong><span class="hotspot__desc">Permanente Großschreibung ein/aus</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 40%; left: 2%;">4<span class="hotspot__tip"><strong class="hotspot__title">SHIFT</strong><span class="hotspot__desc">Zweite Funktion oder Großschreibung</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 40.5%; left: 66%;">4<span class="hotspot__tip"><strong class="hotspot__title">SHIFT</strong><span class="hotspot__desc">Zweite Funktion oder Großschreibung</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 47.4%; left: 2%;">5<span class="hotspot__tip"><strong class="hotspot__title">STRG</strong><span class="hotspot__desc">Steuerungstaste, Basis vieler Shortcuts</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 51.2%; left: 9%;">6<span class="hotspot__tip"><strong class="hotspot__title">FN</strong><span class="hotspot__desc">Funktions-Taste</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 52.1%; left: 13%;">7<span class="hotspot__tip"><strong class="hotspot__title">START</strong><span class="hotspot__desc">Windows-Taste</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 53%; left: 17.5%;">8<span class="hotspot__tip"><strong class="hotspot__title">ALT</strong><span class="hotspot__desc">Alternativ-Taste</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 53.2%; left: 31.2%;">9<span class="hotspot__tip"><strong class="hotspot__title">Leertaste</strong><span class="hotspot__desc">Leertaste</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 52.6%; left: 46.4%;">10<span class="hotspot__tip"><strong class="hotspot__title">ALT GR</strong><span class="hotspot__desc">Alternativ-Groß-Taste</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 51.4%; left: 53.7%;">6<span class="hotspot__tip"><strong class="hotspot__title">FN</strong><span class="hotspot__desc">Funktions-Taste</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 51.4%; left: 62.5%;">5<span class="hotspot__tip"><strong class="hotspot__title">STRG</strong><span class="hotspot__desc">Steuerungstaste, Basis vieler Shortcuts</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 32.6%; left: 66%;">11<span class="hotspot__tip"><strong class="hotspot__title">ENTER</strong><span class="hotspot__desc">Fenster mit OK bestätigen oder Absatzzeichen in der Textverarbeitung</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 19.5%; left: 66%;">12<span class="hotspot__tip"><strong class="hotspot__title">BACKSPACE</strong><span class="hotspot__desc">Löschen eines Zeichens links vom Cursor</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 29.8%; left: 69%;">13<span class="hotspot__tip"><strong class="hotspot__title">ENTF</strong><span class="hotspot__desc">Löschen eines Zeichens rechts vom Cursor</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 15.3%; left: 73.2%;">14<span class="hotspot__tip"><strong class="hotspot__title">POS1</strong><span class="hotspot__desc">Cursor an den Anfang der Zeile</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 29.8%; left: 73.2%;">15<span class="hotspot__tip"><strong class="hotspot__title">ENDE</strong><span class="hotspot__desc">Cursor ans Ende der Zeile</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 15.3%; left: 77.5%;">16<span class="hotspot__tip"><strong class="hotspot__title">BILD ↑</strong><span class="hotspot__desc">Einen Bildschirmausschnitt nach oben springen</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 29.8%; left: 77.5%;">17<span class="hotspot__tip"><strong class="hotspot__title">BILD ↓</strong><span class="hotspot__desc">Einen Bildschirmausschnitt nach unten springen</span></span></span>
+  <span class="hotspot" tabindex="0" style="top: 43.7%; left: 73.2%;">18<span class="hotspot__tip"><strong class="hotspot__title">Pfeiltasten</strong><span class="hotspot__desc">Cursor eine Spalte nach links/rechts bzw. eine Zeile nach oben/unten setzen</span></span></span>
+  <figcaption>Klassisches Layout einer QWERTZ-Tastatur (Fahre über die Tasten, um die Funktionen zu sehen)</figcaption>
+</figure>
+
+??? note "Erklärung der einzelnen Tasten"
+    1. <kbd>ESC</kbd>: Escape, Menüfenster abbrechen
+    2. <kbd>TAB</kbd>: Tabulator
+    3. <kbd>CAPS LOCK</kbd>: Permanente Großschreibung ein/aus
+    4. <kbd>SHIFT</kbd> (oder UMSCHALT): Zweite Funktion oder Großschreibung
+    5. <kbd>STRG</kbd> (oder CTRL): Steuerungs- oder Controltaste
+    6. <kbd>FN</kbd>: Funktions-Taste. Um die zweite Belegung zu nutzen, muss erst die Funktionstaste gedrückt werden.
+    7. <kbd>START</kbd> (Windows-Taste)
+    8. <kbd>ALT</kbd>: Alternativ-Taste
+    9. <kbd>Leertaste</kbd>
+    10. <kbd>ALT GR</kbd>: Alternativ-Groß-Taste
+    11. <kbd>ENTER</kbd> (oder RETURN, EINGABE, BESTÄTIGUNG): Fenster mit OK bestätigen oder Absatzzeichen in der Textverarbeitung
+    12. <kbd>BACKSPACE</kbd>: Löschen eines Zeichens links vom Cursor
+    13. <kbd>ENTF</kbd> (oder DEL): Löschen eines Zeichens rechts vom Cursor
+    14. <kbd>POS1</kbd>: Cursor an den Anfang der Zeile
+    15. <kbd>ENDE</kbd>: Cursor ans Ende der Zeile
+    16. <kbd>BILD ↑</kbd>: Einen Bildschirmausschnitt nach oben springen
+    17. <kbd>BILD ↓</kbd>: Einen Bildschirmausschnitt nach unten springen
+    18. **Pfeiltasten**: Cursor eine Spalte nach links/rechts bzw. eine Zeile nach oben/unten setzen
 
 ## Datei öffnen, speichern und schließen
+
+Bevor wir uns mit den Inhalten einer Arbeitsmappe beschäftigen, schauen wir uns die ganz grundlegenden Tätigkeiten an: **Wie öffne, speichere und schließe ich eine Excel-Datei?** Klar, das geht alles über das *Datei*-Menü mit der Maus — schneller bist du aber fast immer mit den passenden **Tastenkombinationen**. Es lohnt sich, die wichtigsten davon im Muskelgedächtnis zu haben, weil sie dir über alle weiteren Kapitel hinweg viel Zeit sparen.
+
+Die folgende Tabelle fasst die wichtigsten Aktionen rund ums Öffnen, Speichern und Schließen samt Shortcut zusammen.
 
 | Aktion | Shortcut |
 |---|---|
@@ -40,6 +74,11 @@ Um Excel — und auch andere Software — effizient bedienen zu können, lernen 
 | Arbeitsmappe speichern | <kbd>STRG</kbd> + <kbd>S</kbd> |
 | Speichern unter | <kbd>F12</kbd> |
 | Neue Arbeitsmappe erstellen | <kbd>STRG</kbd> + <kbd>N</kbd> |
+
+<figure class="hotspot-image" style="max-width: 420px;">
+  <img src="https://i.pinimg.com/736x/d1/a2/b8/d1a2b82a4c81319e7255c960283da475.jpg" alt="Übersicht der wichtigsten Excel-Shortcuts">
+  <figcaption>(Quelle: <a href="https://www.pinterest.com/pin/shortcut--180918110000300069" target="_blank" rel="noopener">Pinterest</a>)</figcaption>
+</figure>
 
 ## Hierarchischer Aufbau von Excel
 

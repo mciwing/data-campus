@@ -153,3 +153,155 @@
 .progress-60plus .progress-bar { --bar-color: #8bc34a; }
 .progress-80plus .progress-bar { --bar-color: #4caf50; }
 .progress-100plus .progress-bar { --bar-color: #009485; }
+
+/* === Hotspot-Image: nummerierte Punkte mit Hover-Tooltip === */
+.hotspot-image {
+  position: relative;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1rem auto;
+}
+
+.hotspot-image img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.hotspot-image figcaption {
+  text-align: center;
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+  opacity: 0.8;
+}
+
+.hotspot {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--md-primary-fg-color);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: help;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+  transition: transform 0.15s ease;
+  z-index: 1;
+}
+
+.hotspot:hover,
+.hotspot:focus-visible {
+  transform: translate(-50%, -50%) scale(1.2);
+  z-index: 2;
+  outline: none;
+}
+
+/* Tooltip als echtes Kind-Element: zwei Zeilen mit unterschiedlicher Größe */
+.hotspot__tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.45rem 0.7rem;
+  background: rgba(0, 0, 0, 0.92);
+  color: white;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.25;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 3;
+}
+
+.hotspot__tip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.92);
+}
+
+.hotspot__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hotspot__desc {
+  font-size: 9px;
+  font-weight: 400;
+  opacity: 0.85;
+  max-width: 200px;
+  text-align: center;
+}
+
+.hotspot:hover .hotspot__tip,
+.hotspot:focus-visible .hotspot__tip {
+  opacity: 1;
+}
+
+/* === Markdown-Tabellen einheitlich formatieren (analog zu den HTML-Tabellen in relational.md) === */
+.md-typeset table:not([class]) {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #cfd8e3;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+  margin: 1rem auto;
+  display: table;
+}
+
+.md-typeset table:not([class]) thead tr {
+  background: #009485;
+  color: #fff;
+}
+
+.md-typeset table:not([class]) th {
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 700;
+  border: none;
+  color: #fff;
+  background: transparent;
+}
+
+.md-typeset table:not([class]) td {
+  padding: 10px 14px;
+  border: none;
+  border-top: 1px solid #e6ecf2;
+  vertical-align: top;
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+  background: color-mix(in oklab, #009485 6%, transparent);
+}
+
+/* Dark-Scheme: Ränder und Hover an dunklen Hintergrund anpassen */
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) {
+  border-color: color-mix(in oklab, var(--md-default-fg-color) 18%, transparent);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) td {
+  border-top-color: color-mix(in oklab, var(--md-default-fg-color) 12%, transparent);
+}
