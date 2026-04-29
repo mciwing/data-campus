@@ -82,13 +82,21 @@ Die folgende Tabelle fasst die wichtigsten Aktionen rund ums Öffnen, Speichern 
 
 ## Hierarchischer Aufbau von Excel
 
-![Graphische Darstellung der Hierarchie in Excel](../assets/excel/grundlagen/Hierarchie.svg)
+<figure class="hotspot-image" style="max-width: 500px;">
+  <div class="excel-pyramid" role="img" aria-label="Hierarchie in Excel: Zellen, Zeilen & Spalten, Arbeitsblatt, Arbeitsmappe, Excel-Applikation">
+    <div class="excel-pyramid__level">Zellen</div>
+    <div class="excel-pyramid__level">Zeilen &amp; Spalten</div>
+    <div class="excel-pyramid__level">Arbeitsblatt</div>
+    <div class="excel-pyramid__level">Arbeitsmappe</div>
+    <div class="excel-pyramid__level">Excel-Applikation</div>
+  </div>
+  <figcaption>Hierarchie in Excel — von der kleinsten Einheit (oben) zur umschließenden Anwendung (unten)</figcaption>
+</figure>
 
-- **Excel-Applikation**: Software, die auch ohne offene Arbeitsmappe läuft. Es können mehrere Arbeitsmappen gleichzeitig in einer Excel-Applikation geöffnet werden.
-- **Arbeitsmappe**: Entspricht einer Excel-Datei. Die Arbeitsmappe besitzt ein oder mehrere Arbeitsblätter.
-- **Arbeitsblatt**: Dort befinden sich die Zellen.
-- **Zeilen und Spalten**: Der Zellbereich eines Arbeitsblattes ist in **1.048.576 Zeilen** und **16.384 Spalten** (A bis XFD) unterteilt.
-- **Zellen**: Sind die kleinste Einheit und können Information (Text, Zahlen, Wahrheitswerte) beinhalten. Jede Zelle hat eine Zelladresse, die sich aus Spalten- und Zeilenangabe zusammensetzt.
+Die **Excel-Applikation** ist die eigentliche Software — sie läuft auch ohne geöffnete Datei. In ihr lassen sich mehrere **Arbeitsmappen** gleichzeitig öffnen; jede Arbeitsmappe entspricht einer Excel-Datei und kann ihrerseits ein oder mehrere **Arbeitsblätter** enthalten. Innerhalb eines Arbeitsblattes ist alles in **Zeilen und Spalten** organisiert. Deren Schnittpunkte bilden schließlich die **Zellen** — die kleinste Einheit, in der die eigentliche Information (Text, Zahlen, Wahrheitswerte) abgelegt wird. Adressiert wird jede Zelle über die Kombination aus Spalten- und Zeilenangabe, z. B. `A1` oder `D12`.
+
+!!! example "Fun Fact"
+    Ein einzelnes modernes Excel-Arbeitsblatt umfasst **1.048.576 Zeilen** (entspricht $2^{20}$) und **16.384 Spalten** (von A bis XFD, entspricht $2^{14}$). Das macht über **17 Milliarden Zellen** auf einem einzigen Blatt — würdest du jede Sekunde eine Zelle befüllen, wärst du mehr als 500 Jahre beschäftigt.
 
 ## Benutzeroberfläche
 

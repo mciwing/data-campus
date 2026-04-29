@@ -305,3 +305,47 @@
 [data-md-color-scheme="slate"] .md-typeset table:not([class]) td {
   border-top-color: color-mix(in oklab, var(--md-default-fg-color) 12%, transparent);
 }
+
+/* === Excel-Hierarchie-Pyramide (CSS-only) === */
+.excel-pyramid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.excel-pyramid__level {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 3px;
+  letter-spacing: 0.01em;
+}
+
+/* Top → Bottom: kleinste Einheit zur größten — Farbverlauf Peach → Teal */
+.excel-pyramid__level:nth-child(1) {
+  background: #FFB482;
+  clip-path: polygon(45% 0, 55% 0, 64% 100%, 36% 100%);
+}
+.excel-pyramid__level:nth-child(2) {
+  background: color-mix(in oklab, #FFB482 60%, #009485);
+  clip-path: polygon(36% 0, 64% 0, 73% 100%, 27% 100%);
+}
+.excel-pyramid__level:nth-child(3) {
+  background: color-mix(in oklab, #FFB482 35%, #009485);
+  clip-path: polygon(27% 0, 73% 0, 82% 100%, 18% 100%);
+}
+.excel-pyramid__level:nth-child(4) {
+  background: color-mix(in oklab, #FFB482 15%, #009485);
+  clip-path: polygon(18% 0, 82% 0, 91% 100%, 9% 100%);
+}
+.excel-pyramid__level:nth-child(5) {
+  background: #009485;
+  clip-path: polygon(9% 0, 91% 0, 100% 100%, 0% 100%);
+}
