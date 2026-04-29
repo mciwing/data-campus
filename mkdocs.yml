@@ -60,15 +60,18 @@ nav:
 
   - Excel:
     - Home: excel/index.md
-    - Grundlagen: excel/grundlagen.md
-    - Datenaufbereitung: excel/datenaufbereitung.md
-    - Funktionen: excel/funktionen.md
-    - Visualisierung: excel/visualisierung.md
-    - Finalisieren: excel/finalisieren.md
-    - Tabellen & Pivot: excel/tabellen.md
-    - "Power: Query, Pivot, BI": excel/power.md
-    - Makros: excel/makros.md
-    - "Cheatsheet: Zahlenformate": excel/cheatsheet.md
+    - Grundwissen:
+      - Grundlagen: excel/grundlagen.md
+      - Datenaufbereitung: excel/datenaufbereitung.md
+      - Funktionen: excel/funktionen.md
+      - Visualisierung: excel/visualisierung.md
+      - Finalisieren: excel/finalisieren.md
+    - Fortgeschritten:
+      - Tabellen & Pivot: excel/tabellen.md
+      - "Power: Query, Pivot, BI": excel/power.md
+      - Makros: excel/makros.md
+    - Anhang:
+      - "Cheatsheet: Zahlenformate": excel/cheatsheet.md
 
 
 extra_css:
