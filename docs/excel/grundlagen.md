@@ -2,6 +2,23 @@
 
 Damit wir Excel produktiv einsetzen können, brauchen wir zuerst ein solides Fundament: Welche Tasten gibt es, wie ist eine Arbeitsmappe aufgebaut, wie navigieren wir effizient und wie geben wir die ersten Formeln ein? Genau darum geht es in diesem Kapitel.
 
+## Was ist Excel?
+
+**Microsoft Excel** ist das wohl bekannteste **Tabellenkalkulationsprogramm** der Welt — und seit über 35 Jahren der De-facto-Standard, wenn es darum geht, Daten zu erfassen, zu strukturieren, zu berechnen und auszuwerten. Im Kern ist Excel ein riesiges Raster aus **Zellen**, in dem du Zahlen, Texte und Formeln ablegst und über Funktionen, Verknüpfungen und Diagramme miteinander in Beziehung setzen kannst.
+
+Die Stärke von Excel liegt in seiner **Vielseitigkeit**: Vom kleinen Haushaltsbudget bis hin zu komplexen Finanzmodellen, Projektplänen oder Auswertungen mit zehntausenden Datensätzen lässt sich vieles realisieren — ohne dass du dafür programmieren können musst.
+
+### Warum Excel so beliebt ist
+
+- **Niedrige Einstiegshürde**: Erste sinnvolle Ergebnisse erzielst du schon nach wenigen Minuten — die Lernkurve skaliert mit deinem Anspruch.
+- **Sofortiges visuelles Feedback**: Du siehst direkt, was passiert, und kannst Werte und Formeln interaktiv ausprobieren.
+- **Riesiger Funktionsumfang**: Von einfachen Summen über Pivot-Tabellen bis hin zu Power Query, Power Pivot und Makros (VBA) ist alles in einem Tool vereint.
+- **Universell verbreitet**: Praktisch jeder Computer-Arbeitsplatz hat Excel — der Austausch von Dateien funktioniert ohne zusätzliche Tools.
+- **Brücke zu anderen Welten**: Excel-Dateien lassen sich problemlos mit Datenbanken, BI-Tools (Power BI, Tableau) oder Programmiersprachen wie Python und R austauschen — ein idealer Startpunkt für alles, was später in Richtung Datenanalyse geht.
+
+!!! tip "Excel ist ein Werkzeug, kein Selbstzweck"
+    Excel ist enorm mächtig — aber nicht für alles die richtige Wahl. Bei sehr großen Datenmengen, komplexen Datenbankabfragen oder reproduzierbaren Auswertungen sind oft **Datenbanken** oder **Programmiersprachen** besser geeignet. Wer die Grundlagen von Excel beherrscht, hat aber das beste Sprungbrett, um diese Werkzeuge später gezielt zu ergänzen.
+
 ## Tastenbelegung
 
 Um Excel - und auch andere Software - effizient bedienen zu können, lernen wir in den kommenden Kapiteln einige **Shortcuts** (deutsch: Tastenkombination) kennen. Zur Wiederholung findest du hier die wichtigsten Tasten einer klassischen QWERTZ-Tastatur:
@@ -93,7 +110,7 @@ Die folgende Tabelle fasst die wichtigsten Aktionen rund ums Öffnen, Speichern 
   <figcaption>Hierarchie in Excel — von der kleinsten Einheit (oben) zur umschließenden Anwendung (unten)</figcaption>
 </figure>
 
-Die **Excel-Applikation** ist die eigentliche Software — sie läuft auch ohne geöffnete Datei. In ihr lassen sich mehrere **Arbeitsmappen** gleichzeitig öffnen; jede Arbeitsmappe entspricht einer Excel-Datei und kann ihrerseits ein oder mehrere **Arbeitsblätter** enthalten. Innerhalb eines Arbeitsblattes ist alles in **Zeilen und Spalten** organisiert. Deren Schnittpunkte bilden schließlich die **Zellen** — die kleinste Einheit, in der die eigentliche Information (Text, Zahlen, Wahrheitswerte) abgelegt wird. Adressiert wird jede Zelle über die Kombination aus Spalten- und Zeilenangabe, z. B. `A1` oder `D12`.
+Die **Excel-Applikation** ist die eigentliche Software — sie läuft auch ohne geöffnete Datei. In ihr lassen sich mehrere **Arbeitsmappen** gleichzeitig öffnen; jede Arbeitsmappe entspricht einer Excel-Datei und kann ihrerseits ein oder mehrere **Arbeitsblätter** enthalten. Innerhalb eines Arbeitsblattes ist alles in **Zeilen und Spalten** organisiert. Deren Schnittpunkte bilden schließlich die **Zellen** — die kleinste Einheit, in der die eigentliche Information (Text, Zahlen, Wahrheitswerte) abgelegt wird.
 
 !!! example "Fun Fact"
     Ein einzelnes modernes Excel-Arbeitsblatt umfasst **1.048.576 Zeilen** (entspricht $2^{20}$) und **16.384 Spalten** (von A bis XFD, entspricht $2^{14}$). Das macht über **17 Milliarden Zellen** auf einem einzigen Blatt — würdest du jede Sekunde eine Zelle befüllen, wärst du mehr als 500 Jahre beschäftigt.
@@ -143,6 +160,18 @@ Speziell der **Schnellzugriff** (Nummer 7) kann einiges an Zeit sparen. Zum Anpa
 Auch die **Statusleiste** (Nummer 11) kann sehr hilfreich sein. Wenn du beispielsweise mehrere Zellen markierst, werden gewisse Operationen — z. B. Anzahl, Mittelwert, Summe — automatisch berechnet. Die Statusleiste lässt sich per Rechtsklick anpassen.
 
 ## Daten eingeben und markieren
+
+Die zentrale Bühne in Excel sind die **Zellen**: Hier landen alle Werte — Zahlen, Texte, Wahrheitswerte — und genau hier passiert auch die Weiterverarbeitung. Eine Zelle kann auf andere Zellen zugreifen, deren Inhalte aufgreifen, kombinieren, in Berechnungen einfließen lassen und das Ergebnis wiederum bereitstellen. Aus diesem Zusammenspiel entsteht aus einer leeren Tabelle nach und nach ein lebendiges Modell.
+
+Damit dieses Zusammenspiel funktioniert, hat jede Zelle eine **eindeutige Adresse** — quasi ihre Koordinaten im Tabellenblatt. Diese Adresse setzt sich aus **Spalte** (Buchstabe) und **Zeile** (Nummer) zusammen, z. B. `B4` für die Zelle in Spalte B, Zeile 4.
+
+<figure markdown style="text-align: center;">
+  ![Aktive Zelle B4 mit grünem Rahmen und Anzeige im Namensfeld](../assets/excel/grundlagen/aktive_zelle.png)
+</figure>
+
+Welche Zelle gerade aktiv ist, erkennst du am **grünen Rahmen**. Ihre Adresse wird dir parallel links oben im **Namensfeld** angezeigt — im vorigen Beispiel ist das die Zelle `B4`.
+
+Die folgende Tabelle fasst die wichtigsten Aktionen rund ums **Eingeben und Markieren** von Zellinhalten zusammen — vom einfachen Überschreiben bis hin zur Auswahl mehrerer Bereiche gleichzeitig.
 
 | Aktion | Shortcut |
 |---|---|
