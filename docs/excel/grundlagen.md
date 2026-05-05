@@ -100,21 +100,38 @@ Die **Excel-Applikation** ist die eigentliche Software — sie läuft auch ohne 
 
 ## Benutzeroberfläche
 
-![Excel-Benutzeroberfläche](../assets/excel/grundlagen/sc1.svg)
+<figure class="hotspot-image">
+  <div style="position: relative; line-height: 0;">
+    <img src="../assets/excel/grundlagen/sc1.svg" alt="Excel-Benutzeroberfläche">
+    <span class="hotspot" tabindex="0" style="top: 9.3%; left: 0.8%;">1<span class="hotspot__tip"><strong class="hotspot__title">Excel-Applikation</strong><span class="hotspot__desc">Application</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 3%; left: 34.3%;">2<span class="hotspot__tip"><strong class="hotspot__title">Arbeitsmappe</strong><span class="hotspot__desc">Workbook</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 87.8%; left: 9.7%;">3<span class="hotspot__tip"><strong class="hotspot__title">Arbeitsblatt</strong><span class="hotspot__desc">Worksheet</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 69.4%; left: 0.8%;">4<span class="hotspot__tip"><strong class="hotspot__title">Zeilen</strong><span class="hotspot__desc">Rows</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 53.6%; left: 10.7%;">5<span class="hotspot__tip"><strong class="hotspot__title">Spalten</strong><span class="hotspot__desc">Columns</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 65.5%; left: 24.3%;">6<span class="hotspot__tip"><strong class="hotspot__title">Zellen</strong><span class="hotspot__desc">Cells</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 2.5%; left: 28.5%;">7<span class="hotspot__tip"><strong class="hotspot__title">Schnellzugriff</strong><span class="hotspot__desc">Quick Access Toolbar</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 11.2%; left: 50.3%;">8<span class="hotspot__tip"><strong class="hotspot__title">Menüband</strong><span class="hotspot__desc">Ribbon</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 17.6%; left: 98.5%;">9<span class="hotspot__tip"><strong class="hotspot__title">Registerkarten</strong><span class="hotspot__desc">Tabs</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 47.5%; left: 98.5%;">10<span class="hotspot__tip"><strong class="hotspot__title">Bearbeitungsleiste</strong><span class="hotspot__desc">Formula Bar</span></span></span>
+    <span class="hotspot" tabindex="0" style="top: 93.2%; left: 80.8%;">11<span class="hotspot__tip"><strong class="hotspot__title">Statusleiste</strong><span class="hotspot__desc">Status Bar</span></span></span>
+  </div>
+  <figcaption>Excel-Benutzeroberfläche (Fahre über die Markierungen, um die Bezeichnungen zu sehen)</figcaption>
+</figure>
 
-1. **Excel-Applikation** (Application)
-2. **Arbeitsmappe** (Workbook)
-3. **Arbeitsblatt** (Worksheet)
-4. **Zeilen** (Rows)
-5. **Spalten** (Columns)
-6. **Zellen** (Cells)
-7. **Schnellzugriff** (Quick Access Toolbar)
-8. **Menüband** (Ribbon)
-9. **Registerkarten** (Tabs)
-10. **Bearbeitungsleiste** (Formula Bar)
-11. **Statusleiste** (Status Bar)
+??? note "Erklärung der einzelnen Bereiche"
+    1. **Excel-Applikation** (Application)
+    2. **Arbeitsmappe** (Workbook)
+    3. **Arbeitsblatt** (Worksheet)
+    4. **Zeilen** (Rows)
+    5. **Spalten** (Columns)
+    6. **Zellen** (Cells)
+    7. **Schnellzugriff** (Quick Access Toolbar)
+    8. **Menüband** (Ribbon)
+    9. **Registerkarten** (Tabs)
+    10. **Bearbeitungsleiste** (Formula Bar)
+    11. **Statusleiste** (Status Bar)
 
-Speziell der **Schnellzugriff** kann einiges an Zeit sparen. Zum Anpassen gibt es folgende Möglichkeiten:
+Speziell der **Schnellzugriff** (Nummer 7) kann einiges an Zeit sparen. Zum Anpassen gibt es folgende Möglichkeiten:
 
 - **Ein-/Ausblenden**: Standardmäßig kann es sein, dass der Schnellzugriff ausgeblendet ist und nur das Speichern-Symbol angezeigt wird. Geändert wird das durch Rechtsklick auf das Symbol → *Symbolleiste für den Schnellzugriff anzeigen*.
 - **Anpassen**:
@@ -123,7 +140,7 @@ Speziell der **Schnellzugriff** kann einiges an Zeit sparen. Zum Anpassen gibt e
     - Rechtsklick auf eine Funktion in den Registerkarten → *Zu Symbolleiste für den Schnellzugriff hinzufügen*
     - Rechtsklick auf ein Symbol → *Aus Symbolleiste für den Schnellzugriff entfernen*
 
-Auch die **Statusleiste** kann sehr hilfreich sein. Wenn du beispielsweise mehrere Zellen markierst, werden gewisse Operationen — z. B. Anzahl, Mittelwert, Summe — automatisch berechnet. Die Statusleiste lässt sich per Rechtsklick anpassen.
+Auch die **Statusleiste** (Nummer 11) kann sehr hilfreich sein. Wenn du beispielsweise mehrere Zellen markierst, werden gewisse Operationen — z. B. Anzahl, Mittelwert, Summe — automatisch berechnet. Die Statusleiste lässt sich per Rechtsklick anpassen.
 
 ## Daten eingeben und markieren
 
