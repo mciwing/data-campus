@@ -6,6 +6,7 @@ Ein wirkungsvoller Prompt ist kein Zufall, sondern folgt einer **klaren Struktur
 
 ## Inhalte dieses Kapitels
 
+- **Setup – Ollama installieren** – ein lokales LLM einrichten, um Prompts selbst auszuprobieren
 - **Rolle** – welche Perspektive oder Expertise das Modell einnehmen soll
 - **Kontext** – relevante Hintergrundinformationen für die Aufgabe
 - **Aufgabe** – die konkrete, eindeutig formulierte Anweisung
