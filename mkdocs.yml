@@ -58,6 +58,25 @@ nav:
     - Ausblick: database/ausblick.md
     - "Bonus: Moderne Systeme": database/moderne_systeme.md
 
+  - Prompt Engineering:
+    - Home: prompt/index.md
+    - Einführung in Generative KI: 
+      - Einleitung: prompt/einfuehrung.md
+      - Funktionsweise von LLMs: prompt/funktionsweise-llms.md
+      - Stärken und Grenzen von LLMs: prompt/staerken-grenzen.md
+      - Halluzinationen und Kontextfenster: prompt/halluzinationen-kontextfenster.md
+      - Prompt Engineering als Kompetenz: prompt/kompetenz.md
+    - Anatomie eines guten Prompts: prompt/anatomie.md
+    - Zero-Shot & Few-Shot: prompt/shot-prompting.md
+    - Iteratives Prompt Engineering: prompt/iteratives.md
+    - Strukturierte Ausgaben: prompt/strukturierte-ausgaben.md
+    - Rollenbasiertes Prompting: prompt/rollen.md
+    - Prompt Chaining: prompt/chaining.md
+    - Kritisches Prompting: prompt/kritisches.md
+    - Multimodales Prompting: prompt/multimodal.md
+    - Evaluation von KI-Ergebnissen: prompt/evaluation.md
+    - Prompt Libraries: prompt/libraries.md
+
 
 extra_css:
   - stylesheets/colors.css

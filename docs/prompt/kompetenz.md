@@ -1,0 +1,155 @@
+# Prompt Engineering als Kompetenz
+
+Du weißt jetzt, **wie** ein LLM funktioniert, **was** es gut kann und wo seine **Grenzen** liegen, und warum es **halluziniert** und manchmal den Faden verliert. Bleibt eine letzte Frage: Wie bringt man dieses launische, geniale Werkzeug dazu, **genau das** zu tun, was man will?
+
+Die Antwort ist eine eigene Fähigkeit – und das Thema des gesamten restlichen Kurses: **Prompt Engineering**.
+
+!!! info "Grundlage dieses Kapitels"
+
+    > Zuckarelli, J. (2025): *Programmieren mit ChatGPT.* Springer Nature, Kap. 6.1 „Prompt Engineering". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
+
+    > Kessel, T. et al. (2025): *ChatGPT und Large Language Models? Frag doch einfach!* UVK Verlag (UTB).
+
+---
+
+## Was ist Prompt Engineering?
+
+???+ defi "Prompt Engineering"
+
+    **Prompt Engineering** ist das **geschickte Verfassen von Prompts** – also von Benutzeranfragen an KI-Tools –, optimiert auf die jeweilige **Fragestellung** und das verwendete **Tool** (Zuckarelli, 2025).
+
+    Ein **„Prompt Engineer"** ist demnach jemand, der eine KI durch geschicktes Fragen dazu bringt, ihr **maximales Potenzial** auszuschöpfen.
+
+Klingt simpel? Ist es im Kern auch. Und doch steckt der Teufel im Detail – sonst bräuchte es diesen Kurs nicht. 😉
+
+---
+
+## Der heißeste Job der Welt – oder nur Hype? 💰
+
+Eine Zeit lang galt „Prompt Engineer" als **Traumjob**: Schlagzeilen versprachen Gehälter von bis zu **335.000 US-Dollar** – und das ganz ohne Informatikstudium (Popli, 2023). Unternehmen suchten händeringend nach Menschen, die der KI die besten Antworten entlocken.
+
+Aber lohnt sich die Euphorie? Zuckarelli (2025) betrachtet den Boom **skeptisch** – und liefert gleich zwei Gegenargumente:
+
+<div class="grid cards" markdown>
+
+- :material-account-multiple: **Angebot steigt**
+
+    ---
+
+    Das nötige Skillset ist überschaubar und **leicht reproduzierbar**. Sobald viele merken, dass man hier auch ohne technischen Hintergrund gut verdient, steigt das Angebot an „Prompt Engineers" – und die Gehälter sinken wieder.
+
+- :material-robot-happy: **Tools werden besser**
+
+    ---
+
+    Die KIs verstehen zunehmend auch **schlampig formulierte** Anfragen. Je besser die Tools werden, desto weniger braucht es Profis, die perfekte Prompts basteln – die Zahl ausgeschriebener Jobs könnte zurückgehen.
+
+</div>
+
+???+ tip "Die ehrliche Einordnung"
+
+    „Prompt Engineering" ist **keine Wunderwaffe** und kein Geheimwissen für Hochbezahlte. Aber – und das ist der Punkt – es gibt sehr wohl eine **Reihe von Tipps und Tricks**, deren man sich bewusst sein sollte, wenn man Prompts schreibt (Zuckarelli, 2025). Genau die lernst du hier.
+
+---
+
+## Vom Geheimwissen zur Kulturtechnik 📚
+
+Vielleicht wird Prompt Engineering gar kein exklusiver Beruf, sondern etwas viel **Grundlegenderes**: eine **Kulturtechnik**, die praktisch jeder beherrscht – so wie heute Lesen und Schreiben (Zuckarelli, 2025). Gut möglich, dass Kinder schon in der Schule lernen, effizient mit KI zu kommunizieren.
+
+Ein Blick in die Geschichte macht nachdenklich:
+
+!!! quote "Lektion aus der Geschichte"
+
+    Der **babylonische Schreiber**, der Verträge in Keilschrift dokumentierte, und der **mittelalterliche Mönch**, der Bücher mühsam von Hand abschrieb – ihre Fähigkeiten waren am Arbeitsmarkt einst **hochbegehrt**. Heute differenziert man sich damit nicht mehr. (Zuckarelli, 2025)
+
+    Die Moral: Eine Fähigkeit kann **gleichzeitig wertvoll und vergänglich** sein. Umso wichtiger ist es, das **Prinzip dahinter** zu verstehen – nicht nur Tricks auswendig zu lernen.
+
+Ob exklusiver Beruf oder Alltagskompetenz – die gute Nachricht bleibt: Wer **klar mit KI kommunizieren** kann, ist klar im Vorteil. Und das ist eine Fähigkeit, die du lernen kannst.
+
+---
+
+## Warum es trotzdem echtes Können erfordert
+
+Wenn LLMs schlichte Programme wären, gäbe es kein Prompt Engineering – man würde einfach den richtigen Befehl eintippen. Aber so funktioniert KI nicht:
+
+???+ defi "Der Knackpunkt: Nicht-Determinismus"
+
+    KI-Modelle sind **keine deterministischen Systeme**. Sie folgen Regeln **nicht strikt** und können auf denselben Prompt unterschiedlich reagieren. Deshalb ist es durchaus eine **Herausforderung**, bestimmte Nuancen und Feinheiten im Verhalten eines Modells gezielt zu erreichen (Zuckarelli, 2025).
+
+Mit anderen Worten: Es gibt **kein** Patentrezept, das immer funktioniert. Genau das macht Prompt Engineering zu einer Fähigkeit, die man **übt** und **verfeinert** – statt sie einmal auswendig zu lernen.
+
+---
+
+## Das richtige Mindset: Behandle die KI wie eine:n Junior 🧑‍💻
+
+Das vielleicht nützlichste mentale Modell aus Zuckarelli (2025):
+
+!!! quote "Die Junior-Developer-Analogie"
+
+    Stell dir vor, du delegierst eine Aufgabe an eine:n **Junior-Entwickler:in**, der/die heute bei dir anfängt und noch **keine Einarbeitung** hatte. Welche Informationen bräuchte diese Person, um deine Aufgabe erfolgreich zu erledigen?
+
+    > *„Würde ein:e Junior-Entwickler:in die Anforderung verstehen und die Aufgabe mit den Informationen, die ich gegeben habe, bewältigen können?"*
+
+Diese Frage ist Gold wert. Sie zwingt dich, **Kontext, Ziel und Format explizit** zu machen – statt anzunehmen, die KI „weiß schon, was ich meine". (Spoiler: Tut sie nicht.)
+
+---
+
+## Was du in diesem Kurs lernst 🎯
+
+Gutes Prompting verfolgt im Kern **drei Ziele** (Zuckarelli, 2025):
+
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Ziel</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Worum es geht</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Besser verstanden werden</td>
+        <td style="padding:10px 14px;">Klar formulieren, damit die KI versteht, was du wirklich willst.</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Kontextfenster managen</td>
+        <td style="padding:10px 14px;">Token-sparend kommunizieren, damit nichts „vergessen" wird.</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Genaueren Output erreichen</td>
+        <td style="padding:10px 14px;">Format, Umfang und Stil so steuern, dass kaum Nachbearbeitung nötig ist.</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+Wie du diese Ziele konkret erreichst, beginnt im nächsten Kapitel: [Anatomie eines guten Prompts](anatomie.md). Dort zerlegen wir einen Prompt in seine Bausteine – **Rolle, Kontext, Aufgabe, Einschränkungen und Ausgabeformat**.
+
+???+ question "Selbsttest"
+
+    1. Wie lautet die Kurzdefinition von **Prompt Engineering**?
+    2. Nenne **ein** Argument dafür, dass der „Prompt Engineer"-Job-Hype vorübergehend sein könnte.
+    3. Warum ist Prompt Engineering trotz einfacher Grundidee eine **echte** Fähigkeit?
+    4. Was besagt die **Junior-Developer-Analogie**?
+
+    ??? success "Lösungsskizze"
+
+        1. Das **geschickte Verfassen von Prompts**, optimiert auf Fragestellung und Tool.
+        2. Das Skillset ist leicht reproduzierbar (Angebot steigt → Gehälter sinken) **oder** die Tools verstehen zunehmend auch schlampige Prompts (Nachfrage sinkt).
+        3. Weil LLMs **nicht-deterministisch** sind und Regeln nicht strikt folgen – gewünschte Nuancen zu erreichen, muss man üben.
+        4. Behandle die KI wie eine:n **uneingearbeitete:n Junior** und gib ihr genau die Informationen, die diese Person zur Lösung bräuchte.
+
+---
+
+## Quellen
+
+!!! info "Literatur"
+
+    Dieses Kapitel basiert auf folgenden Quellen:
+
+    - **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT.* Springer Nature, Kap. 6.1 „Prompt Engineering". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
+    - **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach!* UVK Verlag (UTB). ISBN 978-3-8252-6276-1.
+    - **Popli, N. (2023):** *The AI Job That Pays Up to \$335K—and You Don't Need a Computer Engineering Background.* Time. [https://time.com/6272103/ai-prompt-engineer-job/](https://time.com/6272103/ai-prompt-engineer-job/)
+
+    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
