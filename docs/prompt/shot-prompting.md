@@ -137,6 +137,18 @@ flowchart LR
     4. **Es gibt Grenzfälle, die immer falsch klassifiziert werden?** → genau diese Grenzfälle als Beispiele aufnehmen.
     5. **Auch mit Few-Shot keine Besserung?** → Aufgabe ist zu groß. Zerlegen: [Prompt Chaining](chaining.md).
 
+???+ defi "Was Beispiele wirklich leisten – ein überraschender Befund"
+
+    Man würde annehmen, das Modell lerne aus Beispielen die **richtige Zuordnung**. Min et al. (2022) haben das geprüft und die Labels in den Beispielen **absichtlich falsch** gesetzt – „Alles top!" → *negativ*. Das Ergebnis: Die Leistung brach kaum ein.
+
+    Was Beispiele tatsächlich vermitteln, sind drei andere Dinge:
+
+    1. den **Label-Raum** (welche Antworten überhaupt zulässig sind),
+    2. die **Eingabeverteilung** (wie die Aufgaben aussehen),
+    3. das **Format** der Antwort.
+
+    👉 Praktische Folgerung: Achte bei deinen Beispielen zuerst auf **Einheitlichkeit und Abdeckung** – nicht auf perfekt gewählte Musterlösungen.
+
 !!! warning "Drei typische Few-Shot-Fallen"
 
     - **Unausgewogene Beispiele:** Nur positive Beispiele → das Modell klassifiziert alles als positiv. Decke *alle* Kategorien ab.
@@ -310,8 +322,12 @@ flowchart LR
 
 !!! info "Literatur"
 
-    - **Brown, T. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
-    - **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation.* Wiley.
-    - **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*. Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
+    - **Brown, T. B., Mann, B., Ryder, N. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
+      → das Paper, das die Begriffe *Zero-Shot*, *One-Shot* und *Few-Shot* geprägt hat. Zeigt auch, dass der Nutzen von Beispielen mit der Modellgröße *abnimmt* – die Grundlage unseres Kurs-Tricks.
+    - **Min, S., Lyu, X., Holtzman, A. et al. (2022):** *Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?* arXiv:2202.12837. [https://arxiv.org/abs/2202.12837](https://arxiv.org/abs/2202.12837)
+      → überraschender Befund: Selbst **falsch gelabelte** Beispiele helfen kaum weniger als richtige. Entscheidend sind Format, Label-Raum und Eingabeverteilung – nicht die Korrektheit. Das erklärt, warum die *Struktur* deiner Beispiele so wichtig ist.
+    - **Zhao, T. Z., Wallace, E., Feng, S. et al. (2021):** *Calibrate Before Use: Improving Few-Shot Performance of Language Models.* arXiv:2102.09690. [https://arxiv.org/abs/2102.09690](https://arxiv.org/abs/2102.09690)
+      → belegt die Verzerrung durch unausgewogene Beispiele: Das Modell bevorzugt Labels, die häufiger oder zuletzt im Prompt vorkommen.
+    - **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.

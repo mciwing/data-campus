@@ -82,6 +82,14 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
     ✅ Funktioniert auch bei sehr kleinen Modellen ⭐ · ❌ unflexibel bei variabler Feldanzahl.
 
+!!! danger "Der Preis der Struktur ⚖️"
+
+    Struktur ist nicht gratis. Tam et al. (2024) haben gemessen, was passiert, wenn man Modelle zu striktem JSON zwingt: Auf **Denkaufgaben** fiel die Leistung teilweise deutlich ab – je enger das Format, desto stärker der Einbruch.
+
+    Die Erklärung ist einleuchtend: Beim freien Antworten kann ein Modell „laut mitdenken" und sich über Zwischenschritte zur Lösung vorarbeiten. Ein festes Schema erzwingt die Antwort **sofort**, ohne Umweg.
+
+    👉 Praktische Regel: **Erst denken lassen, dann formatieren.** Nutze zwei Schritte ([Prompt Chaining](chaining.md)) – Schritt 1 analysiert frei, Schritt 2 gießt das Ergebnis in JSON. Das ist zuverlässiger als beides in einem Prompt zu verlangen.
+
 ???+ tip "Die Format-Rangfolge für kleine Modelle"
 
     Je kleiner das Modell, desto einfacher muss das Format sein:
@@ -284,8 +292,10 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
 !!! info "Literatur"
 
-    - **Ollama (2025):** *Structured outputs.* [https://ollama.com/blog/structured-outputs](https://ollama.com/blog/structured-outputs)
-    - **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation.* Wiley.
-    - **OpenAI (2025):** *Structured Outputs.* [https://platform.openai.com/docs/guides/structured-outputs](https://platform.openai.com/docs/guides/structured-outputs)
+    - **Willard, B. T. & Louf, R. (2023):** *Efficient Guided Generation for Large Language Models.* arXiv:2307.09702. [https://arxiv.org/abs/2307.09702](https://arxiv.org/abs/2307.09702)
+      → beschreibt das Verfahren hinter `--format json`: Die Ausgabe wird über einen endlichen Automaten geführt, der ungültige Tokens gar nicht erst zur Auswahl zulässt. Deshalb ist gültige Syntax garantiert – und nur die Syntax.
+    - **Tam, Z. R., Wu, C.-K., Tsai, Y.-L. et al. (2024):** *Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models.* arXiv:2408.02442. [https://arxiv.org/abs/2408.02442](https://arxiv.org/abs/2408.02442)
+      → wichtiger Gegenbefund: Strenge Formatvorgaben können die **Denkleistung senken**. Siehe den Kasten „Der Preis der Struktur" oben.
+    - **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.

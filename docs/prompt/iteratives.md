@@ -27,6 +27,16 @@ flowchart LR
 
     👉 Ändere pro Iteration **genau eine Sache**.
 
+???+ defi "Das ist keine Anfängerschwäche – es ist der Normalfall"
+
+    Zamfirescu-Pereira et al. (2023) haben untersucht, wie Menschen ohne KI-Hintergrund tatsächlich prompten. Drei Muster traten regelmäßig auf:
+
+    - **Opportunistisches Ausprobieren** statt systematischem Vorgehen – man ändert, was gerade auffällt.
+    - **Übergeneralisierung aus Einzelfällen**: Ein einziger guter Durchlauf gilt als Beweis, dass der Prompt funktioniert.
+    - **Vermenschlichung**: Man erklärt dem Modell die Aufgabe so, wie man sie einem Menschen erklären würde – inklusive Andeutungen, die es nicht auflösen kann.
+
+    Das zweite Muster ist besonders tückisch, weil Sprachmodelle [nicht deterministisch](ollama-setup.md) sind. Deshalb im Zweifel: **jede Variante mehrfach laufen lassen.**
+
 ---
 
 ## Output analysieren
@@ -296,7 +306,10 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
 
 !!! info "Literatur"
 
-    - **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*. Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
-    - **Anthropic (2025):** *Prompt engineering overview.* [https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
+    - **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1–21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388)
+      → die empirische Grundlage dieses Kapitels: Nicht-Fachleute iterieren meist **opportunistisch** statt systematisch, verallgemeinern aus Einzelfällen und verwerfen funktionierende Ansätze zu früh. Genau dagegen hilft „eine Änderung pro Runde" plus Logbuch.
+    - **Madaan, A., Tandon, N., Gupta, P. et al. (2023):** *Self-Refine: Iterative Refinement with Self-Feedback.* arXiv:2303.17651. [https://arxiv.org/abs/2303.17651](https://arxiv.org/abs/2303.17651)
+      → zeigt, dass ein Modell seine eigene Ausgabe kritisieren und daraufhin verbessern kann – die Grundlage von Übung 2. Wichtig: Der Effekt ist bei **kleinen** Modellen deutlich schwächer.
+    - **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927)
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.

@@ -343,8 +343,15 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
 
 !!! info "Literatur"
 
-    - **Ollama (2025):** *Vision models.* [https://ollama.com/search?c=vision](https://ollama.com/search?c=vision)
-    - **Radford, A. et al. (2021):** *Learning Transferable Visual Models From Natural Language Supervision (CLIP).* arXiv:2103.00020. [https://arxiv.org/abs/2103.00020](https://arxiv.org/abs/2103.00020)
-    - **Anthropic (2025):** *Building effective agents.* [https://www.anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents)
+    - **Radford, A., Kim, J. W., Hallacy, C. et al. (2021):** *Learning Transferable Visual Models From Natural Language Supervision.* arXiv:2103.00020. [https://arxiv.org/abs/2103.00020](https://arxiv.org/abs/2103.00020)
+      → das CLIP-Paper: Bilder und Texte werden in **denselben Vektorraum** eingebettet. Genau der Mechanismus aus dem Diagramm oben – und die Grundlage praktisch aller heutigen Vision-Modelle.
+    - **Alayrac, J.-B., Donahue, J., Luc, P. et al. (2022):** *Flamingo: a Visual Language Model for Few-Shot Learning.* arXiv:2204.14198. [https://arxiv.org/abs/2204.14198](https://arxiv.org/abs/2204.14198)
+      → zeigt, wie ein Bildencoder mit einem Sprachmodell verbunden wird, sodass Bild und Text **verschränkt** im selben Prompt verarbeitet werden können.
+    - **Liu, H., Li, C., Wu, Q. et al. (2023):** *Visual Instruction Tuning.* arXiv:2304.08485. [https://arxiv.org/abs/2304.08485](https://arxiv.org/abs/2304.08485)
+      → das LLaVA-Paper, aus dessen Ansatz die heute frei verfügbaren Vision-Modelle hervorgegangen sind – auch das kleine `moondream` aus dem Labor.
+
+!!! info "Werkzeug-Dokumentation"
+
+    - **Ollama Vision-Modelle:** [https://ollama.com/search?c=vision](https://ollama.com/search?c=vision)
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.

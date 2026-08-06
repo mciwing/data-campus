@@ -473,9 +473,16 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
 
 ## Quellen
 
-!!! info "Weiterführende Links"
+!!! info "Literatur"
 
-    - **Ollama Dokumentation:** [https://github.com/ollama/ollama/blob/main/README.md](https://github.com/ollama/ollama/blob/main/README.md)
+    - **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
+      → zeigt, dass die Leistung eines Modells mit der Parameterzahl stark zunimmt. Genau deshalb sind kleine Modelle so stark auf gute Prompts angewiesen.
+    - **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1–21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388)
+      → empirische Studie: Ohne Rückmeldung über die Wirkung ihrer Prompts entwickeln Nicht-Fachleute keine systematische Vorgehensweise. Das eigene Labor ist genau diese Rückmeldung.
+
+!!! info "Werkzeug-Dokumentation"
+
+    - **Ollama:** [https://github.com/ollama/ollama/blob/main/README.md](https://github.com/ollama/ollama/blob/main/README.md)
     - **Ollama Python Library:** [https://github.com/ollama/ollama-python](https://github.com/ollama/ollama-python)
     - **Modell-Bibliothek:** [https://ollama.com/library](https://ollama.com/library)
 

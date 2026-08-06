@@ -109,6 +109,22 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
     👉 Rollen erhöhen das Halluzinationsrisiko, weil sie Selbstsicherheit erzeugen. Prüfe Fakten immer nach ([Evaluation](evaluation.md)).
 
+???+ disadv "Was Rollen nicht können 🔬"
+
+    Rollenprompting gilt weithin als Wundermittel – die Forschung ist deutlich zurückhaltender.
+
+    Zheng et al. (2023) haben **162 verschiedene Rollen** systematisch auf Faktenfragen getestet. Ergebnis: Eine Rolle im System-Prompt verbesserte die **sachliche Richtigkeit im Mittel nicht**. Manche Rollen halfen, andere schadeten – und welche das jeweils war, ließ sich nicht vorhersagen.
+
+    Das widerspricht diesem Kapitel nicht, es schärft es:
+
+    | Wofür Rollen taugen | Wofür nicht |
+    |---|---|
+    | **Perspektive** – andere Aspekte werden betont | **Richtigkeit** – Fakten werden nicht korrekter |
+    | **Ton und Wortwahl** anpassen | **Wissen** erzeugen, das im Modell fehlt |
+    | **Widersprüche** zwischen Sichtweisen sichtbar machen | Rechen- oder Logikleistung verbessern |
+
+    👉 Nutze Rollen als **Perspektivwechsel**, nicht als Qualitätsverstärker. Bei Fragen mit einer richtigen Antwort bringt „Du bist Expertin für X" nichts – dort helfen Kontext und Beispiele.
+
 ---
 
 ## 🔬 Ollama-Labor
@@ -270,8 +286,11 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
 !!! info "Literatur"
 
-    - **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*. Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
-    - **Anthropic (2025):** *Giving Claude a role with a system prompt.* [https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts)
-    - **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation.* Wiley.
+    - **Shanahan, M., McDonell, K. & Reynolds, L. (2023):** *Role play with large language models.* Nature 623, S. 493–498. [https://doi.org/10.1038/s41586-023-06647-8](https://doi.org/10.1038/s41586-023-06647-8)
+      → der theoretische Rahmen dieses Kapitels: Ein Dialogsystem „ist" keine Rolle, es **simuliert** sie. Die Autoren zeigen, warum diese Unterscheidung nötig ist, um über KI-Verhalten zu sprechen, ohne es zu vermenschlichen.
+    - **Zheng, M., Pei, J., Logeswaran, L. et al. (2023):** *When „A Helpful Assistant" Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of Large Language Models.* arXiv:2311.10054. [https://arxiv.org/abs/2311.10054](https://arxiv.org/abs/2311.10054)
+      → der Gegenbefund, siehe Kasten „Was Rollen nicht können" oben.
+    - **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382)
+      → beschreibt die Rollenvorgabe als *Persona Pattern* – eines der grundlegenden Entwurfsmuster im Prompting.
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.

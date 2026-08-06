@@ -130,6 +130,18 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
     Eine Aussage gilt erst als geprüft, wenn sie **außerhalb** des Modells bestätigt wurde.
 
+???+ defi "Kann eine KI eine andere KI bewerten? 🔬"
+
+    Der Gedanke liegt nahe – und wird in der Praxis unter dem Namen *LLM-as-a-Judge* auch eingesetzt. Zheng et al. (2023) haben untersucht, wie gut das funktioniert, und dabei drei systematische Verzerrungen gefunden:
+
+    | Verzerrung | Was passiert |
+    |---|---|
+    | **Positions-Bias** | Von zwei Antworten wird bevorzugt die **zuerst gezeigte** gewählt |
+    | **Längen-Bias** | Längere Antworten werden besser bewertet – unabhängig vom Inhalt |
+    | **Selbstbevorzugung** | Ein Modell bewertet die **eigenen** Ausgaben milder |
+
+    Für **Stil und Vollständigkeit** ist eine KI-Bewertung trotzdem brauchbar. Für **Korrektheit** nicht: Ein Modell, das eine Zahl erfunden hat, hat keinen Zugang zu einer Quelle, an der es sie prüfen könnte. Es kann nur erneut raten.
+
 ---
 
 ## 🔬 Ollama-Labor
@@ -296,9 +308,16 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
 !!! info "Literatur"
 
-    - **Ji, Z. et al. (2023):** *Survey of Hallucination in Natural Language Generation.* ACM Computing Surveys. [https://arxiv.org/abs/2202.03629](https://arxiv.org/abs/2202.03629)
-    - **Bender, E. M. et al. (2021):** *On the Dangers of Stochastic Parrots.* FAccT '21. [https://doi.org/10.1145/3442188.3445922](https://doi.org/10.1145/3442188.3445922)
+    - **Ji, Z., Lee, N., Frieske, R. et al. (2023):** *Survey of Hallucination in Natural Language Generation.* ACM Computing Surveys. arXiv:2202.03629. [https://arxiv.org/abs/2202.03629](https://arxiv.org/abs/2202.03629)
+      → die Standardübersicht zum Thema. Führt die für dich wichtige Unterscheidung ein: **intrinsische** Halluzinationen widersprechen der mitgelieferten Quelle, **extrinsische** lassen sich an ihr überhaupt nicht prüfen – Letztere sind die gefährlicheren.
+    - **Bender, E. M., Gebru, T., McMillan-Major, A. & Shmitchell, S. (2021):** *On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?* FAccT '21, S. 610–623. [https://doi.org/10.1145/3442188.3445922](https://doi.org/10.1145/3442188.3445922)
+      → die grundlegende Arbeit zu Bias in Sprachmodellen: Trainingsdaten aus dem Internet bilden bestehende Ungleichgewichte ab, und schiere Datenmenge behebt das nicht, sondern zementiert es.
+    - **Zheng, L., Chiang, W.-L., Sheng, Y. et al. (2023):** *Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena.* arXiv:2306.05685. [https://arxiv.org/abs/2306.05685](https://arxiv.org/abs/2306.05685)
+      → untersucht, ob ein Modell die Ausgaben eines anderen bewerten kann. Ergebnis: teilweise ja – aber mit klaren Verzerrungen (Vorliebe für längere Antworten, für die eigene Ausgabe, für die zuerst gezeigte Option). Der Grund, warum du Ergebnisse nicht von derselben KI prüfen lassen solltest.
+
+!!! info "Quellen zur Verifikation"
+
     - **Statistik Austria:** [https://www.statistik.at](https://www.statistik.at)
-    - **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*. Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
+    - **WKO Branchendaten:** [https://www.wko.at/statistik](https://www.wko.at/statistik)
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.

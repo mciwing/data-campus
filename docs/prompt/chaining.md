@@ -67,6 +67,22 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
     3. **Wiederverwendbarkeit** – Der SWOT-Schritt funktioniert auch für jede andere Idee.
     4. **Kleinere Kontextfenster** – Jeder Prompt braucht nur die Ergebnisse, die er wirklich benötigt ([Kontextfenster](halluzinationen-kontextfenster.md)).
 
+???+ defi "Verwandt, aber nicht dasselbe: Chain-of-Thought"
+
+    Neben dem *Chaining* über mehrere Prompts gibt es **Chain-of-Thought** (Wei et al., 2022): Das Modell wird gebeten, seine Zwischenschritte **innerhalb einer Antwort** auszuformulieren – *„Denke Schritt für Schritt."*
+
+    | | Prompt Chaining | Chain-of-Thought |
+    |---|---|---|
+    | Wo? | mehrere Prompts | ein einziger Prompt |
+    | Kontrolle | du prüfst nach jedem Schritt | keine Zwischenkontrolle |
+    | Steuerung | du legst die Schritte fest | das Modell entscheidet selbst |
+
+    !!! warning "Warum das in unserem Labor kaum wirkt"
+
+        Wei et al. zeigen, dass Chain-of-Thought eine **emergente Fähigkeit** ist: Sie tritt erst bei sehr großen Modellen (ab etwa 100 Mrd. Parametern) zuverlässig auf. Bei kleineren Modellen erzeugt „Denke Schritt für Schritt" oft nur *längere*, aber nicht *bessere* Antworten.
+
+        Bei `qwen2.5:0.5b` – 200-mal kleiner – bringt der Zauberspruch also wenig. Das explizite Zerlegen in mehrere Prompts dagegen sehr viel. Genau deshalb ist Chaining unser Werkzeug der Wahl.
+
 ???+ disadv "Und die Kosten"
 
     - **Mehr Aufrufe** = mehr Zeit und (bei kommerziellen Modellen) mehr Geld.
@@ -294,7 +310,10 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
 
 !!! info "Literatur"
 
-    - **Wu, T. et al. (2022):** *AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts.* arXiv:2110.01691. [https://arxiv.org/abs/2110.01691](https://arxiv.org/abs/2110.01691)
-    - **Anthropic (2025):** *Chain complex prompts for stronger performance.* [https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts)
+    - **Wu, T., Terry, M. & Cai, C. J. (2022):** *AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts.* CHI '22. [https://doi.org/10.1145/3491102.3517582](https://doi.org/10.1145/3491102.3517582) · arXiv:2110.01691
+      → das namensgebende Paper. In einer Studie mit 20 Personen verbesserte Chaining nicht nur die Ergebnisqualität, sondern vor allem **Transparenz und Steuerbarkeit** – die Kontrollpunkte aus Übung 3.
+    - **Wei, J., Wang, X., Schuurmans, D. et al. (2022):** *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* arXiv:2201.11903. [https://arxiv.org/abs/2201.11903](https://arxiv.org/abs/2201.11903)
+      → der verwandte Ansatz **innerhalb** eines Prompts (siehe Kasten oben). Wichtig für uns: Der Effekt tritt erst ab etwa 100 Mrd. Parametern zuverlässig auf – bei unseren Modellen also nicht.
+    - **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608)
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
