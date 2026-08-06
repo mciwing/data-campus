@@ -66,6 +66,7 @@ nav:
       - Stärken und Grenzen von LLMs: prompt/staerken-grenzen.md
       - Halluzinationen und Kontextfenster: prompt/halluzinationen-kontextfenster.md
       - Prompt Engineering als Kompetenz: prompt/kompetenz.md
+    - "Setup: Lokales LLM mit Ollama": prompt/ollama-setup.md
     - Anatomie eines guten Prompts: prompt/anatomie.md
     - Zero-Shot & Few-Shot: prompt/shot-prompting.md
     - Iteratives Prompt Engineering: prompt/iteratives.md

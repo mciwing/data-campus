@@ -13,8 +13,18 @@ Generative KI – allen voran große Sprachmodelle (**Large Language Models, LLM
 
 ---
 
+!!! info "Danach geht es praktisch weiter"
+
+    Im Anschluss an dieses Kapitel richtest du dein eigenes Labor ein: ein **lokales Sprachmodell** auf deinem Laptop, mit dem du jede Technik selbst ausprobierst.
+
+    👉 **[Setup: Dein eigenes LLM mit Ollama](ollama-setup.md)**
+
+---
+
 !!! example "Lab"
 
     **Geschäftsidee auswählen**
 
     Wähle eine Geschäftsidee, die dich durch den gesamten Kurs begleiten wird. Sie bildet den roten Faden für alle folgenden Labs – von der Beschreibung über das Business Model Canvas bis zur kritischen Bewertung.
+
+    **Tipp:** Wähle etwas, zu dem du selbst eine Meinung hast – dann fällt dir später auf, wenn die KI Unsinn erzählt. Halte die Idee in drei bis fünf Sätzen in einer Datei `idee.md` fest.

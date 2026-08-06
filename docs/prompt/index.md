@@ -25,6 +25,14 @@ Der Kurs ist in aufeinander aufbauende Kapitel strukturiert:
     - Halluzinationen & Kontextfenster
     - Prompt Engineering als Kompetenz
 
+- :material-console: **Setup: Lokales LLM mit Ollama**
+
+    ---
+
+    - Ollama installieren
+    - Kleine Modelle laden
+    - Steuerung per Python
+
 - :material-file-document-outline: **Anatomie eines guten Prompts**
 
     ---
@@ -113,11 +121,26 @@ Durch den gesamten Kurs begleitet dich **ein durchgängiges Projekt**: Du wähls
 
 ---
 
+## Dein Labor: absichtlich schwache Modelle 🦙
+
+Ab Kapitel 2 arbeitest du mit einem **lokalen Sprachmodell** auf deinem eigenen Laptop – ohne Account, ohne Kosten, ohne dass deine Daten das Gerät verlassen. Dafür nutzen wir [Ollama](ollama-setup.md) mit bewusst **sehr kleinen** Modellen.
+
+!!! quote "Warum ausgerechnet schwache Modelle?"
+
+    Ein starkes Modell wie ChatGPT versteht auch einen schlampigen Prompt und liefert trotzdem etwas Brauchbares. Dabei lernst du nichts – dein Prompt wird nie geprüft.
+
+    Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist. **Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering.**
+
+Jedes Kapitel enthält dafür ein **🔬 Ollama-Labor** mit lauffähigen Experimenten und kleinen Python-Aufgaben.
+
+---
+
 ## Lernziele
 
 Nach Abschluss dieses Moduls kannst du:
 
 - [x] Erklären, wie LLMs funktionieren und wo ihre Grenzen liegen
+- [x] Ein lokales Sprachmodell einrichten und aus Python heraus steuern
 - [x] Strukturierte, wirkungsvolle Prompts aufbauen
 - [x] Zero-Shot-, Few-Shot- und rollenbasierte Ansätze gezielt einsetzen
 - [x] Mehrstufige Workflows über Prompt Chaining gestalten
