@@ -121,128 +121,144 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
 
 !!! example "Übung 1: Eine Schraube pro Runde"
 
-    Verbessere einen bewusst schlechten Prompt in vier Iterationen – jeweils mit **genau einer** Änderung.
+    Verbessere einen bewusst schlechten Prompt in vier Iterationen – jeweils mit **genau einer** Änderung. Deine Messgröße: **Wie viele der neun Canvas-Felder** kommen tatsächlich vor?
 
-    ```python title="iterationen.py"
+    **Runde 1 – Baseline:**
+
+    ```bash
+    ollama run qwen2.5:0.5b "Mach ein Business Model Canvas für einen Bio-Lieferdienst."
+    ```
+
+    ```title="Beispielausgabe — 3/9 Feldern"
+    Ein Business Model Canvas hilft dabei, ein Geschäftsmodell zu strukturieren.
+    Für einen Bio-Lieferdienst wären die Kundensegmente vor allem
+    umweltbewusste Verbraucher. Das Wertangebot besteht in frischen,
+    regionalen Produkten. Die Kostenstruktur umfasst Logistik und Personal.
+    ```
+
+    **Runde 2 – die neun Felder explizit vorgeben:**
+
+    ```title="Terminal"
+    >>> /clear
+    >>> """
+    ... Erstelle ein Business Model Canvas für einen Bio-Lieferdienst.
+    ... Fülle genau diese 9 Felder aus: Kundensegmente, Wertangebot, Kanäle,
+    ... Kundenbeziehungen, Einnahmequellen, Schlüsselressourcen,
+    ... Schlüsselaktivitäten, Schlüsselpartner, Kostenstruktur.
+    ... """
+    ```
+
+    ```title="Beispielausgabe — 9/9 Feldern, aber generisch"
+    Kundensegmente: Umweltbewusste Verbraucher aller Altersgruppen.
+    Wertangebot: Frische Bio-Produkte, bequem geliefert.
+    Kanäle: Website, App, Social Media.
+    Kundenbeziehungen: Persönlicher Service und Kundenbindung.
+    ...
+    ```
+
+    **Runde 3 – Kontext ergänzen:**
+
+    ```title="Terminal"
+    >>> /clear
+    >>> """
+    ... Erstelle ein Business Model Canvas.
+    ...
+    ... KONTEXT: Zwei-Personen-Startup in Innsbruck, Lieferdienst für regionale
+    ... Bio-Lebensmittel, 15.000 € Startkapital, Zielgruppe berufstätige Familien.
+    ...
+    ... Fülle genau diese 9 Felder aus: Kundensegmente, Wertangebot, Kanäle,
+    ... Kundenbeziehungen, Einnahmequellen, Schlüsselressourcen,
+    ... Schlüsselaktivitäten, Schlüsselpartner, Kostenstruktur.
+    ... """
+    ```
+
+    ```title="Beispielausgabe — 9/9 Feldern, jetzt konkret"
+    Kundensegmente: Berufstätige Familien in Innsbruck mit wenig Einkaufszeit.
+    Wertangebot: Regionale Bio-Ware bis an die Wohnungstür, ohne Supermarktbesuch.
+    Kanäle: Eigene Website, Direktvertrieb auf dem Wochenmarkt.
+    ...
+    Schlüsselpartner: Bauernhöfe im Inntal, lokale Imkerei.
+    Kostenstruktur: Fahrzeug, Kühlung, Verpackung – begrenzt durch 15.000 €.
+    ```
+
+    **Runde 4:** Ergänze zusätzlich ein Format (`<Feldname>: <maximal 15 Wörter>`) und *„Keine Einleitung, keine Erklärung."*
+
+    **Deine Aufgabe:** Führe alle vier Runden durch und zähle jedes Mal die Felder. Zwischen welchen beiden Runden springt die Zahl am stärksten – und zwischen welchen springt die **Qualität** am stärksten? (Achtung: Das sind nicht dieselben Runden.)
+
+!!! example "Übung 2: Das Modell kritisiert sich selbst"
+
+    Ein überraschend nützlicher Trick, wenn du nicht weiterkommst: Lass die KI sagen, was ihr fehlte.
+
+    ```title="Terminal"
+    >>> Beschreibe meine Geschäftsidee.
+    ```
+
+    ```title="Beispielausgabe"
+    Gerne helfe ich dabei! Allerdings liegen mir keine Informationen zu Ihrer
+    Geschäftsidee vor. Eine Geschäftsidee beschreibt üblicherweise ...
+    ```
+
+    Jetzt die Rückfrage im selben Chat:
+
+    ```title="Terminal"
+    >>> Welche drei Informationen hätte ich dir mitliefern müssen, damit deine
+    ... Antwort konkret und nützlich wird? Nummerierte Liste, ein Satz pro Punkt.
+    ```
+
+    ```title="Beispielausgabe"
+    1. Um welches Produkt oder welche Dienstleistung es sich handelt.
+    2. Wer die Zielgruppe ist und welches Problem für sie gelöst wird.
+    3. Wie das Unternehmen Geld verdienen soll.
+    ```
+
+    Das sind – nicht zufällig – genau die Bausteine aus [Kapitel 2](anatomie.md).
+
+    **Deine Aufgabe:** Wende denselben Trick auf deinen eigenen schwächsten Prompt an. Sind die Vorschläge brauchbar? Teste es zusätzlich mit `llama3.2:1b` – wie groß ist der Unterschied?
+
+??? code "🐍 Optional (Python): Prompts automatisch bewerten"
+
+    Sobald du eine **Zahl** hast, kannst du Prompts objektiv vergleichen, statt nach Bauchgefühl zu urteilen. Genau dieses Prinzip steckt hinter professionellen Prompt-Evaluationen.
+
+    ```python title="bewerter.py"
     from llm import frage
-
-    iterationen = [
-        # Runde 1: Baseline
-        "Mach ein Business Model Canvas für einen Bio-Lieferdienst.",
-
-        # Runde 2: + explizite Felder
-        """Erstelle ein Business Model Canvas für einen Bio-Lieferdienst.
-    Fülle genau diese 9 Felder aus: Kundensegmente, Wertangebot, Kanäle,
-    Kundenbeziehungen, Einnahmequellen, Schlüsselressourcen,
-    Schlüsselaktivitäten, Schlüsselpartner, Kostenstruktur.""",
-
-        # Runde 3: + Kontext
-        """Erstelle ein Business Model Canvas.
-
-    KONTEXT: Zwei-Personen-Startup in Innsbruck, Lieferdienst für regionale
-    Bio-Lebensmittel, 15.000 € Startkapital, Zielgruppe berufstätige Familien.
-
-    Fülle genau diese 9 Felder aus: Kundensegmente, Wertangebot, Kanäle,
-    Kundenbeziehungen, Einnahmequellen, Schlüsselressourcen,
-    Schlüsselaktivitäten, Schlüsselpartner, Kostenstruktur.""",
-
-        # Runde 4: + Format & Umfang
-        """Erstelle ein Business Model Canvas.
-
-    KONTEXT: Zwei-Personen-Startup in Innsbruck, Lieferdienst für regionale
-    Bio-Lebensmittel, 15.000 € Startkapital, Zielgruppe berufstätige Familien.
-
-    FORMAT: Eine Zeile pro Feld, exakt so:
-    <Feldname>: <maximal 15 Wörter>
-
-    Felder: Kundensegmente, Wertangebot, Kanäle, Kundenbeziehungen,
-    Einnahmequellen, Schlüsselressourcen, Schlüsselaktivitäten,
-    Schlüsselpartner, Kostenstruktur.
-    Antworte auf Deutsch. Keine Einleitung, keine Erklärung.""",
-    ]
 
     FELDER = ["Kundensegmente", "Wertangebot", "Kanäle", "Kundenbeziehungen",
               "Einnahmequellen", "Schlüsselressourcen", "Schlüsselaktivitäten",
               "Schlüsselpartner", "Kostenstruktur"]
 
-    for i, prompt in enumerate(iterationen, start=1):
-        antwort = frage(prompt)
-        gefunden = sum(1 for f in FELDER if f.lower() in antwort.lower())
-        print(f"\n{'=' * 60}")
-        print(f"ITERATION {i}  –  {gefunden}/9 Felder erkannt")
-        print("=" * 60)
-        print(antwort)
+
+    def bewerte(antwort, pflichtbegriffe=FELDER, max_woerter=200):
+        text = antwort.lower()
+
+        # 1) Inhalt: wie viele Pflichtbegriffe kommen vor?
+        treffer = sum(1 for b in pflichtbegriffe if b.lower() in text)
+        inhalt = treffer / len(pflichtbegriffe)
+
+        # 2) Länge: Überlänge wird proportional bestraft
+        woerter = len(antwort.split())
+        laenge = 1.0 if woerter <= max_woerter else max_woerter / woerter
+
+        # 3) Gewichtet kombinieren – Inhalt zählt doppelt
+        score = (inhalt * 2 + laenge) / 3 * 100
+
+        print(f"Felder: {treffer}/{len(pflichtbegriffe)} · "
+              f"Wörter: {woerter}/{max_woerter} · Score: {score:.0f}")
+        return round(score)
+
+
+    for runde, prompt in enumerate(ITERATIONEN, start=1):
+        print(f"\nRunde {runde}:", end=" ")
+        bewerte(frage(prompt))
     ```
 
-    **Beobachte:** Der Feldzähler ist deine erste **automatische Metrik**. Zwischen welchen beiden Runden springt er am stärksten?
-
-!!! example "Übung 2: Das Modell kritisiert sich selbst"
-
-    ```python title="selbstkritik.py"
-    from llm import frage
-
-    prompt = "Beschreibe meine Geschäftsidee."
-    antwort = frage(prompt)
-
-    kritik = frage(f"""Ein Nutzer hat diesen Prompt geschrieben:
-    ---
-    {prompt}
-    ---
-    Und diese Antwort erhalten:
-    ---
-    {antwort}
-    ---
-    Welche drei Informationen hätte der Nutzer mitliefern müssen, damit die
-    Antwort konkret und nützlich wird? Antworte als nummerierte Liste,
-    ein Satz pro Punkt, auf Deutsch.""")
-
-    print(kritik)
+    ```title="Ausgabe"
+    Runde 1: Felder: 3/9 · Wörter: 61/200 · Score: 56
+    Runde 2: Felder: 9/9 · Wörter: 128/200 · Score: 100
+    Runde 3: Felder: 9/9 · Wörter: 141/200 · Score: 100
+    Runde 4: Felder: 9/9 · Wörter: 97/200 · Score: 100
     ```
 
-    Sind die Vorschläge brauchbar? Teste dieselbe Selbstkritik zusätzlich mit `llama3.2:1b` – wie groß ist der Unterschied?
-
-??? question "Übung 3: Automatischer Prompt-Vergleich (Python)"
-
-    Baue ein Mini-Testsystem, das Prompts anhand messbarer Kriterien bewertet.
-
-    ```python title="bewerter.py"
-    from llm import frage
-
-    def bewerte(antwort, pflichtbegriffe, max_woerter):
-        """Gibt einen Score von 0 bis 100 zurück."""
-        # TODO 1: Anteil der gefundenen Pflichtbegriffe berechnen (0.0–1.0)
-        # TODO 2: Längen-Score: 1.0 wenn <= max_woerter, sonst anteilig weniger
-        # TODO 3: beide Teilscores kombinieren und auf 0–100 skalieren
-        ...
-
-    # Beispielaufruf
-    a = frage("Nenne 3 Risiken für einen Bio-Lieferdienst. Maximal 60 Wörter.")
-    print(bewerte(a, ["risiko", "kosten", "konkurrenz"], max_woerter=60))
-    ```
-
-    ??? success "Lösungsvorschlag"
-
-        ```python title="bewerter.py"
-        def bewerte(antwort, pflichtbegriffe, max_woerter):
-            text = antwort.lower()
-
-            # 1) Inhalt: wie viele Pflichtbegriffe kommen vor?
-            treffer = sum(1 for b in pflichtbegriffe if b.lower() in text)
-            inhalt = treffer / len(pflichtbegriffe)
-
-            # 2) Länge: Überlänge wird proportional bestraft
-            woerter = len(antwort.split())
-            laenge = 1.0 if woerter <= max_woerter else max_woerter / woerter
-
-            # 3) Gewichtet kombinieren – Inhalt zählt doppelt
-            score = (inhalt * 2 + laenge) / 3 * 100
-
-            print(f"Begriffe: {treffer}/{len(pflichtbegriffe)} · "
-                  f"Wörter: {woerter}/{max_woerter} · Score: {score:.0f}")
-            return round(score)
-        ```
-
-        **Warum das nützlich ist:** Sobald du eine Zahl hast, kannst du Prompts **objektiv** vergleichen, statt sie nach Bauchgefühl zu beurteilen. Genau dieses Prinzip steckt hinter professionellen Prompt-Evaluationen – mehr dazu in [Evaluation von KI-Ergebnissen](evaluation.md).
+    **Achtung, wichtige Lehre:** Ab Runde 2 ist der Score bei 100 – aber du hast oben gesehen, dass Runde 3 inhaltlich **deutlich** besser ist als Runde 2. Eine Metrik misst nur das, was sie misst. Sie ersetzt das Lesen nicht, sie priorisiert es nur.
 
 ---
 
@@ -271,8 +287,8 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
     1. Starte mit deinem Canvas-Prompt aus [Kapitel 3](shot-prompting.md).
     2. Führe **mindestens vier Iterationen** durch – pro Runde genau eine Änderung.
     3. Führe ein `prompt_log.md` nach dem Muster oben.
-    4. Miss den Fortschritt mit dem Feldzähler aus Übung 1.
-    5. Speichere die beste Version als `prompts/02_canvas.md` (ersetzt die Version aus Kapitel 3).
+    4. Miss den Fortschritt mit dem Feldzähler aus Übung 1 (von Hand zählen genügt).
+    5. Aktualisiere `## 02 Canvas` in deiner `prompts.md` mit der besten Version.
 
 ---
 

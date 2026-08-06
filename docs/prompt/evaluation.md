@@ -136,101 +136,127 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
 !!! example "Übung 1: Halluzinationen provozieren"
 
-    Der beste Weg, Halluzinationen zu erkennen, ist, sie absichtlich zu erzeugen.
+    Der beste Weg, Halluzinationen zu erkennen, ist, sie absichtlich zu erzeugen. Stelle Fragen, deren Antwort das Modell unmöglich wissen kann:
 
-    ```python title="halluzination.py"
-    from llm import frage
-
-    fragen = [
-        "Wie groß war der Markt für Bio-Lieferdienste in Innsbruck im Jahr 2024?",
-        "Nenne drei wissenschaftliche Studien zur Preiselastizität bei Bio-Lebensmitteln.",
-        "Welche Förderungen gibt es 2026 in Tirol für nachhaltige Lieferdienste?",
-        "Wer ist der Marktführer für Lastenrad-Logistik in Westösterreich?",
-    ]
-
-    for f in fragen:
-        print(f"\n{'=' * 60}\nFRAGE: {f}\n{'=' * 60}")
-        print(frage(f))
+    ```bash
+    ollama run qwen2.5:0.5b "Wie groß war der Markt für Bio-Lieferdienste in Innsbruck im Jahr 2024?"
     ```
 
-    **Deine Aufgabe:** Versuche, **eine einzige** der genannten Zahlen, Studien oder Namen im Internet zu belegen. Wie viele halten der Prüfung stand? (Erwartung bei `qwen2.5:0.5b`: nahezu keine.)
+    ```title="Beispielausgabe"
+    Der Markt für Bio-Lieferdienste in Innsbruck belief sich 2024 auf ein
+    Volumen von etwa 3,2 Millionen Euro und wuchs gegenüber dem Vorjahr um
+    rund 12,4 %. Rund 45 % der Haushalte im Stadtgebiet nutzen mittlerweile
+    zumindest gelegentlich einen Lieferdienst für Bio-Produkte.
+    ```
+
+    Drei präzise Zahlen, souverän vorgetragen, **vollständig erfunden**. Keine Unsicherheit, kein Hinweis, keine Quelle.
+
+    ```bash
+    ollama run qwen2.5:0.5b "Nenne drei wissenschaftliche Studien zur Preiselastizität bei Bio-Lebensmitteln."
+    ```
+
+    ```title="Beispielausgabe"
+    1. Müller, T. & Bauer, S. (2019): Preissensitivität im Bio-Segment.
+       Journal of Food Economics, 34(2), 112–128.
+    2. Hofer, A. (2021): Konsumverhalten bei ökologischen Lebensmitteln.
+       Universität Wien, Institut für Agrarökonomie.
+    3. Schmidt, K. et al. (2020): Elastizität und Zahlungsbereitschaft.
+       European Review of Agricultural Economics, 47(4), 601–620.
+    ```
+
+    Format, Autorennamen, Jahrgänge, Seitenzahlen – alles perfekt plausibel. Und mit hoher Wahrscheinlichkeit existiert keine dieser Studien.
+
+    **Deine Aufgabe:** Versuche, **eine einzige** der genannten Zahlen oder Studien im Internet zu belegen. Wie viele halten der Prüfung stand? Stelle zusätzlich diese beiden Fragen:
+
+    - *„Welche Förderungen gibt es 2026 in Tirol für nachhaltige Lieferdienste?"*
+    - *„Wer ist der Marktführer für Lastenrad-Logistik in Westösterreich?"*
 
 !!! example "Übung 2: Unsicherheitsmarkierung testen"
 
-    ```python title="unsicherheit.py"
-    from llm import frage
+    Kann das Modell selbst sagen, was es nicht weiß?
 
-    ohne = frage("Beschreibe den Markt für Bio-Lieferdienste in Innsbruck. "
-                 "Maximal 100 Wörter.")
-
-    mit = frage("""Beschreibe den Markt für Bio-Lieferdienste in Innsbruck.
-    Maximal 100 Wörter.
-
-    WICHTIG: Markiere jede Aussage mit einem der folgenden Tags:
-    [BELEGT] – du bist sicher
-    [ANNAHME] – plausibel, aber ungeprüft
-    [GESCHÄTZT] – eine Zahl, die du nicht kennst""")
-
-    print(f"OHNE MARKIERUNG:\n{ohne}\n\n{'=' * 60}\n")
-    print(f"MIT MARKIERUNG:\n{mit}\n")
-
-    for tag in ["[BELEGT]", "[ANNAHME]", "[GESCHÄTZT]"]:
-        print(f"{tag:<14} {mit.count(tag)}x")
+    ```title="Terminal"
+    >>> """
+    ... Beschreibe den Markt für Bio-Lieferdienste in Innsbruck.
+    ... Maximal 100 Wörter.
+    ...
+    ... WICHTIG: Markiere jede Aussage mit einem dieser Tags:
+    ... [BELEGT] – du bist sicher
+    ... [ANNAHME] – plausibel, aber ungeprüft
+    ... [GESCHÄTZT] – eine Zahl, die du nicht kennst
+    ... """
     ```
 
-    **Beobachte:** Hält sich das kleine Modell überhaupt an die Markierung? Und – noch interessanter – sind die `[BELEGT]`-Aussagen wirklich belegt?
+    ```title="Beispielausgabe"
+    [BELEGT] Innsbruck ist die Landeshauptstadt Tirols mit rund 130.000
+    Einwohnern. [ANNAHME] Das Interesse an regionalen Bio-Produkten ist dort
+    überdurchschnittlich ausgeprägt. [GESCHÄTZT] Etwa 15.000 Haushalte
+    kommen als Zielgruppe infrage. [ANNAHME] Die größten Wettbewerber sind
+    Supermarktketten mit eigenem Lieferservice.
+    ```
 
-??? question "Übung 3: Der Fakten-Extraktor (Python)"
+    Das ist deutlich besser als Übung 1 – die Zahl ist jetzt als Schätzung gekennzeichnet.
 
-    Schreibe ein Skript, das alle prüfpflichtigen Aussagen aus einem KI-Text herausfiltert.
+    **Deine Aufgabe:** Prüfe die `[BELEGT]`-Aussagen. Sind sie wirklich belegt? Wiederhole den Prompt dreimal – bleiben dieselben Aussagen in derselben Kategorie? (Wenn nicht, weißt du, wie viel die Selbsteinschätzung wert ist.)
+
+!!! example "Übung 3: Die Prüf-Checkliste"
+
+    Nimm eine beliebige KI-Marktanalyse und markiere jede **Zahl**, jeden **Eigennamen** und jede **Jahreszahl**. Übertrage sie in eine Tabelle:
+
+    ```markdown title="faktencheck.md"
+    | Angabe             | Quelle geprüft?      | Ergebnis |
+    |--------------------|----------------------|----------|
+    | 3,2 Mio. EUR       | Statistik Austria    | ❌ nicht auffindbar |
+    | 12,4 % Wachstum    | –                    | ❓ offen |
+    | 45 % der Haushalte | –                    | ❓ offen |
+    | Müller & Bauer 2019| Google Scholar       | ❌ existiert nicht |
+    | 130.000 Einwohner  | Stadt Innsbruck      | ✅ bestätigt |
+    ```
+
+    Die leeren Zellen sind der eigentliche Punkt: Sie zwingen dich, für jede Zahl eine Quelle einzutragen – oder sie zu streichen. Ohne diese Disziplin wandern KI-Zahlen ungeprüft in echte Dokumente.
+
+    **Deine Aufgabe:** Fülle die Tabelle für deine eigene Marktanalyse aus. Wie hoch ist dein Anteil ✅ nach ehrlicher Prüfung?
+
+??? code "🐍 Optional (Python): prüfpflichtige Angaben automatisch finden"
+
+    Zahlen von Hand zu markieren ist mühsam und fehleranfällig. Ein regulärer Ausdruck findet sie zuverlässiger:
 
     ```python title="faktencheck.py"
     import re
 
-    def finde_pruefpflichtiges(text):
-        """Gibt ein dict mit gefundenen Zahlen, Prozentwerten und Jahren zurück."""
-        funde = {}
-        # TODO 1: Prozentangaben finden (z. B. "12,4 %", "5%")
-        # TODO 2: Jahreszahlen finden (1900–2099)
-        # TODO 3: Geldbeträge finden (z. B. "15.000 €", "2 Mio. EUR")
-        # TODO 4: Ergebnis als Checkliste ausgeben
-        return funde
+    MUSTER = {
+        "Prozentwerte": r"\d+(?:[.,]\d+)?\s*%",
+        "Jahreszahlen": r"\b(?:19|20)\d{2}\b",
+        "Geldbeträge":  r"\d+(?:[.,]\d+)*\s*(?:Mio\.|Mrd\.|Tsd\.)?\s*(?:€|EUR)",
+    }
 
     text = """Der Markt wächst um 12,4 % jährlich und erreichte 2024 ein
     Volumen von 3,2 Mio. EUR. Rund 45% der Haushalte kaufen bereits bio."""
-    finde_pruefpflichtiges(text)
+
+    funde = {name: re.findall(muster, text) for name, muster in MUSTER.items()}
+    gesamt = sum(len(v) for v in funde.values())
+
+    print(f"🔍 {gesamt} prüfpflichtige Angaben gefunden\n")
+    for name, treffer in funde.items():
+        if treffer:
+            print(f"{name}:")
+            for t in treffer:
+                print(f"  [ ] {t:<15} → Quelle: ________________")
     ```
 
-    ??? success "Lösungsvorschlag"
+    ```title="Ausgabe"
+    🔍 5 prüfpflichtige Angaben gefunden
 
-        ```python title="faktencheck.py"
-        import re
+    Prozentwerte:
+      [ ] 12,4 %          → Quelle: ________________
+      [ ] 45%             → Quelle: ________________
+    Jahreszahlen:
+      [ ] 2024            → Quelle: ________________
+    Geldbeträge:
+      [ ] 3,2 Mio. EUR    → Quelle: ________________
+    ```
 
-        MUSTER = {
-            "Prozentwerte": r"\d+(?:[.,]\d+)?\s*%",
-            "Jahreszahlen": r"\b(?:19|20)\d{2}\b",
-            "Geldbeträge":  r"\d+(?:[.,]\d+)*\s*(?:Mio\.|Mrd\.|Tsd\.)?\s*(?:€|EUR)",
-        }
-
-        def finde_pruefpflichtiges(text):
-            funde = {name: re.findall(muster, text)
-                     for name, muster in MUSTER.items()}
-
-            gesamt = sum(len(v) for v in funde.values())
-            print(f"\n🔍 {gesamt} prüfpflichtige Angaben gefunden\n")
-
-            for name, treffer in funde.items():
-                if treffer:
-                    print(f"{name}:")
-                    for t in treffer:
-                        print(f"  [ ] {t:<15} → Quelle: ________________")
-
-            return funde
-        ```
-
-        **Die Checkliste mit den leeren Kästchen ist der eigentliche Punkt.** Sie zwingt dich, für jede Zahl eine Quelle einzutragen – oder sie zu streichen. Ohne diese Disziplin wandern KI-Zahlen ungeprüft in echte Dokumente.
-
-        **Erweiterungsidee:** Ergänze ein Muster für Eigennamen (Großbuchstabe am Wortanfang, nicht am Satzanfang) – erfundene Studien und Personen sind die häufigste Halluzinationsform.
+    **Erweiterungsidee:** Ergänze ein Muster für Eigennamen (Großbuchstabe am Wortanfang, nicht am Satzanfang) – erfundene Studien und Personen sind die häufigste Halluzinationsform und die, die am ehesten unbemerkt durchrutscht.
 
 ---
 
@@ -257,12 +283,12 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
     **Konkrete Schritte:**
 
     1. Erzeuge eine Marktanalyse zu deiner Idee (nutze deine Kette aus [Kapitel 7](chaining.md)).
-    2. Lass `finde_pruefpflichtiges()` (Übung 3) darüber laufen und erstelle die Checkliste.
+    2. Erstelle die Prüf-Checkliste aus Übung 3 – markiere jede Zahl, jeden Namen, jede Jahreszahl.
     3. Prüfe **mindestens fünf** Angaben mit unabhängigen Quellen (Statistik Austria, WKO, Branchenverbände).
     4. Trage für jede Angabe ein: ✅ bestätigt (mit Quelle) · ❓ unklar · ❌ widerlegt.
     5. Wende den **Austauschtest** auf den Fließtext an: Wie viel Prozent des Textes überlebt ihn?
     6. Prüfe auf **Bias**: Nenne mindestens eine Stelle, an der die Analyse eine unausgesprochene Annahme über Größe, Wachstum oder Kultur macht.
-    7. Speichere deinen Prüf-Prompt als `prompts/08_evaluation.md`.
+    7. Notiere deinen Prüf-Prompt in `prompts.md` unter `## 08 Evaluation`.
 
 ---
 

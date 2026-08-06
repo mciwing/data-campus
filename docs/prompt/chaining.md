@@ -89,159 +89,174 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
 
 ## 🔬 Ollama-Labor
 
-!!! example "Übung 1: Monolith vs. Kette"
+!!! example "Übung 1: Der Monolith"
 
-    Der direkte Vergleich – erst der Ein-Prompt-Versuch, dann die Kette.
+    Erst der Ein-Prompt-Versuch – damit du siehst, woran er scheitert.
 
-    ```python title="monolith_vs_kette.py"
+    ```title="Terminal"
+    ollama run qwen2.5:0.5b
+
+    >>> """
+    ... Idee: Lieferdienst für regionale Bio-Lebensmittel in Innsbruck,
+    ... zwei Gründer, 15.000 € Startkapital, Lieferung per Lastenrad.
+    ...
+    ... Erstelle: (1) eine Marktanalyse, (2) eine SWOT-Analyse und
+    ... (3) drei Verbesserungsvorschläge. Antworte auf Deutsch.
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    (1) Marktanalyse: Der Markt für Bio-Lebensmittel wächst seit Jahren.
+    In Innsbruck gibt es eine umweltbewusste Bevölkerung und mehrere
+    Bio-Läden. Die Konkurrenz durch Supermärkte mit eigenem Lieferservice
+    ist zu beachten. Auch die Preissensibilität der Kunden spielt eine
+    Rolle, ebenso wie saisonale Schwankungen im Angebot regionaler Ware.
+
+    (2) SWOT-Analyse: Stärken sind die Regionalität und die Nachhaltigkeit.
+    ```
+
+    Der Text bricht mitten in Teil 2 ab, Teil 3 fehlt ganz. Das ist kein Zufall: Die Antwortlänge ist begrenzt, und der ausführliche Teil 1 hat sie aufgebraucht.
+
+!!! example "Übung 2: Dieselbe Aufgabe als Kette"
+
+    Jetzt in drei Schritten – jeder mit einem klaren Ergebnis und festem Format.
+
+    **Schritt 1 – Markt:**
+
+    ```title="Terminal"
+    >>> /clear
+    >>> """
+    ... Idee: Lieferdienst für regionale Bio-Lebensmittel in Innsbruck,
+    ... zwei Gründer, 15.000 € Startkapital, Lastenrad-Zustellung.
+    ...
+    ... Beschreibe den Zielmarkt in genau 3 Stichpunkten:
+    ... - Zielgruppe
+    ... - Marktgröße (mit [ANNAHME] kennzeichnen, wenn geschätzt)
+    ... - Wichtigster Wettbewerber
+    ... Keine Einleitung.
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    - Zielgruppe: Berufstätige Haushalte in Innsbruck mit Interesse an
+      regionalen Bio-Produkten und wenig Zeit für Einkäufe.
+    - Marktgröße: [ANNAHME] rund 15.000 Haushalte im Stadtgebiet kommen
+      als Kunden infrage.
+    - Wichtigster Wettbewerber: Supermarktketten mit eigenem Lieferservice.
+    ```
+
+    **Schritt 2 – SWOT.** Kopiere das Ergebnis aus Schritt 1 in den nächsten Prompt:
+
+    ```title="Terminal"
+    >>> /clear
+    >>> """
+    ... Idee: Lieferdienst für regionale Bio-Lebensmittel in Innsbruck,
+    ... zwei Gründer, 15.000 € Startkapital.
+    ...
+    ... Marktanalyse:
+    ... - Zielgruppe: Berufstätige Haushalte in Innsbruck ...
+    ... - Marktgröße: [ANNAHME] rund 15.000 Haushalte ...
+    ... - Wichtigster Wettbewerber: Supermarktketten mit Lieferservice.
+    ...
+    ... Erstelle eine SWOT-Analyse. Genau 2 Punkte pro Kategorie.
+    ... Format:
+    ... STÄRKEN: ...
+    ... SCHWÄCHEN: ...
+    ... CHANCEN: ...
+    ... RISIKEN: ...
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    STÄRKEN: Direkter Kontakt zu regionalen Produzenten; emissionsfreie
+    Zustellung als glaubwürdiges Verkaufsargument.
+    SCHWÄCHEN: Sehr geringe Kapitaldecke; nur zwei Personen für alle Aufgaben.
+    CHANCEN: Kooperation mit Bauernmärkten; Abo-Modell für feste Lieferwochen.
+    RISIKEN: Preiskampf mit Supermarktketten; Wetterabhängigkeit der
+    Lastenrad-Zustellung.
+    ```
+
+    **Schritt 3 – Verbesserungen.** Kopiere die SWOT weiter und fordere: *„Leite daraus genau 3 konkrete, sofort umsetzbare Verbesserungsvorschläge ab. Format je Vorschlag: VORSCHLAG &lt;n&gt;: &lt;Titel&gt; / Adressiert: &lt;welche Schwäche&gt; / Erster Schritt: &lt;ein Satz&gt;"*
+
+    **Deine Aufgabe:** Vergleiche das Endergebnis der Kette mit dem Monolith aus Übung 1. Wie viele der drei Teile liefert der Monolith wirklich brauchbar – und wie viele die Kette?
+
+!!! example "Übung 3: Der Kontrollpunkt"
+
+    Der wichtigste Vorteil der Kette: **prüfen, bevor es weitergeht.** Fehlt in der SWOT eine Kategorie, korrigierst du sofort – statt den Fehler in Schritt 3 mitzuschleppen.
+
+    ```title="Terminal"
+    >>> In deiner Antwort fehlen die CHANCEN. Gib die vollständige SWOT-Analyse
+    ... erneut aus, mit allen vier Kategorien.
+    ```
+
+    **Deine Aufgabe:** Führe Schritt 2 fünfmal aus (mit `/clear` dazwischen) und zähle, wie oft alle vier Kategorien vorkommen. Wiederhole das auf `gemma3:270m` – dort wirst du den Kontrollpunkt fast immer brauchen.
+
+??? code "🐍 Optional (Python): die Kette automatisieren"
+
+    Zwischenergebnisse von Hand zu kopieren ist genau die Arbeit, die ein Skript abnimmt:
+
+    ```python title="kette.py"
+    from pathlib import Path
     from llm import frage
 
     IDEE = ("Lieferdienst für regionale Bio-Lebensmittel in Innsbruck, "
-            "zwei Gründer, 15.000 € Startkapital, Lieferung per Lastenrad.")
-
-    # --- Variante A: alles in einem Prompt ---
-    print("=" * 60, "\nMONOLITH\n", "=" * 60)
-    print(frage(f"""Idee: {IDEE}
-
-    Erstelle: (1) eine Marktanalyse, (2) eine SWOT-Analyse und
-    (3) drei Verbesserungsvorschläge. Antworte auf Deutsch."""))
-
-    # --- Variante B: als Kette ---
-    print("\n\n", "=" * 60, "\nKETTE\n", "=" * 60)
-
-    markt = frage(f"""Idee: {IDEE}
-
-    Beschreibe den Zielmarkt in genau 3 Stichpunkten:
-    - Zielgruppe
-    - Marktgröße (mit [ANNAHME] kennzeichnen, wenn geschätzt)
-    - Wichtigster Wettbewerber
-    Keine Einleitung.""")
-    print(f"\n--- SCHRITT 1: MARKT ---\n{markt}")
-
-    swot = frage(f"""Idee: {IDEE}
-
-    Marktanalyse:
-    {markt}
-
-    Erstelle eine SWOT-Analyse. Genau 2 Punkte pro Kategorie.
-    Format:
-    STÄRKEN: ...
-    SCHWÄCHEN: ...
-    CHANCEN: ...
-    RISIKEN: ...""")
-    print(f"\n--- SCHRITT 2: SWOT ---\n{swot}")
-
-    verbesserungen = frage(f"""SWOT-Analyse:
-    {swot}
-
-    Leite daraus genau 3 konkrete, sofort umsetzbare Verbesserungsvorschläge ab.
-    Format je Vorschlag:
-    VORSCHLAG <n>: <Titel>
-    Adressiert: <welche Schwäche oder welches Risiko>
-    Erster Schritt: <ein Satz>""")
-    print(f"\n--- SCHRITT 3: VERBESSERUNGEN ---\n{verbesserungen}")
-    ```
-
-    **Deine Aufgabe:** Bewerte beide Varianten nach Vollständigkeit und Konkretheit. Wie viele der drei Teile liefert der Monolith wirklich brauchbar?
-
-!!! example "Übung 2: Der Kontrollpunkt"
-
-    Der wichtigste Vorteil der Kette – **prüfen, bevor es weitergeht**.
-
-    ```python title="kontrollpunkt.py"
-    from llm import frage
-
-    def schritt_mit_pruefung(prompt, pflichtwoerter, versuche=3):
-        """Wiederholt den Prompt, bis alle Pflichtwörter vorkommen."""
-        for versuch in range(1, versuche + 1):
-            antwort = frage(prompt, seed=versuch)
-            fehlend = [w for w in pflichtwoerter
-                       if w.lower() not in antwort.lower()]
-            if not fehlend:
-                print(f"✅ Versuch {versuch}: vollständig")
-                return antwort
-            print(f"⚠️  Versuch {versuch}: fehlt {fehlend}")
-            prompt += f"\n\nWICHTIG: Du musst auch {', '.join(fehlend)} nennen."
-        print("❌ Nach 3 Versuchen unvollständig – bitte Prompt überarbeiten.")
-        return antwort
-
-    swot = schritt_mit_pruefung(
-        """Erstelle eine SWOT-Analyse für einen Bio-Lieferdienst in Innsbruck.
-    Format:
-    STÄRKEN: ...
-    SCHWÄCHEN: ...
-    CHANCEN: ...
-    RISIKEN: ...""",
-        pflichtwoerter=["STÄRKEN", "SCHWÄCHEN", "CHANCEN", "RISIKEN"],
-    )
-    print(f"\n{swot}")
-    ```
-
-    **Beobachte:** Wie oft muss nachgebessert werden? Vergleiche `qwen2.5:0.5b` mit `gemma3:270m` – bei letzterem greift der Kontrollpunkt fast immer.
-
-??? question "Übung 3: Wiederverwendbare Kette (Python)"
-
-    Baue eine generische `kette()`-Funktion, die eine Liste von Schritten abarbeitet und Zwischenergebnisse durchreicht.
-
-    ```python title="kette.py"
-    from llm import frage
-
-    def kette(schritte, startwert):
-        """
-        schritte : list[tuple[str, str]] – Paare (name, prompt_vorlage)
-                   Die Vorlage darf {eingabe} und {start} enthalten.
-        startwert: str – die ursprüngliche Eingabe (z. B. die Geschäftsidee)
-
-        Gibt ein dict {name: ergebnis} zurück.
-        """
-        # TODO 1: über die Schritte iterieren
-        # TODO 2: Vorlage mit dem vorherigen Ergebnis füllen
-        # TODO 3: Ergebnis speichern und als Eingabe für den nächsten Schritt nutzen
-        ...
+            "zwei Gründer, 15.000 € Startkapital, Lastenrad-Zustellung.")
 
     SCHRITTE = [
-        ("markt", "Idee: {start}\n\nBeschreibe den Zielmarkt in 3 Stichpunkten."),
-        ("swot",  "Idee: {start}\nMarkt:\n{eingabe}\n\nErstelle eine SWOT-Analyse."),
-        ("plan",  "SWOT:\n{eingabe}\n\nNenne 3 Verbesserungsvorschläge."),
+        ("markt", "Idee: {start}\n\nBeschreibe den Zielmarkt in genau 3 "
+                  "Stichpunkten: Zielgruppe, Marktgröße, Wettbewerber."),
+        ("swot",  "Idee: {start}\n\nMarktanalyse:\n{eingabe}\n\nErstelle eine "
+                  "SWOT-Analyse. Genau 2 Punkte pro Kategorie.\nFormat:\n"
+                  "STÄRKEN: ...\nSCHWÄCHEN: ...\nCHANCEN: ...\nRISIKEN: ..."),
+        ("plan",  "SWOT:\n{eingabe}\n\nLeite daraus genau 3 konkrete "
+                  "Verbesserungsvorschläge ab."),
     ]
+
+
+    def kette(schritte, startwert):
+        ergebnisse = {}
+        eingabe = startwert
+
+        for nummer, (name, vorlage) in enumerate(schritte, start=1):
+            print(f"\n{'=' * 55}\nSCHRITT {nummer}/{len(schritte)}: {name}\n{'=' * 55}")
+
+            antwort = frage(vorlage.format(eingabe=eingabe, start=startwert))
+            if not antwort.strip():
+                raise RuntimeError(f"Schritt '{name}' lieferte nichts zurück.")
+
+            print(antwort)
+            ergebnisse[name] = antwort
+            eingabe = antwort          # Ergebnis wird Eingabe des nächsten Schritts
+
+            Path(f"kette_{nummer}_{name}.md").write_text(antwort, encoding="utf-8")
+
+        return ergebnisse
+
+
+    kette(SCHRITTE, IDEE)
     ```
 
-    ??? success "Lösungsvorschlag"
+    ```title="Ausgabe (gekürzt)"
+    =======================================================
+    SCHRITT 1/3: markt
+    =======================================================
+    - Zielgruppe: Berufstätige Haushalte in Innsbruck ...
 
-        ```python title="kette.py"
-        from llm import frage
-        from pathlib import Path
+    =======================================================
+    SCHRITT 2/3: swot
+    =======================================================
+    STÄRKEN: Direkter Kontakt zu regionalen Produzenten ...
 
-        def kette(schritte, startwert, speichern=True):
-            ergebnisse = {}
-            eingabe = startwert
+    =======================================================
+    SCHRITT 3/3: plan
+    =======================================================
+    VORSCHLAG 1: Abo-Modell einführen ...
+    ```
 
-            for nummer, (name, vorlage) in enumerate(schritte, start=1):
-                print(f"\n{'=' * 55}")
-                print(f"SCHRITT {nummer}/{len(schritte)}: {name}")
-                print("=" * 55)
+    Zwei Details lohnen sich zu merken:
 
-                prompt = vorlage.format(eingabe=eingabe, start=startwert)
-                antwort = frage(prompt)
-
-                if not antwort.strip():
-                    raise RuntimeError(f"Schritt '{name}' lieferte nichts zurück.")
-
-                print(antwort)
-                ergebnisse[name] = antwort
-                eingabe = antwort          # Ergebnis wird Eingabe des nächsten Schritts
-
-                if speichern:
-                    Path(f"kette_{nummer}_{name}.md").write_text(
-                        antwort, encoding="utf-8")
-
-            return ergebnisse
-        ```
-
-        Zwei Details lohnen sich zu merken:
-
-        - **`{start}` bleibt immer verfügbar.** Manche Schritte brauchen die Originalidee *und* das letzte Zwischenergebnis – die gestrichelten Pfeile im Diagramm oben.
-        - **Zwischenergebnisse werden als Datei gespeichert.** Wenn Schritt 4 scheitert, kannst du dort weitermachen, statt die ganze Kette neu zu starten.
+    - **`{start}` bleibt in jedem Schritt verfügbar.** Manche Schritte brauchen die Originalidee *und* das letzte Zwischenergebnis – die gestrichelten Pfeile im Diagramm oben.
+    - **Zwischenergebnisse landen als Datei auf der Platte.** Scheitert Schritt 3, startest du dort neu, statt die ganze Kette zu wiederholen.
 
 ---
 
@@ -268,10 +283,10 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
     **Konkrete Schritte:**
 
     1. Zeichne deine Kette zuerst **auf Papier**: Welche Schritte, welche Ein- und Ausgaben?
-    2. Implementiere sie mit der `kette()`-Funktion aus Übung 3.
-    3. Baue in mindestens einen Schritt einen **Kontrollpunkt** ein (Übung 2).
+    2. Arbeite sie im Terminal ab und speichere jedes Zwischenergebnis in einer eigenen Datei (`kette_1_markt.md`, `kette_2_swot.md`, …).
+    3. Setze mindestens einen **Kontrollpunkt** ein (Übung 3): Prüfe ein Zwischenergebnis auf Vollständigkeit, bevor du weitergehst.
     4. Lass die komplette Kette einmal auf `qwen2.5:0.5b` und einmal auf `llama3.2:1b` laufen. Wo ist der Unterschied am größten – am Anfang oder am Ende der Kette?
-    5. Speichere die Kettendefinition als `prompts/05_kette.py`.
+    5. Notiere alle Kettenschritte in `prompts.md` unter `## 05 Kette`.
 
 ---
 

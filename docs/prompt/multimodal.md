@@ -148,60 +148,109 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
 
 !!! example "Übung 1: Was sieht das Modell wirklich?"
 
-    Nimm ein beliebiges Foto (z. B. `produkt.jpg`) und lass es beschreiben.
+    Lege ein beliebiges Foto als `produkt.jpg` in deinen Arbeitsordner. Im Terminal gibst du den **Dateipfad einfach im Prompt mit an** – Ollama erkennt ihn und lädt das Bild.
 
-    ```python title="bild.py"
-    import ollama
-
-    def sieh(bildpfad, prompt, model="moondream"):
-        antwort = ollama.chat(
-            model=model,
-            messages=[{"role": "user", "content": prompt, "images": [bildpfad]}],
-            options={"temperature": 0.1},
-        )
-        return antwort["message"]["content"]
-
-    prompts = {
-        "offen":     "Describe this image.",
-        "gelenkt":   ("Describe only what is literally visible: objects, colors, "
-                      "text. Do not guess or interpret."),
-        "strukturiert": ("List exactly 3 visible objects, one per line, "
-                         "format: OBJECT: <name>"),
-    }
-
-    for name, p in prompts.items():
-        print(f"\n--- {name} ---\n{sieh('produkt.jpg', p)}")
+    ```bash
+    ollama run moondream "Describe this image. ./produkt.jpg"
     ```
 
-    **Deine Aufgabe:** Wo erfindet das Modell Details, die gar nicht im Bild sind? Welcher Prompt reduziert das Erfinden am stärksten?
+    ```title="Beispielausgabe — offener Prompt"
+    A wooden crate filled with fresh organic vegetables sits on a rustic
+    kitchen table. The scene suggests a farm-to-table lifestyle, with warm
+    morning light streaming through a nearby window. The produce looks
+    freshly harvested from a local farm.
+    ```
+
+    Klingt gut – aber wie viel davon steht wirklich im Bild? „Morgenlicht", „frisch geerntet", „vom lokalen Bauernhof": Das sind **Interpretationen**, keine Beobachtungen.
+
+    ```bash
+    ollama run moondream "Describe only what is literally visible: objects, colors, text. Do not guess or interpret. ./produkt.jpg"
+    ```
+
+    ```title="Beispielausgabe — gelenkter Prompt"
+    A wooden crate containing green and orange vegetables. The crate sits on
+    a light brown surface. The background is blurred and mostly white.
+    ```
+
+    **Deine Aufgabe:** Markiere in der ersten Ausgabe jede Aussage, die du im Bild **nicht** belegen kannst. Probiere zusätzlich eine strukturierte Variante (*„List exactly 3 visible objects, one per line, format: OBJECT: &lt;name&gt;"*). Welcher Prompt reduziert das Erfinden am stärksten?
 
 !!! example "Übung 2: Bild + Übersetzung als Kette"
 
     `moondream` kann kein Deutsch – aber `qwen2.5:0.5b` schon. Kombiniere beide zu einer [Kette](chaining.md).
 
-    ```python title="bild_kette.py"
-    from llm import frage
-    from bild import sieh
+    **Schritt 1** – Vision-Modell beschreibt auf Englisch:
 
-    # Schritt 1: Vision-Modell beschreibt (englisch)
-    beschreibung = sieh("produkt.jpg",
-                        "Describe this product photo factually in 3 sentences.")
-    print(f"EN: {beschreibung}\n")
+    ```bash
+    ollama run moondream "Describe this product photo factually in 3 sentences. ./produkt.jpg"
+    ```
 
-    # Schritt 2: Textmodell macht daraus deutschen Marketing-Text
-    text = frage(f"""Hier ist eine englische Bildbeschreibung:
-    {beschreibung}
+    ```title="Beispielausgabe"
+    A wooden crate containing carrots, lettuce and tomatoes. The vegetables
+    appear unpackaged. A paper label is attached to the front of the crate.
+    ```
 
-    Schreibe daraus eine deutsche Produktbeschreibung für einen Online-Shop.
-    Maximal 40 Wörter, sachlich, keine Superlative.""")
-    print(f"DE: {text}")
+    **Schritt 2** – Textmodell macht daraus deutschen Verkaufstext. Kopiere die englische Beschreibung in den Prompt:
+
+    ```title="Terminal"
+    ollama run qwen2.5:0.5b
+
+    >>> """
+    ... Hier ist eine englische Bildbeschreibung:
+    ... A wooden crate containing carrots, lettuce and tomatoes. The vegetables
+    ... appear unpackaged. A paper label is attached to the front of the crate.
+    ...
+    ... Schreibe daraus eine deutsche Produktbeschreibung für einen Online-Shop.
+    ... Maximal 40 Wörter, sachlich, keine Superlative.
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    Unsere Holzkiste enthält Karotten, Salat und Tomaten – unverpackt und
+    direkt aus der Region. Ein Etikett an der Vorderseite nennt Herkunft und
+    Erntedatum der enthaltenen Ware.
     ```
 
     **Das Prinzip ist wichtiger als das Ergebnis:** Zwei spezialisierte kleine Modelle in Reihe schlagen oft ein einzelnes mittleres Modell.
 
-??? question "Übung 3: Text aus einer Website analysieren (Python, ohne Vision)"
+!!! example "Übung 3: Website-Text auswerten (ohne Vision-Modell)"
 
-    Funktioniert ohne Vision-Modell – wir holen den Text einer Website und lassen ihn auswerten.
+    Funktioniert mit dem normalen Kursmodell. Öffne die Website eines Unternehmens deiner Branche, markiere den sichtbaren Text (<kbd>Strg</kbd>+<kbd>A</kbd>, <kbd>Strg</kbd>+<kbd>C</kbd>) und füge ihn in diesen Prompt ein:
+
+    ```title="Terminal"
+    >>> """
+    ... Hier ist der Text einer Unternehmenswebsite:
+    ...
+    ... [hier den kopierten Text einfügen]
+    ...
+    ... Leite daraus ab:
+    ... WERTANGEBOT: <ein Satz>
+    ... ZIELGRUPPE: <ein Satz>
+    ... ERLÖSMODELL: <ein Satz, oder [UNKLAR]>
+    ...
+    ... Nutze ausschließlich Informationen aus dem Text. Was nicht dort steht,
+    ... markierst du mit [UNKLAR].
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    WERTANGEBOT: Wöchentliche Lieferung saisonaler Bio-Kisten von Höfen aus
+    der Umgebung, ohne Vertragsbindung.
+    ZIELGRUPPE: Haushalte, die regionale Lebensmittel bevorzugen, aber keine
+    Zeit für den Wocheneinkauf haben.
+    ERLÖSMODELL: [UNKLAR] – auf der Seite sind keine Preise angegeben.
+    ```
+
+    !!! warning "Zwei Dinge, auf die du achten musst"
+
+        **Kürze den Text.** Das [Kontextfenster](halluzinationen-kontextfenster.md) von `qwen2.5:0.5b` ist klein. Fügst du eine ganze Website ein, verliert das Modell den Anfang – und damit deine Anweisung. Etwa 2–3 Bildschirmseiten sind das Maximum.
+
+        **Der letzte Satz im Prompt ist dein wichtigster Schutz.** Ohne *„Nutze ausschließlich Informationen aus dem Text"* ergänzt das Modell fröhlich, was auf so einer Website *üblicherweise* steht – und du merkst es nicht.
+
+    **Deine Aufgabe:** Prüfe jede der drei Ausgaben gegen den Originaltext. Steht das wirklich dort? Wie oft nutzt das Modell `[UNKLAR]`, obwohl es raten könnte – und wie oft rät es, obwohl es `[UNKLAR]` schreiben sollte?
+
+??? code "🐍 Optional (Python): Website-Text automatisch holen"
+
+    Copy-Paste geht für zwei Websites. Für zwanzig lohnt sich das hier:
 
     ```python title="webanalyse.py"
     # pip install requests beautifulsoup4
@@ -209,14 +258,22 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
     from bs4 import BeautifulSoup
     from llm import frage
 
+
     def hole_text(url, max_zeichen=3000):
-        """Lädt eine Seite und gibt den sichtbaren Text zurück."""
-        # TODO 1: Seite mit requests.get() laden
-        # TODO 2: mit BeautifulSoup parsen, script/style entfernen
-        # TODO 3: Text extrahieren und auf max_zeichen kürzen
-        ...
+        antwort = requests.get(url, timeout=10,
+                               headers={"User-Agent": "Mozilla/5.0"})
+        antwort.raise_for_status()
+
+        suppe = BeautifulSoup(antwort.text, "html.parser")
+        for tag in suppe(["script", "style", "nav", "footer"]):
+            tag.decompose()
+
+        return " ".join(suppe.get_text(separator=" ").split())[:max_zeichen]
+
 
     text = hole_text("https://example.com")
+    print(f"📄 {len(text)} Zeichen geladen\n")
+
     print(frage(f"""Hier ist der Text einer Unternehmenswebsite:
 
     {text}
@@ -229,28 +286,15 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
     Nutze ausschließlich Informationen aus dem Text."""))
     ```
 
-    ??? success "Lösungsvorschlag"
+    ```title="Ausgabe"
+    📄 1247 Zeichen geladen
 
-        ```python title="webanalyse.py"
-        import requests
-        from bs4 import BeautifulSoup
+    WERTANGEBOT: Wöchentliche Lieferung saisonaler Bio-Kisten ...
+    ZIELGRUPPE: Haushalte, die regionale Lebensmittel bevorzugen ...
+    ERLÖSMODELL: [UNKLAR] – auf der Seite sind keine Preise angegeben.
+    ```
 
-        def hole_text(url, max_zeichen=3000):
-            antwort = requests.get(url, timeout=10,
-                                   headers={"User-Agent": "Mozilla/5.0"})
-            antwort.raise_for_status()
-
-            suppe = BeautifulSoup(antwort.text, "html.parser")
-            for tag in suppe(["script", "style", "nav", "footer"]):
-                tag.decompose()
-
-            text = " ".join(suppe.get_text(separator=" ").split())
-            return text[:max_zeichen]
-        ```
-
-        **Warum die Kürzung auf 3.000 Zeichen?** Das Kontextfenster von `qwen2.5:0.5b` ist klein. Schickst du eine ganze Website hinein, verliert das Modell den Anfang – und damit deine Anweisung. Die Begrenzung ist keine Bequemlichkeit, sondern Notwendigkeit.
-
-        **Und der letzte Satz im Prompt** („Nutze ausschließlich Informationen aus dem Text") ist dein wichtigster Schutz gegen Halluzinationen. Ohne ihn ergänzt das Modell fröhlich, was auf so einer Website *üblicherweise* steht.
+    Die Zeile `[:max_zeichen]` ist keine Bequemlichkeit, sondern Notwendigkeit – sie erzwingt genau die Kürzung, die du oben von Hand machst.
 
 ??? tip "Alternative ohne lokales Vision-Modell"
 
@@ -287,11 +331,11 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
     **Konkrete Schritte:**
 
     1. Wähle **zwei** existierende Unternehmen aus deiner Branche.
-    2. Extrahiere ihre Website-Texte mit `hole_text()` (Übung 3).
+    2. Kopiere ihre Website-Texte in das Analyse-Muster aus Übung 3.
     3. Lass für beide ein Business Model Canvas ableiten – mit `[ANNAHME]`-Markierung für alles Erschlossene.
     4. Stelle beide Canvas und dein eigenes in einer **Vergleichstabelle** gegenüber.
     5. Beantworte: Welches Feld füllen die etablierten Anbieter besser als du – und warum?
-    6. Speichere den Analyse-Prompt als `prompts/07_wettbewerb.md`.
+    6. Notiere den Analyse-Prompt in `prompts.md` unter `## 07 Wettbewerb`.
 
 ---
 

@@ -31,7 +31,7 @@ Der Kurs ist in aufeinander aufbauende Kapitel strukturiert:
 
     - Ollama installieren
     - Kleine Modelle laden
-    - Steuerung per Python
+    - Prompts im Terminal
 
 - :material-file-document-outline: **Anatomie eines guten Prompts**
 
@@ -131,7 +131,13 @@ Ab Kapitel 2 arbeitest du mit einem **lokalen Sprachmodell** auf deinem eigenen 
 
     Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist. **Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering.**
 
-Jedes Kapitel enthält dafür ein **🔬 Ollama-Labor** mit lauffähigen Experimenten und kleinen Python-Aufgaben.
+Jedes Kapitel enthält dafür ein **🔬 Ollama-Labor** mit Experimenten zum Nachmachen.
+
+!!! info "Du brauchst keine Programmierkenntnisse"
+
+    Alle Übungen laufen im **Terminal** – ein Befehl, ein Prompt, eine Antwort. Mehr ist nicht nötig.
+
+    Zusätzlich findest du in jedem Kapitel einen eingeklappten Block **🐍 Optional (Python)**, der zeigt, wie sich dieselbe Aufgabe automatisieren lässt – jeweils **mit abgedruckter Ausgabe**, damit du ihn auch verstehst, ohne ihn auszuführen. Wer mag, probiert es aus. Wer nicht, überspringt ihn ohne Verlust.
 
 ---
 
@@ -140,7 +146,7 @@ Jedes Kapitel enthält dafür ein **🔬 Ollama-Labor** mit lauffähigen Experim
 Nach Abschluss dieses Moduls kannst du:
 
 - [x] Erklären, wie LLMs funktionieren und wo ihre Grenzen liegen
-- [x] Ein lokales Sprachmodell einrichten und aus Python heraus steuern
+- [x] Ein lokales Sprachmodell einrichten und gezielt bedienen
 - [x] Strukturierte, wirkungsvolle Prompts aufbauen
 - [x] Zero-Shot-, Few-Shot- und rollenbasierte Ansätze gezielt einsetzen
 - [x] Mehrstufige Workflows über Prompt Chaining gestalten

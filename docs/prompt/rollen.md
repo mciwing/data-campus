@@ -115,7 +115,78 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
 !!! example "Übung 1: Vier Rollen, eine Idee"
 
-    ```python title="rollen.py"
+    Mit `/set system` wechselst du die Rolle, ohne den Chat neu zu starten. **Wichtig:** nach jedem Rollenwechsel `/clear`, sonst mischen sich die Perspektiven.
+
+    ```title="Terminal"
+    ollama run qwen2.5:0.5b
+
+    >>> /set system "Du bist Business Angel und investierst 50.000–200.000 € in Frühphasen-Startups. Du bist skeptisch und zahlengetrieben."
+    >>> /clear
+    >>> """
+    ... Ein Lieferdienst für regionale Bio-Lebensmittel in Innsbruck.
+    ... Zwei Gründer, 15.000 € Startkapital, Lieferung per Lastenrad.
+    ...
+    ... Nenne aus deiner Perspektive die zwei größten Schwachstellen dieser Idee.
+    ... Maximal 2 Sätze pro Punkt. Antworte auf Deutsch.
+    ... """
+    ```
+
+    ```title="Beispielausgabe — 💰 Investor"
+    1. Das Startkapital trägt kein Wachstum. 15.000 € reichen für ein Lastenrad
+       und wenige Monate Betrieb, nicht für den Aufbau eines Kundenstamms.
+    2. Das Modell skaliert schlecht. Jede zusätzliche Lieferung kostet
+       Fahrzeit – ein Deckungsbeitrag entsteht erst bei hoher Dichte.
+    ```
+
+    Jetzt dieselbe Frage aus Kundensicht:
+
+    ```title="Terminal"
+    >>> /set system "Du bist berufstätiger Vater, 38 Jahre, zwei Kinder, kaufst bisher im Supermarkt. Du achtest auf Preis und Zeitersparnis."
+    >>> /clear
+    ```
+
+    ```title="Beispielausgabe — 🛒 Kunde"
+    1. Ich weiß nicht, wann geliefert wird. Wenn ich zu Hause sein muss,
+       spare ich keine Zeit gegenüber dem Supermarkt.
+    2. Bio ist teurer, und ich kaufe für vier Personen ein. Ohne klaren
+       Preisvergleich probiere ich das nicht aus.
+    ```
+
+    Zwei völlig verschiedene Schwachstellen – bei identischer Frage.
+
+    **Deine Aufgabe:** Führe alle vier Rollen durch (Experte, Investor, Kunde, Konkurrent – Beschreibungen siehe oben). Lege eine Tabelle an: Zeilen = Rollen, Spalten = genannte Schwachstellen. Welche Schwachstelle nennt **nur eine einzige** Rolle? Das ist dein wertvollster Fund.
+
+!!! example "Übung 2: Wirkt die Rolle wirklich?"
+
+    Ein ehrlicher Test – dieselbe Frage mit und ohne Rolle:
+
+    ```bash
+    ollama run qwen2.5:0.5b "Bewerte in 3 Sätzen: Lieferdienst für Bio-Lebensmittel in Innsbruck."
+    ```
+
+    ```title="Beispielausgabe — ohne Rolle"
+    Ein Lieferdienst für Bio-Lebensmittel ist eine zeitgemäße Idee, da das
+    Bewusstsein für nachhaltige Ernährung wächst. Innsbruck bietet als Stadt
+    mit umweltbewusster Bevölkerung gute Voraussetzungen. Wichtig sind eine
+    zuverlässige Logistik und eine klare Positionierung.
+    ```
+
+    ```title="Beispielausgabe — mit Investoren-Rolle"
+    Der adressierbare Markt in Innsbruck ist klein, das begrenzt die
+    Umsatzobergrenze. Die Marge bei Frischware ist niedrig, während die
+    Zustellkosten pro Bestellung hoch bleiben. Ohne Kapital für Wachstum
+    sehe ich kein Investment.
+    ```
+
+    **Deine Aufgabe:** Zähle in beiden Antworten die „Investoren-Wörter": *Markt, Marge, Umsatz, Kapital, skalieren, Wettbewerb, Risiko*. Wiederhole den Test danach mit `gemma3:270m`.
+
+    **Wichtige Beobachtung:** Sehr kleine Modelle ignorieren Rollen häufiger – sie „vergessen" die Systemrolle nach wenigen Sätzen und fallen in den neutralen Ton zurück.
+
+??? code "🐍 Optional (Python): alle Rollen automatisch durchlaufen"
+
+    Vier Rollen von Hand durchzuklicken ist machbar. Bei acht Rollen und drei Ideen wird es mühsam:
+
+    ```python title="rollenrunde.py"
     from llm import frage
 
     IDEE = ("Ein Lieferdienst für regionale Bio-Lebensmittel in Innsbruck. "
@@ -135,82 +206,33 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
     AUFGABE = ("Nenne aus deiner Perspektive die zwei größten Schwachstellen "
                "dieser Idee. Maximal 2 Sätze pro Punkt. Antworte auf Deutsch.")
 
+    ergebnisse = {}
     for name, rolle in ROLLEN.items():
-        print(f"\n{'=' * 60}\n{name}\n{'=' * 60}")
-        print(frage(f"{IDEE}\n\n{AUFGABE}", system=rolle))
+        ergebnisse[name] = frage(f"{IDEE}\n\n{AUFGABE}", system=rolle)
+
+    # Wer nennt welches Thema? Einzelnennungen sind die interessanten.
+    BEGRIFFE = ["Kapital", "Skalier", "Preis", "Zeit", "Logistik", "Wettbewerb"]
+
+    print(f"{'Begriff':<14} {'Rollen':<8} Wer?")
+    print("-" * 60)
+    for begriff in BEGRIFFE:
+        nenner = [n for n, t in ergebnisse.items() if begriff.lower() in t.lower()]
+        marker = "⭐" if len(nenner) == 1 else "  "
+        print(f"{marker}{begriff:<12} {len(nenner)}/4      {', '.join(nenner) or '–'}")
     ```
 
-    **Deine Aufgabe:** Lege eine Tabelle an – Zeilen = Rollen, Spalten = genannte Schwachstellen. Welche Schwachstelle nennt **nur eine** Rolle? Das ist der wertvollste Fund.
-
-!!! example "Übung 2: Wirkt die Rolle wirklich?"
-
-    Ein ehrlicher Test: Vergleiche mit **und ohne** Rolle bei identischem Seed.
-
-    ```python title="rolle_wirkung.py"
-    from llm import frage
-
-    frage_text = "Bewerte in 3 Sätzen: Lieferdienst für Bio-Lebensmittel in Innsbruck."
-
-    ohne = frage(frage_text)
-    mit = frage(frage_text, system=("Du bist Business Angel mit 15 Jahren Erfahrung. "
-                                    "Du bist skeptisch und zahlengetrieben."))
-
-    print(f"OHNE ROLLE:\n{ohne}\n")
-    print(f"MIT ROLLE:\n{mit}\n")
-
-    # Grobe Messung: Wie oft fallen "Investoren-Wörter"?
-    SIGNAL = ["markt", "skalier", "umsatz", "risiko", "wettbewerb", "marge", "kapital"]
-    for name, text in [("ohne", ohne), ("mit", mit)]:
-        treffer = sum(text.lower().count(w) for w in SIGNAL)
-        print(f"Investoren-Vokabular {name} Rolle: {treffer} Treffer")
+    ```title="Ausgabe"
+    Begriff        Rollen   Wer?
+    ------------------------------------------------------------
+    ⭐Kapital       1/4      💰 Investor
+    ⭐Skalier       1/4      💰 Investor
+      Preis        2/4      🛒 Kunde, ⚔️ Konkurrent
+    ⭐Zeit          1/4      🛒 Kunde
+      Logistik     3/4      🎓 Experte, 💰 Investor, ⚔️ Konkurrent
+      Wettbewerb   2/4      🎓 Experte, ⚔️ Konkurrent
     ```
 
-    Wiederhole den Test mit `gemma3:270m`. **Wichtige Beobachtung:** Sehr kleine Modelle ignorieren Rollen häufiger – sie „vergessen" die Systemrolle nach wenigen Sätzen.
-
-??? question "Übung 3: Rollen-Runde als Funktion (Python)"
-
-    Baue eine wiederverwendbare Funktion, die eine Frage automatisch durch alle Rollen schickt und die Ergebnisse sammelt.
-
-    ```python title="rollenrunde.py"
-    from llm import frage
-
-    def rollenrunde(idee, aufgabe, rollen):
-        """Gibt ein dict {rollenname: antwort} zurück."""
-        # TODO 1: über alle Rollen iterieren und frage(...) mit system= aufrufen
-        # TODO 2: Fortschritt ausgeben (welche Rolle läuft gerade)
-        # TODO 3: Ergebnisse in einem Dictionary sammeln und zurückgeben
-        ...
-
-    def gemeinsame_themen(ergebnisse, begriffe):
-        """Zählt, wie viele Rollen einen Begriff erwähnen."""
-        # TODO: für jeden Begriff zählen, in wie vielen Antworten er vorkommt
-        ...
-    ```
-
-    ??? success "Lösungsvorschlag"
-
-        ```python title="rollenrunde.py"
-        from llm import frage
-
-        def rollenrunde(idee, aufgabe, rollen):
-            ergebnisse = {}
-            for name, rolle in rollen.items():
-                print(f"⏳ {name} denkt nach ...")
-                ergebnisse[name] = frage(f"{idee}\n\n{aufgabe}", system=rolle)
-            return ergebnisse
-
-        def gemeinsame_themen(ergebnisse, begriffe):
-            print(f"\n{'Begriff':<18} {'Rollen':<8} Wer?")
-            print("-" * 55)
-            for begriff in begriffe:
-                nenner = [name for name, text in ergebnisse.items()
-                          if begriff.lower() in text.lower()]
-                marker = "⭐" if len(nenner) == 1 else "  "
-                print(f"{marker}{begriff:<16} {len(nenner)}/{len(ergebnisse):<6} "
-                      f"{', '.join(nenner) or '–'}")
-        ```
-
-        Der **Stern** markiert Begriffe, die nur eine einzige Rolle erwähnt – genau dort steckt der Mehrwert des rollenbasierten Prompting. Was alle sagen, hättest du auch ohne Rollen bekommen.
+    Der **Stern** markiert Themen, die nur eine einzige Rolle anspricht – genau dort steckt der Mehrwert. „Logistik" nennen drei von vier Rollen; das hättest du auch ohne Rollen bekommen.
 
 ---
 
@@ -237,10 +259,10 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
     **Konkrete Schritte:**
 
     1. Formuliere für jede der vier Rollen eine vollständige Rollenbeschreibung (Funktion, Erfahrung, Haltung, Auftrag).
-    2. Schicke deine Idee mit `rollenrunde()` durch alle vier.
-    3. Erstelle eine Matrix: Zeilen = Rollen, Spalten = genannte Punkte. Markiere die **Einzelnennungen**.
+    2. Schicke deine Idee mit `/set system` + `/clear` durch alle vier Rollen.
+    3. Erstelle eine Matrix: Zeilen = Rollen, Spalten = genannte Punkte. Markiere die **Einzelnennungen** – sie sind der eigentliche Gewinn.
     4. Finde mindestens einen **Zielkonflikt** zwischen zwei Rollen und beschreibe ihn in zwei Sätzen.
-    5. Speichere deine Rollendefinitionen als `prompts/04_rollen.md`.
+    5. Notiere deine vier Rollendefinitionen in `prompts.md` unter `## 04 Rollen`.
 
 ---
 

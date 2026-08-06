@@ -147,96 +147,112 @@ flowchart LR
 
 ## 🔬 Ollama-Labor
 
-!!! example "Übung 1: Zero-Shot vs. Few-Shot messen"
+!!! example "Übung 1: Zero-Shot vs. Few-Shot"
 
-    Wir bauen eine Klassifikationsaufgabe und zählen, wie oft das Modell das geforderte Format trifft.
+    Wir klassifizieren Kundenbewertungen und achten darauf, ob das Modell das geforderte Format trifft: **genau ein Wort**.
 
-    ```python title="shots.py"
-    from llm import frage
+    **Zero-Shot:**
 
-    testfaelle = [
-        "Die Lieferung kam pünktlich, aber das Gemüse war welk.",
-        "Super Qualität, aber viel zu teuer.",
-        "Ware kam an. Nichts Besonderes.",
-        "Absolut fantastisch, mache ich wieder!",
-    ]
-
-    zero_shot = """Klassifiziere die Kundenbewertung als positiv, neutral oder negativ.
-    Antworte mit genau einem Wort.
-
-    Bewertung: {text}
-    Kategorie:"""
-
-    few_shot = """Klassifiziere Kundenbewertungen. Antworte mit genau einem Wort.
-
-    Bewertung: Alles top, gerne wieder!
-    Kategorie: positiv
-
-    Bewertung: Zwei Tage zu spät und die Hälfte fehlte.
-    Kategorie: negativ
-
-    Bewertung: Ware kam an, Preis ist okay.
-    Kategorie: neutral
-
-    Bewertung: {text}
-    Kategorie:"""
-
-    ERLAUBT = {"positiv", "neutral", "negativ"}
-
-    for name, vorlage in [("ZERO-SHOT", zero_shot), ("FEW-SHOT", few_shot)]:
-        treffer = 0
-        print(f"\n{'=' * 50}\n{name}\n{'=' * 50}")
-        for text in testfaelle:
-            antwort = frage(vorlage.format(text=text)).strip().lower()
-            ok = antwort.split()[0].strip(".,") in ERLAUBT if antwort else False
-            treffer += ok
-            print(f"{'✅' if ok else '❌'} {text[:35]:<38} → {antwort[:40]}")
-        print(f"\nFormattreue: {treffer}/{len(testfaelle)}")
+    ```bash
+    ollama run qwen2.5:0.5b "Klassifiziere die Kundenbewertung als positiv, neutral oder negativ. Antworte mit genau einem Wort. Bewertung: Die Lieferung kam pünktlich, aber das Gemüse war welk. Kategorie:"
     ```
 
-    **Erwartung:** Zero-Shot liefert oft ganze Sätze („Diese Bewertung ist eher …"), Few-Shot fast immer genau ein Wort. Genau das brauchst du, wenn die Ausgabe weiterverarbeitet werden soll.
+    ```title="Beispielausgabe"
+    Diese Bewertung würde ich als eher neutral einstufen, da sowohl ein
+    positiver Aspekt (pünktliche Lieferung) als auch ein negativer Aspekt
+    (welkes Gemüse) genannt werden.
+    ```
+
+    Inhaltlich richtig – aber **nicht** ein Wort. Für eine Weiterverarbeitung unbrauchbar.
+
+    **Few-Shot** (im Chat-Modus mit `"""`):
+
+    ```title="Terminal"
+    >>> """
+    ... Klassifiziere Kundenbewertungen. Antworte mit genau einem Wort.
+    ...
+    ... Bewertung: Alles top, gerne wieder!
+    ... Kategorie: positiv
+    ...
+    ... Bewertung: Zwei Tage zu spät und die Hälfte fehlte.
+    ... Kategorie: negativ
+    ...
+    ... Bewertung: Ware kam an, Preis ist okay.
+    ... Kategorie: neutral
+    ...
+    ... Bewertung: Die Lieferung kam pünktlich, aber das Gemüse war welk.
+    ... Kategorie:
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    neutral
+    ```
+
+    **Deine Aufgabe:** Teste beide Varianten mit diesen vier Fällen und zähle, wie oft du **genau ein Wort** zurückbekommst:
+
+    - *„Super Qualität, aber viel zu teuer."*
+    - *„Ware kam an. Nichts Besonderes."*
+    - *„Absolut fantastisch, mache ich wieder!"*
+    - *„Zwei Tage zu spät, aber der Support war nett."*
+
+    Notiere das Ergebnis als Bruch, z. B. „Zero-Shot: 1/4, Few-Shot: 4/4".
 
 !!! example "Übung 2: Deinen eigenen Stil beibringen"
 
     Few-Shot ist das beste Werkzeug, um **Stil** zu übertragen – etwas, das sich mit Worten kaum beschreiben lässt.
 
-    ```python title="stil.py"
-    from llm import frage
-
-    prompt = """Schreibe Produktnamen im Stil der Beispiele.
-
-    Produkt: Bio-Apfelsaft aus Tirol
-    Name: Bergquell Apfel
-
-    Produkt: Hafermilch aus regionalem Anbau
-    Name: Bergquell Hafer
-
-    Produkt: Honig aus Innsbrucker Stadtimkerei
-    Name:"""
-
-    print(frage(prompt))
+    ```title="Terminal"
+    >>> """
+    ... Schreibe Produktnamen im Stil der Beispiele.
+    ...
+    ... Produkt: Bio-Apfelsaft aus Tirol
+    ... Name: Bergquell Apfel
+    ...
+    ... Produkt: Hafermilch aus regionalem Anbau
+    ... Name: Bergquell Hafer
+    ...
+    ... Produkt: Honig aus Innsbrucker Stadtimkerei
+    ... Name:
+    ... """
     ```
 
-    **Deine Aufgabe:** Tausche die Beispiele gegen einen *völlig anderen* Stil (z. B. englische Tech-Namen: „AppleFlow", „OatStream"). Übernimmt das Modell den neuen Stil, ohne dass du ihn je beschrieben hast?
+    ```title="Beispielausgabe"
+    Bergquell Honig
+    ```
 
-??? question "Übung 3: Few-Shot-Baukasten (Python)"
+    Beachte: Du hast dem Modell **nie erklärt**, dass alle Namen mit „Bergquell" beginnen sollen. Es hat das Muster selbst erkannt.
 
-    Schreibe eine Funktion, die aus einer Liste von Beispielpaaren automatisch einen Few-Shot-Prompt baut.
+    **Deine Aufgabe:** Tausche die zwei Beispiele gegen einen *völlig anderen* Stil – etwa englische Tech-Namen (`AppleFlow`, `OatStream`). Übernimmt das Modell auch diesen Stil, ohne dass du ihn beschreibst?
+
+!!! tip "Der wichtigste Trick: das offene Label"
+
+    Achte auf die **letzte Zeile** der Few-Shot-Prompts: `Kategorie:` bzw. `Name:` – ohne Wert dahinter.
+
+    Das ist kein Schönheitsfehler, sondern der Kern der Technik. Das Modell sieht ein Muster, das mitten im Satz abbricht, und die naheliegendste Fortsetzung ist genau die gewünschte Antwort. Lässt du den Doppelpunkt weg, beginnt das Modell oft wieder zu erklären.
+
+??? code "🐍 Optional (Python): Few-Shot-Baukasten"
+
+    Beispiele von Hand in jeden Prompt zu kopieren wird schnell mühsam. Diese Funktion baut den Prompt automatisch:
 
     ```python title="fewshot_builder.py"
     def baue_fewshot(anweisung, beispiele, neue_eingabe,
                      label_in="Eingabe", label_out="Ausgabe"):
-        """
-        anweisung    : str  – was das Modell tun soll
-        beispiele    : list[tuple[str, str]] – Paare (eingabe, ausgabe)
-        neue_eingabe : str  – der eigentliche Fall
-        """
-        # TODO: Anweisung, dann alle Beispiele, dann die neue Eingabe
-        #       mit offenem Label zusammensetzen
-        ...
+        teile = [anweisung, ""]
+
+        for eingabe, ausgabe in beispiele:
+            teile.append(f"{label_in}: {eingabe}")
+            teile.append(f"{label_out}: {ausgabe}")
+            teile.append("")
+
+        teile.append(f"{label_in}: {neue_eingabe}")
+        teile.append(f"{label_out}:")      # bewusst offen lassen!
+
+        return "\n".join(teile)
+
 
     prompt = baue_fewshot(
-        "Klassifiziere Kundenbewertungen.",
+        "Klassifiziere Kundenbewertungen. Antworte mit genau einem Wort.",
         [("Alles top!", "positiv"), ("Kam zu spät.", "negativ")],
         "Preis okay, Qualität mittel.",
         label_in="Bewertung", label_out="Kategorie",
@@ -244,25 +260,20 @@ flowchart LR
     print(prompt)
     ```
 
-    ??? success "Lösungsvorschlag"
+    ```title="Ausgabe"
+    Klassifiziere Kundenbewertungen. Antworte mit genau einem Wort.
 
-        ```python title="fewshot_builder.py"
-        def baue_fewshot(anweisung, beispiele, neue_eingabe,
-                         label_in="Eingabe", label_out="Ausgabe"):
-            teile = [anweisung, ""]
+    Bewertung: Alles top!
+    Kategorie: positiv
 
-            for eingabe, ausgabe in beispiele:
-                teile.append(f"{label_in}: {eingabe}")
-                teile.append(f"{label_out}: {ausgabe}")
-                teile.append("")
+    Bewertung: Kam zu spät.
+    Kategorie: negativ
 
-            teile.append(f"{label_in}: {neue_eingabe}")
-            teile.append(f"{label_out}:")      # bewusst offen lassen!
+    Bewertung: Preis okay, Qualität mittel.
+    Kategorie:
+    ```
 
-            return "\n".join(teile)
-        ```
-
-        **Der wichtigste Trick** steckt in der vorletzten Zeile: Das Label bleibt **offen**. Das Modell sieht ein Muster, das mitten im Satz abbricht – und die naheliegendste Fortsetzung ist genau die gewünschte Antwort. Deshalb funktioniert Few-Shot auch bei winzigen Modellen so zuverlässig.
+    Damit lässt sich der Prompt anschließend an `frage()` übergeben – und du kannst zwanzig Testfälle durchlaufen lassen, statt zwanzigmal zu tippen.
 
 ---
 
@@ -291,7 +302,7 @@ flowchart LR
     1. **Zero-Shot:** *„Erstelle ein Business Model Canvas für [deine Idee]."* – Wie viele der neun Felder liefert `qwen2.5:0.5b`?
     2. **Few-Shot:** Gib zwei vollständig ausgefüllte Felder eines *fremden* Beispiels vor (z. B. für einen Fahrradkurier) und lass das Modell die restlichen für deine Idee ergänzen.
     3. Zähle für beide Varianten: Vollständigkeit (0–9 Felder), Formattreue, inhaltliche Substanz.
-    4. Speichere den besseren Prompt als `prompts/02_canvas.md`.
+    4. Notiere den besseren Prompt in deiner `prompts.md` unter `## 02 Canvas`.
 
 ---
 

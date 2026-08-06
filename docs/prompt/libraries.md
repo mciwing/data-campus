@@ -141,47 +141,97 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
 ## 🔬 Ollama-Labor
 
-!!! example "Übung 1: Template-Engine mit Bordmitteln"
+!!! example "Übung 1: Ein Template ausfüllen"
 
-    Python kann Platzhalter ohne jede Zusatzbibliothek füllen.
+    Deine Bibliothek ist zunächst nichts weiter als ein **Ordner mit Textdateien**. Lege an:
 
-    ```python title="template.py"
-    from string import Template
-
-    vorlage = Template("""Du bist $rolle mit $erfahrung Jahren Erfahrung in $branche.
-
-    KONTEXT:
-    $kontext
-
-    AUFGABE:
-    Erstelle eine SWOT-Analyse. Genau $anzahl Punkte pro Kategorie.
-
-    FORMAT:
-    STÄRKEN: ...
-    SCHWÄCHEN: ...
-    CHANCEN: ...
-    RISIKEN: ...
-
-    Antworte auf Deutsch. Keine Einleitung.""")
-
-    prompt = vorlage.substitute(
-        rolle="Business Angel",
-        erfahrung=15,
-        branche="der Lebensmittelbranche",
-        kontext="Bio-Lieferdienst in Innsbruck, 2 Gründer, 15.000 € Startkapital.",
-        anzahl=2,
-    )
-
-    print(prompt)
-
-    from llm import frage
-    print("\n" + "=" * 60 + "\n")
-    print(frage(prompt))
+    ```title="Ordnerstruktur"
+    prompt-labor/
+    ├── idee.md
+    ├── kritik.md
+    └── templates/
+        ├── swot.md
+        ├── rollen-check.md
+        └── faktencheck.md
     ```
 
-    **Warum `string.Template` und nicht f-Strings?** Weil `substitute()` einen **Fehler wirft**, wenn ein Platzhalter fehlt. Bei f-Strings merkst du erst an der schlechten Antwort, dass `{kontext}` leer geblieben ist.
+    Speichere in `templates/swot.md` das Template von oben. Zum Ausfüllen brauchst du nur deinen Texteditor:
 
-!!! example "Übung 2: Die Bibliothek als Klasse"
+    1. Datei öffnen, Inhalt kopieren.
+    2. **Suchen & Ersetzen** für jeden Platzhalter (`$rolle` → *Business Angel*, `$branche` → *der Lebensmittelbranche*, …).
+    3. Fertigen Text zwischen `"""` in den Chat einfügen.
+
+    ```title="Terminal"
+    ollama run qwen2.5:0.5b
+
+    >>> """
+    ... Du bist Business Angel mit 15 Jahren Erfahrung in der Lebensmittelbranche.
+    ...
+    ... KONTEXT:
+    ... Bio-Lieferdienst in Innsbruck, 2 Gründer, 15.000 € Startkapital.
+    ...
+    ... AUFGABE:
+    ... Erstelle eine SWOT-Analyse. Genau 2 Punkte pro Kategorie.
+    ...
+    ... FORMAT:
+    ... STÄRKEN: ...
+    ... SCHWÄCHEN: ...
+    ... CHANCEN: ...
+    ... RISIKEN: ...
+    ...
+    ... Antworte auf Deutsch. Keine Einleitung.
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    STÄRKEN: Direkter Draht zu regionalen Produzenten; glaubwürdiges
+    Nachhaltigkeitsversprechen durch emissionsfreie Zustellung.
+    SCHWÄCHEN: Sehr geringe Kapitaldecke; Abhängigkeit von zwei Personen.
+    CHANCEN: Abo-Modell für planbare Umsätze; Kooperation mit Bauernmärkten.
+    RISIKEN: Preisaktionen der Supermarktketten; Wetterabhängigkeit.
+    ```
+
+    **Deine Aufgabe:** Fülle dasselbe Template ein zweites Mal aus – mit `$rolle` = *„skeptischer Stammkunde"* und `$branche` = *„der Gastronomie"*. Wie stark ändert sich das Ergebnis, obwohl du **nur zwei Wörter** ausgetauscht hast?
+
+!!! example "Übung 2: Der Härtetest 🧪"
+
+    Ein Template ist erst dann wiederverwendbar, wenn es auch für eine **völlig andere** Idee funktioniert.
+
+    Nimm dein `swot.md` und fülle es für eine Idee aus, die mit deiner nichts zu tun hat – zum Beispiel eine **Hundeschule** oder eine **mobile Fahrradwerkstatt**.
+
+    ```title="Beispielausgabe für eine Hundeschule"
+    STÄRKEN: Persönliche Betreuung in Kleingruppen; hohe Weiterempfehlungsrate
+    in lokalen Hundehalter-Netzwerken.
+    SCHWÄCHEN: Umsatz hängt direkt an der Arbeitszeit einer Person;
+    saisonale Nachfrageschwankungen.
+    ...
+    ```
+
+    **Deine Aufgabe:** Wenn du beim Ausfüllen an eine Stelle kommst, an der der Text nur zu deiner ursprünglichen Idee passt – **das ist ein Fehler im Template.** Ersetze diese Stelle durch einen neuen Platzhalter und notiere ihn.
+
+    Genau so entstehen gute Templates: nicht durch Nachdenken, sondern durch Anwenden auf einen fremden Fall.
+
+!!! example "Übung 3: Metadaten und Versionierung"
+
+    Erweitere jedes deiner Templates um den Kopfblock:
+
+    ```markdown title="templates/swot.md"
+    ---
+    name: swot-analyse
+    version: 2
+    getestet_mit: qwen2.5:0.5b, llama3.2:1b
+    platzhalter: rolle, erfahrung, branche, kontext, anzahl
+    autor: dein Name
+    ---
+    ```
+
+    Die Zeile `platzhalter:` erspart dir späteres Suchen: Sobald du zehn Templates hast, weißt du nicht mehr auswendig, welches welche Werte braucht.
+
+    **Deine Aufgabe:** Erhöhe die `version`, sobald du ein Template änderst, und notiere in einer Zeile darunter, *warum*. Nach drei Monaten wirst du dich für diese Zeile bedanken.
+
+??? code "🐍 Optional (Python): die Bibliothek automatisieren"
+
+    Suchen & Ersetzen von Hand funktioniert – aber bei zehn Templates und wechselnden Ideen wird es fehleranfällig. Diese Klasse lädt alle Templates aus einem Ordner und füllt sie aus:
 
     ```python title="prompt_library.py"
     from pathlib import Path
@@ -189,110 +239,63 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
 
     class PromptLibrary:
-        """Lädt Prompt-Templates aus einem Ordner und füllt sie aus."""
-
         def __init__(self, ordner="templates"):
             self.ordner = Path(ordner)
-            self.templates = {}
-            self._laden()
-
-        def _laden(self):
-            for datei in self.ordner.glob("*.md"):
-                self.templates[datei.stem] = datei.read_text(encoding="utf-8")
+            self.templates = {d.stem: d.read_text(encoding="utf-8")
+                              for d in self.ordner.glob("*.md")}
             print(f"📚 {len(self.templates)} Templates geladen: "
                   f"{', '.join(sorted(self.templates))}")
 
-        def zeige(self, name):
-            """Gibt das rohe Template samt Platzhaltern aus."""
-            print(self.templates[name])
+        def metadaten(self, name):
+            """Liest den ---Block am Dateianfang als dict."""
+            text = self.templates[name]
+            if not text.startswith("---"):
+                return {}
+            _, block, _ = text.split("---", 2)
+            return {z.split(":", 1)[0].strip(): z.split(":", 1)[1].strip()
+                    for z in block.strip().splitlines() if ":" in z}
+
+        def _koerper(self, name):
+            """Template ohne Metadatenblock."""
+            text = self.templates[name]
+            return text.split("---", 2)[2] if text.startswith("---") else text
 
         def baue(self, name, **werte):
             """Füllt ein Template. Wirft KeyError, wenn ein Wert fehlt."""
-            if name not in self.templates:
-                raise KeyError(f"Template '{name}' nicht gefunden. "
-                               f"Verfügbar: {', '.join(sorted(self.templates))}")
-            return Template(self.templates[name]).substitute(**werte)
+            return Template(self._koerper(name)).substitute(**werte)
+
+        def teste_alle(self, **testwerte):
+            print(f"\n{'Template':<18} {'Version':<9} Status")
+            print("-" * 55)
+            for name in sorted(self.templates):
+                version = self.metadaten(name).get("version", "–")
+                try:
+                    self.baue(name, **testwerte)
+                    print(f"{name:<18} {version:<9} ✅ ok")
+                except KeyError as fehler:
+                    print(f"{name:<18} {version:<9} ❌ fehlt: {fehler}")
 
 
-    if __name__ == "__main__":
-        lib = PromptLibrary()
-        prompt = lib.baue("swot",
-                          rolle="Business Angel",
-                          erfahrung=15,
-                          branche="der Lebensmittelbranche",
-                          kontext="Bio-Lieferdienst in Innsbruck.",
-                          anzahl=2)
-        print(prompt)
+    lib = PromptLibrary()
+    lib.teste_alle(rolle="Business Angel", erfahrung=15,
+                   branche="der Lebensmittelbranche",
+                   kontext="Bio-Lieferdienst in Innsbruck.", anzahl=2)
     ```
 
-    Lege einen Ordner `templates/` an, speichere dort `swot.md` (ohne den Metadaten-Block, den `Template` nicht kennt) und probiere es aus.
+    ```title="Ausgabe"
+    📚 3 Templates geladen: faktencheck, rollen-check, swot
 
-??? question "Übung 3: Bibliothek mit Metadaten und Testlauf (Python)"
-
-    Erweitere die Klasse um zwei Fähigkeiten: Metadaten lesen und alle Templates auf einmal testen.
-
-    ```python title="prompt_library_pro.py"
-    class PromptLibraryPro(PromptLibrary):
-
-        def metadaten(self, name):
-            """Liest den ----Block am Dateianfang als dict."""
-            # TODO 1: Text am ersten und zweiten "---" trennen
-            # TODO 2: jede Zeile an ":" aufteilen → dict
-            # TODO 3: dict zurückgeben (leeres dict, wenn kein Block da ist)
-            ...
-
-        def teste_alle(self, testwerte):
-            """Baut jedes Template mit Testwerten und meldet fehlende Platzhalter."""
-            # TODO 4: über alle Templates iterieren
-            # TODO 5: baue() in try/except aufrufen
-            # TODO 6: ✅ / ❌ pro Template ausgeben
-            ...
+    Template           Version   Status
+    -------------------------------------------------------
+    faktencheck        1         ❌ fehlt: 'text'
+    rollen-check       1         ✅ ok
+    swot               2         ✅ ok
     ```
 
-    ??? success "Lösungsvorschlag"
+    **Zwei Dinge, die dieses Skript besser kann als du:**
 
-        ```python title="prompt_library_pro.py"
-        from string import Template
-
-
-        class PromptLibraryPro(PromptLibrary):
-
-            def metadaten(self, name):
-                text = self.templates[name]
-                if not text.startswith("---"):
-                    return {}
-
-                _, block, _ = text.split("---", 2)
-                meta = {}
-                for zeile in block.strip().splitlines():
-                    if ":" in zeile:
-                        schluessel, wert = zeile.split(":", 1)
-                        meta[schluessel.strip()] = wert.strip()
-                return meta
-
-            def _koerper(self, name):
-                """Template ohne Metadatenblock."""
-                text = self.templates[name]
-                return text.split("---", 2)[2] if text.startswith("---") else text
-
-            def baue(self, name, **werte):
-                return Template(self._koerper(name)).substitute(**werte)
-
-            def teste_alle(self, testwerte):
-                print(f"\n{'Template':<20} {'Version':<9} Status")
-                print("-" * 60)
-
-                for name in sorted(self.templates):
-                    meta = self.metadaten(name)
-                    version = meta.get("version", "–")
-                    try:
-                        self.baue(name, **testwerte)
-                        print(f"{name:<20} {version:<9} ✅ ok")
-                    except KeyError as fehler:
-                        print(f"{name:<20} {version:<9} ❌ fehlt: {fehler}")
-        ```
-
-        **Warum ein Testlauf?** Sobald du zehn Templates hast, weißt du nicht mehr auswendig, welche Platzhalter jedes braucht. `teste_alle()` sagt es dir in einer Sekunde – und fängt Tippfehler in Platzhalternamen ab, bevor sie in einem halb ausgefüllten Prompt landen.
+    - `substitute()` **wirft einen Fehler**, wenn ein Platzhalter fehlt – anders als ein f-String, bei dem du erst an der schlechten Antwort merkst, dass `$kontext` leer geblieben ist.
+    - `teste_alle()` prüft in einer Sekunde alle Templates. Im Beispiel oben fällt sofort auf, dass `faktencheck` einen Platzhalter `$text` erwartet, den du gar nicht mitgegeben hast.
 
 ---
 
@@ -318,13 +321,12 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
     **Konkrete Schritte:**
 
-    1. Sammle deine gespeicherten Prompts aus `prompts/01_*` bis `prompts/08_*`.
-    2. Ersetze alle idee-spezifischen Stellen durch **Platzhalter** (`$kontext`, `$rolle`, `$branche`, …).
-    3. Ergänze für jedes Template einen **Metadatenblock** mit `name`, `version` und `getestet_mit`.
-    4. Lege sie im Ordner `templates/` ab und lade sie mit `PromptLibraryPro`.
-    5. Lass `teste_alle()` laufen, bis alle Templates ✅ melden.
-    6. **Der Härtetest:** Wende deine Bibliothek auf eine **völlig andere** Geschäftsidee an (z. B. eine Hundeschule). Welche Templates funktionieren ohne Änderung – und welche waren doch zu speziell?
-    7. Versioniere den Ordner mit Git. 🎉
+    1. Sammle deine Prompts aus `prompts.md` (Abschnitte `## 01` bis `## 08`).
+    2. Zerlege sie in **eine Datei pro Template** im Ordner `templates/`.
+    3. Ersetze alle idee-spezifischen Stellen durch **Platzhalter** (`$kontext`, `$rolle`, `$branche`, …).
+    4. Ergänze für jedes Template einen **Metadatenblock** mit `name`, `version`, `getestet_mit` und `platzhalter`.
+    5. **Der Härtetest:** Wende deine gesamte Bibliothek auf eine **völlig andere** Geschäftsidee an (z. B. eine Hundeschule). Welche Templates funktionieren ohne Änderung – und welche waren doch zu speziell? Bessere Letztere nach.
+    6. Versioniere den Ordner mit Git. 🎉
 
 !!! quote "Geschafft! 🎓"
 

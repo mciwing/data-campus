@@ -205,11 +205,116 @@ Dieselbe Absicht, zwei Prompts:
 
 ## 🔬 Ollama-Labor
 
-Zeit, den Unterschied selbst zu messen. Alle Übungen mit dem Kursmodell `qwen2.5:0.5b` und dem Helfer `llm.py` aus dem [Setup](ollama-setup.md#schritt-5-dein-werkzeugkasten).
+Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `qwen2.5:0.5b`.
 
 !!! example "Übung 1: Die Bausteine einzeln zuschalten"
 
-    Baue den Prompt schrittweise auf und beobachte, wo der größte Sprung passiert.
+    Baue den Prompt schrittweise auf und beobachte, wo der größte Sprung passiert. Starte den Chat-Modus:
+
+    ```bash
+    ollama run qwen2.5:0.5b
+    ```
+
+    **Stufe 1 – nur die Aufgabe:**
+
+    ```title="Terminal"
+    >>> Nenne die drei größten Risiken für einen Bio-Lieferdienst.
+    ```
+
+    ```title="Beispielausgabe"
+    Bio-Lieferdienste stehen vor mehreren Herausforderungen. Erstens ist
+    die Logistik anspruchsvoll. Zweitens spielt die Qualitätssicherung eine
+    große Rolle. Drittens sollte man den Markt genau beobachten und die
+    Konkurrenz im Blick behalten.
+    ```
+
+    **Stufe 3 – mit Rolle und Kontext** (`/clear` nicht vergessen):
+
+    ```title="Terminal"
+    >>> /clear
+    >>> """
+    ... Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der
+    ... Lebensmittelbranche.
+    ...
+    ... Ein Zwei-Personen-Startup in Innsbruck, 15.000 € Startkapital,
+    ... Zielgruppe berufstätige Familien, zwei große Wettbewerber.
+    ...
+    ... Nenne die drei größten Risiken für diesen Bio-Lieferdienst.
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    Mit 15.000 € Startkapital ist die Kühlkette das erste Problem – ein
+    gebrauchtes Kühlfahrzeug verbraucht davon bereits einen erheblichen Teil.
+    Zweitens sind zwei Personen zu wenig, um Einkauf, Zustellung und
+    Kundenservice parallel abzudecken. Drittens können die etablierten
+    Wettbewerber ihre Preise unterbieten, sobald Sie relevant werden.
+    ```
+
+    **Stufe 5 – zusätzlich mit Einschränkungen und Format:**
+
+    ```title="Terminal"
+    >>> /clear
+    >>> """
+    ... Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der
+    ... Lebensmittelbranche.
+    ...
+    ... Ein Zwei-Personen-Startup in Innsbruck, 15.000 € Startkapital,
+    ... Zielgruppe berufstätige Familien, zwei große Wettbewerber.
+    ...
+    ... Nenne die drei größten Risiken für diesen Bio-Lieferdienst.
+    ...
+    ... Antworte auf Deutsch. Maximal 2 Sätze pro Risiko. Erfinde keine Zahlen.
+    ...
+    ... Format je Risiko:
+    ... RISIKO <n>: <Titel>
+    ... Gegenmaßnahme: <ein Satz>
+    ... """
+    ```
+
+    ```title="Beispielausgabe"
+    RISIKO 1: Kühlkette
+    Gegenmaßnahme: Zu Beginn nur ungekühlte Trockenware anbieten.
+
+    RISIKO 2: Personelle Überlastung
+    Gegenmaßnahme: Zustellung auf zwei feste Wochentage bündeln.
+
+    RISIKO 3: Preiskampf mit Wettbewerbern
+    Gegenmaßnahme: Über Regionalität statt über den Preis positionieren.
+    ```
+
+    **Deine Aufgabe:** Probiere auch Stufe 2 (nur + Rolle) und Stufe 4 (ohne Format). Bewerte jede Stufe mit 0–5 Punkten in den Kategorien *Konkretheit*, *Nutzbarkeit* und *Formattreue*. Zwischen welchen beiden Stufen liegt der größte Sprung?
+
+!!! example "Übung 2: Der rosa Elefant 🐘"
+
+    Prüfe die Regel „positiv statt negativ" selbst nach. Führe **jeden** Befehl dreimal aus:
+
+    ```bash
+    ollama run qwen2.5:0.5b "Beschreibe ein veganes Café in Innsbruck. Schreibe KEINE Einleitung und verwende KEINE Superlative."
+    ```
+
+    ```title="Beispielausgabe (negativ formuliert)"
+    Gerne! Hier ist eine Beschreibung ohne Einleitung: Das Café ist ein
+    fantastischer Ort für alle, die vegane Küche lieben ...
+    ```
+
+    ```bash
+    ollama run qwen2.5:0.5b "Beschreibe ein veganes Café in Innsbruck. Beginne direkt mit dem ersten Fakt. Verwende ausschließlich sachliche Adjektive."
+    ```
+
+    ```title="Beispielausgabe (positiv formuliert)"
+    Das Café liegt in der Innsbrucker Altstadt und bietet ausschließlich
+    pflanzliche Speisen an. Die Karte umfasst Frühstück, Mittagsgerichte
+    und hausgemachte Kuchen ...
+    ```
+
+    Beachte die erste Ausgabe: Das Modell **kündigt an**, keine Einleitung zu schreiben – und schreibt damit genau eine. Danach folgt prompt ein „fantastisch".
+
+    **Deine Aufgabe:** Wie oft hält sich das Modell in drei Durchläufen jeweils an die Vorgabe? Notiere das Ergebnis als Bruch, z. B. „negativ: 1/3, positiv: 3/3".
+
+??? code "🐍 Optional (Python): alle fünf Stufen automatisch durchlaufen"
+
+    Statt fünfmal von Hand zu tippen, erledigt das ein Skript. Benötigt `llm.py` aus dem [Setup](ollama-setup.md).
 
     ```python title="bausteine.py"
     from llm import frage
@@ -235,76 +340,22 @@ Zeit, den Unterschied selbst zu messen. Alle Übungen mit dem Kursmodell `qwen2.
         print(frage(prompt))
     ```
 
-    **Deine Aufgabe:** Bewerte jede Stufe mit 0–5 Punkten in den Kategorien *Konkretheit*, *Nutzbarkeit* und *Formattreue*. Zwischen welchen beiden Stufen liegt der größte Sprung?
+    ```title="Ausgabe (gekürzt)"
+    ============================================================
+    1 – nur Aufgabe
+    ============================================================
+    Bio-Lieferdienste stehen vor mehreren Herausforderungen. Erstens ist
+    die Logistik anspruchsvoll ...
 
-!!! example "Übung 2: Der rosa Elefant 🐘"
-
-    Prüfe die Regel „positiv statt negativ" empirisch nach:
-
-    ```python title="elefant.py"
-    from llm import frage
-
-    negativ = ("Beschreibe ein veganes Café in Innsbruck. "
-               "Schreibe KEINE Einleitung und verwende KEINE Superlative.")
-    positiv = ("Beschreibe ein veganes Café in Innsbruck. "
-               "Beginne direkt mit dem ersten Fakt. Verwende ausschließlich "
-               "sachliche Adjektive.")
-
-    for name, p in [("NEGATIV", negativ), ("POSITIV", positiv)]:
-        for durchlauf in range(3):
-            print(f"\n--- {name}, Durchlauf {durchlauf + 1} ---")
-            print(frage(p, seed=durchlauf))
+    ============================================================
+    5 – + Format
+    ============================================================
+    RISIKO 1: Kühlkette
+    Gegenmaßnahme: Zu Beginn nur ungekühlte Trockenware anbieten.
+    ...
     ```
 
-    In wie vielen der drei Durchläufe hält sich das Modell jeweils an die Vorgabe?
-
-??? question "Übung 3: Prompt-Doktor 🩺 (Python)"
-
-    Schreibe eine Funktion, die einen Prompt auf die fünf Bausteine prüft. Ergänze die beiden `TODO`s.
-
-    ```python title="prompt_doktor.py"
-    SIGNALE = {
-        "Rolle":           ["du bist", "agiere als", "in der rolle"],
-        "Kontext":         ["kontext", "hintergrund", "unser", "zielgruppe"],
-        "Einschränkungen": ["maximal", "genau", "höchstens", "wörter", "sätze"],
-        "Format":          ["format", "tabelle", "json", "stichpunkte", "liste"],
-    }
-
-    def pruefe(prompt):
-        text = prompt.lower()
-        fehlend = [name for name, woerter in SIGNALE.items()
-                   if not any(w in text for w in woerter)]
-        # TODO 1: Warnung ausgeben, wenn der Prompt < 15 Wörter hat
-        # TODO 2: Ergebnis lesbar formatiert ausgeben
-        return fehlend
-
-    print(pruefe("Schreib was über mein Café"))
-    print(pruefe("Du bist Marketing-Expertin. Schreibe maximal 50 Wörter als Liste."))
-    ```
-
-    ??? success "Lösungsvorschlag"
-
-        ```python title="prompt_doktor.py"
-        def pruefe(prompt):
-            text = prompt.lower()
-            fehlend = [name for name, woerter in SIGNALE.items()
-                       if not any(w in text for w in woerter)]
-
-            print(f"\nPrompt: {prompt[:60]}...")
-            print(f"Länge:  {len(prompt.split())} Wörter")
-
-            if len(prompt.split()) < 15:
-                print("⚠️  Sehr kurz – vermutlich fehlt Kontext.")
-
-            if fehlend:
-                print(f"❌ Fehlende Bausteine: {', '.join(fehlend)}")
-            else:
-                print("✅ Alle Bausteine erkannt.")
-
-            return fehlend
-        ```
-
-        **Wichtig:** Das ist eine reine Stichwortsuche, keine echte Bewertung. Ein Prompt kann alle Signalwörter enthalten und trotzdem schlecht sein – und umgekehrt. Nutze das Skript als Checkliste, nicht als Urteil.
+    Der Gewinn ist nicht die Ausgabe – die bekommst du im Terminal genauso. Der Gewinn ist, dass du **eine Zeile ändern** und alle fünf Stufen erneut vergleichen kannst.
 
 ---
 
@@ -333,7 +384,7 @@ Zeit, den Unterschied selbst zu messen. Alle Übungen mit dem Kursmodell `qwen2.
     1. Formuliere einen **Minimal-Prompt** (nur die Aufgabe) und lass ihn auf `qwen2.5:0.5b` laufen.
     2. Baue daraus einen **vollständigen RKAEF-Prompt** für deine Idee.
     3. Lass deinen guten Prompt zusätzlich auf `gemma3:270m` laufen. Bleibt das Ergebnis auch dort brauchbar?
-    4. Speichere den finalen Prompt als `prompts/01_beschreibung.md` – er ist der erste Eintrag deiner späteren [Prompt Library](libraries.md).
+    4. Notiere den finalen Prompt in deiner `prompts.md` unter der Überschrift `## 01 Beschreibung` – er ist der erste Eintrag deiner späteren [Prompt Library](libraries.md).
 
 ---
 

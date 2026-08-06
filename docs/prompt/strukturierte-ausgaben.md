@@ -94,36 +94,39 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 ## Der JSON-Modus
 
-Ollama kann das Modell technisch dazu **zwingen**, gültiges JSON zu erzeugen – über den Parameter `format`:
+Ollama kann das Modell technisch dazu **zwingen**, gültiges JSON zu erzeugen – mit der Option `--format json`:
 
-```python title="json_modus.py" hl_lines="12"
-import ollama
-import json
-
-antwort = ollama.chat(
-    model="qwen2.5:0.5b",
-    messages=[{
-        "role": "user",
-        "content": ("Nenne 3 Risiken für einen Bio-Lieferdienst. "
-                    'Antworte als JSON: {"risiken": [{"titel": "...", '
-                    '"schwere": "hoch|mittel|niedrig"}]}'),
-    }],
-    format="json",   # <-- der entscheidende Parameter
-    options={"temperature": 0.1},
-)
-
-daten = json.loads(antwort["message"]["content"])
-for r in daten["risiken"]:
-    print(f"[{r['schwere']:>7}] {r['titel']}")
+```bash
+ollama run --format json qwen2.5:0.5b "Nenne 3 Risiken für einen Bio-Lieferdienst. Antworte als JSON mit dem Schlüssel 'risiken', jeder Eintrag mit 'titel' und 'schwere' (hoch, mittel oder niedrig)."
 ```
 
-`format="json"` erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**: Tokens, die das JSON ungültig machen würden, werden gar nicht erst zur Auswahl zugelassen. Das Modell *kann* damit kein kaputtes JSON mehr erzeugen.
+```title="Beispielausgabe"
+{
+  "risiken": [
+    {"titel": "Kühlkette bei der Zustellung", "schwere": "hoch"},
+    {"titel": "Verderb bei schwankender Nachfrage", "schwere": "mittel"},
+    {"titel": "Preisdruck durch Supermärkte", "schwere": "hoch"}
+  ]
+}
+```
+
+Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**: Tokens, die das JSON ungültig machen würden, werden gar nicht erst zur Auswahl zugelassen. Das Modell *kann* damit kein kaputtes JSON mehr erzeugen.
 
 !!! warning "Gültig ≠ richtig"
 
-    `format="json"` garantiert nur die **Syntax**, nicht das **Schema**. Du bekommst garantiert gültiges JSON – aber vielleicht mit dem Schlüssel `"risks"` statt `"risiken"`, oder mit `"schwere": "sehr hoch"` statt einem der drei erlaubten Werte.
+    `--format json` garantiert nur die **Syntax**, nicht das **Schema**. Du bekommst garantiert gültiges JSON – aber vielleicht so:
 
-    👉 Beschreibe das Schema trotzdem **im Prompt** und **validiere** in Python.
+    ```title="Ebenfalls gültiges JSON – aber unbrauchbar"
+    {
+      "risks": [
+        {"name": "Kühlkette", "severity": "sehr hoch"}
+      ]
+    }
+    ```
+
+    Englische Schlüssel, andere Feldnamen, ein Wert außerhalb der drei erlaubten. Syntaktisch einwandfrei, für die Weiterverarbeitung wertlos.
+
+    👉 Beschreibe das Schema trotzdem **im Prompt** – und prüfe die Ausgabe.
 
 ---
 
@@ -131,131 +134,119 @@ for r in daten["risiken"]:
 
 !!! example "Übung 1: Wie oft klappt JSON ohne Zwang?"
 
-    Miss den Unterschied zwischen „bitte JSON" und erzwungenem JSON.
+    Führe **denselben** Prompt fünfmal aus – einmal ohne, einmal mit `--format json`.
 
-    ```python title="json_test.py"
-    import json
-    import ollama
+    **Ohne Zwang:**
 
-    PROMPT = ('Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON '
-              'im Format: {"risiken": [{"titel": "...", "schwere": "hoch"}]}')
-
-    def versuche(erzwingen, runden=5):
-        erfolge = 0
-        for i in range(runden):
-            kwargs = {"format": "json"} if erzwingen else {}
-            antwort = ollama.chat(
-                model="qwen2.5:0.5b",
-                messages=[{"role": "user", "content": PROMPT}],
-                options={"temperature": 0.3, "seed": i},
-                **kwargs,
-            )["message"]["content"]
-
-            try:
-                json.loads(antwort)
-                erfolge += 1
-                print(f"  {i + 1}. ✅ gültig")
-            except json.JSONDecodeError:
-                print(f"  {i + 1}. ❌ {antwort[:60]!r}...")
-        return erfolge
-
-    print("OHNE format='json':")
-    a = versuche(erzwingen=False)
-    print("\nMIT format='json':")
-    b = versuche(erzwingen=True)
-    print(f"\nErgebnis: {a}/5 vs. {b}/5")
+    ```bash
+    ollama run qwen2.5:0.5b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
     ```
 
-    **Typisches Ergebnis:** Ohne Zwang scheitert das kleine Modell oft an Kleinigkeiten – ein einleitender Satz, ein ```-Codeblock drumherum, ein Komma zu viel. Mit `format="json"` sind es 5/5.
+    ````title="Beispielausgabe — Versuch 1 ❌"
+    Gerne! Hier ist die Antwort im JSON-Format:
+
+    ```json
+    {"risiken": [{"titel": "Logistik", "schwere": "hoch"}]}
+    ```
+
+    Ich hoffe, das hilft weiter!
+    ````
+
+    ```title="Beispielausgabe — Versuch 2 ❌"
+    {"risiken": [{"titel": "Kühlkette", "schwere": "hoch"},]}
+    ```
+
+    Versuch 1 ist von Text umrahmt, Versuch 2 hat ein Komma zu viel vor der schließenden Klammer. Beides ist **kein** gültiges JSON – ein Programm bricht hier ab.
+
+    **Mit Zwang:**
+
+    ```bash
+    ollama run --format json qwen2.5:0.5b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
+    ```
+
+    ```title="Beispielausgabe — jedes Mal gültig ✅"
+    {"risiken": [{"titel": "Kühlkette", "schwere": "hoch"}, {"titel": "Nachfrageschwankungen", "schwere": "mittel"}]}
+    ```
+
+    **Deine Aufgabe:** Fünf Durchläufe pro Variante. Notiere die Trefferquote (z. B. „ohne: 2/5, mit: 5/5"). Prüfe zusätzlich bei den gültigen Ausgaben: Stimmen auch die **Schlüsselnamen** und sind alle `schwere`-Werte aus der erlaubten Menge?
 
 !!! example "Übung 2: Vorlage schlägt JSON"
 
-    Zeige, dass das simpelste Format bei kleinen Modellen am zuverlässigsten ist.
+    Das simpelste Format ist bei kleinen Modellen das zuverlässigste.
 
-    ```python title="vorlage.py"
-    from llm import frage
-
-    prompt = """Fülle exakt diese Vorlage für einen Bio-Lieferdienst in
-    Innsbruck aus. Ersetze nur die <Platzhalter>. Keine Erklärung.
-
-    PRODUKT: <name>
-    ZIELGRUPPE: <eine Zeile>
-    NUTZEN: <maximal 15 Wörter>
-    PREIS: <zahl> EUR
-    RISIKO: <ein Satz>"""
-
-    antwort = frage(prompt)
-    print(antwort)
-
-    # Vorlage in ein Dictionary umwandeln
-    daten = {}
-    for zeile in antwort.splitlines():
-        if ":" in zeile:
-            schluessel, wert = zeile.split(":", 1)
-            daten[schluessel.strip()] = wert.strip()
-
-    print("\nAls Dictionary:")
-    for k, v in daten.items():
-        print(f"  {k:<12} = {v}")
+    ```title="Terminal"
+    >>> """
+    ... Fülle exakt diese Vorlage für einen Bio-Lieferdienst in Innsbruck aus.
+    ... Ersetze nur die <Platzhalter>. Keine Erklärung.
+    ...
+    ... PRODUKT: <name>
+    ... ZIELGRUPPE: <eine Zeile>
+    ... NUTZEN: <maximal 15 Wörter>
+    ... PREIS: <zahl> EUR
+    ... RISIKO: <ein Satz>
+    ... """
     ```
 
-    **Erkenntnis:** Fünf Zeilen Python ersetzen den ganzen JSON-Kampf – und funktionieren selbst mit `gemma3:270m`.
+    ```title="Beispielausgabe"
+    PRODUKT: Inntal Frischbox
+    ZIELGRUPPE: Berufstätige Familien in Innsbruck und Umgebung
+    NUTZEN: Regionale Bio-Ware wöchentlich bis an die Wohnungstür geliefert
+    PREIS: 29 EUR
+    RISIKO: Bei geringer Bestellmenge sind die Lieferkosten pro Box zu hoch.
+    ```
 
-??? question "Übung 3: Schema-Validierung (Python)"
+    **Deine Aufgabe:** Führe diesen Prompt fünfmal aus und vergleiche die Trefferquote mit der JSON-Variante aus Übung 1. Probiere ihn danach auch auf `gemma3:270m` – dem winzigsten Modell. Was funktioniert dort noch, JSON oder Vorlage?
 
-    `format="json"` garantiert Syntax, nicht Inhalt. Schreibe den Validator dazu.
+!!! example "Übung 3: Der Reparatur-Prompt"
 
-    ```python title="validator.py"
+    Wenn das Format nicht stimmt, musst du nicht von vorn anfangen. Sag im **selben Chat**, was falsch war:
+
+    ```title="Terminal"
+    >>> Deine Antwort enthielt einleitenden Text und einen Codeblock.
+    ... Gib das JSON erneut aus – ohne jeden Text davor oder danach.
+    ```
+
+    ```title="Beispielausgabe"
+    {"risiken": [{"titel": "Kühlkette", "schwere": "hoch"}]}
+    ```
+
+    Das ist **die** Kerntechnik für strukturierte Ausgaben: erzeugen → prüfen → mit der konkreten Fehlerbeschreibung nachbessern. Genau so arbeiten auch produktive KI-Systeme, nur automatisiert.
+
+??? code "🐍 Optional (Python): JSON einlesen und Schema prüfen"
+
+    Der Punkt von JSON ist die Weiterverarbeitung. So sieht sie aus:
+
+    ```python title="json_pruefen.py"
+    import json
+    import ollama
+
     ERLAUBTE_SCHWERE = {"hoch", "mittel", "niedrig"}
 
-    def validiere(daten):
-        """Gibt eine Liste von Fehlermeldungen zurück (leer = alles ok)."""
-        fehler = []
-        # TODO 1: Existiert der Schlüssel "risiken" und ist es eine Liste?
-        # TODO 2: Hat jeder Eintrag die Schlüssel "titel" und "schwere"?
-        # TODO 3: Ist "schwere" einer der erlaubten Werte?
-        return fehler
+    antwort = ollama.chat(
+        model="qwen2.5:0.5b",
+        messages=[{"role": "user", "content":
+                   "Nenne 3 Risiken für einen Bio-Lieferdienst. JSON mit "
+                   "Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."}],
+        format="json",
+        options={"temperature": 0.1},
+    )["message"]["content"]
 
-    print(validiere({"risiken": [{"titel": "Kosten", "schwere": "sehr hoch"}]}))
-    # erwartet: Hinweis auf ungültigen Wert "sehr hoch"
+    daten = json.loads(antwort)
+
+    for i, eintrag in enumerate(daten.get("risiken", []), start=1):
+        titel = eintrag.get("titel", "???")
+        schwere = str(eintrag.get("schwere", "")).lower()
+        ok = "✅" if schwere in ERLAUBTE_SCHWERE else "❌"
+        print(f"{ok} [{schwere:>9}] {titel}")
     ```
 
-    ??? success "Lösungsvorschlag"
+    ```title="Ausgabe"
+    ✅ [     hoch] Kühlkette bei der Zustellung
+    ✅ [   mittel] Verderb bei schwankender Nachfrage
+    ❌ [sehr hoch] Preisdruck durch Supermärkte
+    ```
 
-        ```python title="validator.py"
-        ERLAUBTE_SCHWERE = {"hoch", "mittel", "niedrig"}
-
-        def validiere(daten):
-            fehler = []
-
-            if "risiken" not in daten:
-                return ["Schlüssel 'risiken' fehlt"]
-            if not isinstance(daten["risiken"], list):
-                return ["'risiken' ist keine Liste"]
-
-            for i, eintrag in enumerate(daten["risiken"], start=1):
-                for pflicht in ("titel", "schwere"):
-                    if pflicht not in eintrag:
-                        fehler.append(f"Eintrag {i}: '{pflicht}' fehlt")
-
-                schwere = str(eintrag.get("schwere", "")).lower()
-                if schwere and schwere not in ERLAUBTE_SCHWERE:
-                    fehler.append(
-                        f"Eintrag {i}: '{schwere}' ist kein erlaubter Wert "
-                        f"({', '.join(sorted(ERLAUBTE_SCHWERE))})"
-                    )
-
-            return fehler
-        ```
-
-        **Der professionelle Ablauf:** erzeugen → validieren → bei Fehler **mit der Fehlermeldung** neu prompten. Genau so arbeiten produktive KI-Systeme:
-
-        ```python
-        fehler = validiere(daten)
-        if fehler:
-            antwort = frage(f"{PROMPT}\n\nDein letzter Versuch hatte diese "
-                            f"Fehler: {'; '.join(fehler)}. Korrigiere sie.")
-        ```
+    Beachte den dritten Eintrag: Das JSON ist **syntaktisch gültig**, aber `"sehr hoch"` steht nicht in der erlaubten Menge. Genau deshalb reicht `format="json"` allein nicht – die Schema-Prüfung musst du selbst machen.
 
 ---
 
@@ -282,10 +273,10 @@ for r in daten["risiken"]:
     **Konkrete Schritte:**
 
     1. Erzeuge dein Canvas in allen vier Formaten (Tabelle, JSON, Markdown, Vorlage) mit `qwen2.5:0.5b`.
-    2. Führe jedes Format **fünfmal** mit unterschiedlichem `seed` aus und zähle die Fehlversuche.
-    3. Schreibe ein kleines Skript, das die JSON-Variante einliest und die neun Felder als Liste ausgibt.
+    2. Führe jedes Format **fünfmal** aus und notiere die Fehlversuche als Bruch.
+    3. Wiederhole den zuverlässigsten und den unzuverlässigsten Prompt auf `gemma3:270m`. Verschiebt sich die Rangfolge?
     4. Notiere für jedes Format eine Empfehlung: *Wofür würde ich es einsetzen?*
-    5. Speichere den zuverlässigsten Prompt als `prompts/03_canvas_json.md`.
+    5. Trage den zuverlässigsten Prompt in deine `prompts.md` unter `## 03 Canvas strukturiert` ein.
 
 ---
 
