@@ -8,68 +8,63 @@ Der Name klingt technischer, als es ist: Ein **Shot** ist schlicht ein *Beispiel
 
 ## Die drei Ansätze
 
-```mermaid
-flowchart LR
-    Z[Zero-Shot<br/>nur Anweisung]:::teal --> O[One-Shot<br/>+ 1 Beispiel]:::teal
-    O --> F[Few-Shot<br/>+ 3–5 Beispiele]:::peach
+### Zero-Shot
 
-    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
-    classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
+Du beschreibst die Aufgabe – ohne ein einziges Beispiel.
+
+```
+Klassifiziere die folgende Kundenbewertung als positiv, neutral
+oder negativ.
+
+Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
 ```
 
-=== "Zero-Shot"
+**Gut für:** Standardaufgaben, die das Modell aus dem Training kennt – übersetzen, zusammenfassen, klassifizieren. Kostet am wenigsten Aufwand und Tokens, ist aber beim Format am unzuverlässigsten.
 
-    Du beschreibst die Aufgabe – ohne ein einziges Beispiel.
+---
 
-    ```title="zero_shot.txt"
-    Klassifiziere die folgende Kundenbewertung als positiv, neutral
-    oder negativ.
+### One-Shot
 
-    Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
-    ```
+Ein einziges Beispiel zeigt Format *und* Erwartungshaltung.
 
-    **Gut für:** Standardaufgaben, die das Modell aus dem Training kennt (übersetzen, zusammenfassen, klassifizieren).
+```
+Klassifiziere Kundenbewertungen.
 
-=== "One-Shot"
+Bewertung: "Alles top, gerne wieder!"
+Kategorie: positiv
 
-    Ein einziges Beispiel zeigt Format *und* Erwartungshaltung.
+Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
+Kategorie:
+```
 
-    ```title="one_shot.txt"
-    Klassifiziere Kundenbewertungen.
+**Gut für:** wenn das Ergebnis inhaltlich schon stimmt, aber das **Format** wackelt. Ein einziges Musterbeispiel genügt oft.
 
-    Bewertung: "Alles top, gerne wieder!"
-    Bewertung: positiv
-    Begründung: durchweg zufrieden
+---
 
-    Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
-    ```
+### Few-Shot
 
-    **Gut für:** wenn vor allem das **Format** klar sein muss.
+Mehrere Beispiele – idealerweise auch **Grenzfälle**.
 
-=== "Few-Shot"
+```
+Klassifiziere Kundenbewertungen.
 
-    Mehrere Beispiele – idealerweise auch **Grenzfälle**.
+Bewertung: "Alles top, gerne wieder!"
+Kategorie: positiv
 
-    ```title="few_shot.txt"
-    Klassifiziere Kundenbewertungen.
+Bewertung: "Ware kam an. Nichts Besonderes."
+Kategorie: neutral
 
-    Bewertung: "Alles top, gerne wieder!"
-    Kategorie: positiv
+Bewertung: "Zwei Tage zu spät und die Hälfte fehlte."
+Kategorie: negativ
 
-    Bewertung: "Ware kam an. Nichts Besonderes."
-    Kategorie: neutral
+Bewertung: "Super Qualität, aber viel zu teuer."
+Kategorie: neutral
 
-    Bewertung: "Zwei Tage zu spät und die Hälfte fehlte."
-    Kategorie: negativ
+Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
+Kategorie:
+```
 
-    Bewertung: "Super Qualität, aber viel zu teuer."
-    Kategorie: neutral
-
-    Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
-    Kategorie:
-    ```
-
-    **Gut für:** Aufgaben mit **eigenen Regeln**, Grenzfällen oder ungewöhnlichem Format.
+**Gut für:** Aufgaben mit **eigenen Regeln**, Grenzfällen oder ungewöhnlichem Format. Am zuverlässigsten – kostet aber die meisten Tokens und Vorbereitungszeit.
 
 ???+ defi "In-Context Learning"
 
@@ -77,53 +72,9 @@ flowchart LR
 
     Deshalb ist die Wirkung nach dem Chat auch wieder weg. Wer dauerhaft ein Verhalten will, braucht Fine-Tuning – oder eine [Prompt Library](libraries.md).
 
----
-
-## Vor- und Nachteile
-
-<div style="text-align:center; max-width:760px; margin:16px auto;">
-<table role="table"
-       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
-    <thead>
-    <tr style="background:#009485; color:#fff;">
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Kriterium</th>
-        <th style="text-align:center; padding:12px 14px; font-weight:700;">Zero-Shot</th>
-        <th style="text-align:center; padding:12px 14px; font-weight:700;">Few-Shot</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Aufwand</td>
-        <td style="padding:10px 14px; text-align:center;">sehr gering</td>
-        <td style="padding:10px 14px; text-align:center;">hoch (Beispiele erstellen)</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Formattreue</td>
-        <td style="padding:10px 14px; text-align:center;">mäßig</td>
-        <td style="padding:10px 14px; text-align:center;">sehr hoch</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Token-Verbrauch</td>
-        <td style="padding:10px 14px; text-align:center;">niedrig</td>
-        <td style="padding:10px 14px; text-align:center;">hoch</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Konsistenz</td>
-        <td style="padding:10px 14px; text-align:center;">schwankend</td>
-        <td style="padding:10px 14px; text-align:center;">stabil</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Nutzen bei <em>kleinen</em> Modellen</td>
-        <td style="padding:10px 14px; text-align:center;">gering</td>
-        <td style="padding:10px 14px; text-align:center;">⭐ sehr groß</td>
-    </tr>
-    </tbody>
-</table>
-</div>
-
 !!! tip "Der Kurs-Trick"
 
-    Genau die letzte Zeile ist für uns entscheidend. Ein großes Modell braucht selten Beispiele – es rät richtig. **Kleine Modelle profitieren dramatisch von Few-Shot.** Wenn `gemma3:1b` deine Aufgabe partout nicht versteht: gib ihm zwei Beispiele, statt den Anweisungstext ein viertes Mal umzuformulieren.
+    Ein großes Modell braucht selten Beispiele – es rät richtig. **Kleine Modelle profitieren dramatisch von Few-Shot.** Wenn `gemma3:1b` deine Aufgabe partout nicht versteht: gib ihm zwei Beispiele, statt den Anweisungstext ein viertes Mal umzuformulieren.
 
 ---
 
@@ -137,7 +88,7 @@ flowchart LR
     4. **Es gibt Grenzfälle, die immer falsch klassifiziert werden?** → genau diese Grenzfälle als Beispiele aufnehmen.
     5. **Auch mit Few-Shot keine Besserung?** → Aufgabe ist zu groß. Zerlegen: [Prompt Chaining](chaining.md).
 
-???+ defi "Was Beispiele wirklich leisten – ein überraschender Befund"
+???+ tip "Was Beispiele wirklich leisten – ein überraschender Befund"
 
     Man würde annehmen, das Modell lerne aus Beispielen die **richtige Zuordnung**. Min et al.[^min] haben das geprüft und die Labels in den Beispielen **absichtlich falsch** gesetzt – „Alles top!" → *negativ*. Das Ergebnis: Die Leistung brach kaum ein.
 
@@ -237,23 +188,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 ---
 
-???+
-
----
-
-???+ question "Selbsttest"
-
-    1. Was ist ein „Shot" in Zero-/Few-Shot-Prompting?
-    2. Warum profitieren kleine Modelle stärker von Few-Shot als große?
-    3. Warum sollte das letzte Label im Few-Shot-Prompt offen bleiben?
-
-    ??? success "Lösungsskizze"
-
-        1. Ein **Beispiel** für die gewünschte Ein-/Ausgabe, das direkt im Prompt mitgeliefert wird.
-        2. Große Modelle haben die Aufgabe im Training oft schon in ähnlicher Form gesehen und raten richtig. Kleine Modelle nicht – bei ihnen ersetzt das Beispiel dieses fehlende „Vorwissen".
-        3. Weil das Modell Text **fortsetzt**. Ein abgebrochenes Muster ist die stärkste Aufforderung, es genau in dieser Form zu vollenden.
-
----
 
 ## Quellen
 
