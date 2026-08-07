@@ -4,6 +4,7 @@ site_url: https://learn-data.at
 theme:
   name: material
   custom_dir: overrides
+  language: de
   logo: assets/logo1.png
   favicon: assets/icon.png
   palette:
