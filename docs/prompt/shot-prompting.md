@@ -157,91 +157,39 @@ flowchart LR
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-!!! example "Übung 1: Zero-Shot vs. Few-Shot"
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-    Wir klassifizieren Kundenbewertungen und achten darauf, ob das Modell das geforderte Format trifft: **genau ein Wort**.
+!!! lab "Übung 1: Zero-Shot vs. Few-Shot messen"
 
-    **Zero-Shot:**
+    Denk dir eine **Klassifikationsaufgabe** aus deinem Geschäftsfeld aus – etwa Kundenanfragen in *Beschwerde / Frage / Lob* einsortieren. Schreibe dir **fünf Testfälle** auf, darunter mindestens einen Grenzfall.
 
-    ```bash
-    ollama run gemma3:1b "Klassifiziere die Kundenbewertung als positiv, neutral oder negativ. Antworte mit genau einem Wort. Bewertung: Die Lieferung kam pünktlich, aber das Gemüse war welk. Kategorie:"
-    ```
+    Dann beide Varianten durchspielen:
 
-    ```title="Beispielausgabe"
-    Diese Bewertung würde ich als eher neutral einstufen, da sowohl ein
-    positiver Aspekt (pünktliche Lieferung) als auch ein negativer Aspekt
-    (welkes Gemüse) genannt werden.
-    ```
+    1. **Zero-Shot** – nur die Anweisung, dazu *„Antworte mit genau einem Wort."*
+    2. **Few-Shot** – dieselbe Anweisung plus drei Beispiele, letztes Label offen lassen.
 
-    Inhaltlich richtig – aber **nicht** ein Wort. Für eine Weiterverarbeitung unbrauchbar.
+    **Zähle:** Wie oft bekommst du wirklich nur ein Wort zurück? Notiere beide Trefferquoten als Bruch.
 
-    **Few-Shot** (im Chat-Modus mit `"""`):
+!!! lab "Übung 2: Deinen Stil beibringen"
 
-    ```title="Terminal"
-    >>> """
-    ... Klassifiziere Kundenbewertungen. Antworte mit genau einem Wort.
-    ...
-    ... Bewertung: Alles top, gerne wieder!
-    ... Kategorie: positiv
-    ...
-    ... Bewertung: Zwei Tage zu spät und die Hälfte fehlte.
-    ... Kategorie: negativ
-    ...
-    ... Bewertung: Ware kam an, Preis ist okay.
-    ... Kategorie: neutral
-    ...
-    ... Bewertung: Die Lieferung kam pünktlich, aber das Gemüse war welk.
-    ... Kategorie:
-    ... """
-    ```
+    Few-Shot überträgt **Stil** – etwas, das sich schwer beschreiben lässt.
 
-    ```title="Beispielausgabe"
-    neutral
-    ```
+    Schreibe zwei Produkt- oder Angebotsnamen im Stil deiner Idee selbst und lass das Modell den dritten ergänzen. Tausche danach die Beispiele gegen einen **völlig anderen** Stil (z. B. englische Tech-Namen) und wiederhole.
 
-    **Deine Aufgabe:** Teste beide Varianten mit diesen vier Fällen und zähle, wie oft du **genau ein Wort** zurückbekommst:
+    **Die Frage:** Übernimmt das Modell den neuen Stil, ohne dass du ihn je beschrieben hast?
 
-    - *„Super Qualität, aber viel zu teuer."*
-    - *„Ware kam an. Nichts Besonderes."*
-    - *„Absolut fantastisch, mache ich wieder!"*
-    - *„Zwei Tage zu spät, aber der Support war nett."*
+!!! lab "Übung 3: Business Model Canvas erzeugen"
 
-    Notiere das Ergebnis als Bruch, z. B. „Zero-Shot: 1/4, Few-Shot: 4/4".
+    Jetzt das große Stück – dein Canvas, einmal auf beide Arten:
 
-!!! example "Übung 2: Deinen eigenen Stil beibringen"
+    1. **Zero-Shot:** *„Erstelle ein Business Model Canvas für [deine Idee]."* Zähle: Wie viele der neun Felder kommen?
+    2. **Few-Shot:** Gib **zwei** vollständig ausgefüllte Felder eines *fremden* Beispiels vor (etwa für einen Fahrradkurier) und lass den Rest für deine Idee ergänzen.
 
-    Few-Shot ist das beste Werkzeug, um **Stil** zu übertragen – etwas, das sich mit Worten kaum beschreiben lässt.
+    **Vergleiche** nach Vollständigkeit (0–9 Felder), Formattreue und inhaltlicher Substanz.
 
-    ```title="Terminal"
-    >>> """
-    ... Schreibe Produktnamen im Stil der Beispiele.
-    ...
-    ... Produkt: Bio-Apfelsaft aus Tirol
-    ... Name: Bergquell Apfel
-    ...
-    ... Produkt: Hafermilch aus regionalem Anbau
-    ... Name: Bergquell Hafer
-    ...
-    ... Produkt: Honig aus Innsbrucker Stadtimkerei
-    ... Name:
-    ... """
-    ```
-
-    ```title="Beispielausgabe"
-    Bergquell Honig
-    ```
-
-    Beachte: Du hast dem Modell **nie erklärt**, dass alle Namen mit „Bergquell" beginnen sollen. Es hat das Muster selbst erkannt.
-
-    **Deine Aufgabe:** Tausche die zwei Beispiele gegen einen *völlig anderen* Stil – etwa englische Tech-Namen (`AppleFlow`, `OatStream`). Übernimmt das Modell auch diesen Stil, ohne dass du ihn beschreibst?
-
-!!! tip "Der wichtigste Trick: das offene Label"
-
-    Achte auf die **letzte Zeile** der Few-Shot-Prompts: `Kategorie:` bzw. `Name:` – ohne Wert dahinter.
-
-    Das ist kein Schönheitsfehler, sondern der Kern der Technik. Das Modell sieht ein Muster, das mitten im Satz abbricht, und die naheliegendste Fortsetzung ist genau die gewünschte Antwort. Lässt du den Doppelpunkt weg, beginnt das Modell oft wieder zu erklären.
+    Speichere den besseren Prompt in `prompts.md` unter `## 02 Canvas`.
 
 ??? code "🐍 Optional (Python): Few-Shot-Baukasten"
 
@@ -289,6 +237,10 @@ flowchart LR
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Was ist ein „Shot" in Zero-/Few-Shot-Prompting?
@@ -300,21 +252,6 @@ flowchart LR
         1. Ein **Beispiel** für die gewünschte Ein-/Ausgabe, das direkt im Prompt mitgeliefert wird.
         2. Große Modelle haben die Aufgabe im Training oft schon in ähnlicher Form gesehen und raten richtig. Kleine Modelle nicht – bei ihnen ersetzt das Beispiel dieses fehlende „Vorwissen".
         3. Weil das Modell Text **fortsetzt**. Ein abgebrochenes Muster ist die stärkste Aufforderung, es genau in dieser Form zu vollenden.
-
----
-
-!!! example "Lab"
-
-    **Business Model Canvas mittels verschiedener Prompting-Ansätze erzeugen**
-
-    Erzeuge für deine Geschäftsidee ein Business Model Canvas[^osterwalder] – einmal per Zero-Shot- und einmal per Few-Shot-Prompt. Vergleiche Qualität und Vollständigkeit der Ergebnisse.
-
-    **Konkrete Schritte:**
-
-    1. **Zero-Shot:** *„Erstelle ein Business Model Canvas für [deine Idee]."* – Wie viele der neun Felder liefert `gemma3:1b`?
-    2. **Few-Shot:** Gib zwei vollständig ausgefüllte Felder eines *fremden* Beispiels vor (z. B. für einen Fahrradkurier) und lass das Modell die restlichen für deine Idee ergänzen.
-    3. Zähle für beide Varianten: Vollständigkeit (0–9 Felder), Formattreue, inhaltliche Substanz.
-    4. Notiere den besseren Prompt in deiner `prompts.md` unter `## 02 Canvas`.
 
 ---
 

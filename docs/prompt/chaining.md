@@ -103,109 +103,45 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-!!! example "Übung 1: Der Monolith"
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-    Erst der Ein-Prompt-Versuch – damit du siehst, woran er scheitert.
+!!! lab "Übung 1: Der Monolith – bewusst scheitern lassen"
 
-    ```title="Terminal"
-    ollama run gemma3:1b
+    Verlange in **einem einzigen** Prompt alles auf einmal für deine Idee: (1) Marktanalyse, (2) SWOT-Analyse, (3) drei Verbesserungsvorschläge.
 
-    >>> """
-    ... Idee: Lieferdienst für regionale Bio-Lebensmittel in Innsbruck,
-    ... zwei Gründer, 15.000 € Startkapital, Lieferung per Lastenrad.
-    ...
-    ... Erstelle: (1) eine Marktanalyse, (2) eine SWOT-Analyse und
-    ... (3) drei Verbesserungsvorschläge. Antworte auf Deutsch.
-    ... """
-    ```
+    **Prüfe:** Wie viele der drei Teile kommen wirklich brauchbar an? Wo bricht der Text ab?
 
-    ```title="Beispielausgabe"
-    (1) Marktanalyse: Der Markt für Bio-Lebensmittel wächst seit Jahren.
-    In Innsbruck gibt es eine umweltbewusste Bevölkerung und mehrere
-    Bio-Läden. Die Konkurrenz durch Supermärkte mit eigenem Lieferservice
-    ist zu beachten. Auch die Preissensibilität der Kunden spielt eine
-    Rolle, ebenso wie saisonale Schwankungen im Angebot regionaler Ware.
+!!! lab "Übung 2: Dieselbe Aufgabe als Kette"
 
-    (2) SWOT-Analyse: Stärken sind die Regionalität und die Nachhaltigkeit.
-    ```
+    Jetzt in drei Schritten, jeder mit festem Format und `/clear` dazwischen:
 
-    Der Text bricht mitten in Teil 2 ab, Teil 3 fehlt ganz. Das ist kein Zufall: Die Antwortlänge ist begrenzt, und der ausführliche Teil 1 hat sie aufgebraucht.
+    | Schritt | Ergebnis | Format |
+    |---|---|---|
+    | 1 | Zielmarkt | 3 Stichpunkte: Zielgruppe, Marktgröße, Wettbewerber |
+    | 2 | SWOT | genau 2 Punkte je Kategorie |
+    | 3 | Verbesserungen | 3 Vorschläge mit *Adressiert* und *Erster Schritt* |
 
-!!! example "Übung 2: Dieselbe Aufgabe als Kette"
+    Das Ergebnis jedes Schritts kopierst du in den nächsten Prompt. Speichere die Zwischenstände als `kette_1_markt.md`, `kette_2_swot.md`, …
 
-    Jetzt in drei Schritten – jeder mit einem klaren Ergebnis und festem Format.
+    **Vergleiche** das Endergebnis mit dem Monolith aus Übung 1.
 
-    **Schritt 1 – Markt:**
+!!! lab "Übung 3: Der Kontrollpunkt"
 
-    ```title="Terminal"
-    >>> /clear
-    >>> """
-    ... Idee: Lieferdienst für regionale Bio-Lebensmittel in Innsbruck,
-    ... zwei Gründer, 15.000 € Startkapital, Lastenrad-Zustellung.
-    ...
-    ... Beschreibe den Zielmarkt in genau 3 Stichpunkten:
-    ... - Zielgruppe
-    ... - Marktgröße (mit [ANNAHME] kennzeichnen, wenn geschätzt)
-    ... - Wichtigster Wettbewerber
-    ... Keine Einleitung.
-    ... """
-    ```
+    Führe Schritt 2 **fünfmal** aus und zähle, wie oft alle vier SWOT-Kategorien vorkommen.
 
-    ```title="Beispielausgabe"
-    - Zielgruppe: Berufstätige Haushalte in Innsbruck mit Interesse an
-      regionalen Bio-Produkten und wenig Zeit für Einkäufe.
-    - Marktgröße: [ANNAHME] rund 15.000 Haushalte im Stadtgebiet kommen
-      als Kunden infrage.
-    - Wichtigster Wettbewerber: Supermarktketten mit eigenem Lieferservice.
-    ```
+    Wenn eine fehlt: nicht neu starten, sondern gezielt nachfassen – *„In deiner Antwort fehlen die CHANCEN. Gib die vollständige SWOT-Analyse erneut aus."*
 
-    **Schritt 2 – SWOT.** Kopiere das Ergebnis aus Schritt 1 in den nächsten Prompt:
+    **Optional:** dasselbe auf `gemma3:270m`. Dort wirst du den Kontrollpunkt fast immer brauchen.
 
-    ```title="Terminal"
-    >>> /clear
-    >>> """
-    ... Idee: Lieferdienst für regionale Bio-Lebensmittel in Innsbruck,
-    ... zwei Gründer, 15.000 € Startkapital.
-    ...
-    ... Marktanalyse:
-    ... - Zielgruppe: Berufstätige Haushalte in Innsbruck ...
-    ... - Marktgröße: [ANNAHME] rund 15.000 Haushalte ...
-    ... - Wichtigster Wettbewerber: Supermarktketten mit Lieferservice.
-    ...
-    ... Erstelle eine SWOT-Analyse. Genau 2 Punkte pro Kategorie.
-    ... Format:
-    ... STÄRKEN: ...
-    ... SCHWÄCHEN: ...
-    ... CHANCEN: ...
-    ... RISIKEN: ...
-    ... """
-    ```
+!!! lab "Übung 4: Die Kette abschließen"
 
-    ```title="Beispielausgabe"
-    STÄRKEN: Direkter Kontakt zu regionalen Produzenten; emissionsfreie
-    Zustellung als glaubwürdiges Verkaufsargument.
-    SCHWÄCHEN: Sehr geringe Kapitaldecke; nur zwei Personen für alle Aufgaben.
-    CHANCEN: Kooperation mit Bauernmärkten; Abo-Modell für feste Lieferwochen.
-    RISIKEN: Preiskampf mit Supermarktketten; Wetterabhängigkeit der
-    Lastenrad-Zustellung.
-    ```
+    Zeichne deine Kette zuerst **auf Papier**: Welche Schritte, welche Ein- und Ausgaben?
 
-    **Schritt 3 – Verbesserungen.** Kopiere die SWOT weiter und fordere: *„Leite daraus genau 3 konkrete, sofort umsetzbare Verbesserungsvorschläge ab. Format je Vorschlag: VORSCHLAG &lt;n&gt;: &lt;Titel&gt; / Adressiert: &lt;welche Schwäche&gt; / Erster Schritt: &lt;ein Satz&gt;"*
+    **Optional:** Lass die komplette Kette zusätzlich auf `gemma3:4b` laufen. Wo ist der Unterschied am größten – am Anfang oder am Ende?
 
-    **Deine Aufgabe:** Vergleiche das Endergebnis der Kette mit dem Monolith aus Übung 1. Wie viele der drei Teile liefert der Monolith wirklich brauchbar – und wie viele die Kette?
-
-!!! example "Übung 3: Der Kontrollpunkt"
-
-    Der wichtigste Vorteil der Kette: **prüfen, bevor es weitergeht.** Fehlt in der SWOT eine Kategorie, korrigierst du sofort – statt den Fehler in Schritt 3 mitzuschleppen.
-
-    ```title="Terminal"
-    >>> In deiner Antwort fehlen die CHANCEN. Gib die vollständige SWOT-Analyse
-    ... erneut aus, mit allen vier Kategorien.
-    ```
-
-    **Deine Aufgabe:** Führe Schritt 2 fünfmal aus (mit `/clear` dazwischen) und zähle, wie oft alle vier Kategorien vorkommen. Wiederhole das auf `gemma3:270m` – dort wirst du den Kontrollpunkt fast immer brauchen.
+    Notiere alle Kettenschritte in `prompts.md` unter `## 05 Kette`.
 
 ??? code "🐍 Optional (Python): die Kette automatisieren"
 
@@ -276,6 +212,10 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Warum liefert ein Prompt mit vier Teilaufgaben bei kleinen Modellen so schlechte Ergebnisse?
@@ -287,22 +227,6 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
         1. Weil sich die „Aufmerksamkeit" des Modells auf alle Teile verteilt und die Antwortlänge begrenzt ist. Jede Teilaufgabe bekommt nur einen Bruchteil – meist wird die erste ausgeführt und der Rest angerissen.
         2. **Vorteile:** Kontrollpunkte nach jedem Schritt, wiederverwendbare Bausteine, kleinere Kontextfenster. **Nachteil:** mehr Aufrufe (Zeit/Kosten), und ein Fehler in Schritt 1 pflanzt sich fort, wenn man nicht prüft.
         3. Damit der nächste Schritt zuverlässig auf das Ergebnis zugreifen kann. Bei Fließtext musst du raten, wo die relevante Information steht – bei `STÄRKEN: …` nicht.
-
----
-
-!!! example "Lab"
-
-    **Idee → Marktanalyse → SWOT → Verbesserungsvorschläge**
-
-    Baue eine Prompt-Kette auf, die deine Geschäftsidee schrittweise verarbeitet: von der Idee über die Marktanalyse und eine SWOT-Analyse bis hin zu konkreten Verbesserungsvorschlägen.
-
-    **Konkrete Schritte:**
-
-    1. Zeichne deine Kette zuerst **auf Papier**: Welche Schritte, welche Ein- und Ausgaben?
-    2. Arbeite sie im Terminal ab und speichere jedes Zwischenergebnis in einer eigenen Datei (`kette_1_markt.md`, `kette_2_swot.md`, …).
-    3. Setze mindestens einen **Kontrollpunkt** ein (Übung 3): Prüfe ein Zwischenergebnis auf Vollständigkeit, bevor du weitergehst.
-    4. **Optional:** Lass die komplette Kette zusätzlich auf `gemma3:4b` laufen. Wo ist der Unterschied am größten – am Anfang oder am Ende der Kette?
-    5. Notiere alle Kettenschritte in `prompts.md` unter `## 05 Kette`.
 
 ---
 

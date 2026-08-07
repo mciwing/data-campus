@@ -132,121 +132,40 @@ Wenn ein Modell nicht nur *antwortet*, sondern **Werkzeuge benutzt** – eine We
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das nicht.
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-!!! info "Zusätzliches Modell nötig"
+!!! lab "Übung 1: Website-Text auswerten"
 
-    ```bash
-    ollama pull moondream
-    ```
+    Funktioniert mit dem normalen Kursmodell, ohne Vision-Modell.
 
-    **~1,7 GB** · Das kleinste brauchbare Vision-Modell – ein Nachfahre des *Visual Instruction Tuning*-Ansatzes.[^llava] Es versteht **nur Englisch** – wir prompten hier also auf Englisch und lassen ins Deutsche übersetzen.
+    Suche dir **zwei** existierende Unternehmen aus deiner Branche. Kopiere je den sichtbaren Text ihrer Website (zwei bis drei Bildschirmseiten reichen – mehr sprengt das [Kontextfenster](halluzinationen-kontextfenster.md)).
 
-    Kein Speicherplatz? Dann überspringe Übung 1 und 2 und bearbeite stattdessen die **Alternative** weiter unten mit einem Browser-Modell.
+    Lass daraus ableiten: **WERTANGEBOT**, **ZIELGRUPPE**, **ERLÖSMODELL**. Verlange dabei ausdrücklich, nur Informationen aus dem Text zu verwenden und alles andere mit `[UNKLAR]` zu markieren.
 
-!!! example "Übung 1: Was sieht das Modell wirklich?"
+    **Prüfe jede Ausgabe gegen den Originaltext:** Wie oft rät das Modell, obwohl `[UNKLAR]` richtig wäre?
 
-    Lege ein beliebiges Foto als `produkt.jpg` in deinen Arbeitsordner. Im Terminal gibst du den **Dateipfad einfach im Prompt mit an** – Ollama erkennt ihn und lädt das Bild.
+!!! lab "Übung 2: Vergleich mit deiner Idee"
 
-    ```bash
-    ollama run moondream "Describe this image. ./produkt.jpg"
-    ```
+    Stelle die beiden fremden Canvas und dein eigenes in einer **Vergleichstabelle** gegenüber.
 
-    ```title="Beispielausgabe — offener Prompt"
-    A wooden crate filled with fresh organic vegetables sits on a rustic
-    kitchen table. The scene suggests a farm-to-table lifestyle, with warm
-    morning light streaming through a nearby window. The produce looks
-    freshly harvested from a local farm.
-    ```
+    **Beantworte:** Welches Feld füllen die etablierten Anbieter besser als du – und warum?
 
-    Klingt gut – aber wie viel davon steht wirklich im Bild? „Morgenlicht", „frisch geerntet", „vom lokalen Bauernhof": Das sind **Interpretationen**, keine Beobachtungen.
+    Speichere den Analyse-Prompt in `prompts.md` unter `## 07 Wettbewerb`.
 
-    ```bash
-    ollama run moondream "Describe only what is literally visible: objects, colors, text. Do not guess or interpret. ./produkt.jpg"
-    ```
+??? lab "Übung 3: Mit Bildern arbeiten (optional) 🖼️"
 
-    ```title="Beispielausgabe — gelenkter Prompt"
-    A wooden crate containing green and orange vegetables. The crate sits on
-    a light brown surface. The background is blurred and mostly white.
-    ```
+    Braucht ein Vision-Modell: `ollama pull moondream` (~1,7 GB, versteht **nur Englisch**).
 
-    **Deine Aufgabe:** Markiere in der ersten Ausgabe jede Aussage, die du im Bild **nicht** belegen kannst. Probiere zusätzlich eine strukturierte Variante (*„List exactly 3 visible objects, one per line, format: OBJECT: &lt;name&gt;"*). Welcher Prompt reduziert das Erfinden am stärksten?
+    Nimm ein Foto, das zu deiner Idee passt – ein Produkt, ein Ladenlokal, ein Regal. Den Dateipfad gibst du im Prompt mit an.
 
-!!! example "Übung 2: Bild + Übersetzung als Kette"
+    1. Lass es **offen** beschreiben (*„Describe this image."*).
+    2. Lass es **gelenkt** beschreiben (*„Describe only what is literally visible. Do not guess or interpret."*).
 
-    `moondream` kann kein Deutsch – aber `gemma3:1b` schon. Kombiniere beide zu einer [Kette](chaining.md).
+    **Markiere in der ersten Ausgabe jede Aussage, die du im Bild nicht belegen kannst.** Welcher Prompt reduziert das Erfinden stärker?
 
-    **Schritt 1** – Vision-Modell beschreibt auf Englisch:
-
-    ```bash
-    ollama run moondream "Describe this product photo factually in 3 sentences. ./produkt.jpg"
-    ```
-
-    ```title="Beispielausgabe"
-    A wooden crate containing carrots, lettuce and tomatoes. The vegetables
-    appear unpackaged. A paper label is attached to the front of the crate.
-    ```
-
-    **Schritt 2** – Textmodell macht daraus deutschen Verkaufstext. Kopiere die englische Beschreibung in den Prompt:
-
-    ```title="Terminal"
-    ollama run gemma3:1b
-
-    >>> """
-    ... Hier ist eine englische Bildbeschreibung:
-    ... A wooden crate containing carrots, lettuce and tomatoes. The vegetables
-    ... appear unpackaged. A paper label is attached to the front of the crate.
-    ...
-    ... Schreibe daraus eine deutsche Produktbeschreibung für einen Online-Shop.
-    ... Maximal 40 Wörter, sachlich, keine Superlative.
-    ... """
-    ```
-
-    ```title="Beispielausgabe"
-    Unsere Holzkiste enthält Karotten, Salat und Tomaten – unverpackt und
-    direkt aus der Region. Ein Etikett an der Vorderseite nennt Herkunft und
-    Erntedatum der enthaltenen Ware.
-    ```
-
-    **Das Prinzip ist wichtiger als das Ergebnis:** Zwei spezialisierte kleine Modelle in Reihe schlagen oft ein einzelnes mittleres Modell.
-
-!!! example "Übung 3: Website-Text auswerten (ohne Vision-Modell)"
-
-    Funktioniert mit dem normalen Kursmodell. Öffne die Website eines Unternehmens deiner Branche, markiere den sichtbaren Text (<kbd>Strg</kbd>+<kbd>A</kbd>, <kbd>Strg</kbd>+<kbd>C</kbd>) und füge ihn in diesen Prompt ein:
-
-    ```title="Terminal"
-    >>> """
-    ... Hier ist der Text einer Unternehmenswebsite:
-    ...
-    ... [hier den kopierten Text einfügen]
-    ...
-    ... Leite daraus ab:
-    ... WERTANGEBOT: <ein Satz>
-    ... ZIELGRUPPE: <ein Satz>
-    ... ERLÖSMODELL: <ein Satz, oder [UNKLAR]>
-    ...
-    ... Nutze ausschließlich Informationen aus dem Text. Was nicht dort steht,
-    ... markierst du mit [UNKLAR].
-    ... """
-    ```
-
-    ```title="Beispielausgabe"
-    WERTANGEBOT: Wöchentliche Lieferung saisonaler Bio-Kisten von Höfen aus
-    der Umgebung, ohne Vertragsbindung.
-    ZIELGRUPPE: Haushalte, die regionale Lebensmittel bevorzugen, aber keine
-    Zeit für den Wocheneinkauf haben.
-    ERLÖSMODELL: [UNKLAR] – auf der Seite sind keine Preise angegeben.
-    ```
-
-    !!! warning "Zwei Dinge, auf die du achten musst"
-
-        **Kürze den Text.** Das [Kontextfenster](halluzinationen-kontextfenster.md) von `gemma3:1b` ist klein. Fügst du eine ganze Website ein, verliert das Modell den Anfang – und damit deine Anweisung. Etwa 2–3 Bildschirmseiten sind das Maximum.
-
-        **Der letzte Satz im Prompt ist dein wichtigster Schutz.** Ohne *„Nutze ausschließlich Informationen aus dem Text"* ergänzt das Modell fröhlich, was auf so einer Website *üblicherweise* steht – und du merkst es nicht.
-
-    **Deine Aufgabe:** Prüfe jede der drei Ausgaben gegen den Originaltext. Steht das wirklich dort? Wie oft nutzt das Modell `[UNKLAR]`, obwohl es raten könnte – und wie oft rät es, obwohl es `[UNKLAR]` schreiben sollte?
+    **Als Kette:** Lass `moondream` englisch beschreiben und `gemma3:1b` daraus deutschen Verkaufstext machen. Zwei kleine Spezialisten in Reihe schlagen oft ein mittleres Allzweckmodell.
 
 ??? code "🐍 Optional (Python): Website-Text automatisch holen"
 
@@ -308,6 +227,10 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Was passiert technisch mit einem Bild, bevor das Modell es verarbeitet?
@@ -319,23 +242,6 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
         1. Es wird in **Bild-Tokens** zerlegt und in denselben Vektorraum eingebettet wie Text. Danach ist es für den Transformer nur noch eine weitere Token-Folge – es wird gerechnet, nicht „gesehen".
         2. Weil das Modell keine Werte misst, sondern **plausible Zahlen vorhersagt**. Für Trends reicht das; für exakte Werte nicht.
         3. Bei einer Kette legst du die Schritte **vorab** fest. Ein Agent entscheidet **selbst**, welches Werkzeug er als Nächstes einsetzt – mächtiger, aber schwerer zu kontrollieren.
-
----
-
-!!! example "Lab"
-
-    **Analyse existierender Geschäftsmodelle**
-
-    Analysiere bestehende Geschäftsmodelle anhand von Webseiten oder Präsentationen. Lass dir Stärken, Schwächen und Erfolgsfaktoren herausarbeiten und vergleiche sie mit deiner eigenen Idee.
-
-    **Konkrete Schritte:**
-
-    1. Wähle **zwei** existierende Unternehmen aus deiner Branche.
-    2. Kopiere ihre Website-Texte in das Analyse-Muster aus Übung 3.
-    3. Lass für beide ein Business Model Canvas ableiten – mit `[ANNAHME]`-Markierung für alles Erschlossene.
-    4. Stelle beide Canvas und dein eigenes in einer **Vergleichstabelle** gegenüber.
-    5. Beantworte: Welches Feld füllen die etablierten Anbieter besser als du – und warum?
-    6. Notiere den Analyse-Prompt in `prompts.md` unter `## 07 Wettbewerb`.
 
 ---
 

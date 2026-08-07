@@ -131,7 +131,7 @@ Ab Kapitel 2 arbeitest du mit einem **lokalen Sprachmodell** auf deinem eigenen 
 
     Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist. **Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering.**
 
-Jedes Kapitel enthält dafür ein **🔬 Ollama-Labor** mit Experimenten zum Nachmachen.
+Ab Kapitel 2 hat jedes Kapitel ein **🔬 Ollama-Lab**: Dort wendest du die jeweilige Technik direkt auf **deine eigene Geschäftsidee** an. Übungen und Kurs-Lab sind dasselbe – du arbeitest also von Anfang an am roten Faden.
 
 !!! info "Du brauchst keine Programmierkenntnisse"
 

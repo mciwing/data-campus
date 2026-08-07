@@ -1,4 +1,4 @@
-# 2. Anatomie eines guten Prompts
+# Anatomie eines guten Prompts
 
 Ein wirkungsvoller Prompt ist kein Zufall, sondern folgt einer **klaren Struktur**. Wer die Bausteine kennt, kann gezielt steuern, was das Modell liefert.
 
@@ -6,7 +6,7 @@ Die meisten Menschen prompten wie beim Googeln: ein paar Stichworte, Enter, Daum
 
 !!! info "Voraussetzung für dieses Kapitel"
 
-    Ab hier arbeiten wir praktisch. Wenn du es noch nicht getan hast, richte zuerst deinen lokalen Playground ein:
+    Ab hier arbeiten wir praktisch. Wenn du es noch nicht getan hast, richte zuerst deine  lokale Umgebung ein:
 
     👉 **[Setup: Dein eigenes LLM mit Ollama](ollama-setup.md)**
 
@@ -18,11 +18,24 @@ Ein vollständiger Prompt besteht aus fünf Elementen.[^schulhoff] Nicht jeder P
 
 ```mermaid
 flowchart TB
-    R[🎭 Rolle<br/>Wer bist du?]:::teal --> K[📚 Kontext<br/>Was musst du wissen?]:::teal
-    K --> A[🎯 Aufgabe<br/>Was sollst du tun?]:::peach
-    A --> E[🚧 Einschränkungen<br/>Was gilt dabei?]:::teal
-    E --> F[📄 Format<br/>Wie soll es aussehen?]:::teal
-    F --> O[Antwort]:::peach
+    R["`**🎭 Rolle**
+    ──────────────────────
+    Wer bist du?`"]:::teal
+    K["`**📚 Kontext**
+    ──────────────────────
+    Was musst du wissen?`"]:::teal
+    A["`**🎯 Aufgabe**
+    ──────────────────────
+    Was sollst du tun?`"]:::teal
+    E["`**🚧 Einschränkungen**
+    ──────────────────────
+    Was gilt dabei?`"]:::teal
+    F["`**📄 Format**
+    ──────────────────────
+    Wie soll es aussehen?`"]:::teal
+    O["`**✅ Antwort**`"]:::peach
+
+    R --> K --> A --> E --> F --> O
 
     classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
@@ -36,7 +49,7 @@ flowchart TB
 
 ---
 
-### 🎭 Rolle
+### Rolle
 
 Die Rolle legt fest, aus **welcher Perspektive** das Modell antwortet. Technisch ist das kein Zaubertrick, sondern eine direkte Folge der [Attention](funktionsweise-llms.md#4-attention): Das Wort *„Steuerberaterin"* im Prompt verschiebt sämtliche folgenden Wortvorhersagen in Richtung Fachsprache, Vorsicht und Paragrafen.
 
@@ -68,7 +81,7 @@ Die Rolle legt fest, aus **welcher Perspektive** das Modell antwortet. Technisch
 
 ---
 
-### 📚 Kontext
+### Kontext
 
 Das Modell kennt **deine** Situation nicht. Es weiß nichts über dein Unternehmen, deine Zielgruppe, deine Vorgeschichte – außer dem, was im Prompt steht. Alles, was du weglässt, **erfindet** das Modell (siehe [Halluzinationen](halluzinationen-kontextfenster.md)).
 
@@ -85,7 +98,7 @@ Das Modell kennt **deine** Situation nicht. Es weiß nichts über dein Unternehm
 
 ---
 
-### 🎯 Aufgabe
+### Aufgabe
 
 Die Aufgabe ist der Kern: **ein Verb, ein Ergebnis**. Vage Verben erzeugen vage Antworten.
 
@@ -121,7 +134,7 @@ Die Aufgabe ist der Kern: **ein Verb, ein Ergebnis**. Vage Verben erzeugen vage 
 
 ---
 
-### 🚧 Einschränkungen
+### Einschränkungen
 
 Einschränkungen grenzen den Lösungsraum ein: Umfang, Stil, Tonalität, Sprache, Tabus.
 
@@ -135,11 +148,11 @@ Einschränkungen grenzen den Lösungsraum ein: Umfang, Stil, Tonalität, Sprache
 
     „Schreibe **keine** Einleitung" wirkt schlechter als „**Beginne direkt** mit dem ersten Stichpunkt". Ein LLM sagt das nächste wahrscheinliche Token voraus – erwähnst du „Einleitung", machst du Einleitungs-Tokens *wahrscheinlicher*.
 
-    👉 Denk an den rosa Elefanten, an den du gerade nicht denken sollst. 🐘
+    Denk an den rosa Elefanten, an den du gerade nicht denken sollst. 🐘
 
 ---
 
-### 📄 Ausgabeformat
+### Ausgabeformat
 
 Sag dem Modell **exakt**, wie das Ergebnis aussehen soll – am besten, indem du das Format vormachst:
 
@@ -161,7 +174,7 @@ Dieselbe Absicht, zwei Prompts:
 
 === "❌ Der typische Prompt"
 
-    ```title="prompt_schlecht.txt"
+    ```
     Bewerte meine Geschäftsidee: ein Lieferdienst für Bio-Lebensmittel.
     ```
 
@@ -169,7 +182,7 @@ Dieselbe Absicht, zwei Prompts:
 
 === "✅ Der strukturierte Prompt"
 
-    ```title="prompt_gut.txt"
+    ```
     # ROLLE
     Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der
     Lebensmittelbranche.
@@ -203,114 +216,53 @@ Dieselbe Absicht, zwei Prompts:
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `gemma3:1b`.
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-!!! example "Übung 1: Die Bausteine einzeln zuschalten"
+!!! lab "Übung 1: Deine Geschäftsidee festlegen 💡"
 
-    Baue den Prompt schrittweise auf und beobachte, wo der größte Sprung passiert. Starte den Chat-Modus:
+    Wähle eine Geschäftsidee, die dich durch den **gesamten Kurs** begleitet. Nimm etwas, zu dem du selbst eine Meinung hast – dann fällt dir auf, wenn die KI Unsinn erzählt.
 
-    ```bash
-    ollama run gemma3:1b
-    ```
+    Halte sie in **drei bis fünf Sätzen** in einer Datei `idee.md` fest:
 
-    **Stufe 1 – nur die Aufgabe:**
+    - Was wird angeboten – und für wen?
+    - Welches Problem löst es?
+    - Ausgangslage: Ort, Teamgröße, Startkapital?
 
-    ```title="Terminal"
-    >>> Nenne die drei größten Risiken für einen Bio-Lieferdienst.
-    ```
+    Diese Angaben sind ab jetzt dein **Kontext-Baustein** in jedem Prompt.
 
-    ```title="Beispielausgabe"
-    Bio-Lieferdienste stehen vor mehreren Herausforderungen. Erstens ist
-    die Logistik anspruchsvoll. Zweitens spielt die Qualitätssicherung eine
-    große Rolle. Drittens sollte man den Markt genau beobachten und die
-    Konkurrenz im Blick behalten.
-    ```
+!!! lab "Übung 2: Die fünf Bausteine einzeln zuschalten"
 
-    **Stufe 3 – mit Rolle und Kontext** (`/clear` nicht vergessen):
+    Formuliere zu deiner Idee die Aufgabe *„Nenne die drei größten Risiken."* – und baue den Prompt dann Stufe für Stufe aus. `/clear` zwischen den Stufen nicht vergessen.
 
-    ```title="Terminal"
-    >>> /clear
-    >>> """
-    ... Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der
-    ... Lebensmittelbranche.
-    ...
-    ... Ein Zwei-Personen-Startup in Innsbruck, 15.000 € Startkapital,
-    ... Zielgruppe berufstätige Familien, zwei große Wettbewerber.
-    ...
-    ... Nenne die drei größten Risiken für diesen Bio-Lieferdienst.
-    ... """
-    ```
+    | Stufe | Was du ergänzt |
+    |---|---|
+    | 1 | nur die Aufgabe |
+    | 2 | + Rolle |
+    | 3 | + Kontext aus deiner `idee.md` |
+    | 4 | + Einschränkungen (Länge, Sprache, keine erfundenen Zahlen) |
+    | 5 | + Ausgabeformat |
 
-    ```title="Beispielausgabe"
-    Mit 15.000 € Startkapital ist die Kühlkette das erste Problem – ein
-    gebrauchtes Kühlfahrzeug verbraucht davon bereits einen erheblichen Teil.
-    Zweitens sind zwei Personen zu wenig, um Einkauf, Zustellung und
-    Kundenservice parallel abzudecken. Drittens können die etablierten
-    Wettbewerber ihre Preise unterbieten, sobald Sie relevant werden.
-    ```
+    **Bewerte jede Stufe** mit 0–5 Punkten in *Konkretheit*, *Nutzbarkeit* und *Formattreue*.
 
-    **Stufe 5 – zusätzlich mit Einschränkungen und Format:**
+    **Die eigentliche Frage:** Zwischen welchen beiden Stufen liegt bei *deiner* Idee der größte Sprung? Bei den meisten ist es 2 → 3. Bei dir auch?
 
-    ```title="Terminal"
-    >>> /clear
-    >>> """
-    ... Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der
-    ... Lebensmittelbranche.
-    ...
-    ... Ein Zwei-Personen-Startup in Innsbruck, 15.000 € Startkapital,
-    ... Zielgruppe berufstätige Familien, zwei große Wettbewerber.
-    ...
-    ... Nenne die drei größten Risiken für diesen Bio-Lieferdienst.
-    ...
-    ... Antworte auf Deutsch. Maximal 2 Sätze pro Risiko. Erfinde keine Zahlen.
-    ...
-    ... Format je Risiko:
-    ... RISIKO <n>: <Titel>
-    ... Gegenmaßnahme: <ein Satz>
-    ... """
-    ```
+!!! lab "Übung 3: Der rosa Elefant 🐘"
 
-    ```title="Beispielausgabe"
-    RISIKO 1: Kühlkette
-    Gegenmaßnahme: Zu Beginn nur ungekühlte Trockenware anbieten.
+    Formuliere eine Einschränkung für deine Idee **zweimal**:
 
-    RISIKO 2: Personelle Überlastung
-    Gegenmaßnahme: Zustellung auf zwei feste Wochentage bündeln.
+    - negativ – *„Schreibe KEINE Einleitung."*
+    - positiv – *„Beginne direkt mit dem ersten Fakt."*
 
-    RISIKO 3: Preiskampf mit Wettbewerbern
-    Gegenmaßnahme: Über Regionalität statt über den Preis positionieren.
-    ```
+    Führe beide **je dreimal** aus, mit `/clear` dazwischen. 
 
-    **Deine Aufgabe:** Probiere auch Stufe 2 (nur + Rolle) und Stufe 4 (ohne Format). Bewerte jede Stufe mit 0–5 Punkten in den Kategorien *Konkretheit*, *Nutzbarkeit* und *Formattreue*. Zwischen welchen beiden Stufen liegt der größte Sprung?
+!!! lab "Übung 4: Härtetest und Prompt sichern"
 
-!!! example "Übung 2: Der rosa Elefant 🐘"
+    1. **Härtetest:** Lass deinen besten Prompt aus Übung 2 auf `gemma3:270m` laufen – dem viermal kleineren Modell. Bleibt das Ergebnis brauchbar? Wenn nicht: Welcher Baustein müsste deutlicher werden?
+    2. **Sichern:** Notiere den finalen Prompt in `prompts.md` unter `## 01 Beschreibung`.
 
-    Prüfe die Regel „positiv statt negativ" selbst nach. Führe **jeden** Befehl dreimal aus:
-
-    ```bash
-    ollama run gemma3:1b "Beschreibe ein veganes Café in Innsbruck. Schreibe KEINE Einleitung und verwende KEINE Superlative."
-    ```
-
-    ```title="Beispielausgabe (negativ formuliert)"
-    Gerne! Hier ist eine Beschreibung ohne Einleitung: Das Café ist ein
-    fantastischer Ort für alle, die vegane Küche lieben ...
-    ```
-
-    ```bash
-    ollama run gemma3:1b "Beschreibe ein veganes Café in Innsbruck. Beginne direkt mit dem ersten Fakt. Verwende ausschließlich sachliche Adjektive."
-    ```
-
-    ```title="Beispielausgabe (positiv formuliert)"
-    Das Café liegt in der Innsbrucker Altstadt und bietet ausschließlich
-    pflanzliche Speisen an. Die Karte umfasst Frühstück, Mittagsgerichte
-    und hausgemachte Kuchen ...
-    ```
-
-    Beachte die erste Ausgabe: Das Modell **kündigt an**, keine Einleitung zu schreiben – und schreibt damit genau eine. Danach folgt prompt ein „fantastisch".
-
-    **Deine Aufgabe:** Wie oft hält sich das Modell in drei Durchläufen jeweils an die Vorgabe? Notiere das Ergebnis als Bruch, z. B. „negativ: 1/3, positiv: 3/3".
+    Das ist der erste Eintrag deiner [Prompt Library](libraries.md) – sie wächst ab jetzt in jedem Kapitel.
 
 ??? code "🐍 Optional (Python): alle fünf Stufen automatisch durchlaufen"
 
@@ -355,45 +307,7 @@ Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `ge
     ...
     ```
 
-    Der Gewinn ist nicht die Ausgabe – die bekommst du im Terminal genauso. Der Gewinn ist, dass du **eine Zeile ändern** und alle fünf Stufen erneut vergleichen kannst.
-
----
-
-???+ question "Selbsttest"
-
-    1. Nenne die fünf Bausteine eines vollständigen Prompts.
-    2. Warum funktioniert „Schreibe keine Einleitung" schlechter als „Beginne direkt mit dem ersten Fakt"?
-    3. Ein Kollege beschwert sich, die KI liefere nur Allgemeinplätze. Welcher Baustein fehlt vermutlich?
-
-    ??? success "Lösungsskizze"
-
-        1. Rolle, Kontext, Aufgabe, Einschränkungen, Format.
-        2. Weil das Modell das **wahrscheinlichste nächste Token** vorhersagt. Das Wort „Einleitung" im Prompt macht Einleitungs-Tokens wahrscheinlicher – die Verneinung wiegt für die Wahrscheinlichkeitsrechnung weniger als das erwähnte Konzept selbst.
-        3. Der **Kontext**. Ohne konkrete Angaben zu Situation, Zielgruppe und Zweck kann das Modell nur produzieren, was auf alles passt – und damit auf nichts richtig.
-
----
-
-???+ lab "Lab"
-
-    **Geschäftsidee auswählen**
-
-    Wähle eine Geschäftsidee, die dich durch den gesamten Kurs begleiten wird. Sie bildet den roten Faden für alle folgenden Labs – von der Beschreibung über das Business Model Canvas bis zur kritischen Bewertung.
-
-    **Tipp:** Wähle etwas, zu dem du selbst eine Meinung hast – dann fällt dir später auf, wenn die KI Unsinn erzählt. Halte die Idee in drei bis fünf Sätzen in einer Datei `idee.md` fest.
-
-
-!!! example "Lab"
-
-    **Business-Idee durch unterschiedlich formulierte Prompts beschreiben**
-
-    Beschreibe deine Geschäftsidee mit mehreren, unterschiedlich aufgebauten Prompts. Variiere bewusst Rolle, Kontext und Ausgabeformat und vergleiche, wie sich die Ergebnisse verändern.
-
-    **Konkrete Schritte:**
-
-    1. Formuliere einen **Minimal-Prompt** (nur die Aufgabe) und lass ihn auf `gemma3:1b` laufen.
-    2. Baue daraus einen **vollständigen RKAEF-Prompt** für deine Idee.
-    3. Lass deinen guten Prompt zusätzlich auf `gemma3:270m` laufen. Bleibt das Ergebnis auch dort brauchbar?
-    4. Notiere den finalen Prompt in deiner `prompts.md` unter der Überschrift `## 01 Beschreibung` – er ist der erste Eintrag deiner späteren [Prompt Library](libraries.md).
+    Tausche die vier Textbausteine oben gegen deine eigene Idee aus – dann vergleichst du alle fünf Stufen mit einer einzigen Ausführung.
 
 ---
 

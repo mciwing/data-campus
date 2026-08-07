@@ -129,76 +129,35 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-!!! example "Übung 1: Vier Rollen, eine Idee"
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-    Mit `/set system` wechselst du die Rolle, ohne den Chat neu zu starten. **Wichtig:** nach jedem Rollenwechsel `/clear`, sonst mischen sich die Perspektiven.
+!!! lab "Übung 1: Vier Rollen, deine Idee"
 
-    ```title="Terminal"
-    ollama run gemma3:1b
+    Formuliere für deine Geschäftsidee vier **vollständige** Rollen – jeweils mit Funktion, Erfahrung, Haltung und Auftrag:
 
-    >>> /set system "Du bist Business Angel und investierst 50.000–200.000 € in Frühphasen-Startups. Du bist skeptisch und zahlengetrieben."
-    >>> /clear
-    >>> """
-    ... Ein Lieferdienst für regionale Bio-Lebensmittel in Innsbruck.
-    ... Zwei Gründer, 15.000 € Startkapital, Lieferung per Lastenrad.
-    ...
-    ... Nenne aus deiner Perspektive die zwei größten Schwachstellen dieser Idee.
-    ... Maximal 2 Sätze pro Punkt. Antworte auf Deutsch.
-    ... """
-    ```
+    🎓 Experte · 💰 Investor · 🛒 Kunde · ⚔️ Konkurrent
 
-    ```title="Beispielausgabe — 💰 Investor"
-    1. Das Startkapital trägt kein Wachstum. 15.000 € reichen für ein Lastenrad
-       und wenige Monate Betrieb, nicht für den Aufbau eines Kundenstamms.
-    2. Das Modell skaliert schlecht. Jede zusätzliche Lieferung kostet
-       Fahrzeit – ein Deckungsbeitrag entsteht erst bei hoher Dichte.
-    ```
+    Schicke jede mit `/set system` los, `/clear` zwischen den Rollen. Frage jeweils nach den **zwei größten Schwachstellen**.
 
-    Jetzt dieselbe Frage aus Kundensicht:
+    **Baue eine Matrix:** Zeilen = Rollen, Spalten = genannte Punkte. Markiere die **Einzelnennungen** – Punkte, die nur *eine* Rolle sieht. Genau dort liegt der Gewinn; was alle sagen, hättest du auch ohne Rollen bekommen.
 
-    ```title="Terminal"
-    >>> /set system "Du bist berufstätiger Vater, 38 Jahre, zwei Kinder, kaufst bisher im Supermarkt. Du achtest auf Preis und Zeitersparnis."
-    >>> /clear
-    ```
+!!! lab "Übung 2: Wirkt die Rolle wirklich?"
 
-    ```title="Beispielausgabe — 🛒 Kunde"
-    1. Ich weiß nicht, wann geliefert wird. Wenn ich zu Hause sein muss,
-       spare ich keine Zeit gegenüber dem Supermarkt.
-    2. Bio ist teurer, und ich kaufe für vier Personen ein. Ohne klaren
-       Preisvergleich probiere ich das nicht aus.
-    ```
+    Stelle dieselbe Frage zu deiner Idee **einmal ohne** und **einmal mit** Investoren-Rolle.
 
-    Zwei völlig verschiedene Schwachstellen – bei identischer Frage.
+    **Zähle die Investoren-Wörter** in beiden Antworten: *Markt, Marge, Umsatz, Kapital, skalieren, Wettbewerb, Risiko*.
 
-    **Deine Aufgabe:** Führe alle vier Rollen durch (Experte, Investor, Kunde, Konkurrent – Beschreibungen siehe oben). Lege eine Tabelle an: Zeilen = Rollen, Spalten = genannte Schwachstellen. Welche Schwachstelle nennt **nur eine einzige** Rolle? Das ist dein wertvollster Fund.
+    Wiederhole es auf `gemma3:270m`. **Beobachte:** Sehr kleine Modelle „vergessen" die Systemrolle oft nach wenigen Sätzen.
 
-!!! example "Übung 2: Wirkt die Rolle wirklich?"
+!!! lab "Übung 3: Den Zielkonflikt finden"
 
-    Ein ehrlicher Test – dieselbe Frage mit und ohne Rolle:
+    Geh deine Matrix aus Übung 1 durch und suche eine Stelle, an der sich zwei Rollen **widersprechen** – etwa Investor fordert Skalierung, Kunde schätzt Regionalität.
 
-    ```bash
-    ollama run gemma3:1b "Bewerte in 3 Sätzen: Lieferdienst für Bio-Lebensmittel in Innsbruck."
-    ```
+    Beschreibe den Konflikt in zwei Sätzen. Das ist ein echter Fund: etwas, das dir kein einzelner Prompt geliefert hätte.
 
-    ```title="Beispielausgabe — ohne Rolle"
-    Ein Lieferdienst für Bio-Lebensmittel ist eine zeitgemäße Idee, da das
-    Bewusstsein für nachhaltige Ernährung wächst. Innsbruck bietet als Stadt
-    mit umweltbewusster Bevölkerung gute Voraussetzungen. Wichtig sind eine
-    zuverlässige Logistik und eine klare Positionierung.
-    ```
-
-    ```title="Beispielausgabe — mit Investoren-Rolle"
-    Der adressierbare Markt in Innsbruck ist klein, das begrenzt die
-    Umsatzobergrenze. Die Marge bei Frischware ist niedrig, während die
-    Zustellkosten pro Bestellung hoch bleiben. Ohne Kapital für Wachstum
-    sehe ich kein Investment.
-    ```
-
-    **Deine Aufgabe:** Zähle in beiden Antworten die „Investoren-Wörter": *Markt, Marge, Umsatz, Kapital, skalieren, Wettbewerb, Risiko*. Wiederhole den Test danach mit `gemma3:270m`.
-
-    **Wichtige Beobachtung:** Sehr kleine Modelle ignorieren Rollen häufiger – sie „vergessen" die Systemrolle nach wenigen Sätzen und fallen in den neutralen Ton zurück.
+    Speichere deine vier Rollendefinitionen in `prompts.md` unter `## 04 Rollen`.
 
 ??? code "🐍 Optional (Python): alle Rollen automatisch durchlaufen"
 
@@ -254,6 +213,10 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Was passiert technisch, wenn du eine Rolle vorgibst?
@@ -265,22 +228,6 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
         1. Der Rollenbegriff verschiebt über die Attention die Wahrscheinlichkeiten der folgenden Tokens – fachtypische Wörter werden wahrscheinlicher, andere unwahrscheinlicher. Es „schlüpft" niemand in eine Rolle.
         2. Die `system`-Message gilt für den **gesamten** Chat und bleibt stabiler; eine Rolle im User-Prompt wirkt nur für diesen einen Prompt und geht im langen Verlauf leichter unter.
         3. Weil die Rolle **Selbstsicherheit im Ton** erzeugt, aber **kein zusätzliches Wissen**. Fehlt dem Modell die Information, klingt die erfundene Antwort nun autoritativ statt vage – und ist damit schwerer als Fehler zu erkennen.
-
----
-
-!!! example "Lab"
-
-    **Geschäftsmodell aus verschiedenen Perspektiven bewerten**
-
-    Lass dein Geschäftsmodell nacheinander von einem Experten, einem Investor, einem Kunden und einem Konkurrenten bewerten. Halte fest, welche Stärken und Schwächen jede Rolle aufdeckt.
-
-    **Konkrete Schritte:**
-
-    1. Formuliere für jede der vier Rollen eine vollständige Rollenbeschreibung (Funktion, Erfahrung, Haltung, Auftrag).
-    2. Schicke deine Idee mit `/set system` + `/clear` durch alle vier Rollen.
-    3. Erstelle eine Matrix: Zeilen = Rollen, Spalten = genannte Punkte. Markiere die **Einzelnennungen** – sie sind der eigentliche Gewinn.
-    4. Finde mindestens einen **Zielkonflikt** zwischen zwei Rollen und beschreibe ihn in zwei Sätzen.
-    5. Notiere deine vier Rollendefinitionen in `prompts.md` unter `## 04 Rollen`.
 
 ---
 

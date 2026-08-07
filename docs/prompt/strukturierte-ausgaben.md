@@ -138,87 +138,41 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-!!! example "Übung 1: Wie oft klappt JSON ohne Zwang?"
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-    Führe **denselben** Prompt fünfmal aus – einmal ohne, einmal mit `--format json`.
+!!! lab "Übung 1: Wie zuverlässig ist JSON?"
 
-    **Ohne Zwang:**
+    Lass dir drei Risiken deiner Geschäftsidee als JSON ausgeben – Schlüssel `risiken`, je Eintrag `titel` und `schwere`.
 
-    ```bash
-    ollama run gemma3:1b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
-    ```
+    Führe das **fünfmal ohne** und **fünfmal mit** `--format json` aus.
 
-    ````title="Beispielausgabe — Versuch 1 ❌"
-    Gerne! Hier ist die Antwort im JSON-Format:
+    **Zähle:** Wie oft ist das Ergebnis wirklich gültiges JSON? Achte besonders auf einleitende Sätze, umschließende Codeblöcke und Kommas zu viel.
 
-    ```json
-    {"risiken": [{"titel": "Logistik", "schwere": "hoch"}]}
-    ```
+!!! lab "Übung 2: Vorlage schlägt JSON"
 
-    Ich hoffe, das hilft weiter!
-    ````
+    Baue für deine Idee eine **Vorlage** im Stil `SCHLÜSSEL: Wert` – etwa PRODUKT, ZIELGRUPPE, NUTZEN, PREIS, RISIKO.
 
-    ```title="Beispielausgabe — Versuch 2 ❌"
-    {"risiken": [{"titel": "Kühlkette", "schwere": "hoch"},]}
-    ```
+    Fünfmal ausführen, Trefferquote mit Übung 1 vergleichen. Danach dasselbe auf `gemma3:270m`.
 
-    Versuch 1 ist von Text umrahmt, Versuch 2 hat ein Komma zu viel vor der schließenden Klammer. Beides ist **kein** gültiges JSON – ein Programm bricht hier ab.
+    **Die Frage:** Was überlebt beim winzigsten Modell – JSON oder Vorlage?
 
-    **Mit Zwang:**
+!!! lab "Übung 3: Der Reparatur-Prompt"
 
-    ```bash
-    ollama run --format json gemma3:1b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
-    ```
+    Wenn ein Format nicht stimmt, fang nicht von vorn an. Sag im **selben Chat**, was falsch war:
 
-    ```title="Beispielausgabe — jedes Mal gültig ✅"
-    {"risiken": [{"titel": "Kühlkette", "schwere": "hoch"}, {"titel": "Nachfrageschwankungen", "schwere": "mittel"}]}
-    ```
+    > *„Deine Antwort enthielt einleitenden Text. Gib das JSON erneut aus – ohne jeden Text davor oder danach."*
 
-    **Deine Aufgabe:** Fünf Durchläufe pro Variante. Notiere die Trefferquote (z. B. „ohne: 2/5, mit: 5/5"). Prüfe zusätzlich bei den gültigen Ausgaben: Stimmen auch die **Schlüsselnamen** und sind alle `schwere`-Werte aus der erlaubten Menge?
+    **Probiere aus:** Wie oft brauchst du diese Korrekturrunde? Und reicht eine, oder musst du nachfassen?
 
-!!! example "Übung 2: Vorlage schlägt JSON"
+!!! lab "Übung 4: Dein Canvas in vier Formaten"
 
-    Das simpelste Format ist bei kleinen Modellen das zuverlässigste.
+    Erzeuge dein Business Model Canvas als **Tabelle**, **JSON**, **Markdown** und **Vorlage**.
 
-    ```title="Terminal"
-    >>> """
-    ... Fülle exakt diese Vorlage für einen Bio-Lieferdienst in Innsbruck aus.
-    ... Ersetze nur die <Platzhalter>. Keine Erklärung.
-    ...
-    ... PRODUKT: <name>
-    ... ZIELGRUPPE: <eine Zeile>
-    ... NUTZEN: <maximal 15 Wörter>
-    ... PREIS: <zahl> EUR
-    ... RISIKO: <ein Satz>
-    ... """
-    ```
+    Führe jedes Format fünfmal aus und notiere die Fehlversuche. Halte für jedes fest: *Wofür würde ich es einsetzen?*
 
-    ```title="Beispielausgabe"
-    PRODUKT: Inntal Frischbox
-    ZIELGRUPPE: Berufstätige Familien in Innsbruck und Umgebung
-    NUTZEN: Regionale Bio-Ware wöchentlich bis an die Wohnungstür geliefert
-    PREIS: 29 EUR
-    RISIKO: Bei geringer Bestellmenge sind die Lieferkosten pro Box zu hoch.
-    ```
-
-    **Deine Aufgabe:** Führe diesen Prompt fünfmal aus und vergleiche die Trefferquote mit der JSON-Variante aus Übung 1. Probiere ihn danach auch auf `gemma3:270m` – dem winzigsten Modell. Was funktioniert dort noch, JSON oder Vorlage?
-
-!!! example "Übung 3: Der Reparatur-Prompt"
-
-    Wenn das Format nicht stimmt, musst du nicht von vorn anfangen. Sag im **selben Chat**, was falsch war:
-
-    ```title="Terminal"
-    >>> Deine Antwort enthielt einleitenden Text und einen Codeblock.
-    ... Gib das JSON erneut aus – ohne jeden Text davor oder danach.
-    ```
-
-    ```title="Beispielausgabe"
-    {"risiken": [{"titel": "Kühlkette", "schwere": "hoch"}]}
-    ```
-
-    Das ist **die** Kerntechnik für strukturierte Ausgaben: erzeugen → prüfen → mit der konkreten Fehlerbeschreibung nachbessern. Genau so arbeiten auch produktive KI-Systeme, nur automatisiert.
+    Speichere den zuverlässigsten Prompt in `prompts.md` unter `## 03 Canvas strukturiert`.
 
 ??? code "🐍 Optional (Python): JSON einlesen und Schema prüfen"
 
@@ -258,6 +212,10 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Welches Format ist bei sehr kleinen Modellen am robustesten – und warum?
@@ -269,22 +227,6 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
         1. Die **Vorlage** (`SCHLÜSSEL: Wert`). Sie verlangt keine geschachtelte Struktur, keine Klammern und keine korrekte Kommasetzung – das Modell muss nur Zeilen fortsetzen.
         2. Garantiert ist die **Syntax** (gültiges JSON). Nicht garantiert ist das **Schema**: Schlüsselnamen, Datentypen und erlaubte Werte musst du selbst prüfen.
         3. (a) Es erzwingt **Vollständigkeit** – leere Felder fallen auf. (b) Es macht Antworten **vergleichbar**, weil dieselben Kategorien immer an derselben Stelle stehen.
-
----
-
-!!! example "Lab"
-
-    **Business Model Canvas in verschiedenen Formaten erzeugen**
-
-    Lass dir dein Business Model Canvas[^osterwalder] in mehreren Formaten ausgeben – als Tabelle, als JSON und als Markdown. Bewerte, welches Format sich für welchen Zweck eignet.
-
-    **Konkrete Schritte:**
-
-    1. Erzeuge dein Canvas in allen vier Formaten (Tabelle, JSON, Markdown, Vorlage) mit `gemma3:1b`.
-    2. Führe jedes Format **fünfmal** aus und notiere die Fehlversuche als Bruch.
-    3. Wiederhole den zuverlässigsten und den unzuverlässigsten Prompt auf `gemma3:270m`. Verschiebt sich die Rangfolge?
-    4. Notiere für jedes Format eine Empfehlung: *Wofür würde ich es einsetzen?*
-    5. Trage den zuverlässigsten Prompt in deine `prompts.md` unter `## 03 Canvas strukturiert` ein.
 
 ---
 

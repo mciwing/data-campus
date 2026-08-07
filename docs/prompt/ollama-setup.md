@@ -22,7 +22,7 @@ Dafür nutzen wir **Ollama**: ein kleines Programm, das Sprachmodelle lokal ausf
 
 ---
 
-## 1) Ollama installieren
+## Ollama installieren
 
 Die Installation läuft auf jedem Betriebssystem etwas anders – Ollama beschreibt sie für **Windows, macOS und Linux** selbst und hält die Anleitung aktuell. Deshalb verweisen wir hier bewusst dorthin, statt eine zweite Version zu pflegen, die irgendwann veraltet:
 
@@ -64,7 +64,7 @@ Wenn eine Versionsnummer erscheint, hat alles geklappt. 🎉
 
 ---
 
-## 2) Modelle herunterladen
+## Modelle herunterladen
 
 Ein Modell wird **einmal** heruntergeladen und liegt danach lokal auf deiner Festplatte. Für den gesamten Kurs brauchst du genau **ein** Modell:
 
@@ -126,7 +126,7 @@ Das war's – damit haben wir unser erstes lokales LLM installiert.
 
 ---
 
-## 3) Dein erster Prompt
+## Dein erster Prompt
 
 Für einen **einzelnen** Prompt hängst du ihn direkt an den Befehl an:
 
@@ -206,7 +206,7 @@ Erst nach dem schließenden `"""` beginnt das Modell zu antworten.
 
 ---
 
-## 4) Die Stellschrauben
+## Die Stellschrauben
 
 Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie im Chat-Modus mit `/set parameter`:
 
@@ -255,7 +255,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
 !!! lab "Übung 1: Der Realitätscheck 🧪"
 

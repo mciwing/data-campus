@@ -139,95 +139,55 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-!!! example "Übung 1: Ein Template ausfüllen"
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-    Deine Bibliothek ist zunächst nichts weiter als ein **Ordner mit Textdateien**. Lege an:
+!!! lab "Übung 1: Von der Sammlung zu Templates"
 
-    ```title="Ordnerstruktur"
-    prompt-labor/
-    ├── idee.md
-    ├── kritik.md
-    └── templates/
-        ├── swot.md
-        ├── rollen-check.md
-        └── faktencheck.md
-    ```
+    Hol deine Prompts aus `prompts.md` (`## 01` bis `## 08`) und lege für jeden eine eigene Datei unter `templates/` an.
 
-    Speichere in `templates/swot.md` das Template von oben. Zum Ausfüllen brauchst du nur deinen Texteditor:
+    Ersetze dann **alle idee-spezifischen Stellen** durch Platzhalter: `$rolle`, `$branche`, `$kontext`, `$anzahl` …
 
-    1. Datei öffnen, Inhalt kopieren.
-    2. **Suchen & Ersetzen** für jeden Platzhalter (`$rolle` → *Business Angel*, `$branche` → *der Lebensmittelbranche*, …).
-    3. Fertigen Text zwischen `"""` in den Chat einfügen.
+    **Faustregel:** Alles, was du bei einer anderen Geschäftsidee ändern müsstest, wird zum Platzhalter.
 
-    ```title="Terminal"
-    ollama run gemma3:1b
+!!! lab "Übung 2: Metadaten ergänzen"
 
-    >>> """
-    ... Du bist Business Angel mit 15 Jahren Erfahrung in der Lebensmittelbranche.
-    ...
-    ... KONTEXT:
-    ... Bio-Lieferdienst in Innsbruck, 2 Gründer, 15.000 € Startkapital.
-    ...
-    ... AUFGABE:
-    ... Erstelle eine SWOT-Analyse. Genau 2 Punkte pro Kategorie.
-    ...
-    ... FORMAT:
-    ... STÄRKEN: ...
-    ... SCHWÄCHEN: ...
-    ... CHANCEN: ...
-    ... RISIKEN: ...
-    ...
-    ... Antworte auf Deutsch. Keine Einleitung.
-    ... """
-    ```
+    Gib jedem Template einen Kopfblock:
 
-    ```title="Beispielausgabe"
-    STÄRKEN: Direkter Draht zu regionalen Produzenten; glaubwürdiges
-    Nachhaltigkeitsversprechen durch emissionsfreie Zustellung.
-    SCHWÄCHEN: Sehr geringe Kapitaldecke; Abhängigkeit von zwei Personen.
-    CHANCEN: Abo-Modell für planbare Umsätze; Kooperation mit Bauernmärkten.
-    RISIKEN: Preisaktionen der Supermarktketten; Wetterabhängigkeit.
-    ```
-
-    **Deine Aufgabe:** Fülle dasselbe Template ein zweites Mal aus – mit `$rolle` = *„skeptischer Stammkunde"* und `$branche` = *„der Gastronomie"*. Wie stark ändert sich das Ergebnis, obwohl du **nur zwei Wörter** ausgetauscht hast?
-
-!!! example "Übung 2: Der Härtetest 🧪"
-
-    Ein Template ist erst dann wiederverwendbar, wenn es auch für eine **völlig andere** Idee funktioniert.
-
-    Nimm dein `swot.md` und fülle es für eine Idee aus, die mit deiner nichts zu tun hat – zum Beispiel eine **Hundeschule** oder eine **mobile Fahrradwerkstatt**.
-
-    ```title="Beispielausgabe für eine Hundeschule"
-    STÄRKEN: Persönliche Betreuung in Kleingruppen; hohe Weiterempfehlungsrate
-    in lokalen Hundehalter-Netzwerken.
-    SCHWÄCHEN: Umsatz hängt direkt an der Arbeitszeit einer Person;
-    saisonale Nachfrageschwankungen.
-    ...
-    ```
-
-    **Deine Aufgabe:** Wenn du beim Ausfüllen an eine Stelle kommst, an der der Text nur zu deiner ursprünglichen Idee passt – **das ist ein Fehler im Template.** Ersetze diese Stelle durch einen neuen Platzhalter und notiere ihn.
-
-    Genau so entstehen gute Templates: nicht durch Nachdenken, sondern durch Anwenden auf einen fremden Fall.
-
-!!! example "Übung 3: Metadaten und Versionierung"
-
-    Erweitere jedes deiner Templates um den Kopfblock:
-
-    ```markdown title="templates/swot.md"
+    ```markdown
     ---
     name: swot-analyse
-    version: 2
-    getestet_mit: gemma3:1b, gemma3:4b
-    platzhalter: rolle, erfahrung, branche, kontext, anzahl
+    version: 1
+    getestet_mit: gemma3:1b
+    platzhalter: rolle, branche, kontext, anzahl
     autor: dein Name
     ---
     ```
 
-    Die Zeile `platzhalter:` erspart dir späteres Suchen: Sobald du zehn Templates hast, weißt du nicht mehr auswendig, welches welche Werte braucht.
+    Die Zeile `platzhalter` erspart dir späteres Suchen – bei zehn Templates weißt du nicht mehr auswendig, welches welche Werte braucht.
 
-    **Deine Aufgabe:** Erhöhe die `version`, sobald du ein Template änderst, und notiere in einer Zeile darunter, *warum*. Nach drei Monaten wirst du dich für diese Zeile bedanken.
+!!! lab "Übung 3: Der Härtetest 🧪"
+
+    Der entscheidende Schritt: Wende deine **gesamte Bibliothek** auf eine **völlig andere** Geschäftsidee an – eine Hundeschule, eine mobile Fahrradwerkstatt, was auch immer.
+
+    Fülle jedes Template aus und führe es aus.
+
+    **Wo du an eine Stelle kommst, die nur zu deiner ursprünglichen Idee passt, hast du einen Fehler im Template gefunden.** Ersetze sie durch einen neuen Platzhalter und erhöhe die `version`.
+
+    So entstehen gute Templates: nicht durch Nachdenken, sondern durch Anwenden auf einen fremden Fall.
+
+!!! lab "Übung 4: Versionieren"
+
+    Lege den Ordner unter Git-Versionskontrolle:
+
+    ```bash
+    git init
+    git add templates/ prompts.md idee.md
+    git commit -m "Meine Prompt-Bibliothek"
+    ```
+
+    Ab jetzt ist jede Änderung nachvollziehbar und rückgängig zu machen. 🎉
 
 ??? code "🐍 Optional (Python): die Bibliothek automatisieren"
 
@@ -299,6 +259,10 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Warum ist Modularisierung wirkungsvoller, als fertige Prompts zu sammeln?
@@ -310,29 +274,6 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
         1. Weil sich Bausteine **kombinieren** lassen: Aus vier Rollen, drei Aufgaben und zwei Formaten entstehen 24 Prompts aus nur neun Bausteinen. Fertige Prompts musst du dagegen einzeln pflegen.
         2. Name, Version, Autor und die getesteten Modelle. `getestet_mit` ist wichtig, weil Prompts modellabhängig sind – ein Prompt, der auf einem großen Modell zuverlässig läuft, kann auf `gemma3:1b` komplett scheitern.
         3. Ein Template ist ein Textblock, den **du** einfügst. Ein Skill ist ein Paket aus Anweisung, Beispielen und ggf. Dateien, das das System **bei Bedarf selbst lädt** – es belegt das Kontextfenster nur, wenn es gebraucht wird.
-
----
-
-!!! example "Lab"
-
-    **Eigene Prompt-Bibliothek erstellen**
-
-    Fasse die besten Prompts aus dem gesamten Kurs zu einer eigenen, modular aufgebauten Prompt-Bibliothek zusammen. Versieh sie mit Templates und Platzhaltern, damit du sie für künftige Projekte wiederverwenden kannst.
-
-    **Konkrete Schritte:**
-
-    1. Sammle deine Prompts aus `prompts.md` (Abschnitte `## 01` bis `## 08`).
-    2. Zerlege sie in **eine Datei pro Template** im Ordner `templates/`.
-    3. Ersetze alle idee-spezifischen Stellen durch **Platzhalter** (`$kontext`, `$rolle`, `$branche`, …).
-    4. Ergänze für jedes Template einen **Metadatenblock** mit `name`, `version`, `getestet_mit` und `platzhalter`.
-    5. **Der Härtetest:** Wende deine gesamte Bibliothek auf eine **völlig andere** Geschäftsidee an (z. B. eine Hundeschule). Welche Templates funktionieren ohne Änderung – und welche waren doch zu speziell? Bessere Letztere nach.
-    6. Versioniere den Ordner mit Git. 🎉
-
-!!! quote "Geschafft! 🎓"
-
-    Du hast den Weg vom ersten „Schreib was über mein Café" bis zu einer versionierten, getesteten Prompt-Bibliothek zurückgelegt – und das Ganze mit Modellen, die auf jedem Laptop laufen.
-
-    Wenn deine Prompts auf `gemma3:1b` funktionieren, funktionieren sie überall. Nimm sie mit. 🚀
 
 ---
 

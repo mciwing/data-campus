@@ -144,90 +144,44 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-!!! example "Übung 1: Halluzinationen provozieren"
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-    Der beste Weg, Halluzinationen zu erkennen, ist, sie absichtlich zu erzeugen. Stelle Fragen, deren Antwort das Modell unmöglich wissen kann:
+!!! lab "Übung 1: Halluzinationen provozieren"
 
-    ```bash
-    ollama run gemma3:1b "Wie groß war der Markt für Bio-Lieferdienste in Innsbruck im Jahr 2024?"
-    ```
+    Stelle dem Modell **vier Fragen zu deiner Branche**, deren Antwort es unmöglich wissen kann – Marktvolumen deiner Region im Vorjahr, wissenschaftliche Studien zu deinem Thema, aktuelle Förderungen, der regionale Marktführer.
 
-    ```title="Beispielausgabe"
-    Der Markt für Bio-Lieferdienste in Innsbruck belief sich 2024 auf ein
-    Volumen von etwa 3,2 Millionen Euro und wuchs gegenüber dem Vorjahr um
-    rund 12,4 %. Rund 45 % der Haushalte im Stadtgebiet nutzen mittlerweile
-    zumindest gelegentlich einen Lieferdienst für Bio-Produkte.
-    ```
+    **Dann der eigentliche Test:** Versuche, **eine einzige** der genannten Zahlen, Studien oder Namen im Internet zu belegen. Wie viele halten stand?
 
-    Drei präzise Zahlen, souverän vorgetragen, **vollständig erfunden**. Keine Unsicherheit, kein Hinweis, keine Quelle.
+!!! lab "Übung 2: Unsicherheit markieren lassen"
 
-    ```bash
-    ollama run gemma3:1b "Nenne drei wissenschaftliche Studien zur Preiselastizität bei Bio-Lebensmitteln."
-    ```
+    Stelle dieselben Fragen erneut, diesmal mit der Auflage, jede Aussage zu kennzeichnen:
 
-    ```title="Beispielausgabe"
-    1. Müller, T. & Bauer, S. (2019): Preissensitivität im Bio-Segment.
-       Journal of Food Economics, 34(2), 112–128.
-    2. Hofer, A. (2021): Konsumverhalten bei ökologischen Lebensmitteln.
-       Universität Wien, Institut für Agrarökonomie.
-    3. Schmidt, K. et al. (2020): Elastizität und Zahlungsbereitschaft.
-       European Review of Agricultural Economics, 47(4), 601–620.
-    ```
+    `[BELEGT]` · `[ANNAHME]` · `[GESCHÄTZT]`
 
-    Format, Autorennamen, Jahrgänge, Seitenzahlen – alles perfekt plausibel. Und mit hoher Wahrscheinlichkeit existiert keine dieser Studien.
+    **Prüfe zweierlei:** Hält sich das Modell überhaupt daran? Und sind die `[BELEGT]`-Aussagen wirklich belegt?
 
-    **Deine Aufgabe:** Versuche, **eine einzige** der genannten Zahlen oder Studien im Internet zu belegen. Wie viele halten der Prüfung stand? Stelle zusätzlich diese beiden Fragen:
+    Wiederhole den Prompt dreimal – bleiben dieselben Aussagen in derselben Kategorie? Die Antwort sagt dir, was die Selbsteinschätzung wert ist.
 
-    - *„Welche Förderungen gibt es 2026 in Tirol für nachhaltige Lieferdienste?"*
-    - *„Wer ist der Marktführer für Lastenrad-Logistik in Westösterreich?"*
+!!! lab "Übung 3: Faktenprüfung deiner Marktanalyse"
 
-!!! example "Übung 2: Unsicherheitsmarkierung testen"
+    Nimm die Marktanalyse aus deiner Kette in [Kapitel 7](chaining.md) und markiere **jede Zahl, jeden Eigennamen, jede Jahreszahl**.
 
-    Kann das Modell selbst sagen, was es nicht weiß?
+    Übertrage sie in eine Tabelle und prüfe **mindestens fünf** Angaben mit unabhängigen Quellen – [Statistik Austria](https://www.statistik.at), WKO, Branchenverbände. Nicht durch dieselbe KI.
 
-    ```title="Terminal"
-    >>> """
-    ... Beschreibe den Markt für Bio-Lieferdienste in Innsbruck.
-    ... Maximal 100 Wörter.
-    ...
-    ... WICHTIG: Markiere jede Aussage mit einem dieser Tags:
-    ... [BELEGT] – du bist sicher
-    ... [ANNAHME] – plausibel, aber ungeprüft
-    ... [GESCHÄTZT] – eine Zahl, die du nicht kennst
-    ... """
-    ```
+    | Angabe | Quelle geprüft? | Ergebnis |
+    |---|---|---|
+    | … | … | ✅ / ❓ / ❌ |
 
-    ```title="Beispielausgabe"
-    [BELEGT] Innsbruck ist die Landeshauptstadt Tirols mit rund 130.000
-    Einwohnern. [ANNAHME] Das Interesse an regionalen Bio-Produkten ist dort
-    überdurchschnittlich ausgeprägt. [GESCHÄTZT] Etwa 15.000 Haushalte
-    kommen als Zielgruppe infrage. [ANNAHME] Die größten Wettbewerber sind
-    Supermarktketten mit eigenem Lieferservice.
-    ```
+    **Wie hoch ist dein Anteil ✅ nach ehrlicher Prüfung?**
 
-    Das ist deutlich besser als Übung 1 – die Zahl ist jetzt als Schätzung gekennzeichnet.
+!!! lab "Übung 4: Austauschtest und Bias"
 
-    **Deine Aufgabe:** Prüfe die `[BELEGT]`-Aussagen. Sind sie wirklich belegt? Wiederhole den Prompt dreimal – bleiben dieselben Aussagen in derselben Kategorie? (Wenn nicht, weißt du, wie viel die Selbsteinschätzung wert ist.)
+    1. **Austauschtest:** Ersetze im Fließtext deine Geschäftsidee durch eine völlig andere. Wie viel Prozent des Textes ergibt trotzdem noch Sinn? Das ist dein Füllmaterial-Anteil.
+    2. **Bias:** Finde mindestens eine Stelle, an der die Analyse eine unausgesprochene Annahme über Größe, Wachstum oder Kultur macht.
 
-!!! example "Übung 3: Die Prüf-Checkliste"
-
-    Nimm eine beliebige KI-Marktanalyse und markiere jede **Zahl**, jeden **Eigennamen** und jede **Jahreszahl**. Übertrage sie in eine Tabelle:
-
-    ```markdown title="faktencheck.md"
-    | Angabe             | Quelle geprüft?      | Ergebnis |
-    |--------------------|----------------------|----------|
-    | 3,2 Mio. EUR       | Statistik Austria    | ❌ nicht auffindbar |
-    | 12,4 % Wachstum    | –                    | ❓ offen |
-    | 45 % der Haushalte | –                    | ❓ offen |
-    | Müller & Bauer 2019| Google Scholar       | ❌ existiert nicht |
-    | 130.000 Einwohner  | Stadt Innsbruck      | ✅ bestätigt |
-    ```
-
-    Die leeren Zellen sind der eigentliche Punkt: Sie zwingen dich, für jede Zahl eine Quelle einzutragen – oder sie zu streichen. Ohne diese Disziplin wandern KI-Zahlen ungeprüft in echte Dokumente.
-
-    **Deine Aufgabe:** Fülle die Tabelle für deine eigene Marktanalyse aus. Wie hoch ist dein Anteil ✅ nach ehrlicher Prüfung?
+    Speichere deinen Prüf-Prompt in `prompts.md` unter `## 08 Evaluation`.
 
 ??? code "🐍 Optional (Python): prüfpflichtige Angaben automatisch finden"
 
@@ -272,6 +226,10 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Was ist der Austauschtest und wozu dient er?
@@ -283,24 +241,6 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
         1. Man ersetzt in der Antwort die eigene Idee durch eine völlig andere. Ergibt der Text weiterhin Sinn, ist er nicht auf den konkreten Fall bezogen, sondern Füllmaterial – ein Relevanzmangel.
         2. Weil das Modell nichts nachschlägt, sondern nur die wahrscheinlichste Antwort auf eine Rückfrage erzeugt – und die lautet meist „ja". Verifikation braucht eine **unabhängige** Quelle außerhalb des Modells.
         3. Die **plausible**. Eine offensichtlich falsche Zahl fällt sofort auf. Eine Zahl im erwarteten Bereich übersteht jede oberflächliche Prüfung und wird ungeprüft weiterverwendet.
-
----
-
-!!! example "Lab"
-
-    **Faktenprüfung einer KI-generierten Marktanalyse**
-
-    Überprüfe eine KI-generierte Marktanalyse zu deiner Geschäftsidee auf ihre Richtigkeit. Identifiziere mögliche Halluzinationen oder Verzerrungen und verifiziere zentrale Aussagen mit verlässlichen Quellen.
-
-    **Konkrete Schritte:**
-
-    1. Erzeuge eine Marktanalyse zu deiner Idee (nutze deine Kette aus [Kapitel 7](chaining.md)).
-    2. Erstelle die Prüf-Checkliste aus Übung 3 – markiere jede Zahl, jeden Namen, jede Jahreszahl.
-    3. Prüfe **mindestens fünf** Angaben mit unabhängigen Quellen (Statistik Austria, WKO, Branchenverbände).
-    4. Trage für jede Angabe ein: ✅ bestätigt (mit Quelle) · ❓ unklar · ❌ widerlegt.
-    5. Wende den **Austauschtest** auf den Fließtext an: Wie viel Prozent des Textes überlebt ihn?
-    6. Prüfe auf **Bias**: Nenne mindestens eine Stelle, an der die Analyse eine unausgesprochene Annahme über Größe, Wachstum oder Kultur macht.
-    7. Notiere deinen Prüf-Prompt in `prompts.md` unter `## 08 Evaluation`.
 
 ---
 

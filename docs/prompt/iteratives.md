@@ -127,103 +127,41 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
 
 ---
 
-## 🔬 Ollama-Labor
+## 🔬 Ollama-Lab
 
-!!! example "Übung 1: Eine Schraube pro Runde"
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-    Verbessere einen bewusst schlechten Prompt in vier Iterationen – jeweils mit **genau einer** Änderung. Deine Messgröße: **Wie viele der neun Canvas-Felder** kommen tatsächlich vor?
+!!! lab "Übung 1: Eine Schraube pro Runde"
 
-    **Runde 1 – Baseline:**
+    Nimm deinen Canvas-Prompt aus [Kapitel 3](shot-prompting.md) und verbessere ihn in **mindestens vier Runden** – pro Runde **genau eine** Änderung.
 
-    ```bash
-    ollama run gemma3:1b "Mach ein Business Model Canvas für einen Bio-Lieferdienst."
-    ```
+    Naheliegende Reihenfolge:
 
-    ```title="Beispielausgabe — 3/9 Feldern"
-    Ein Business Model Canvas hilft dabei, ein Geschäftsmodell zu strukturieren.
-    Für einen Bio-Lieferdienst wären die Kundensegmente vor allem
-    umweltbewusste Verbraucher. Das Wertangebot besteht in frischen,
-    regionalen Produkten. Die Kostenstruktur umfasst Logistik und Personal.
-    ```
+    1. Baseline – was du jetzt hast
+    2. + die neun Feldnamen explizit auflisten
+    3. + Kontext aus deiner `idee.md`
+    4. + Format und Umfang je Feld
 
-    **Runde 2 – die neun Felder explizit vorgeben:**
+    **Deine Messgröße:** Wie viele der neun Felder kommen tatsächlich vor? Zähle nach jeder Runde.
 
-    ```title="Terminal"
-    >>> /clear
-    >>> """
-    ... Erstelle ein Business Model Canvas für einen Bio-Lieferdienst.
-    ... Fülle genau diese 9 Felder aus: Kundensegmente, Wertangebot, Kanäle,
-    ... Kundenbeziehungen, Einnahmequellen, Schlüsselressourcen,
-    ... Schlüsselaktivitäten, Schlüsselpartner, Kostenstruktur.
-    ... """
-    ```
+    Führe dabei ein `prompt_log.md` nach dem Muster oben – *was geändert, was bewirkt*.
 
-    ```title="Beispielausgabe — 9/9 Feldern, aber generisch"
-    Kundensegmente: Umweltbewusste Verbraucher aller Altersgruppen.
-    Wertangebot: Frische Bio-Produkte, bequem geliefert.
-    Kanäle: Website, App, Social Media.
-    Kundenbeziehungen: Persönlicher Service und Kundenbindung.
-    ...
-    ```
+!!! lab "Übung 2: Das Modell als Prompt-Kritiker"
 
-    **Runde 3 – Kontext ergänzen:**
+    Nimm deinen **schwächsten** Prompt und frage im selben Chat direkt nach:
 
-    ```title="Terminal"
-    >>> /clear
-    >>> """
-    ... Erstelle ein Business Model Canvas.
-    ...
-    ... KONTEXT: Zwei-Personen-Startup in Innsbruck, Lieferdienst für regionale
-    ... Bio-Lebensmittel, 15.000 € Startkapital, Zielgruppe berufstätige Familien.
-    ...
-    ... Fülle genau diese 9 Felder aus: Kundensegmente, Wertangebot, Kanäle,
-    ... Kundenbeziehungen, Einnahmequellen, Schlüsselressourcen,
-    ... Schlüsselaktivitäten, Schlüsselpartner, Kostenstruktur.
-    ... """
-    ```
+    > *„Welche drei Informationen hätte ich dir mitliefern müssen, damit deine Antwort konkret und nützlich wird?"*
 
-    ```title="Beispielausgabe — 9/9 Feldern, jetzt konkret"
-    Kundensegmente: Berufstätige Familien in Innsbruck mit wenig Einkaufszeit.
-    Wertangebot: Regionale Bio-Ware bis an die Wohnungstür, ohne Supermarktbesuch.
-    Kanäle: Eigene Website, Direktvertrieb auf dem Wochenmarkt.
-    ...
-    Schlüsselpartner: Bauernhöfe im Inntal, lokale Imkerei.
-    Kostenstruktur: Fahrzeug, Kühlung, Verpackung – begrenzt durch 15.000 €.
-    ```
+    **Prüfe:** Sind die Vorschläge brauchbar? Und decken sie sich mit den [fünf Bausteinen](anatomie.md)?
 
-    **Runde 4:** Ergänze zusätzlich ein Format (`<Feldname>: <maximal 15 Wörter>`) und *„Keine Einleitung, keine Erklärung."*
+!!! lab "Übung 3: Wo hört es auf?"
 
-    **Deine Aufgabe:** Führe alle vier Runden durch und zähle jedes Mal die Felder. Zwischen welchen beiden Runden springt die Zahl am stärksten – und zwischen welchen springt die **Qualität** am stärksten? (Achtung: Das sind nicht dieselben Runden.)
+    Iteriere weiter, bis sich nichts mehr verbessert. Halte fest:
 
-!!! example "Übung 2: Das Modell kritisiert sich selbst"
+    - Nach welcher Runde brachte eine Änderung **keinen** Zuwachs mehr?
+    - Welche Änderung hat das Ergebnis sogar **verschlechtert**?
 
-    Ein überraschend nützlicher Trick, wenn du nicht weiterkommst: Lass die KI sagen, was ihr fehlte.
-
-    ```title="Terminal"
-    >>> Beschreibe meine Geschäftsidee.
-    ```
-
-    ```title="Beispielausgabe"
-    Gerne helfe ich dabei! Allerdings liegen mir keine Informationen zu Ihrer
-    Geschäftsidee vor. Eine Geschäftsidee beschreibt üblicherweise ...
-    ```
-
-    Jetzt die Rückfrage im selben Chat:
-
-    ```title="Terminal"
-    >>> Welche drei Informationen hätte ich dir mitliefern müssen, damit deine
-    ... Antwort konkret und nützlich wird? Nummerierte Liste, ein Satz pro Punkt.
-    ```
-
-    ```title="Beispielausgabe"
-    1. Um welches Produkt oder welche Dienstleistung es sich handelt.
-    2. Wer die Zielgruppe ist und welches Problem für sie gelöst wird.
-    3. Wie das Unternehmen Geld verdienen soll.
-    ```
-
-    Das sind – nicht zufällig – genau die Bausteine aus [Kapitel 2](anatomie.md).
-
-    **Deine Aufgabe:** Wende denselben Trick auf deinen eigenen schwächsten Prompt an. Sind die Vorschläge brauchbar? Teste es zusätzlich mit `gemma3:1b` – wie groß ist der Unterschied?
+    Speichere die beste Version in `prompts.md` unter `## 02 Canvas` (ersetzt die alte Fassung).
 
 ??? code "🐍 Optional (Python): Prompts automatisch bewerten"
 
@@ -272,6 +210,10 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
 
 ---
 
+???+
+
+---
+
 ???+ question "Selbsttest"
 
     1. Warum solltest du pro Iteration nur eine Änderung vornehmen?
@@ -283,22 +225,6 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
         1. Weil du sonst nicht zuordnen kannst, welche Änderung die Wirkung erzeugt hat – und beim nächsten Mal wieder bei null anfängst.
         2. **Verschärfen** durch eine Umfangsvorgabe („genau 5 Stichpunkte", „maximal 80 Wörter") – technisch flankiert durch `num_predict`.
         3. Es macht den Verbesserungsweg nachvollziehbar, verhindert Kreisläufe und liefert dir am Ende die begründete Version für deine [Prompt Library](libraries.md).
-
----
-
-!!! example "Lab"
-
-    **Mehrere Iterationen eines Canvas erstellen**
-
-    Verbessere dein Business Model Canvas über mehrere Iterationen hinweg. Dokumentiere bei jedem Schritt, welche Änderung am Prompt welche Wirkung auf das Ergebnis hatte.
-
-    **Konkrete Schritte:**
-
-    1. Starte mit deinem Canvas-Prompt aus [Kapitel 3](shot-prompting.md).
-    2. Führe **mindestens vier Iterationen** durch – pro Runde genau eine Änderung.
-    3. Führe ein `prompt_log.md` nach dem Muster oben.
-    4. Miss den Fortschritt mit dem Feldzähler aus Übung 1 (von Hand zählen genügt).
-    5. Aktualisiere `## 02 Canvas` in deiner `prompts.md` mit der besten Version.
 
 ---
 
