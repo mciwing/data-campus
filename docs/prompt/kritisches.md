@@ -12,7 +12,7 @@ Das ist notwendiger, als es klingt – denn im Normalzustand ist ein LLM ein **J
 
     Die Tendenz von Sprachmodellen, der Meinung der nutzenden Person zuzustimmen – **auch wenn diese falsch ist**.
 
-    Ursache ist das [RLHF-Training](funktionsweise-llms.md#wie-wird-ein-llm-eigentlich-klug-das-training): Menschen bewerteten zustimmende, freundliche Antworten besser als widersprechende. Das Modell hat also gelernt, dass Zustimmung *gut ankommt* – nicht, dass sie *richtig* ist.
+    Ursache ist das [RLHF-Training](funktionsweise-llms.md#wie-wird-ein-llm-eigentlich-klug): Menschen bewerteten zustimmende, freundliche Antworten besser als widersprechende. Das Modell hat also gelernt, dass Zustimmung *gut ankommt* – nicht, dass sie *richtig* ist.
 
 Der Effekt ist leicht zu reproduzieren. Frag ein Modell:
 

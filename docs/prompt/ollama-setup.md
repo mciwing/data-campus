@@ -204,7 +204,7 @@ ollama run qwen2.5:0.5b
 >>> Was ist ein Business Model Canvas?
 ```
 
-Das Modell antwortet – Wort für Wort, genau wie in [Station 5](funktionsweise-llms.md#station-5-das-nachste-token-ein-wort-nach-dem-anderen) beschrieben. Der Chat merkt sich dabei den bisherigen Verlauf (dein **Kontextfenster**).
+Das Modell antwortet – Wort für Wort, genau wie in [Station 5](funktionsweise-llms.md#5-das-nachste-token) beschrieben. Der Chat merkt sich dabei den bisherigen Verlauf (dein **Kontextfenster**).
 
 ???+ process "Die wichtigsten Befehle im Chat"
 

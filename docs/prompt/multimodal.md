@@ -10,7 +10,7 @@ Moderne KI-Modelle verarbeiten nicht nur Text, sondern auch **Bilder, Dokumente 
 
     Eine **Modalität** ist eine Art von Eingabe oder Ausgabe: Text, Bild, Audio, Video. Ein **multimodales Modell** kann mehrere davon gleichzeitig verarbeiten.
 
-    Technisch ändert sich weniger, als man denkt: Ein Bild wird in **Bild-Tokens** zerlegt und wie Text-Tokens in denselben Vektorraum eingebettet. Ab da läuft alles wie in [Station 2](funktionsweise-llms.md#station-2-word-embeddings-wortern-bedeutung-geben) beschrieben – das Modell „sieht" nicht, es rechnet.[^clip]
+    Technisch ändert sich weniger, als man denkt: Ein Bild wird in **Bild-Tokens** zerlegt und wie Text-Tokens in denselben Vektorraum eingebettet. Ab da läuft alles wie in [Station 2](funktionsweise-llms.md#2-word-embeddings) beschrieben – das Modell „sieht" nicht, es rechnet.[^clip]
 
 ```mermaid
 flowchart LR

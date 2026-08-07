@@ -8,7 +8,7 @@ Du kennst das Prinzip schon aus [Kapitel 2](anatomie.md) als einen der fünf Bau
 
 ## Warum Rollen überhaupt wirken
 
-Ein LLM hat kein „Ich", das in eine Rolle schlüpft – es **simuliert** eine Rolle, statt eine zu *sein*.[^shanahan] Was tatsächlich passiert: Der Rollenbegriff im Prompt verschiebt über die [Attention](funktionsweise-llms.md#station-4-attention-bedeutung-im-kontext) die Wahrscheinlichkeiten aller folgenden Tokens.
+Ein LLM hat kein „Ich", das in eine Rolle schlüpft – es **simuliert** eine Rolle, statt eine zu *sein*.[^shanahan] Was tatsächlich passiert: Der Rollenbegriff im Prompt verschiebt über die [Attention](funktionsweise-llms.md#4-attention) die Wahrscheinlichkeiten aller folgenden Tokens.
 
 *„Du bist Wirtschaftsprüferin"* macht Wörter wie *Risikorückstellung*, *Nachweis* und *Konformität* wahrscheinlicher – und Wörter wie *cool*, *revolutionär*, *disruptiv* unwahrscheinlicher.
 

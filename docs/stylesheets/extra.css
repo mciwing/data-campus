@@ -116,6 +116,33 @@
     color: rgb(100, 221, 23);
   }
 
+/* Quellenverzeichnis (Fußnoten) wie eine Admonition rahmen.
+
+   Die Fußnoten-Erweiterung hängt alle Definitionen zwingend ans Seitenende,
+   außerhalb jeder Admonition – sie lassen sich im Markdown also nicht in
+   eine Box setzen. Deshalb bekommt der erzeugte Container hier die
+   Admonition-Optik (Maße aus dem Modern-Theme übernommen). */
+.md-typeset .footnote {
+  background-color: rgba(0, 148, 133, 0.1);
+  border-radius: .4rem;
+  margin: 1.5625em 0;
+  padding: .6rem .8rem;
+  font-size: .7rem;
+}
+/* Die Trennlinie über den Fußnoten wird durch die Box überflüssig */
+.md-typeset .footnote > hr {
+  display: none;
+}
+.md-typeset .footnote > ol {
+  margin-left: 1rem;
+}
+.md-typeset .footnote > ol > li {
+  margin-bottom: .4em;
+}
+.md-typeset .footnote > ol > li:last-child {
+  margin-bottom: 0;
+}
+
 /* Glass-Header leicht in Brand-Peach tönen (überlagert die Default-Bg-Farbe,
    backdrop-filter aus dem Modern-Theme bleibt erhalten) */
 .md-header {
