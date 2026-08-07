@@ -22,7 +22,7 @@ Ein LLM hat kein „Ich", das in eine Rolle schlüpft – es **simuliert** eine 
     | **Als `system`-Message** | gilt für den **gesamten** Chat, deutlich stabiler |
 
     ```python
-    ollama.chat(model="qwen2.5:0.5b", messages=[
+    ollama.chat(model="gemma3:1b", messages=[
         {"role": "system", "content": "Du bist Risikokapitalgeberin."},
         {"role": "user",   "content": "Bewerte diese Idee: ..."},
     ])
@@ -136,7 +136,7 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
     Mit `/set system` wechselst du die Rolle, ohne den Chat neu zu starten. **Wichtig:** nach jedem Rollenwechsel `/clear`, sonst mischen sich die Perspektiven.
 
     ```title="Terminal"
-    ollama run qwen2.5:0.5b
+    ollama run gemma3:1b
 
     >>> /set system "Du bist Business Angel und investierst 50.000–200.000 € in Frühphasen-Startups. Du bist skeptisch und zahlengetrieben."
     >>> /clear
@@ -179,7 +179,7 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
     Ein ehrlicher Test – dieselbe Frage mit und ohne Rolle:
 
     ```bash
-    ollama run qwen2.5:0.5b "Bewerte in 3 Sätzen: Lieferdienst für Bio-Lebensmittel in Innsbruck."
+    ollama run gemma3:1b "Bewerte in 3 Sätzen: Lieferdienst für Bio-Lebensmittel in Innsbruck."
     ```
 
     ```title="Beispielausgabe — ohne Rolle"

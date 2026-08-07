@@ -205,14 +205,14 @@ Dieselbe Absicht, zwei Prompts:
 
 ## 🔬 Ollama-Labor
 
-Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `qwen2.5:0.5b`.
+Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `gemma3:1b`.
 
 !!! example "Übung 1: Die Bausteine einzeln zuschalten"
 
     Baue den Prompt schrittweise auf und beobachte, wo der größte Sprung passiert. Starte den Chat-Modus:
 
     ```bash
-    ollama run qwen2.5:0.5b
+    ollama run gemma3:1b
     ```
 
     **Stufe 1 – nur die Aufgabe:**
@@ -290,7 +290,7 @@ Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `qw
     Prüfe die Regel „positiv statt negativ" selbst nach. Führe **jeden** Befehl dreimal aus:
 
     ```bash
-    ollama run qwen2.5:0.5b "Beschreibe ein veganes Café in Innsbruck. Schreibe KEINE Einleitung und verwende KEINE Superlative."
+    ollama run gemma3:1b "Beschreibe ein veganes Café in Innsbruck. Schreibe KEINE Einleitung und verwende KEINE Superlative."
     ```
 
     ```title="Beispielausgabe (negativ formuliert)"
@@ -299,7 +299,7 @@ Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `qw
     ```
 
     ```bash
-    ollama run qwen2.5:0.5b "Beschreibe ein veganes Café in Innsbruck. Beginne direkt mit dem ersten Fakt. Verwende ausschließlich sachliche Adjektive."
+    ollama run gemma3:1b "Beschreibe ein veganes Café in Innsbruck. Beginne direkt mit dem ersten Fakt. Verwende ausschließlich sachliche Adjektive."
     ```
 
     ```title="Beispielausgabe (positiv formuliert)"
@@ -390,7 +390,7 @@ Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `qw
 
     **Konkrete Schritte:**
 
-    1. Formuliere einen **Minimal-Prompt** (nur die Aufgabe) und lass ihn auf `qwen2.5:0.5b` laufen.
+    1. Formuliere einen **Minimal-Prompt** (nur die Aufgabe) und lass ihn auf `gemma3:1b` laufen.
     2. Baue daraus einen **vollständigen RKAEF-Prompt** für deine Idee.
     3. Lass deinen guten Prompt zusätzlich auf `gemma3:270m` laufen. Bleibt das Ergebnis auch dort brauchbar?
     4. Notiere den finalen Prompt in deiner `prompts.md` unter der Überschrift `## 01 Beschreibung` – er ist der erste Eintrag deiner späteren [Prompt Library](libraries.md).

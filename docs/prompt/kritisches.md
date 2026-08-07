@@ -124,7 +124,7 @@ Prüfbar durch: <eine konkrete Maßnahme>
     Dieselbe Idee, nur ein anderes Wort im Prompt. Beobachte, wie das Modell die Wertung übernimmt.
 
     ```bash
-    ollama run qwen2.5:0.5b "Ich habe eine geniale Idee: ein Lieferdienst für Bio-Lebensmittel in Innsbruck per Lastenrad. Was hältst du davon?"
+    ollama run gemma3:1b "Ich habe eine geniale Idee: ein Lieferdienst für Bio-Lebensmittel in Innsbruck per Lastenrad. Was hältst du davon?"
     ```
 
     ```title="Beispielausgabe — positiv geframt"
@@ -136,7 +136,7 @@ Prüfbar durch: <eine konkrete Maßnahme>
     ```
 
     ```bash
-    ollama run qwen2.5:0.5b "Ich habe eine wahrscheinlich schlechte Idee: ein Lieferdienst für Bio-Lebensmittel in Innsbruck per Lastenrad. Was hältst du davon?"
+    ollama run gemma3:1b "Ich habe eine wahrscheinlich schlechte Idee: ein Lieferdienst für Bio-Lebensmittel in Innsbruck per Lastenrad. Was hältst du davon?"
     ```
 
     ```title="Beispielausgabe — negativ geframt"
@@ -156,7 +156,7 @@ Prüfbar durch: <eine konkrete Maßnahme>
     Erst die höfliche Frage:
 
     ```bash
-    ollama run qwen2.5:0.5b "Idee: Bio-Lieferdienst in Innsbruck, 2 Gründer, 15.000 € Startkapital. Welche Herausforderungen siehst du?"
+    ollama run gemma3:1b "Idee: Bio-Lieferdienst in Innsbruck, 2 Gründer, 15.000 € Startkapital. Welche Herausforderungen siehst du?"
     ```
 
     ```title="Beispielausgabe"

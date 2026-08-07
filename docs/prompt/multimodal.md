@@ -176,7 +176,7 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
 
 !!! example "Übung 2: Bild + Übersetzung als Kette"
 
-    `moondream` kann kein Deutsch – aber `qwen2.5:0.5b` schon. Kombiniere beide zu einer [Kette](chaining.md).
+    `moondream` kann kein Deutsch – aber `gemma3:1b` schon. Kombiniere beide zu einer [Kette](chaining.md).
 
     **Schritt 1** – Vision-Modell beschreibt auf Englisch:
 
@@ -192,7 +192,7 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
     **Schritt 2** – Textmodell macht daraus deutschen Verkaufstext. Kopiere die englische Beschreibung in den Prompt:
 
     ```title="Terminal"
-    ollama run qwen2.5:0.5b
+    ollama run gemma3:1b
 
     >>> """
     ... Hier ist eine englische Bildbeschreibung:
@@ -242,7 +242,7 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
 
     !!! warning "Zwei Dinge, auf die du achten musst"
 
-        **Kürze den Text.** Das [Kontextfenster](halluzinationen-kontextfenster.md) von `qwen2.5:0.5b` ist klein. Fügst du eine ganze Website ein, verliert das Modell den Anfang – und damit deine Anweisung. Etwa 2–3 Bildschirmseiten sind das Maximum.
+        **Kürze den Text.** Das [Kontextfenster](halluzinationen-kontextfenster.md) von `gemma3:1b` ist klein. Fügst du eine ganze Website ein, verliert das Modell den Anfang – und damit deine Anweisung. Etwa 2–3 Bildschirmseiten sind das Maximum.
 
         **Der letzte Satz im Prompt ist dein wichtigster Schutz.** Ohne *„Nutze ausschließlich Informationen aus dem Text"* ergänzt das Modell fröhlich, was auf so einer Website *üblicherweise* steht – und du merkst es nicht.
 

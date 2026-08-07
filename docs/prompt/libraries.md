@@ -72,7 +72,7 @@ Ein **Template** ist ein Prompt, in dem die veränderlichen Teile durch Platzhal
 ---
 name: swot-analyse
 version: 2
-getestet_mit: qwen2.5:0.5b, llama3.2:1b
+getestet_mit: gemma3:1b, gemma3:4b
 autor: M. Mustermann
 ---
 
@@ -98,7 +98,7 @@ Antworte auf Deutsch. Keine Einleitung.
     Der Block zwischen den `---` ist wertvoller, als er aussieht:
 
     - **`version`** – damit du Verbesserungen nachvollziehen kannst
-    - **`getestet_mit`** – ein Prompt, der auf GPT-5 funktioniert, kann auf `qwen2.5:0.5b` scheitern. Diese Angabe verhindert falsche Erwartungen.
+    - **`getestet_mit`** – ein Prompt, der auf GPT-5 funktioniert, kann auf `gemma3:1b` scheitern. Diese Angabe verhindert falsche Erwartungen.
     - **`autor`** – wer weiß, warum der Prompt so formuliert ist
 
 ---
@@ -162,7 +162,7 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
     3. Fertigen Text zwischen `"""` in den Chat einfügen.
 
     ```title="Terminal"
-    ollama run qwen2.5:0.5b
+    ollama run gemma3:1b
 
     >>> """
     ... Du bist Business Angel mit 15 Jahren Erfahrung in der Lebensmittelbranche.
@@ -219,7 +219,7 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
     ---
     name: swot-analyse
     version: 2
-    getestet_mit: qwen2.5:0.5b, llama3.2:1b
+    getestet_mit: gemma3:1b, gemma3:4b
     platzhalter: rolle, erfahrung, branche, kontext, anzahl
     autor: dein Name
     ---
@@ -308,7 +308,7 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
     ??? success "Lösungsskizze"
 
         1. Weil sich Bausteine **kombinieren** lassen: Aus vier Rollen, drei Aufgaben und zwei Formaten entstehen 24 Prompts aus nur neun Bausteinen. Fertige Prompts musst du dagegen einzeln pflegen.
-        2. Name, Version, Autor und die getesteten Modelle. `getestet_mit` ist wichtig, weil Prompts modellabhängig sind – ein Prompt, der auf einem großen Modell zuverlässig läuft, kann auf `qwen2.5:0.5b` komplett scheitern.
+        2. Name, Version, Autor und die getesteten Modelle. `getestet_mit` ist wichtig, weil Prompts modellabhängig sind – ein Prompt, der auf einem großen Modell zuverlässig läuft, kann auf `gemma3:1b` komplett scheitern.
         3. Ein Template ist ein Textblock, den **du** einfügst. Ein Skill ist ein Paket aus Anweisung, Beispielen und ggf. Dateien, das das System **bei Bedarf selbst lädt** – es belegt das Kontextfenster nur, wenn es gebraucht wird.
 
 ---
@@ -332,7 +332,7 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
     Du hast den Weg vom ersten „Schreib was über mein Café" bis zu einer versionierten, getesteten Prompt-Bibliothek zurückgelegt – und das Ganze mit Modellen, die auf jedem Laptop laufen.
 
-    Wenn deine Prompts auf `qwen2.5:0.5b` funktionieren, funktionieren sie überall. Nimm sie mit. 🚀
+    Wenn deine Prompts auf `gemma3:1b` funktionieren, funktionieren sie überall. Nimm sie mit. 🚀
 
 ---
 

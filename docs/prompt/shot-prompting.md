@@ -123,7 +123,7 @@ flowchart LR
 
 !!! tip "Der Kurs-Trick"
 
-    Genau die letzte Zeile ist für uns entscheidend. Ein großes Modell braucht selten Beispiele – es rät richtig. **Kleine Modelle profitieren dramatisch von Few-Shot.** Wenn `qwen2.5:0.5b` deine Aufgabe partout nicht versteht: gib ihm zwei Beispiele, statt den Anweisungstext ein viertes Mal umzuformulieren.
+    Genau die letzte Zeile ist für uns entscheidend. Ein großes Modell braucht selten Beispiele – es rät richtig. **Kleine Modelle profitieren dramatisch von Few-Shot.** Wenn `gemma3:1b` deine Aufgabe partout nicht versteht: gib ihm zwei Beispiele, statt den Anweisungstext ein viertes Mal umzuformulieren.
 
 ---
 
@@ -166,7 +166,7 @@ flowchart LR
     **Zero-Shot:**
 
     ```bash
-    ollama run qwen2.5:0.5b "Klassifiziere die Kundenbewertung als positiv, neutral oder negativ. Antworte mit genau einem Wort. Bewertung: Die Lieferung kam pünktlich, aber das Gemüse war welk. Kategorie:"
+    ollama run gemma3:1b "Klassifiziere die Kundenbewertung als positiv, neutral oder negativ. Antworte mit genau einem Wort. Bewertung: Die Lieferung kam pünktlich, aber das Gemüse war welk. Kategorie:"
     ```
 
     ```title="Beispielausgabe"
@@ -311,7 +311,7 @@ flowchart LR
 
     **Konkrete Schritte:**
 
-    1. **Zero-Shot:** *„Erstelle ein Business Model Canvas für [deine Idee]."* – Wie viele der neun Felder liefert `qwen2.5:0.5b`?
+    1. **Zero-Shot:** *„Erstelle ein Business Model Canvas für [deine Idee]."* – Wie viele der neun Felder liefert `gemma3:1b`?
     2. **Few-Shot:** Gib zwei vollständig ausgefüllte Felder eines *fremden* Beispiels vor (z. B. für einen Fahrradkurier) und lass das Modell die restlichen für deine Idee ergänzen.
     3. Zähle für beide Varianten: Vollständigkeit (0–9 Felder), Formattreue, inhaltliche Substanz.
     4. Notiere den besseren Prompt in deiner `prompts.md` unter `## 02 Canvas`.

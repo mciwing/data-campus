@@ -136,7 +136,7 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
     **Runde 1 – Baseline:**
 
     ```bash
-    ollama run qwen2.5:0.5b "Mach ein Business Model Canvas für einen Bio-Lieferdienst."
+    ollama run gemma3:1b "Mach ein Business Model Canvas für einen Bio-Lieferdienst."
     ```
 
     ```title="Beispielausgabe — 3/9 Feldern"
@@ -223,7 +223,7 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
 
     Das sind – nicht zufällig – genau die Bausteine aus [Kapitel 2](anatomie.md).
 
-    **Deine Aufgabe:** Wende denselben Trick auf deinen eigenen schwächsten Prompt an. Sind die Vorschläge brauchbar? Teste es zusätzlich mit `llama3.2:1b` – wie groß ist der Unterschied?
+    **Deine Aufgabe:** Wende denselben Trick auf deinen eigenen schwächsten Prompt an. Sind die Vorschläge brauchbar? Teste es zusätzlich mit `gemma3:1b` – wie groß ist der Unterschied?
 
 ??? code "🐍 Optional (Python): Prompts automatisch bewerten"
 

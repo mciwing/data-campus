@@ -151,7 +151,7 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
     Der beste Weg, Halluzinationen zu erkennen, ist, sie absichtlich zu erzeugen. Stelle Fragen, deren Antwort das Modell unmöglich wissen kann:
 
     ```bash
-    ollama run qwen2.5:0.5b "Wie groß war der Markt für Bio-Lieferdienste in Innsbruck im Jahr 2024?"
+    ollama run gemma3:1b "Wie groß war der Markt für Bio-Lieferdienste in Innsbruck im Jahr 2024?"
     ```
 
     ```title="Beispielausgabe"
@@ -164,7 +164,7 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
     Drei präzise Zahlen, souverän vorgetragen, **vollständig erfunden**. Keine Unsicherheit, kein Hinweis, keine Quelle.
 
     ```bash
-    ollama run qwen2.5:0.5b "Nenne drei wissenschaftliche Studien zur Preiselastizität bei Bio-Lebensmitteln."
+    ollama run gemma3:1b "Nenne drei wissenschaftliche Studien zur Preiselastizität bei Bio-Lebensmitteln."
     ```
 
     ```title="Beispielausgabe"

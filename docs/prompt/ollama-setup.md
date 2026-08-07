@@ -1,4 +1,4 @@
-# Setup: Dein eigenes LLM mit Ollama 🦙
+# Setup: Dein eigenes LLM mit Ollama
 
 Ab jetzt wird es praktisch. In den folgenden Kapiteln lernst du Prompting-Techniken nicht nur *kennen*, sondern probierst jede einzelne **selbst aus** – auf deinem eigenen Laptop, ohne Account, ohne Kreditkarte, ohne dass deine Daten das Gerät verlassen.
 
@@ -12,53 +12,29 @@ Dafür nutzen wir **Ollama**: ein kleines Programm, das Sprachmodelle lokal ausf
 
     Ein starkes Modell wie ChatGPT versteht auch einen schlampigen Prompt und liefert trotzdem etwas Brauchbares. Dabei lernst du nichts – dein Prompt wird nie *geprüft*. Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist.
 
-    Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering. Alles Größere ist danach ein Kinderspiel.[^brown]
+    Wer auf einem 1-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering. Alles Größere ist danach ein Kinderspiel.[^brown]
 
 !!! info "Brauche ich Python?"
 
     **Nein.** Der gesamte Kurs ist so aufgebaut, dass du alle Übungen im **Terminal** erledigen kannst.
 
-    Zusätzlich findest du in jedem Kapitel einen eingeklappten Block **🐍 Optional (Python)**. Er zeigt, wie sich dieselbe Aufgabe automatisieren lässt – **inklusive der Ausgabe**, damit du den Code auch dann verstehst, wenn du ihn nie ausführst. Wer mag, probiert es aus. Wer nicht, überspringt es ohne Verlust.
+    Zusätzlich findest du in jedem Kapitel einen eingeklappten Block **🐍 Optional (Python)**. Er zeigt, wie sich dieselbe Aufgabe automatisieren lässt. Wer mag, probiert es aus. Wer nicht, überspringt es ohne Verlust.
 
 ---
 
-## Schritt 1: Ollama installieren
+## 1) Ollama installieren
 
-=== ":material-microsoft-windows: Windows"
+Die Installation läuft auf jedem Betriebssystem etwas anders – Ollama beschreibt sie für **Windows, macOS und Linux** selbst und hält die Anleitung aktuell. Deshalb verweisen wir hier bewusst dorthin, statt eine zweite Version zu pflegen, die irgendwann veraltet:
 
-    1. Lade den Installer von [ollama.com/download](https://ollama.com/download) herunter.
-    2. Führe `OllamaSetup.exe` aus und folge dem Assistenten (keine Admin-Rechte nötig).
-    3. Ollama startet automatisch und läuft ab jetzt im Hintergrund – erkennbar am 🦙-Symbol im Infobereich der Taskleiste.
+<div class="center-button" markdown>
+[:material-link-variant: **Ollama herunterladen und installieren**](https://ollama.com/download){ .md-button .md-button--primary target="_blank" rel="noopener" }
+</div>
 
-    **Systemvoraussetzung:** Windows 10 oder neuer, mindestens **8 GB RAM**. Eine Grafikkarte ist *nicht* erforderlich.
+Folge dort einfach der Anleitung für dein System. Danach läuft Ollama im Hintergrund – erkennbar am 🦙-Symbol in der Taskleiste (Windows) bzw. Menüleiste (macOS).
 
-=== ":material-apple: macOS"
+!!! info "Reicht mein Laptop?"
 
-    1. Lade die App von [ollama.com/download](https://ollama.com/download) herunter.
-    2. Entpacke sie und ziehe `Ollama.app` in den Ordner *Programme*.
-    3. Starte die App einmal – danach läuft sie im Hintergrund (🦙 in der Menüleiste).
-
-    Alternativ per Homebrew:
-
-    ```bash
-    brew install ollama
-    ```
-
-    **Systemvoraussetzung:** macOS 12+, mindestens **8 GB RAM**. Auf Apple Silicon (M1–M4) läuft alles besonders flott.
-
-=== ":material-linux: Linux"
-
-    Ein einziger Befehl genügt:
-
-    ```bash
-    curl -fsSL https://ollama.com/install.sh | sh
-    ```
-
-    Danach den Dienst starten (falls nicht automatisch geschehen):
-
-    ```bash
-    ollama serve
-    ```
+    Für die Modelle in diesem Kurs brauchst du **mindestens 8 GB RAM**. Eine eigene Grafikkarte ist **nicht** erforderlich – die Modelle sind bewusst klein gewählt.
 
 ### Terminal öffnen und Installation prüfen
 
@@ -88,68 +64,38 @@ Wenn eine Versionsnummer erscheint, hat alles geklappt. 🎉
 
 ---
 
-## Schritt 2: Deine Modelle herunterladen
+## 2) Modelle herunterladen
 
-Ein Modell wird **einmal** heruntergeladen und liegt danach lokal auf deiner Festplatte. Wir arbeiten im Kurs mit drei bewusst kleinen Modellen:
+Ein Modell wird **einmal** heruntergeladen und liegt danach lokal auf deiner Festplatte. Für den gesamten Kurs brauchst du genau **ein** Modell:
 
 <div class="grid cards" markdown>
 
-- :material-feather: **`gemma3:270m` — Das Winzige**
+- :material-school: **`gemma3:1b`**
 
     ---
 
-    **~290 MB** · 270 Mio. Parameter
-
-    Kaum größer als ein Foto-Album. Vergisst Anweisungen, erfindet Fakten, driftet ab. Unser **Extremtest**: Was hier funktioniert, funktioniert überall.
-
-- :material-school: **`qwen2.5:0.5b` — Das Kursmodell** ⭐
-
-    ---
-
-    **~400 MB** · 500 Mio. Parameter
+    **~815 MB** · 1 Mrd. Parameter
 
     Unser **Standardmodell** für alle Labore. Klein genug, um schlechte Prompts abzustrafen – groß genug, um bei guten Prompts sauber zu liefern.
 
-- :material-rocket-launch: **`llama3.2:1b` — Der Vergleich**
-
-    ---
-
-    **~1,3 GB** · 1 Mrd. Parameter
-
-    Deutlich besser im Deutschen. Nutzen wir als **Kontrastmodell**: Wie viel Modellgröße ersetzt einen guten Prompt? (Antwort: weniger als du denkst.)
-
 </div>
 
-???+ defi "Modellnamen lesen: was bedeuten `270m`, `0.5b` und `1b`?"
+???+ defi "Modellnamen lesen: was bedeutet `1b`?"
 
     Der Teil nach dem Doppelpunkt gibt die **Anzahl der Parameter** an – also wie viele einstellbare Zahlen im Modell stecken. Sie sind das, was beim Training „gelernt" wird.
+    `1b` steht also für 1 billion (englisch) = 1 Milliarde (deutsch) – also eine Milliarde einstellbare Parameter.
 
-    | Kürzel | Steht für | Parameter |
-    |---|---|---|
-    | `270m` | *million* | 270 Millionen |
-    | `0.5b` | *billion* | 500 Millionen |
-    | `1b` | *billion* | 1 Milliarde |
-    | `405b` | *billion* | 405 Milliarden |
-
-    !!! warning "Achtung, falscher Freund"
-
-        Englisch **billion** = deutsch **Milliarde** (10⁹), *nicht* Billion (10¹²). `llama3.2:1b` hat also 1 Milliarde Parameter, nicht 1 Billion.
+    **Achtung, falscher Freund:** Englisch *billion* ist die deutsche **Milliarde** (10⁹), nicht die Billion (10¹²).
 
     **Faustregel:** Mehr Parameter = mehr implizit gespeichertes Wissen und feinere Nuancen – aber auch mehr Speicherbedarf, mehr Rechenzeit und höhere Kosten.
 
-    Als grober Anhaltspunkt: **etwa 1 GB Download pro Milliarde Parameter** – gut zu sehen an der `ollama list`-Ausgabe unten. Deshalb passt `llama3.2:1b` mit 1,3 GB bequem auf jeden Laptop, während ein 405B-Modell spezielle Server-Hardware braucht.
-
-    Der genaue Wert schwankt, weil Modelle unterschiedlich stark **quantisiert** werden – also mit unterschiedlich vielen Bits pro Parameter gespeichert. Im Arbeitsspeicher braucht ein Modell außerdem etwas mehr Platz als auf der Festplatte, weil das Kontextfenster dazukommt.
-
-Lade alle drei herunter – zusammen rund **2 GB**:
+Zum Installieren genügt ein Befehl im Terminal:
 
 ```bash
-ollama pull gemma3:270m
-ollama pull qwen2.5:0.5b
-ollama pull llama3.2:1b
+ollama pull gemma3:1b
 ```
 
-Prüfe anschließend, was installiert ist:
+Prüfe anschließend, ob es angekommen ist:
 
 ```bash
 ollama list
@@ -157,31 +103,52 @@ ollama list
 
 ```title="Ausgabe (Beispiel)"
 NAME               ID              SIZE      MODIFIED
-llama3.2:1b        baf6a787fdff    1.3 GB    2 minutes ago
-qwen2.5:0.5b       a8b0c5157701    397 MB    3 minutes ago
-gemma3:270m        e7d36fb2c3b3    292 MB    4 minutes ago
+gemma3:1b          8648f39daa8f    815 MB    2 minutes ago
 ```
 
-???+ tip "Wenig Speicherplatz oder langsames Internet?"
+Das war's – damit haben wir unser erstes lokales LLM installiert.
 
-    Es reicht völlig, **nur `qwen2.5:0.5b`** zu laden. Alle Pflicht-Übungen im Kurs funktionieren damit. `gemma3:270m` und `llama3.2:1b` brauchst du nur für die optionalen Vergleichsexperimente.
+??? tip "Optional: zwei Modelle zum Vergleichen"
 
-    Ein Modell wieder loswerden: `ollama rm gemma3:270m`
+    In einigen Kapiteln gibt es freiwillige Zusatzübungen, die denselben Prompt auf einem **kleineren** und einem **größeren** Modell ausprobieren. Wenn du dort mitmachen möchtest, lade dir diese beiden dazu:
+
+    ```bash
+    ollama pull gemma3:270m
+    ollama pull gemma3:4b
+    ```
+
+    | Modell | Größe | Wozu |
+    |---|---|---|
+    | `gemma3:270m` | ~290 MB | **Der Extremtest.** Knapp viermal kleiner. Vergisst Anweisungen, erfindet Fakten, driftet ab. Was hier funktioniert, funktioniert überall. |
+    | `gemma3:4b` | ~3,3 GB | **Das Kontrastmodell.** Viermal größer – und weil alle drei aus derselben Familie stammen, ist der Unterschied wirklich die **Größe** und nicht die Trainingsdaten. Zeigt, wie viel Größe einen guten Prompt ersetzt: weniger, als man denkt. |
+
+    Du kannst sie auch später jederzeit nachladen. Ein Modell wieder loswerden: `ollama rm gemma3:270m`
 
 ---
 
-## Schritt 3: Dein erster Prompt
+## 3) Dein erster Prompt
 
 Für einen **einzelnen** Prompt hängst du ihn direkt an den Befehl an:
 
 ```bash
-ollama run qwen2.5:0.5b "Nenne drei Risiken eines Bio-Lieferdienstes."
+ollama run gemma3:1b "Nenne drei Risiken eines Bio-Lieferdienstes."
 ```
 
 ```title="Beispielausgabe"
-1. Hohe Logistikkosten durch gekühlten Transport.
-2. Verderbliche Ware führt zu Verlusten bei schwankender Nachfrage.
-3. Starke Konkurrenz durch etablierte Supermärkte mit Lieferservice.
+Hier sind drei Risiken, die mit dem Betrieb eines Bio-Lieferdienstes verbunden sind:
+
+1.  **Hohe Kosten und Margen:** Bio-Produkte sind oft teurer als konventionelle
+    Produkte. Dies kann zu hohen Produktionskosten führen, was sich in geringeren
+    Gewinnmargen für den Lieferdienst auswirken kann.
+2.  **Lieferkettenprobleme und -risiken:** Der Bio-Sektor ist anfällig für
+    Lieferkettenunterbrechungen aufgrund von Wetterbedingungen, Transportproblemen
+    oder Schäden an Produkten während des Transports.
+3.  **Nachhaltigkeits- und ethische Fragen:** Der Bio-Sektor ist oft mit
+    Umweltfragen verbunden, etwa der Notwendigkeit, nachhaltige Anbaumethoden
+    zu gewährleisten.
+
+Diese Risiken können für Bio-Lieferdienste eine Herausforderung darstellen, da sie
+die Rentabilität und Glaubwürdigkeit des Unternehmens beeinträchtigen können.
 ```
 
 !!! warning "Deine Ausgabe wird anders aussehen"
@@ -194,10 +161,10 @@ ollama run qwen2.5:0.5b "Nenne drei Risiken eines Bio-Lieferdienstes."
 
 ### Der Chat-Modus
 
-Ohne Prompt am Ende startet ein fortlaufender Chat:
+Ohne Prompt am Ende des `ollama` Aufrufs startet ein fortlaufender Chat:
 
 ```bash
-ollama run qwen2.5:0.5b
+ollama run gemma3:1b
 ```
 
 ```title="Terminal"
@@ -215,7 +182,7 @@ Das Modell antwortet – Wort für Wort, genau wie in [Station 5](funktionsweise
     5. `/show info` – technische Daten des Modells anzeigen
     6. `"""` – mehrzeilige Eingabe starten **und** beenden
 
-### Mehrzeilige Prompts eingeben ⭐
+### Mehrzeilige Prompts eingeben
 
 Das brauchst du ab Kapitel 2 ständig – gute Prompts sind selten einzeilig. Tippe im Chat drei Anführungszeichen, dann deinen Text über mehrere Zeilen, dann wieder drei Anführungszeichen:
 
@@ -239,7 +206,7 @@ Erst nach dem schließenden `"""` beginnt das Modell zu antworten.
 
 ---
 
-## Schritt 4: Die Stellschrauben
+## 4) Die Stellschrauben
 
 Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie im Chat-Modus mit `/set parameter`:
 
@@ -261,87 +228,74 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
         <td style="background:#00948511; padding:10px 14px;"><code>/set parameter num_predict 150</code></td>
         <td style="padding:10px 14px;"><strong>Maximale Antwortlänge</strong> in Tokens. Verhindert, dass kleine Modelle endlos weiterschwafeln.</td>
     </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px;"><code>/set parameter seed 42</code></td>
-        <td style="padding:10px 14px;"><strong>Zufalls-Startwert.</strong> Gleicher Seed + gleicher Prompt = gleiche Antwort. Nützlich, wenn du zwei Prompts fair vergleichen willst.</td>
-    </tr>
     </tbody>
 </table>
 </div>
 
-!!! warning "Nicht-Determinismus"
+???+ tip "Es gibt noch mehr Stellschrauben"
 
-    Ohne festen `seed` bekommst du bei identischem Prompt **unterschiedliche Antworten**. Wenn du also zwei Prompts vergleichst, kann der Unterschied auch reiner Zufall sein.
+    Ollama kennt eine ganze Reihe weiterer Parameter – etwa `top_k`, `top_p`, `repeat_penalty` oder `num_ctx` (die Größe des [Kontextfensters](halluzinationen-kontextfenster.md)). Für den Kurs brauchst du sie nicht, aber wer tiefer einsteigen will, findet die vollständige Liste mit Wertebereichen hier: [Valid Parameters and Values](https://docs.ollama.com/modelfile#valid-parameters-and-values){ target="_blank" rel="noopener" } *(englisch)*
 
-    👉 Führe jeden Vergleich **mehrfach** aus und achte auf das Gesamtbild – nicht auf einen einzelnen Durchlauf.
+!!! warning "Dieselbe Frage, zwei verschiedene Antworten"
+
+    Sprachmodelle antworten nicht reproduzierbar. Wenn du zwei Prompts vergleichst, kann der Unterschied also auch **reiner Zufall** sein. Zwei Ursachen kannst du selbst ausschalten:
+
+    **1. Der Chatverlauf.** Fragst du im selben Chat zweimal dasselbe, steht beim zweiten Mal die erste Antwort mit im Kontext – die Ausgangslage ist gar nicht dieselbe.
+
+    **2. Die Temperatur.** Bei jedem Wert über `0` würfelt das Modell bei der Wortauswahl mit.
+
+    👉 Für einen fairen Vergleich also beides setzen:
+
+    ```title="Terminal"
+    >>> /set parameter temperature 0
+    >>> /clear
+    ```
+
+    Auch damit bleibt eine **Restunschärfe**: Fließkomma-Berechnungen auf CPU und GPU sind nicht bit-genau wiederholbar, gelegentlich weicht eine Antwort trotzdem ab. Verlass dich deshalb nie auf einen einzelnen Durchlauf – führe jeden Vergleich **mehrfach** aus und achte auf das **Muster**, nicht auf den Wortlaut.
 
 ---
 
-## 🔬 Deine ersten Experimente
+## 🔬 Ollama-Labor
 
-!!! example "Übung 0: Der Realitätscheck 🧪"
+!!! lab "Übung 1: Der Realitätscheck 🧪"
 
     Stelle demselben Modell zweimal dieselbe Sache – einmal schlampig, einmal präzise.
 
     ```bash
-    ollama run qwen2.5:0.5b "Schreib was über mein Café"
-    ```
-
-    ```title="Beispielausgabe"
-    Cafés sind beliebte Orte, an denen Menschen zusammenkommen, um Kaffee
-    zu trinken und sich zu unterhalten. Die Geschichte des Kaffeehauses
-    reicht bis ins 17. Jahrhundert zurück. Möchten Sie mehr über die
-    Geschichte von Cafés erfahren oder benötigen Sie Hilfe bei einem
-    bestimmten Aspekt Ihres Cafés?
+    ollama run gemma3:1b "Schreib was über mein Café"
     ```
 
     ```bash
-    ollama run qwen2.5:0.5b "Schreibe genau 3 Sätze Werbetext für ein veganes Café in Innsbruck. Zielgruppe: Studierende. Ton: locker, ohne Superlative."
+    ollama run gemma3:1b "Schreibe genau 3 Sätze Werbetext für ein veganes Café in Innsbruck. Zielgruppe: Studierende. Ton: locker, ohne Superlative."
     ```
 
-    ```title="Beispielausgabe"
-    Mitten in Innsbruck gibt es jetzt ein Café, in dem alles vegan ist –
-    vom Kuchen bis zum Cappuccino. Mit Studierendenausweis zahlst du
-    weniger, und WLAN gibt es sowieso. Komm vorbei, wenn die Bibliothek
-    zu voll ist.
-    ```
+    Vergleiche den Output. Was fällt dir auf?
 
-    Prompt 1 liefert eine Enzyklopädie-Einleitung über Cafés im Allgemeinen – und stellt am Ende eine Rückfrage, statt die Aufgabe zu erledigen. Prompt 2 liefert trotz des winzigen Modells etwas, das man tatsächlich verwenden könnte.
 
-    **Das ist der gesamte Kurs in zwei Befehlen.** Genau diesen Effekt zerlegen wir ab dem nächsten Kapitel in seine Bestandteile.
-
-!!! example "Übung 1: Temperatur erfühlen 🌡️"
+!!! lab "Übung 2: Temperatur erfühlen 🌡️"
 
     Starte den Chat-Modus und probiere denselben Prompt bei verschiedenen Temperaturen:
 
     ```title="Terminal"
-    ollama run qwen2.5:0.5b
+    ollama run gemma3:1b
 
     >>> /set parameter temperature 0.0
     >>> Erfinde einen Namen für ein veganes Café in Innsbruck.
+    >>> /clear
     >>> /set parameter temperature 1.5
     >>> Erfinde einen Namen für ein veganes Café in Innsbruck.
     ```
 
-    ```title="Beispielausgabe bei temperature 0.0"
-    Grünes Café
-    ```
+    Auch hier wiede: was fällt dir auf? Probiere auch verschiedene Temperaturen
 
-    ```title="Beispielausgabe bei temperature 1.5"
-    Wie wäre es mit "Sprossenwerk Alpin"? Oder – falls es verspielter sein
-    darf – "Karottenkaiser", "Nordkette Nosh" oder "Tofu & Türmchen".
-    ```
+??? lab "Übung 3: Der Modell-Vergleich (optional) ⚖️"
 
-    **Deine Aufgabe:** Probiere auch `0.5` und `1.0`. Ab welchem Wert wird es kreativ? Ab welchem unbrauchbar? Notiere dir deinen persönlichen Sweet Spot – du brauchst ihn in allen weiteren Kapiteln.
-
-??? example "Übung 2: Der Modell-Vergleich (optional) ⚖️"
-
-    Schicke **denselben schlechten** Prompt an alle drei Modelle:
+    Für diese Übung brauchst du die beiden **Vergleichsmodelle** aus Schritt 2. Schicke denselben **schlechten** Prompt an alle drei:
 
     ```bash
-    ollama run gemma3:270m  "Schreib was über mein Café"
-    ollama run qwen2.5:0.5b "Schreib was über mein Café"
-    ollama run llama3.2:1b  "Schreib was über mein Café"
+    ollama run gemma3:270m "Schreib was über mein Café"
+    ollama run gemma3:1b   "Schreib was über mein Café"
+    ollama run gemma3:4b   "Schreib was über mein Café"
     ```
 
     Wiederhole das Ganze mit dem **guten** Prompt aus Übung 0.
@@ -374,7 +328,7 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
     import ollama
 
     antwort = ollama.chat(
-        model="qwen2.5:0.5b",
+        model="gemma3:1b",
         messages=[
             {"role": "user", "content": "Nenne drei Risiken eines Bio-Lieferdienstes."}
         ],
@@ -402,10 +356,12 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
 
     import ollama
 
-    KURSMODELL = "qwen2.5:0.5b"
+    KURSMODELL = "gemma3:1b"
 
 
-    def frage(prompt, system=None, model=KURSMODELL, temperatur=0.3, seed=42):
+    # temperatur=0 -> Antworten sind weitgehend wiederholbar.
+    # Genau das willst du beim Vergleichen von Prompts.
+    def frage(prompt, system=None, model=KURSMODELL, temperatur=0.0):
         """Schickt einen einzelnen Prompt an das Modell und gibt den Text zurück."""
         messages = []
         if system:
@@ -415,7 +371,7 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
         antwort = ollama.chat(
             model=model,
             messages=messages,
-            options={"temperature": temperatur, "seed": seed},
+            options={"temperature": temperatur},
         )
         return antwort["message"]["content"]
     ```
@@ -438,59 +394,6 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
     dicht besetzt. Entscheidend wären für mich die Mietkosten pro
     Quadratmeter und der durchschnittliche Bon pro Gast ...
     ```
-
----
-
-## Fehlerbehebung 🔧
-
-??? warning "„model not found" / „pull model manifest failed""
-
-    Das Modell ist nicht geladen. Prüfe mit `ollama list`, was da ist, und lade es ggf. nach: `ollama pull qwen2.5:0.5b`. Achte auf **exakte** Schreibweise inklusive Tag (`qwen2.5:0.5b`, nicht `qwen2.5`).
-
-??? warning "Die Antworten kommen extrem langsam"
-
-    - Schließe speicherhungrige Programme (Browser mit 50 Tabs 👀).
-    - Nimm ein kleineres Modell: `gemma3:270m` statt `llama3.2:1b`.
-    - Begrenze die Antwortlänge mit `/set parameter num_predict 150`.
-    - Die erste Antwort nach dem Start dauert immer länger – das Modell wird in den Arbeitsspeicher geladen.
-
-??? warning "Das Modell antwortet auf Englisch, obwohl ich Deutsch frage"
-
-    Typisch für sehr kleine Modelle. Zwei Gegenmittel:
-
-    1. Anweisung explizit in den Prompt: *„Antworte ausschließlich auf Deutsch."*
-    2. `llama3.2:1b` verwenden – das Modell mit der besten Deutsch-Fähigkeit unter unseren dreien.
-
-    Merke dir das: Was ein Modell **nicht gut kann**, musst du im Prompt **explizit einfordern**.
-
-??? warning "Python: „ConnectionError" oder „Failed to connect to Ollama""
-
-    Der Ollama-Dienst läuft nicht. Starte die Ollama-App (Windows/macOS) bzw. `ollama serve` (Linux) und versuche es erneut. Test im Browser: [http://localhost:11434](http://localhost:11434) sollte „Ollama is running" anzeigen.
-
----
-
-???+ question "Selbsttest: Bereit fürs Labor?"
-
-    1. Warum arbeiten wir in diesem Kurs absichtlich mit sehr kleinen Modellen?
-    2. Wie gibst du im Chat-Modus einen mehrzeiligen Prompt ein?
-    3. Warum solltest du einen Prompt-Vergleich nie an einem einzelnen Durchlauf festmachen?
-
-    ??? success "Lösungsskizze"
-
-        1. Weil kleine Modelle schlechte Prompts **nicht kompensieren** können. Der Qualitätsunterschied zwischen einem schwachen und einem starken Prompt wird dadurch sichtbar – bei großen Modellen verschwimmt er.
-        2. Mit `"""` – einmal vor und einmal nach dem Text. Erst nach dem schließenden `"""` antwortet das Modell.
-        3. Weil Sprachmodelle nicht deterministisch sind: Derselbe Prompt liefert beim zweiten Aufruf einen anderen Text. Ein einzelner guter oder schlechter Durchlauf kann reiner Zufall sein.
-
----
-
-!!! example "Lab"
-
-    **Playground einrichten**
-
-    1. Installiere Ollama und lade mindestens `qwen2.5:0.5b`.
-    2. Lege einen Ordner `prompt-labor` mit einer Datei `prompts.md` an.
-    3. Führe Übung 0 und Übung 1 durch und halte deine Beobachtungen schriftlich fest.
-    4. Notiere deine Geschäftsidee aus [Kapitel 1](einfuehrung.md) in einer Datei `idee.md` – du brauchst sie ab jetzt in jedem Labor.
 
 ---
 

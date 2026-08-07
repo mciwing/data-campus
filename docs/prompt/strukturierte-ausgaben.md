@@ -96,7 +96,7 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
     **Vorlage** (am robustesten) → **Markdown** → **Tabelle** → **JSON** (am fehleranfälligsten)
 
-    Wenn `qwen2.5:0.5b` an deinem JSON scheitert: nimm eine `SCHLÜSSEL: Wert`-Vorlage und wandle sie in Python selbst in JSON um. Das ist fast immer schneller als drei weitere Prompt-Iterationen.
+    Wenn `gemma3:1b` an deinem JSON scheitert: nimm eine `SCHLÜSSEL: Wert`-Vorlage und wandle sie in Python selbst in JSON um. Das ist fast immer schneller als drei weitere Prompt-Iterationen.
 
 ---
 
@@ -105,7 +105,7 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 Ollama kann das Modell technisch dazu **zwingen**, gültiges JSON zu erzeugen – mit der Option `--format json`:
 
 ```bash
-ollama run --format json qwen2.5:0.5b "Nenne 3 Risiken für einen Bio-Lieferdienst. Antworte als JSON mit dem Schlüssel 'risiken', jeder Eintrag mit 'titel' und 'schwere' (hoch, mittel oder niedrig)."
+ollama run --format json gemma3:1b "Nenne 3 Risiken für einen Bio-Lieferdienst. Antworte als JSON mit dem Schlüssel 'risiken', jeder Eintrag mit 'titel' und 'schwere' (hoch, mittel oder niedrig)."
 ```
 
 ```title="Beispielausgabe"
@@ -147,7 +147,7 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
     **Ohne Zwang:**
 
     ```bash
-    ollama run qwen2.5:0.5b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
+    ollama run gemma3:1b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
     ```
 
     ````title="Beispielausgabe — Versuch 1 ❌"
@@ -169,7 +169,7 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
     **Mit Zwang:**
 
     ```bash
-    ollama run --format json qwen2.5:0.5b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
+    ollama run --format json gemma3:1b "Nenne 2 Risiken für einen Bio-Lieferdienst. Antworte NUR mit JSON, Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."
     ```
 
     ```title="Beispielausgabe — jedes Mal gültig ✅"
@@ -231,7 +231,7 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
     ERLAUBTE_SCHWERE = {"hoch", "mittel", "niedrig"}
 
     antwort = ollama.chat(
-        model="qwen2.5:0.5b",
+        model="gemma3:1b",
         messages=[{"role": "user", "content":
                    "Nenne 3 Risiken für einen Bio-Lieferdienst. JSON mit "
                    "Schlüssel 'risiken', je Eintrag 'titel' und 'schwere'."}],
@@ -280,7 +280,7 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
     **Konkrete Schritte:**
 
-    1. Erzeuge dein Canvas in allen vier Formaten (Tabelle, JSON, Markdown, Vorlage) mit `qwen2.5:0.5b`.
+    1. Erzeuge dein Canvas in allen vier Formaten (Tabelle, JSON, Markdown, Vorlage) mit `gemma3:1b`.
     2. Führe jedes Format **fünfmal** aus und notiere die Fehlversuche als Bruch.
     3. Wiederhole den zuverlässigsten und den unzuverlässigsten Prompt auf `gemma3:270m`. Verschiebt sich die Rangfolge?
     4. Notiere für jedes Format eine Empfehlung: *Wofür würde ich es einsetzen?*

@@ -12,7 +12,7 @@ Das ist dieselbe Idee wie beim Programmieren: Statt einer Funktion mit 300 Zeile
 
     Ein LLM verteilt seine „Aufmerksamkeit" auf **alles**, was im Prompt steht. Fünf Aufgaben in einem Prompt heißen: jede bekommt ein Fünftel.
 
-Bei einem großen Modell fällt das kaum auf. Bei `qwen2.5:0.5b` sofort:
+Bei einem großen Modell fällt das kaum auf. Bei `gemma3:1b` sofort:
 
 === "❌ Alles auf einmal"
 
@@ -81,7 +81,7 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
 
         Wei et al. zeigen, dass Chain-of-Thought eine **emergente Fähigkeit** ist: Sie tritt erst bei sehr großen Modellen (ab etwa 100 Mrd. Parametern) zuverlässig auf. Bei kleineren Modellen erzeugt „Denke Schritt für Schritt" oft nur *längere*, aber nicht *bessere* Antworten.
 
-        Bei `qwen2.5:0.5b` – 200-mal kleiner – bringt der Zauberspruch also wenig. Das explizite Zerlegen in mehrere Prompts dagegen sehr viel. Genau deshalb ist Chaining unser Werkzeug der Wahl.
+        Bei `gemma3:1b` – rund 100-mal kleiner – bringt der Zauberspruch also wenig. Das explizite Zerlegen in mehrere Prompts dagegen sehr viel. Genau deshalb ist Chaining unser Werkzeug der Wahl.
 
 ???+ disadv "Und die Kosten"
 
@@ -110,7 +110,7 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
     Erst der Ein-Prompt-Versuch – damit du siehst, woran er scheitert.
 
     ```title="Terminal"
-    ollama run qwen2.5:0.5b
+    ollama run gemma3:1b
 
     >>> """
     ... Idee: Lieferdienst für regionale Bio-Lebensmittel in Innsbruck,
@@ -301,7 +301,7 @@ Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebni
     1. Zeichne deine Kette zuerst **auf Papier**: Welche Schritte, welche Ein- und Ausgaben?
     2. Arbeite sie im Terminal ab und speichere jedes Zwischenergebnis in einer eigenen Datei (`kette_1_markt.md`, `kette_2_swot.md`, …).
     3. Setze mindestens einen **Kontrollpunkt** ein (Übung 3): Prüfe ein Zwischenergebnis auf Vollständigkeit, bevor du weitergehst.
-    4. Lass die komplette Kette einmal auf `qwen2.5:0.5b` und einmal auf `llama3.2:1b` laufen. Wo ist der Unterschied am größten – am Anfang oder am Ende der Kette?
+    4. **Optional:** Lass die komplette Kette zusätzlich auf `gemma3:4b` laufen. Wo ist der Unterschied am größten – am Anfang oder am Ende der Kette?
     5. Notiere alle Kettenschritte in `prompts.md` unter `## 05 Kette`.
 
 ---

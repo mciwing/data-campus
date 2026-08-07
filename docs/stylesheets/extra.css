@@ -116,6 +116,32 @@
     color: rgb(100, 221, 23);
   }
 
+/* Zeilenumbruch in Code-Blöcken.
+
+   Standardmäßig scrollen Code-Blöcke horizontal – lange Modell-Ausgaben und
+   `ollama run "…"`-Befehle laufen dadurch aus dem Bild. Deshalb brechen sie
+   hier um.
+
+   Abschalten für einzelne Blöcke ist nur AUSSERHALB von Admonitions möglich
+   (in Admonitions verwirft der Parser das umschließende <div>):
+
+       <div class="nowrap" markdown>
+       ```python
+       … Block, der scrollen soll …
+       ```
+       </div>                                                             */
+.md-typeset pre > code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.md-typeset .nowrap pre > code {
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
 /* Quellenverzeichnis (Fußnoten) wie eine Admonition rahmen.
 
    Die Fußnoten-Erweiterung hängt alle Definitionen zwingend ans Seitenende,
