@@ -8,7 +8,7 @@ Du kennst das Prinzip schon aus [Kapitel 2](anatomie.md) als einen der fünf Bau
 
 ## Warum Rollen überhaupt wirken
 
-Ein LLM hat kein „Ich", das in eine Rolle schlüpft. Was tatsächlich passiert: Der Rollenbegriff im Prompt verschiebt über die [Attention](funktionsweise-llms.md#station-4-attention-bedeutung-im-kontext) die Wahrscheinlichkeiten aller folgenden Tokens.
+Ein LLM hat kein „Ich", das in eine Rolle schlüpft – es **simuliert** eine Rolle, statt eine zu *sein*.[^shanahan] Was tatsächlich passiert: Der Rollenbegriff im Prompt verschiebt über die [Attention](funktionsweise-llms.md#station-4-attention-bedeutung-im-kontext) die Wahrscheinlichkeiten aller folgenden Tokens.
 
 *„Du bist Wirtschaftsprüferin"* macht Wörter wie *Risikorückstellung*, *Nachweis* und *Konformität* wahrscheinlicher – und Wörter wie *cool*, *revolutionär*, *disruptiv* unwahrscheinlicher.
 
@@ -95,6 +95,8 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
     3. **Haltung** – *skeptisch, zahlengetrieben, direkt*
     4. **Auftrag** – *Du prüfst, ob du investieren würdest*
 
+        In der Literatur heißt dieses Muster *Persona Pattern*.[^white]
+
     ```title="Vollständige Rolle"
     Du bist Business Angel mit 15 Jahren Erfahrung in der
     Lebensmittelbranche. Du hast über 40 Startups begleitet, von denen
@@ -113,7 +115,7 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
     Rollenprompting gilt weithin als Wundermittel – die Forschung ist deutlich zurückhaltender.
 
-    Zheng et al. (2023) haben **162 verschiedene Rollen** systematisch auf Faktenfragen getestet. Ergebnis: Eine Rolle im System-Prompt verbesserte die **sachliche Richtigkeit im Mittel nicht**. Manche Rollen halfen, andere schadeten – und welche das jeweils war, ließ sich nicht vorhersagen.
+    Zheng et al.[^persona] haben **162 verschiedene Rollen** systematisch auf Faktenfragen getestet. Ergebnis: Eine Rolle im System-Prompt verbesserte die **sachliche Richtigkeit im Mittel nicht**. Manche Rollen halfen, andere schadeten – und welche das jeweils war, ließ sich nicht vorhersagen.
 
     Das widerspricht diesem Kapitel nicht, es schärft es:
 
@@ -284,13 +286,8 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Shanahan, M., McDonell, K. & Reynolds, L. (2023):** *Role play with large language models.* Nature 623, S. 493–498. [https://doi.org/10.1038/s41586-023-06647-8](https://doi.org/10.1038/s41586-023-06647-8)
-      → der theoretische Rahmen dieses Kapitels: Ein Dialogsystem „ist" keine Rolle, es **simuliert** sie. Die Autoren zeigen, warum diese Unterscheidung nötig ist, um über KI-Verhalten zu sprechen, ohne es zu vermenschlichen.
-    - **Zheng, M., Pei, J., Logeswaran, L. et al. (2023):** *When „A Helpful Assistant" Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of Large Language Models.* arXiv:2311.10054. [https://arxiv.org/abs/2311.10054](https://arxiv.org/abs/2311.10054)
-      → der Gegenbefund, siehe Kasten „Was Rollen nicht können" oben.
-    - **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382)
-      → beschreibt die Rollenvorgabe als *Persona Pattern* – eines der grundlegenden Entwurfsmuster im Prompting.
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^shanahan]: **Shanahan, M., McDonell, K. & Reynolds, L. (2023):** *Role play with large language models.* Nature 623, S. 493–498. [https://doi.org/10.1038/s41586-023-06647-8](https://doi.org/10.1038/s41586-023-06647-8) — der theoretische Rahmen dieses Kapitels: Ein Dialogsystem „ist" keine Rolle, es **simuliert** sie. Die Autoren zeigen, warum diese Unterscheidung nötig ist, um über KI-Verhalten zu sprechen, ohne es zu vermenschlichen.
+[^persona]: **Zheng, M., Pei, J., Logeswaran, L. et al. (2023):** *When „A Helpful Assistant" Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of Large Language Models.* arXiv:2311.10054. [https://arxiv.org/abs/2311.10054](https://arxiv.org/abs/2311.10054) — der Gegenbefund, siehe Kasten „Was Rollen nicht können" oben.
+[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) — beschreibt die Rollenvorgabe als *Persona Pattern* – eines der grundlegenden Entwurfsmuster im Prompting.

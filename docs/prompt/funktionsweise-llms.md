@@ -2,7 +2,7 @@
 
 Die meisten, die ChatGPT zum ersten Mal benutzen, sind **beeindruckt**. Da sitzt scheinbar jemand am anderen Ende, der mühelos auf fast jede Frage antwortet – in fließendem Deutsch, Englisch oder Klingonisch, mal als Shakespeare, mal als SQL-Profi. Doch hinter dem freundlichen Chatfenster steckt kein kleiner Mensch, sondern **viel Mathematik, noch mehr Daten und ein bisschen Magie** (die wir gleich entzaubern).
 
-Bevor wir lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform bringt, sollten wir verstehen, **was unter der Haube passiert**. Denn wer weiß, wie ein Motor funktioniert, fährt am Ende auch besser. 🏎️
+Bevor wir lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform bringt, sollten wir verstehen, **was unter der Haube passiert**. Denn wer weiß, wie ein Motor funktioniert, fährt am Ende auch besser.
 
 !!! info "Grundlage dieses Kapitels"
 
@@ -16,7 +16,7 @@ Bevor wir lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform 
 
 ## Drei Fähigkeiten, die beeindrucken
 
-Wenn man ChatGPT & Co. genauer betrachtet, machen vor allem **drei Fähigkeiten** den beeindruckenden Eindruck aus (Zuckarelli, 2025):
+Wenn man ChatGPT & Co. genauer betrachtet, machen vor allem **drei Fähigkeiten** den beeindruckenden Eindruck aus[^zuckarelli]:
 
 1. natürliche Sprache **zu produzieren** – und das in vielen verschiedenen Sprachen,
 2. den Input des Nutzers sprachlich und inhaltlich **zu verstehen**,
@@ -24,11 +24,18 @@ Wenn man ChatGPT & Co. genauer betrachtet, machen vor allem **drei Fähigkeiten*
 
 Während Maschinen Sprache schon länger übersetzen können (Google Translate, DeepL), ist besonders das *Verstehen* und das *kreative Erzeugen* neu. Schauen wir uns an, wie das gelingt.
 
-## Das Zauberwort: Transformer 🤖
+## Das Zauberwort: Transformer
 
-Das Herzstück moderner Sprachmodelle heißt **Transformer**. Und nein – damit ist **nicht** das Auto gemeint, das sich in einen Roboter verwandelt. 😉 Gemeint ist eine Architektur, die einen Input (Text, mittlerweile auch Bilder oder Audio) in einen Output **transformiert**.
+Das Herzstück moderner Sprachmodelle heißt **Transformer**. Und nein – damit ist **nicht** das Auto gemeint, das sich in einen Roboter verwandelt. Gemeint ist eine Architektur, die einen Input (Text, mittlerweile auch Bilder oder Audio) in einen Output **transformiert**.
 
-Populär wurde der Transformer durch ein Paper mit dem wohl coolsten Titel der KI-Geschichte: **„Attention Is All You Need"** (Vaswani et al., 2017). Acht Google-Forscher legten damit den Grundstein für so ziemlich jeden Chatbot, den du heute kennst.
+<div style="text-align: center;">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS1xjfK_kmoyAnf42fLh0VBqbeGG4juVQUlxopxgIIvmvn45euEyIrmno&s=10"
+         alt="Meme: Zwei Personen sagen „I love Transformers“ – die eine denkt an den Roboter Optimus Prime, die andere an die Transformer-Architektur mit Query-, Key- und Value-Matrizen."
+         style="max-width: 330px; margin-bottom: 1em;">
+    <figcaption>Dasselbe Wort, zwei sehr verschiedene Vorstellungen.</figcaption>
+</div>
+
+Populär wurde der Transformer durch ein Paper mit dem wohl coolsten Titel der KI-Geschichte: **„Attention Is All You Need"**[^vaswani]. Acht Google-Forscher legten damit den Grundstein für so ziemlich jeden Chatbot, den du heute kennst.
 
 Grob besteht ein Transformer aus zwei Teilen:
 
@@ -47,11 +54,11 @@ flowchart LR
 - Der **Encoder** analysiert den Input und versteht ihn im Kontext.
 - Der **Decoder** erzeugt daraus Wort für Wort den Output.
 
-Wie kommt das Modell aber von „deinem Prompt" zu „dem Verständnis"? Dafür durchläuft der Text mehrere Stationen. Gehen wir sie der Reihe nach durch. 👇
+Wie kommt das Modell aber von „deinem Prompt" zu „dem Verständnis"? Dafür durchläuft der Text mehrere Stationen. Gehen wir sie der Reihe nach durch.
 
 ---
 
-## Station 1: Tokenization – Text in Häppchen zerlegen
+### 1) Tokenization
 
 Ein Computer kann mit Buchstaben nichts anfangen. Deshalb wird dein Text zuerst in kleine Bausteine zerlegt, sogenannte **Tokens**. Ein Token kann ein ganzes Wort sein – oft aber auch nur ein **Wortteil**.
 
@@ -66,14 +73,20 @@ Ein Beispiel mit dem Tokenizer, den OpenAI nutzt (Python-Bibliothek `tiktoken`):
 ```python
 import tiktoken as tt
 
-# "cl100k_base" ist das Tokenizer-Modell, das ChatGPT verwendet
+# "cl100k_base" ist das Tokenizer-Modell, das ChatGPT-4 verwendet
 enc = tt.get_encoding("cl100k_base")
 
 encoded = enc.encode('He said: "Let me explain tokenization to you. It is comparably easy."')
-# encoded enthält jetzt die Liste der Token-IDs, z. B. [1548, 1071, 25, ...]
+
+print(encoded)
 ```
 
-Der Satz oben hat **68 Zeichen**, wird aber zu **17 Tokens** zerlegt. Wörter wie `tokenization` zerfallen dabei in mehrere Häppchen (`token` + `ization`).
+```bash title="Ausgabe"
+[1548, 1071, 25, 330, 10267, 757, 10552, 4037, 2065, 311, 499, 13, 1102, 374, 7809, 2915, 4228, 1210]
+```
+
+
+Der Satz oben hat **69 Zeichen**, wird aber zu **18 Tokens** zerlegt. Wörter wie `tokenization` zerfallen dabei in mehrere Häppchen (`token` + `ization`).
 
 ???+ tip "Warum das für Prompt Engineering wichtig ist"
 
@@ -82,11 +95,11 @@ Der Satz oben hat **68 Zeichen**, wird aber zu **17 Tokens** zerlegt. Wörter wi
     - Lange, umständliche Prompts kosten mehr Tokens – und damit Geld und Platz im Kontextfenster.
     - Seltene Begriffe, Tippfehler und Sonderzeichen erzeugen oft **überraschend viele** Tokens.
 
-    👉 Du kannst auf [platform.openai.com/tokenizer](https://platform.openai.com/tokenizer) live ausprobieren, wie dein Text zerlegt wird.
+    Du kannst auf [platform.openai.com/tokenizer](https://platform.openai.com/tokenizer) live ausprobieren, wie dein Text zerlegt wird.
 
 ---
 
-## Station 2: Word Embeddings – Wörtern Bedeutung geben
+### 2) Word Embeddings
 
 Tokens sind erstmal nur IDs – nackte Zahlen ohne Bedeutung. Damit das Modell mit *Bedeutung* arbeiten kann, wird jedes Token in einen **Vektor** aus vielen Zahlen übersetzt: das **Embedding**.
 
@@ -131,25 +144,48 @@ Man kann sich jedes Element des Vektors als einen **Aspekt** des Wortes vorstell
 
 Das Faszinierende: Mit Embeddings kann man sogar **rechnen**. Das berühmteste Beispiel:
 
-$$\text{Vektor}(\text{König}) - \text{Vektor}(\text{Mann}) + \text{Vektor}(\text{Frau}) \approx \text{Vektor}(\text{Königin})$$
+
 
 ???+ example "Embedding-Mathematik zum Schmunzeln"
 
+    $$\text{Vektor}(\text{König}) - \text{Vektor}(\text{Mann}) + \text{Vektor}(\text{Frau}) \approx \text{Vektor}(\text{Königin})$$
+
     Wenn du dem Modell „König" gibst, die „Männlichkeit" abziehst und „Weiblichkeit" addierst, landest du ungefähr bei „Königin". Sprache wird hier buchstäblich zur Vektor-Geometrie. 🤯
 
-    Solche „Bedeutungsvektoren" wurden u. a. durch das Modell **Word2Vec** (Mikolov et al., 2013) bekannt.
+    Solche „Bedeutungsvektoren" wurden u. a. durch das Modell **Word2Vec**[^mikolov] bekannt.
 
-!!! warning "Achtung: Blackbox"
+    ```python
+    import gensim.downloader as api
 
-    Welcher Aspekt in welchem Vektor-Element steckt, legt **kein Mensch** fest – das lernt das Modell selbst aus Daten. Wir können die Zuordnung nachträglich nicht sauber „abfragen". Das Modell ist insofern eine **Blackbox**.
+    # Wir laden fertige Wortvektoren – **GloVe**, trainiert auf englischen Wikipedia-Texten
+    modell = api.load("glove-wiki-gigaword-50") 
+
+    # König - Mann + Frau = ?
+    ergebnis = modell.most_similar(positive=["king", "woman"], negative=["man"], topn=3)
+
+    for wort, aehnlichkeit in ergebnis:
+        print(f"{wort:<12} {aehnlichkeit:.3f}")
+    ```
+
+    ```title="Ausgabe"
+    queen        0.852
+    throne       0.766
+    prince       0.759
+    ```
+
+    **`queen` steht an erster Stelle** – herausgerechnet aus purer Vektor-Arithmetik, ohne dass dem Modell jemals jemand erklärt hätte, was ein König ist.
+
+    Das geladene Modell wurde auf **englischen** Wikipedia-Texten trainiert und kennt nur englische Wörter. Für deutsche Wörter bräuchtest du ein deutsches Modell – die sind allerdings deutlich größer (mehrere GB).
+
 
 ---
 
-## Station 3: Positional Encoding – die Reihenfolge zählt
+### 3) Positional Encoding
 
 Bedeutung allein reicht nicht. Vergleiche:
 
-> „Hans fütterte das Eichhörnchen." 🐿️
+> „Hans fütterte das Eichhörnchen." 🧑➡️🐿️
+
 > „Das Eichhörnchen fütterte Hans." 🐿️➡️🧑
 
 Gleiche Wörter, **völlig andere Bedeutung** – nur die Reihenfolge ist anders (und in einem Fall ist Hans in Schwierigkeiten). Anders als ältere Ansätze (RNNs) verarbeitet der Transformer **alle Wörter gleichzeitig**. Das ist schnell, hat aber einen Haken: Ohne Zusatzinfo wüsste das Modell gar nicht mehr, **welches Wort wo stand**.
@@ -239,7 +275,7 @@ Das Spiel läuft so lange, bis ein spezielles **Stop-Token** erzeugt wird – da
 
 ## Wie wird ein LLM eigentlich klug? Das Training 🎓
 
-Die beeindruckenden Fähigkeiten stecken in **Milliarden von Parametern** (GPT-3.5 z. B. ~175 Milliarden). Diese Werte entstehen in drei Trainingsphasen (Zuckarelli, 2025):
+Die beeindruckenden Fähigkeiten stecken in **Milliarden von Parametern** (GPT-3.5 z. B. ~175 Milliarden). Diese Werte entstehen in drei Trainingsphasen[^zuckarelli]:
 
 ```mermaid
 flowchart TB
@@ -266,7 +302,7 @@ flowchart TB
 
     In der letzten Phase erzeugt das Modell mehrere Antworten, und Menschen **bewerten** sie. Aus diesen Bewertungen wird ein **Reward Model** trainiert, das dem LLM beibringt, welche Antworten gut ankommen.
 
-    *Reinforced Learning with Human Feedback* (RLHF) macht Antworten nicht nur hilfreicher, sondern reduziert auch **faktisch falsche Aussagen** (Halluzinationen).
+    *Reinforced Learning with Human Feedback* (RLHF) macht Antworten nicht nur hilfreicher, sondern reduziert auch **faktisch falsche Aussagen** (Halluzinationen).[^ouyang]
 
 ???+ tip "Der „B"-Trick in Modellnamen"
 
@@ -307,13 +343,9 @@ flowchart LR
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    Dieses Kapitel basiert auf folgenden Quellen:
-
-    - **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*, Kapitel 3 – „Funktionsweise des (Chat)GPT-Modells und anderer Large Language Models (LLMs)". Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6_3](https://doi.org/10.1007/978-3-662-69433-6_3)
-    - **Vaswani, A. et al. (2017):** *Attention Is All You Need.* arXiv:1706.03762. [https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
-    - **Mikolov, T. et al. (2013):** *Efficient Estimation of Word Representations in Vector Space.* arXiv:1301.3781. [https://arxiv.org/abs/1301.3781](https://arxiv.org/abs/1301.3781)
-    - **Ouyang, L. et al. (2022):** *Training language models to follow instructions with human feedback.* arXiv:2203.02155. [https://arxiv.org/abs/2203.02155](https://arxiv.org/abs/2203.02155)
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*, Kapitel 3 – „Funktionsweise des (Chat)GPT-Modells und anderer Large Language Models (LLMs)". Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6_3](https://doi.org/10.1007/978-3-662-69433-6_3)
+[^vaswani]: **Vaswani, A. et al. (2017):** *Attention Is All You Need.* arXiv:1706.03762. [https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
+[^mikolov]: **Mikolov, T. et al. (2013):** *Efficient Estimation of Word Representations in Vector Space.* arXiv:1301.3781. [https://arxiv.org/abs/1301.3781](https://arxiv.org/abs/1301.3781)
+[^ouyang]: **Ouyang, L. et al. (2022):** *Training language models to follow instructions with human feedback.* arXiv:2203.02155. [https://arxiv.org/abs/2203.02155](https://arxiv.org/abs/2203.02155)

@@ -60,7 +60,7 @@ nav:
 
   - Prompt Engineering:
     - Home: prompt/index.md
-    - Einführung in Generative KI: 
+    - Generative KI:
       - Einleitung: prompt/einfuehrung.md
       - Funktionsweise von LLMs: prompt/funktionsweise-llms.md
       - Stärken und Grenzen von LLMs: prompt/staerken-grenzen.md
@@ -87,6 +87,7 @@ extra_css:
 markdown_extensions:
   - meta
   - attr_list
+  - footnotes
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg

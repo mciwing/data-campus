@@ -10,7 +10,7 @@ Moderne KI-Modelle verarbeiten nicht nur Text, sondern auch **Bilder, Dokumente 
 
     Eine **Modalität** ist eine Art von Eingabe oder Ausgabe: Text, Bild, Audio, Video. Ein **multimodales Modell** kann mehrere davon gleichzeitig verarbeiten.
 
-    Technisch ändert sich weniger, als man denkt: Ein Bild wird in **Bild-Tokens** zerlegt und wie Text-Tokens in denselben Vektorraum eingebettet. Ab da läuft alles wie in [Station 2](funktionsweise-llms.md#station-2-word-embeddings-wortern-bedeutung-geben) beschrieben – das Modell „sieht" nicht, es rechnet.
+    Technisch ändert sich weniger, als man denkt: Ein Bild wird in **Bild-Tokens** zerlegt und wie Text-Tokens in denselben Vektorraum eingebettet. Ab da läuft alles wie in [Station 2](funktionsweise-llms.md#station-2-word-embeddings-wortern-bedeutung-geben) beschrieben – das Modell „sieht" nicht, es rechnet.[^clip]
 
 ```mermaid
 flowchart LR
@@ -36,7 +36,7 @@ flowchart LR
 
 === ":material-image: Bilder"
 
-    **Typische Aufgaben:** Produktfotos beschreiben, Logos bewerten, Screenshots analysieren, Handschrift transkribieren.
+    **Typische Aufgaben:** Produktfotos beschreiben, Logos bewerten, Screenshots analysieren, Handschrift transkribieren. Möglich wurde das durch Modelle, die Bild- und Textverarbeitung verschränken.[^flamingo]
 
     ```title="Prompt"
     Beschreibe dieses Produktfoto für einen Online-Shop.
@@ -142,7 +142,7 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
     ollama pull moondream
     ```
 
-    **~1,7 GB** · Das kleinste brauchbare Vision-Modell. Es versteht **nur Englisch** – wir prompten hier also auf Englisch und lassen ins Deutsche übersetzen.
+    **~1,7 GB** · Das kleinste brauchbare Vision-Modell – ein Nachfahre des *Visual Instruction Tuning*-Ansatzes.[^llava] Es versteht **nur Englisch** – wir prompten hier also auf Englisch und lassen ins Deutsche übersetzen.
 
     Kein Speicherplatz? Dann überspringe Übung 1 und 2 und bearbeite stattdessen die **Alternative** weiter unten mit einem Browser-Modell.
 
@@ -341,15 +341,11 @@ Für Bilder brauchst du ein **Vision-Modell**. Unsere Textmodelle können das ni
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Radford, A., Kim, J. W., Hallacy, C. et al. (2021):** *Learning Transferable Visual Models From Natural Language Supervision.* arXiv:2103.00020. [https://arxiv.org/abs/2103.00020](https://arxiv.org/abs/2103.00020)
-      → das CLIP-Paper: Bilder und Texte werden in **denselben Vektorraum** eingebettet. Genau der Mechanismus aus dem Diagramm oben – und die Grundlage praktisch aller heutigen Vision-Modelle.
-    - **Alayrac, J.-B., Donahue, J., Luc, P. et al. (2022):** *Flamingo: a Visual Language Model for Few-Shot Learning.* arXiv:2204.14198. [https://arxiv.org/abs/2204.14198](https://arxiv.org/abs/2204.14198)
-      → zeigt, wie ein Bildencoder mit einem Sprachmodell verbunden wird, sodass Bild und Text **verschränkt** im selben Prompt verarbeitet werden können.
-    - **Liu, H., Li, C., Wu, Q. et al. (2023):** *Visual Instruction Tuning.* arXiv:2304.08485. [https://arxiv.org/abs/2304.08485](https://arxiv.org/abs/2304.08485)
-      → das LLaVA-Paper, aus dessen Ansatz die heute frei verfügbaren Vision-Modelle hervorgegangen sind – auch das kleine `moondream` aus dem Labor.
-
+[^clip]: **Radford, A., Kim, J. W., Hallacy, C. et al. (2021):** *Learning Transferable Visual Models From Natural Language Supervision.* arXiv:2103.00020. [https://arxiv.org/abs/2103.00020](https://arxiv.org/abs/2103.00020) — das CLIP-Paper: Bilder und Texte werden in **denselben Vektorraum** eingebettet. Genau der Mechanismus aus dem Diagramm oben – und die Grundlage praktisch aller heutigen Vision-Modelle.
+[^flamingo]: **Alayrac, J.-B., Donahue, J., Luc, P. et al. (2022):** *Flamingo: a Visual Language Model for Few-Shot Learning.* arXiv:2204.14198. [https://arxiv.org/abs/2204.14198](https://arxiv.org/abs/2204.14198) — zeigt, wie ein Bildencoder mit einem Sprachmodell verbunden wird, sodass Bild und Text **verschränkt** im selben Prompt verarbeitet werden können.
+[^llava]: **Liu, H., Li, C., Wu, Q. et al. (2023):** *Visual Instruction Tuning.* arXiv:2304.08485. [https://arxiv.org/abs/2304.08485](https://arxiv.org/abs/2304.08485) — das LLaVA-Paper, aus dessen Ansatz die heute frei verfügbaren Vision-Modelle hervorgegangen sind – auch das kleine `moondream` aus dem Labor.
 !!! info "Werkzeug-Dokumentation"
 
     - **Ollama Vision-Modelle:** [https://ollama.com/search?c=vision](https://ollama.com/search?c=vision)

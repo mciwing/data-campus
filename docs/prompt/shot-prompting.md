@@ -73,7 +73,7 @@ flowchart LR
 
 ???+ defi "In-Context Learning"
 
-    Das Modell **lernt** durch Few-Shot-Prompting nicht wirklich dazu – seine Parameter ändern sich nicht. Es erkennt lediglich im Kontext ein **Muster** und setzt es fort. Fachbegriff: *In-Context Learning* (Brown et al., 2020).
+    Das Modell **lernt** durch Few-Shot-Prompting nicht wirklich dazu – seine Parameter ändern sich nicht. Es erkennt lediglich im Kontext ein **Muster** und setzt es fort. Fachbegriff: *In-Context Learning*[^brown].
 
     Deshalb ist die Wirkung nach dem Chat auch wieder weg. Wer dauerhaft ein Verhalten will, braucht Fine-Tuning – oder eine [Prompt Library](libraries.md).
 
@@ -139,7 +139,7 @@ flowchart LR
 
 ???+ defi "Was Beispiele wirklich leisten – ein überraschender Befund"
 
-    Man würde annehmen, das Modell lerne aus Beispielen die **richtige Zuordnung**. Min et al. (2022) haben das geprüft und die Labels in den Beispielen **absichtlich falsch** gesetzt – „Alles top!" → *negativ*. Das Ergebnis: Die Leistung brach kaum ein.
+    Man würde annehmen, das Modell lerne aus Beispielen die **richtige Zuordnung**. Min et al.[^min] haben das geprüft und die Labels in den Beispielen **absichtlich falsch** gesetzt – „Alles top!" → *negativ*. Das Ergebnis: Die Leistung brach kaum ein.
 
     Was Beispiele tatsächlich vermitteln, sind drei andere Dinge:
 
@@ -151,7 +151,7 @@ flowchart LR
 
 !!! warning "Drei typische Few-Shot-Fallen"
 
-    - **Unausgewogene Beispiele:** Nur positive Beispiele → das Modell klassifiziert alles als positiv. Decke *alle* Kategorien ab.
+    - **Unausgewogene Beispiele:** Nur positive Beispiele → das Modell klassifiziert alles als positiv. Decke *alle* Kategorien ab.[^zhao]
     - **Uneinheitliches Format:** Wenn deine Beispiele mal `Kategorie:` und mal `Bewertung:` schreiben, kopiert das Modell die Inkonsistenz.
     - **Zu viele Beispiele:** Ab ca. 5–8 Beispielen wird der Zugewinn klein, der Token-Verbrauch aber groß – und bei kleinen Modellen droht das [Kontextfenster](halluzinationen-kontextfenster.md) überzulaufen.
 
@@ -307,7 +307,7 @@ flowchart LR
 
     **Business Model Canvas mittels verschiedener Prompting-Ansätze erzeugen**
 
-    Erzeuge für deine Geschäftsidee ein Business Model Canvas – einmal per Zero-Shot- und einmal per Few-Shot-Prompt. Vergleiche Qualität und Vollständigkeit der Ergebnisse.
+    Erzeuge für deine Geschäftsidee ein Business Model Canvas[^osterwalder] – einmal per Zero-Shot- und einmal per Few-Shot-Prompt. Vergleiche Qualität und Vollständigkeit der Ergebnisse.
 
     **Konkrete Schritte:**
 
@@ -320,14 +320,9 @@ flowchart LR
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Brown, T. B., Mann, B., Ryder, N. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
-      → das Paper, das die Begriffe *Zero-Shot*, *One-Shot* und *Few-Shot* geprägt hat. Zeigt auch, dass der Nutzen von Beispielen mit der Modellgröße *abnimmt* – die Grundlage unseres Kurs-Tricks.
-    - **Min, S., Lyu, X., Holtzman, A. et al. (2022):** *Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?* arXiv:2202.12837. [https://arxiv.org/abs/2202.12837](https://arxiv.org/abs/2202.12837)
-      → überraschender Befund: Selbst **falsch gelabelte** Beispiele helfen kaum weniger als richtige. Entscheidend sind Format, Label-Raum und Eingabeverteilung – nicht die Korrektheit. Das erklärt, warum die *Struktur* deiner Beispiele so wichtig ist.
-    - **Zhao, T. Z., Wallace, E., Feng, S. et al. (2021):** *Calibrate Before Use: Improving Few-Shot Performance of Language Models.* arXiv:2102.09690. [https://arxiv.org/abs/2102.09690](https://arxiv.org/abs/2102.09690)
-      → belegt die Verzerrung durch unausgewogene Beispiele: Das Modell bevorzugt Labels, die häufiger oder zuletzt im Prompt vorkommen.
-    - **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^brown]: **Brown, T. B., Mann, B., Ryder, N. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) — das Paper, das die Begriffe *Zero-Shot*, *One-Shot* und *Few-Shot* geprägt hat. Zeigt auch, dass der Nutzen von Beispielen mit der Modellgröße *abnimmt* – die Grundlage unseres Kurs-Tricks.
+[^min]: **Min, S., Lyu, X., Holtzman, A. et al. (2022):** *Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?* arXiv:2202.12837. [https://arxiv.org/abs/2202.12837](https://arxiv.org/abs/2202.12837) — überraschender Befund: Selbst **falsch gelabelte** Beispiele helfen kaum weniger als richtige. Entscheidend sind Format, Label-Raum und Eingabeverteilung – nicht die Korrektheit. Das erklärt, warum die *Struktur* deiner Beispiele so wichtig ist.
+[^zhao]: **Zhao, T. Z., Wallace, E., Feng, S. et al. (2021):** *Calibrate Before Use: Improving Few-Shot Performance of Language Models.* arXiv:2102.09690. [https://arxiv.org/abs/2102.09690](https://arxiv.org/abs/2102.09690) — belegt die Verzerrung durch unausgewogene Beispiele: Das Modell bevorzugt Labels, die häufiger oder zuletzt im Prompt vorkommen.
+[^osterwalder]: **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.

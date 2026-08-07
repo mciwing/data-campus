@@ -84,7 +84,7 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 !!! danger "Der Preis der Struktur ⚖️"
 
-    Struktur ist nicht gratis. Tam et al. (2024) haben gemessen, was passiert, wenn man Modelle zu striktem JSON zwingt: Auf **Denkaufgaben** fiel die Leistung teilweise deutlich ab – je enger das Format, desto stärker der Einbruch.
+    Struktur ist nicht gratis. Tam et al.[^tam] haben gemessen, was passiert, wenn man Modelle zu striktem JSON zwingt: Auf **Denkaufgaben** fiel die Leistung teilweise deutlich ab – je enger das Format, desto stärker der Einbruch.
 
     Die Erklärung ist einleuchtend: Beim freien Antworten kann ein Modell „laut mitdenken" und sich über Zwischenschritte zur Lösung vorarbeiten. Ein festes Schema erzwingt die Antwort **sofort**, ohne Umweg.
 
@@ -118,7 +118,7 @@ ollama run --format json qwen2.5:0.5b "Nenne 3 Risiken für einen Bio-Lieferdien
 }
 ```
 
-Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**: Tokens, die das JSON ungültig machen würden, werden gar nicht erst zur Auswahl zugelassen. Das Modell *kann* damit kein kaputtes JSON mehr erzeugen.
+Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**: Tokens, die das JSON ungültig machen würden, werden gar nicht erst zur Auswahl zugelassen. Das Modell *kann* damit kein kaputtes JSON mehr erzeugen.[^willard]
 
 !!! warning "Gültig ≠ richtig"
 
@@ -276,7 +276,7 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
     **Business Model Canvas in verschiedenen Formaten erzeugen**
 
-    Lass dir dein Business Model Canvas in mehreren Formaten ausgeben – als Tabelle, als JSON und als Markdown. Bewerte, welches Format sich für welchen Zweck eignet.
+    Lass dir dein Business Model Canvas[^osterwalder] in mehreren Formaten ausgeben – als Tabelle, als JSON und als Markdown. Bewerte, welches Format sich für welchen Zweck eignet.
 
     **Konkrete Schritte:**
 
@@ -290,12 +290,8 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Willard, B. T. & Louf, R. (2023):** *Efficient Guided Generation for Large Language Models.* arXiv:2307.09702. [https://arxiv.org/abs/2307.09702](https://arxiv.org/abs/2307.09702)
-      → beschreibt das Verfahren hinter `--format json`: Die Ausgabe wird über einen endlichen Automaten geführt, der ungültige Tokens gar nicht erst zur Auswahl zulässt. Deshalb ist gültige Syntax garantiert – und nur die Syntax.
-    - **Tam, Z. R., Wu, C.-K., Tsai, Y.-L. et al. (2024):** *Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models.* arXiv:2408.02442. [https://arxiv.org/abs/2408.02442](https://arxiv.org/abs/2408.02442)
-      → wichtiger Gegenbefund: Strenge Formatvorgaben können die **Denkleistung senken**. Siehe den Kasten „Der Preis der Struktur" oben.
-    - **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^willard]: **Willard, B. T. & Louf, R. (2023):** *Efficient Guided Generation for Large Language Models.* arXiv:2307.09702. [https://arxiv.org/abs/2307.09702](https://arxiv.org/abs/2307.09702) — beschreibt das Verfahren hinter `--format json`: Die Ausgabe wird über einen endlichen Automaten geführt, der ungültige Tokens gar nicht erst zur Auswahl zulässt. Deshalb ist gültige Syntax garantiert – und nur die Syntax.
+[^tam]: **Tam, Z. R., Wu, C.-K., Tsai, Y.-L. et al. (2024):** *Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models.* arXiv:2408.02442. [https://arxiv.org/abs/2408.02442](https://arxiv.org/abs/2408.02442) — wichtiger Gegenbefund: Strenge Formatvorgaben können die **Denkleistung senken**. Siehe den Kasten „Der Preis der Struktur" oben.
+[^osterwalder]: **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.

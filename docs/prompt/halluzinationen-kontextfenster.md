@@ -39,11 +39,11 @@ flowchart LR
     classDef ghost fill:#ccc,stroke:#999,stroke-width:1px,stroke-dasharray: 4 4;
 ```
 
-Eine flüssig formulierte Falschaussage ist für das Modell **genauso „wahrscheinlich"** wie eine korrekte – Hauptsache, sie klingt richtig (Kessel et al., 2025). Das Modell verarbeitet Anweisungen **rein statistisch** und völlig unabhängig von deren **Inhalt**.
+Eine flüssig formulierte Falschaussage ist für das Modell **genauso „wahrscheinlich"** wie eine korrekte – Hauptsache, sie klingt richtig[^kessel]. Das Modell verarbeitet Anweisungen **rein statistisch** und völlig unabhängig von deren **Inhalt**.
 
 !!! warning "Achtung: Grounding ≠ Wahrheit"
 
-    Selbst multimodale Modelle, die Text mit Bildern „erden" (Grounding), sind davor nicht gefeit. Lappin (2024) bringt es auf den Punkt: Die Beschreibung des Bildes eines **Einhorns** kann das Bild völlig korrekt beschreiben – und trotzdem **kein real existierendes Tier** charakterisieren. 🦄
+    Selbst multimodale Modelle, die Text mit Bildern „erden" (Grounding), sind davor nicht gefeit. Lappin[^lappin] bringt es auf den Punkt: Die Beschreibung des Bildes eines **Einhorns** kann das Bild völlig korrekt beschreiben – und trotzdem **kein real existierendes Tier** charakterisieren. 🦄
 
 ### Berühmte Halluzinationen
 
@@ -68,7 +68,7 @@ Die gute Nachricht: Man ist ihnen nicht hilflos ausgeliefert.
 
 !!! tip "Training reduziert – beseitigt aber nicht"
 
-    Modernes Training (insbesondere **RLHF**, siehe [Funktionsweise](funktionsweise-llms.md)) reduziert das Ausmaß faktisch falscher Antworten deutlich (Zuckarelli, 2025). **Verschwunden sind Halluzinationen damit aber nicht** – die Verantwortung für die Faktenprüfung bleibt bei dir.
+    Modernes Training (insbesondere **RLHF**, siehe [Funktionsweise](funktionsweise-llms.md)) reduziert das Ausmaß faktisch falscher Antworten deutlich[^zuckarelli]. **Verschwunden sind Halluzinationen damit aber nicht** – die Verantwortung für die Faktenprüfung bleibt bei dir.
 
 ---
 
@@ -80,7 +80,7 @@ Ein LLM hat kein dauerhaftes Gedächtnis. Alles, was es „weiß", während es d
 
 ???+ defi "Kontextfenster & Token-Limit"
 
-    Das **Kontextfenster** ist die maximale Menge an Text (in **Tokens**), die ein Modell **gleichzeitig** verarbeiten kann – das **unterhaltungsbezogene „Gedächtnis"** (Zuckarelli, 2025).
+    Das **Kontextfenster** ist die maximale Menge an Text (in **Tokens**), die ein Modell **gleichzeitig** verarbeiten kann – das **unterhaltungsbezogene „Gedächtnis"**[^zuckarelli].
 
     Es umfasst **alles**: deinen Prompt, mitgegebene Dokumente, den bisherigen Gesprächsverlauf **und** die Antwort des Modells. Ist das **Token-Limit** erreicht, fällt vorne etwas heraus – das Modell **„vergisst"** die ältesten Teile des Dialogs.
 
@@ -99,7 +99,7 @@ flowchart LR
 
 ### Woran merkst du, dass das Fenster voll ist?
 
-Ein verräterisches Symptom ist das **Déjà-vu**: Wenn ChatGPT plötzlich Lösungen vorschlägt, die ihr **längst verworfen** habt, oder wichtige Vorgaben aus dem Gesprächsverlauf ignoriert – dann ist das oft der stärkste Indikator dafür, dass die **Kontextlänge erreicht** ist (Zuckarelli, 2025).
+Ein verräterisches Symptom ist das **Déjà-vu**: Wenn ChatGPT plötzlich Lösungen vorschlägt, die ihr **längst verworfen** habt, oder wichtige Vorgaben aus dem Gesprächsverlauf ignoriert – dann ist das oft der stärkste Indikator dafür, dass die **Kontextlänge erreicht** ist[^zuckarelli].
 
 ### Wie groß ist so ein Fenster?
 
@@ -107,7 +107,7 @@ Das hängt stark vom Modell ab und wächst rasant – von wenigen tausend Tokens
 
 !!! warning "Größer ist nicht gratis"
 
-    Die Nutzung wird in der Regel **pro Token** abgerechnet (Input **und** Output). Ein riesiges Dokument in jeden Prompt zu kippen, kostet also Geld – und kann die Antwort verlangsamen (Zuckarelli, 2025). **Mehr Kontext ist nicht automatisch besser.**
+    Die Nutzung wird in der Regel **pro Token** abgerechnet (Input **und** Output). Ein riesiges Dokument in jeden Prompt zu kippen, kostet also Geld – und kann die Antwort verlangsamen[^zuckarelli]. **Mehr Kontext ist nicht automatisch besser.**
 
 ### Strategien zum Managen des Kontextfensters
 
@@ -158,12 +158,8 @@ Beides läuft auf dieselbe Kernkompetenz hinaus: **bewusst steuern, was das Mode
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    Dieses Kapitel basiert auf folgenden Quellen:
-
-    - **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT.* Springer Nature, u. a. Kap. 3 und Kap. 6.4 „Token-Limit managen". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
-    - **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9–20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
-    - **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach!* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130–141. ISBN 978-3-8252-6276-1.
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT.* Springer Nature, u. a. Kap. 3 und Kap. 6.4 „Token-Limit managen". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
+[^lappin]: **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9–20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
+[^kessel]: **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach!* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130–141. ISBN 978-3-8252-6276-1.

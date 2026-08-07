@@ -12,7 +12,7 @@ Dafür nutzen wir **Ollama**: ein kleines Programm, das Sprachmodelle lokal ausf
 
     Ein starkes Modell wie ChatGPT versteht auch einen schlampigen Prompt und liefert trotzdem etwas Brauchbares. Dabei lernst du nichts – dein Prompt wird nie *geprüft*. Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist.
 
-    Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering. Alles Größere ist danach ein Kinderspiel.
+    Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering. Alles Größere ist danach ein Kinderspiel.[^brown]
 
 !!! info "Brauche ich Python?"
 
@@ -166,6 +166,8 @@ ollama run qwen2.5:0.5b "Nenne drei Risiken eines Bio-Lieferdienstes."
 !!! warning "Deine Ausgabe wird anders aussehen"
 
     Alle Ausgaben in diesem Kurs sind **Beispiele**. Sprachmodelle antworten nicht jedes Mal gleich – schon derselbe Prompt liefert beim zweiten Aufruf einen anderen Text.
+
+    Wer daraus einzelne Durchläufe verallgemeinert, zieht schnell falsche Schlüsse – ein Muster, das sich bei Prompting-Neulingen regelmäßig nachweisen lässt.[^johnny]
 
     Achte deshalb nie auf den *exakten Wortlaut*, sondern auf **Muster**: Ist die Antwort auf Deutsch? Hält sie das Format ein? Ist sie konkret oder allgemein? Genau darum geht es in den Laboren.
 
@@ -473,13 +475,10 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165)
-      → zeigt, dass die Leistung eines Modells mit der Parameterzahl stark zunimmt. Genau deshalb sind kleine Modelle so stark auf gute Prompts angewiesen.
-    - **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1–21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388)
-      → empirische Studie: Ohne Rückmeldung über die Wirkung ihrer Prompts entwickeln Nicht-Fachleute keine systematische Vorgehensweise. Das eigene Labor ist genau diese Rückmeldung.
-
+[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) — zeigt, dass die Leistung eines Modells mit der Parameterzahl stark zunimmt. Genau deshalb sind kleine Modelle so stark auf gute Prompts angewiesen.
+[^johnny]: **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1–21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388) — empirische Studie: Ohne Rückmeldung über die Wirkung ihrer Prompts entwickeln Nicht-Fachleute keine systematische Vorgehensweise. Das eigene Labor ist genau diese Rückmeldung.
 !!! info "Werkzeug-Dokumentation"
 
     - **Ollama:** [https://github.com/ollama/ollama/blob/main/README.md](https://github.com/ollama/ollama/blob/main/README.md)

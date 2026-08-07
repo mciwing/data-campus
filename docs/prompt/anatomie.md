@@ -2,7 +2,7 @@
 
 Ein wirkungsvoller Prompt ist kein Zufall, sondern folgt einer **klaren Struktur**. Wer die Bausteine kennt, kann gezielt steuern, was das Modell liefert.
 
-Die meisten Menschen prompten wie beim Googeln: ein paar Stichworte, Enter, Daumen drücken. Bei einer Suchmaschine funktioniert das, weil sie nur *finden* muss. Ein LLM soll aber *erzeugen* – und dafür braucht es dieselbe Art von Briefing, die du auch einem neuen Teammitglied geben würdest.
+Die meisten Menschen prompten wie beim Googeln: ein paar Stichworte, Enter, Daumen drücken. Bei einer Suchmaschine funktioniert das, weil sie nur *finden* muss. Ein LLM soll aber *erzeugen* – und dafür braucht es dieselbe Art von Briefing, die du auch einem neuen Teammitglied geben würdest.[^zuckarelli]
 
 !!! info "Voraussetzung für dieses Kapitel"
 
@@ -14,7 +14,7 @@ Die meisten Menschen prompten wie beim Googeln: ein paar Stichworte, Enter, Daum
 
 ## Die fünf Bausteine
 
-Ein vollständiger Prompt besteht aus fünf Elementen. Nicht jeder Prompt braucht alle fünf – aber je schwieriger die Aufgabe und je kleiner das Modell, desto mehr davon solltest du liefern.
+Ein vollständiger Prompt besteht aus fünf Elementen.[^schulhoff] Nicht jeder Prompt braucht alle fünf – aber je schwieriger die Aufgabe und je kleiner das Modell, desto mehr davon solltest du liefern.
 
 ```mermaid
 flowchart TB
@@ -199,7 +199,7 @@ Dieselbe Absicht, zwei Prompts:
 
 ???+ tip "Überschriften als Struktur-Anker"
 
-    Die `#`-Überschriften sind kein Selbstzweck. Sie trennen die Abschnitte für das Modell sauber voneinander – besonders hilfreich bei kleinen Modellen, die sonst Kontext und Aufgabe vermischen. `#`, `---` oder XML-Tags wie `<kontext>…</kontext>` funktionieren alle gut. Wichtig ist nur: **konsistent bleiben**.
+    Die `#`-Überschriften sind kein Selbstzweck. Sie trennen die Abschnitte für das Modell sauber voneinander – besonders hilfreich bei kleinen Modellen, die sonst Kontext und Aufgabe vermischen. `#`, `---` oder XML-Tags wie `<kontext>…</kontext>` funktionieren alle gut. Wichtig ist nur: **konsistent bleiben**. Solche wiederverwendbaren Strukturen werden in der Literatur als *Prompt Patterns* beschrieben – Entwurfsmuster für Prompts.[^white]
 
 ---
 
@@ -373,6 +373,15 @@ Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `qw
 
 ---
 
+???+ lab "Lab"
+
+    **Geschäftsidee auswählen**
+
+    Wähle eine Geschäftsidee, die dich durch den gesamten Kurs begleiten wird. Sie bildet den roten Faden für alle folgenden Labs – von der Beschreibung über das Business Model Canvas bis zur kritischen Bewertung.
+
+    **Tipp:** Wähle etwas, zu dem du selbst eine Meinung hast – dann fällt dir später auf, wenn die KI Unsinn erzählt. Halte die Idee in drei bis fünf Sätzen in einer Datei `idee.md` fest.
+
+
 !!! example "Lab"
 
     **Business-Idee durch unterschiedlich formulierte Prompts beschreiben**
@@ -390,12 +399,8 @@ Zeit, den Unterschied selbst zu messen. Alles im Terminal mit dem Kursmodell `qw
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608)
-      → die derzeit umfassendste Systematik: 58 Prompting-Techniken und ein einheitliches Vokabular. Die hier verwendeten Bausteine finden sich dort als *Role*, *Additional Information*, *Directive*, *Style Instructions* und *Output Formatting*.
-    - **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382)
-      → überträgt den Gedanken der Software-Entwurfsmuster auf Prompts: wiederverwendbare Strukturen statt Einzelfalllösungen.
-    - **Zuckarelli, J. L. (2025):** *Programmieren mit ChatGPT: Eine kompakte Einführung.* Springer, ISBN 978-3-662-69432-9. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) — die derzeit umfassendste Systematik: 58 Prompting-Techniken und ein einheitliches Vokabular. Die hier verwendeten Bausteine finden sich dort als *Role*, *Additional Information*, *Directive*, *Style Instructions* und *Output Formatting*.
+[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) — überträgt den Gedanken der Software-Entwurfsmuster auf Prompts: wiederverwendbare Strukturen statt Einzelfalllösungen.
+[^zuckarelli]: **Zuckarelli, J. L. (2025):** *Programmieren mit ChatGPT: Eine kompakte Einführung.* Springer, ISBN 978-3-662-69432-9. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)

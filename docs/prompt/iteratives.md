@@ -29,7 +29,7 @@ flowchart LR
 
 ???+ defi "Das ist keine Anfängerschwäche – es ist der Normalfall"
 
-    Zamfirescu-Pereira et al. (2023) haben untersucht, wie Menschen ohne KI-Hintergrund tatsächlich prompten. Drei Muster traten regelmäßig auf:
+    Zamfirescu-Pereira et al.[^johnny] haben untersucht, wie Menschen ohne KI-Hintergrund tatsächlich prompten. Drei Muster traten regelmäßig auf:
 
     - **Opportunistisches Ausprobieren** statt systematischem Vorgehen – man ändert, was gerade auffällt.
     - **Übergeneralisierung aus Einzelfällen**: Ein einziger guter Durchlauf gilt als Beweis, dass der Prompt funktioniert.
@@ -93,7 +93,7 @@ Bevor du etwas änderst, benenne **präzise**, was nicht stimmt. Die meisten Pro
     2. **Verschärfen** – vage Verben durch präzise ersetzen: *analysieren* → *drei Risiken nennen und je einen Satz begründen*.
     3. **Zerlegen** – ein Prompt macht zu viel auf einmal → in zwei Prompts aufteilen ([Chaining](chaining.md)).
     4. **Vormachen** – statt zu beschreiben, ein Beispiel liefern ([Few-Shot](shot-prompting.md)).
-    5. **Weglassen** – überflüssige Höflichkeitsfloskeln und Wiederholungen streichen. Bei kleinen Modellen verwässert Ballast die eigentliche Anweisung.
+    5. **Weglassen** – überflüssige Höflichkeitsfloskeln und Wiederholungen streichen. Bei kleinen Modellen verwässert Ballast die eigentliche Anweisung.[^sahoo]
 
 !!! tip "Das Modell als Prompt-Kritiker"
 
@@ -101,7 +101,7 @@ Bevor du etwas änderst, benenne **präzise**, was nicht stimmt. Die meisten Pro
 
     > *„Hier ist mein Prompt und die Antwort. Welche Information fehlte dir, um eine bessere Antwort zu geben? Nenne genau drei Punkte."*
 
-    Bei kleinen Modellen ist das Ergebnis mit Vorsicht zu genießen – aber es liefert oft überraschend brauchbare Hinweise auf fehlenden Kontext.
+    Dieses Prinzip – erzeugen, selbst kritisieren, überarbeiten – ist als *Self-Refine* auch wissenschaftlich untersucht.[^madaan] Bei kleinen Modellen ist das Ergebnis mit Vorsicht zu genießen, aber es liefert oft überraschend brauchbare Hinweise auf fehlenden Kontext.
 
 ---
 
@@ -304,12 +304,8 @@ Ergebnis: konkret und brauchbar. ⭐ Bester Prompt bisher.
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1–21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388)
-      → die empirische Grundlage dieses Kapitels: Nicht-Fachleute iterieren meist **opportunistisch** statt systematisch, verallgemeinern aus Einzelfällen und verwerfen funktionierende Ansätze zu früh. Genau dagegen hilft „eine Änderung pro Runde" plus Logbuch.
-    - **Madaan, A., Tandon, N., Gupta, P. et al. (2023):** *Self-Refine: Iterative Refinement with Self-Feedback.* arXiv:2303.17651. [https://arxiv.org/abs/2303.17651](https://arxiv.org/abs/2303.17651)
-      → zeigt, dass ein Modell seine eigene Ausgabe kritisieren und daraufhin verbessern kann – die Grundlage von Übung 2. Wichtig: Der Effekt ist bei **kleinen** Modellen deutlich schwächer.
-    - **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927)
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^johnny]: **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1–21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388) — die empirische Grundlage dieses Kapitels: Nicht-Fachleute iterieren meist **opportunistisch** statt systematisch, verallgemeinern aus Einzelfällen und verwerfen funktionierende Ansätze zu früh. Genau dagegen hilft „eine Änderung pro Runde" plus Logbuch.
+[^madaan]: **Madaan, A., Tandon, N., Gupta, P. et al. (2023):** *Self-Refine: Iterative Refinement with Self-Feedback.* arXiv:2303.17651. [https://arxiv.org/abs/2303.17651](https://arxiv.org/abs/2303.17651) — zeigt, dass ein Modell seine eigene Ausgabe kritisieren und daraufhin verbessern kann – die Grundlage von Übung 2. Wichtig: Der Effekt ist bei **kleinen** Modellen deutlich schwächer.
+[^sahoo]: **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927)

@@ -28,8 +28,8 @@ Du bekommst mit hoher Wahrscheinlichkeit eine begeisterte Antwort mit ein paar s
 
     Man könnte hoffen, das Problem verschwinde mit besseren Modellen. Die Forschung sagt das Gegenteil.
 
-    - **Sharma et al. (2023)** wiesen Sycophancy bei **fünf führenden KI-Assistenten** nach – quer über verschiedene Aufgabentypen. Ursache ist das Training selbst: In den menschlichen Bewertungsdaten schneidet eine Antwort, die zur Meinung der nutzenden Person passt, systematisch besser ab.
-    - **Perez et al. (2022)** fanden zusätzlich, dass die Schmeichelei mit der **Modellgröße zunimmt** – und durch RLHF eher verstärkt als abgebaut wird.
+    - **Sharma et al.[^sycophancy]** wiesen Sycophancy bei **fünf führenden KI-Assistenten** nach – quer über verschiedene Aufgabentypen. Ursache ist das Training selbst: In den menschlichen Bewertungsdaten schneidet eine Antwort, die zur Meinung der nutzenden Person passt, systematisch besser ab.
+    - **Perez et al.[^perez]** fanden zusätzlich, dass die Schmeichelei mit der **Modellgröße zunimmt** – und durch RLHF eher verstärkt als abgebaut wird.
 
     👉 Konsequenz für dich: Sycophancy ist kein Kinderkrankheit-Problem kleiner Modelle, sondern eine **Struktureigenschaft**. Du musst sie durch deinen Prompt aushebeln – jedes Mal.
 
@@ -77,7 +77,7 @@ Schreibe den Abschlussbericht: Was ist schiefgelaufen? Nenne die
 drei Hauptursachen in der Reihenfolge ihrer Bedeutung.
 ```
 
-Das ist die **Pre-Mortem-Methode** (Klein, 2007): Statt zu fragen *„was könnte schiefgehen?"* setzt du voraus, dass es schiefgegangen ist. Das Modell muss dann *erklären* statt *spekulieren* – und Erklärungen fallen konkreter aus.
+Das ist die **Pre-Mortem-Methode**[^klein]: Statt zu fragen *„was könnte schiefgehen?"* setzt du voraus, dass es schiefgegangen ist. Das Modell muss dann *erklären* statt *spekulieren* – und Erklärungen fallen konkreter aus.
 
 ### 3. Annahmen sichtbar machen
 
@@ -300,13 +300,8 @@ Prüfbar durch: <eine konkrete Maßnahme>
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Sharma, M., Tong, M., Korbak, T. et al. (2023):** *Towards Understanding Sycophancy in Language Models.* arXiv:2310.13548. [https://arxiv.org/abs/2310.13548](https://arxiv.org/abs/2310.13548)
-      → weist Schmeichelei bei fünf führenden KI-Assistenten nach und führt sie auf das Training zurück: In den Präferenzdaten wird eine Antwort, die zur Meinung der nutzenden Person passt, systematisch bevorzugt – auch wenn sie weniger zutrifft.
-    - **Perez, E., Ringer, S., Lukošiūtė, K. et al. (2022):** *Discovering Language Model Behaviors with Model-Written Evaluations.* arXiv:2212.09251. [https://arxiv.org/abs/2212.09251](https://arxiv.org/abs/2212.09251)
-      → der beunruhigende Zusatzbefund: Sycophancy **nimmt mit der Modellgröße zu** und wird durch RLHF eher verstärkt als behoben. Bessere Modelle lösen dieses Problem also nicht von selbst.
-    - **Klein, G. (2007):** *Performing a Project Premortem.* Harvard Business Review, September 2007. [https://hbr.org/2007/09/performing-a-project-premortem](https://hbr.org/2007/09/performing-a-project-premortem)
-      → die Originalquelle der Pre-Mortem-Methode aus der Entscheidungsforschung – lange vor jeder KI entwickelt und hier lediglich auf Prompts übertragen.
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^sycophancy]: **Sharma, M., Tong, M., Korbak, T. et al. (2023):** *Towards Understanding Sycophancy in Language Models.* arXiv:2310.13548. [https://arxiv.org/abs/2310.13548](https://arxiv.org/abs/2310.13548) — weist Schmeichelei bei fünf führenden KI-Assistenten nach und führt sie auf das Training zurück: In den Präferenzdaten wird eine Antwort, die zur Meinung der nutzenden Person passt, systematisch bevorzugt – auch wenn sie weniger zutrifft.
+[^perez]: **Perez, E., Ringer, S., Lukošiūtė, K. et al. (2022):** *Discovering Language Model Behaviors with Model-Written Evaluations.* arXiv:2212.09251. [https://arxiv.org/abs/2212.09251](https://arxiv.org/abs/2212.09251) — der beunruhigende Zusatzbefund: Sycophancy **nimmt mit der Modellgröße zu** und wird durch RLHF eher verstärkt als behoben. Bessere Modelle lösen dieses Problem also nicht von selbst.
+[^klein]: **Klein, G. (2007):** *Performing a Project Premortem.* Harvard Business Review, September 2007. [https://hbr.org/2007/09/performing-a-project-premortem](https://hbr.org/2007/09/performing-a-project-premortem) — die Originalquelle der Pre-Mortem-Methode aus der Entscheidungsforschung – lange vor jeder KI entwickelt und hier lediglich auf Prompts übertragen.

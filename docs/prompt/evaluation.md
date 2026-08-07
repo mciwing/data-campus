@@ -56,7 +56,7 @@ Bisher ging es darum, *bessere Antworten zu erzeugen*. Jetzt geht es darum, *zu 
 
 ## Halluzinationen erkennen
 
-Du kennst das Phänomen bereits aus [Kapitel 1](halluzinationen-kontextfenster.md). Hier geht es um die praktische Erkennung.
+Du kennst das Phänomen bereits aus [Kapitel 1](halluzinationen-kontextfenster.md). Hier geht es um die praktische Erkennung.[^hallucination]
 
 ???+ process "Fünf Warnsignale"
 
@@ -93,7 +93,7 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
 ???+ defi "Bias"
 
-    Eine systematische Verzerrung in den Ausgaben, die auf Ungleichgewichte in den Trainingsdaten zurückgeht.
+    Eine systematische Verzerrung in den Ausgaben, die auf Ungleichgewichte in den Trainingsdaten zurückgeht.[^bender]
 
     Typische Formen im Geschäftskontext:
 
@@ -132,7 +132,7 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
 ???+ defi "Kann eine KI eine andere KI bewerten? 🔬"
 
-    Der Gedanke liegt nahe – und wird in der Praxis unter dem Namen *LLM-as-a-Judge* auch eingesetzt. Zheng et al. (2023) haben untersucht, wie gut das funktioniert, und dabei drei systematische Verzerrungen gefunden:
+    Der Gedanke liegt nahe – und wird in der Praxis unter dem Namen *LLM-as-a-Judge* auch eingesetzt. Zheng et al.[^judge] haben untersucht, wie gut das funktioniert, und dabei drei systematische Verzerrungen gefunden:
 
     | Verzerrung | Was passiert |
     |---|---|
@@ -306,15 +306,11 @@ Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **Ji, Z., Lee, N., Frieske, R. et al. (2023):** *Survey of Hallucination in Natural Language Generation.* ACM Computing Surveys. arXiv:2202.03629. [https://arxiv.org/abs/2202.03629](https://arxiv.org/abs/2202.03629)
-      → die Standardübersicht zum Thema. Führt die für dich wichtige Unterscheidung ein: **intrinsische** Halluzinationen widersprechen der mitgelieferten Quelle, **extrinsische** lassen sich an ihr überhaupt nicht prüfen – Letztere sind die gefährlicheren.
-    - **Bender, E. M., Gebru, T., McMillan-Major, A. & Shmitchell, S. (2021):** *On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?* FAccT '21, S. 610–623. [https://doi.org/10.1145/3442188.3445922](https://doi.org/10.1145/3442188.3445922)
-      → die grundlegende Arbeit zu Bias in Sprachmodellen: Trainingsdaten aus dem Internet bilden bestehende Ungleichgewichte ab, und schiere Datenmenge behebt das nicht, sondern zementiert es.
-    - **Zheng, L., Chiang, W.-L., Sheng, Y. et al. (2023):** *Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena.* arXiv:2306.05685. [https://arxiv.org/abs/2306.05685](https://arxiv.org/abs/2306.05685)
-      → untersucht, ob ein Modell die Ausgaben eines anderen bewerten kann. Ergebnis: teilweise ja – aber mit klaren Verzerrungen (Vorliebe für längere Antworten, für die eigene Ausgabe, für die zuerst gezeigte Option). Der Grund, warum du Ergebnisse nicht von derselben KI prüfen lassen solltest.
-
+[^hallucination]: **Ji, Z., Lee, N., Frieske, R. et al. (2023):** *Survey of Hallucination in Natural Language Generation.* ACM Computing Surveys. arXiv:2202.03629. [https://arxiv.org/abs/2202.03629](https://arxiv.org/abs/2202.03629) — die Standardübersicht zum Thema. Führt die für dich wichtige Unterscheidung ein: **intrinsische** Halluzinationen widersprechen der mitgelieferten Quelle, **extrinsische** lassen sich an ihr überhaupt nicht prüfen – Letztere sind die gefährlicheren.
+[^bender]: **Bender, E. M., Gebru, T., McMillan-Major, A. & Shmitchell, S. (2021):** *On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?* FAccT '21, S. 610–623. [https://doi.org/10.1145/3442188.3445922](https://doi.org/10.1145/3442188.3445922) — die grundlegende Arbeit zu Bias in Sprachmodellen: Trainingsdaten aus dem Internet bilden bestehende Ungleichgewichte ab, und schiere Datenmenge behebt das nicht, sondern zementiert es.
+[^judge]: **Zheng, L., Chiang, W.-L., Sheng, Y. et al. (2023):** *Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena.* arXiv:2306.05685. [https://arxiv.org/abs/2306.05685](https://arxiv.org/abs/2306.05685) — untersucht, ob ein Modell die Ausgaben eines anderen bewerten kann. Ergebnis: teilweise ja – aber mit klaren Verzerrungen (Vorliebe für längere Antworten, für die eigene Ausgabe, für die zuerst gezeigte Option). Der Grund, warum du Ergebnisse nicht von derselben KI prüfen lassen solltest.
 !!! info "Quellen zur Verifikation"
 
     - **Statistik Austria:** [https://www.statistik.at](https://www.statistik.at)

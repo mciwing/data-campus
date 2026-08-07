@@ -10,7 +10,7 @@ Damit schließt sich der Kreis: Du hast durch den ganzen Kurs Prompts entwickelt
 
 !!! quote "Merksatz"
 
-    Ein guter Prompt ist kein Wegwerfprodukt. Er ist **Arbeitsergebnis** – so wie eine Excel-Vorlage oder ein Codebaustein.
+    Ein guter Prompt ist kein Wegwerfprodukt. Er ist **Arbeitsergebnis** – so wie eine Excel-Vorlage oder ein Codebaustein.[^white]
 
 <div class="grid cards" markdown>
 
@@ -60,7 +60,7 @@ flowchart LR
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
 ```
 
-Vier Rollen × drei Aufgaben × zwei Formate ergeben **24 Prompts** aus neun Bausteinen. Das ist der eigentliche Gewinn der Modularisierung.
+Vier Rollen × drei Aufgaben × zwei Formate ergeben **24 Prompts** aus neun Bausteinen. Das ist der eigentliche Gewinn der Modularisierung.[^schulhoff]
 
 ---
 
@@ -126,7 +126,7 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 ???+ process "Von der privaten Sammlung zur Team-Bibliothek"
 
     1. **Sammeln** – jeder legt seine funktionierenden Prompts an einem gemeinsamen Ort ab.
-    2. **Standardisieren** – einheitliche Struktur, Metadaten, Namensschema.
+    2. **Standardisieren** – einheitliche Struktur, Metadaten, Namensschema – am besten entlang echter Arbeitsaufgaben.[^sahoo]
     3. **Versionieren** – am besten in Git. Dann ist jede Änderung nachvollziehbar und rückgängig zu machen.
     4. **Testen** – für kritische Prompts ein paar feste Testfälle, wie in [Kapitel 4](iteratives.md).
     5. **Pflegen** – eine verantwortliche Person pro Bereich. Ohne Pflege veraltet eine Bibliothek schnell.
@@ -338,15 +338,11 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    - **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382)
-      → die theoretische Grundlage dieses Kapitels. Überträgt den Begriff des **Entwurfsmusters** aus der Softwaretechnik auf Prompts: dokumentierte, benannte, wiederverwendbare Lösungen für wiederkehrende Probleme – statt jedes Mal neu zu formulieren.
-    - **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608)
-      → im Grunde die größte existierende Prompt Library: 58 systematisch benannte und beschriebene Techniken. Ein guter Startpunkt, wenn dir für ein Problem das passende Muster fehlt.
-    - **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927)
-      → ordnet Prompting-Techniken nach **Anwendungsgebiet** – hilfreich beim Aufbau einer Bibliothek entlang echter Arbeitsaufgaben statt entlang von Techniknamen.
-
+[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) — die theoretische Grundlage dieses Kapitels. Überträgt den Begriff des **Entwurfsmusters** aus der Softwaretechnik auf Prompts: dokumentierte, benannte, wiederverwendbare Lösungen für wiederkehrende Probleme – statt jedes Mal neu zu formulieren.
+[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) — im Grunde die größte existierende Prompt Library: 58 systematisch benannte und beschriebene Techniken. Ein guter Startpunkt, wenn dir für ein Problem das passende Muster fehlt.
+[^sahoo]: **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927) — ordnet Prompting-Techniken nach **Anwendungsgebiet** – hilfreich beim Aufbau einer Bibliothek entlang echter Arbeitsaufgaben statt entlang von Techniknamen.
 !!! info "Beispiel-Bibliotheken"
 
     - **Anthropic Prompt Library:** [https://docs.anthropic.com/en/resources/prompt-library/library](https://docs.anthropic.com/en/resources/prompt-library/library)

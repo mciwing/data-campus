@@ -24,17 +24,17 @@ Bevor wir Stärken und Schwächen auflisten, ein Streit, der die Fachwelt spalte
 
     ---
 
-    LLMs seien nur **„stochastische Papageien"** (Bender et al., 2021) – sie würden lediglich Trainingsdaten nachplappern, ohne irgendetwas zu „verstehen".
+    LLMs seien nur **„stochastische Papageien"**[^bender] – sie würden lediglich Trainingsdaten nachplappern, ohne irgendetwas zu „verstehen".
 
 - :material-brain: **Die Optimisten**
 
     ---
 
-    LLMs zeigen **echte induktive Lern- und Schlussfähigkeiten**, erkennen hierarchische Strukturen und übertragen Wissen auf neue Aufgaben (Lappin, 2024).
+    LLMs zeigen **echte induktive Lern- und Schlussfähigkeiten**, erkennen hierarchische Strukturen und übertragen Wissen auf neue Aufgaben[^lappin].
 
 </div>
 
-Lappin (2024) kommt zu einem **abgewogenen** Urteil: LLMs sind **deutlich mehr** als Papageien – sie erbringen bei vielen Aufgaben menschliche oder übermenschliche Leistung und übertreffen die regelbasierte KI früherer Jahrzehnte bei Weitem. **Aber** sie haben reale, ernste Grenzen. Genau diese Balance schauen wir uns jetzt an.
+Lappin[^lappin] kommt zu einem **abgewogenen** Urteil: LLMs sind **deutlich mehr** als Papageien – sie erbringen bei vielen Aufgaben menschliche oder übermenschliche Leistung und übertreffen die regelbasierte KI früherer Jahrzehnte bei Weitem. **Aber** sie haben reale, ernste Grenzen. Genau diese Balance schauen wir uns jetzt an.
 
 ---
 
@@ -42,7 +42,7 @@ Lappin (2024) kommt zu einem **abgewogenen** Urteil: LLMs sind **deutlich mehr**
 
 ### Sprachgewandtheit & ein riesiges Wissensspektrum
 
-Was beim ersten Kontakt am meisten beeindruckt: die **Eloquenz** der Antworten und die **enorme thematische Bandbreite** – von der mittelalterlichen Geschichte Europas bis zu aktuellen Trends in der Informatik (Kessel et al., 2025).
+Was beim ersten Kontakt am meisten beeindruckt: die **Eloquenz** der Antworten und die **enorme thematische Bandbreite** – von der mittelalterlichen Geschichte Europas bis zu aktuellen Trends in der Informatik[^kessel].
 
 !!! quote "Achtung, Trugschluss!"
 
@@ -50,7 +50,7 @@ Was beim ersten Kontakt am meisten beeindruckt: die **Eloquenz** der Antworten u
 
 ### Die Königsdisziplin: Textarbeit 📝
 
-Hier liegt die **natürliche Stärke** von LLMs. Die häufigsten (und zuverlässigsten) Aufgaben (Kessel et al., 2025):
+Hier liegt die **natürliche Stärke** von LLMs. Die häufigsten (und zuverlässigsten) Aufgaben[^kessel]:
 
 <div class="grid cards" markdown>
 
@@ -82,7 +82,7 @@ Hier liegt die **natürliche Stärke** von LLMs. Die häufigsten (und zuverläss
 
 ### Mehr als nur Text: erstaunliche Spezialleistungen
 
-Lappin (2024) betont, dass Transformer weit über klassisches NLP hinaus glänzen:
+Lappin[^lappin] betont, dass Transformer weit über klassisches NLP hinaus glänzen:
 
 - **Medizinische Bildanalyse** und Diagnostik
 - **Strukturvorhersage von Proteinen** (eine Revolution für die Computational Biology)
@@ -90,13 +90,13 @@ Lappin (2024) betont, dass Transformer weit über klassisches NLP hinaus glänze
 
 ???+ example "Beispiel: KI erklärt einen Witz 🤓"
 
-    In einem berühmten Beispiel zeigt man GPT-4 das Foto eines Smartphones, in dessen Ladebuchse ein riesiger, veralteter **VGA-Stecker** steckt – verpackt als „Lightning Cable". Das Modell beschreibt nicht nur Panel für Panel, was zu sehen ist, sondern erkennt **die Pointe**: die Absurdität, einen klobigen Monitorstecker als modernes Handykabel auszugeben (Lappin, 2024).
+    In einem berühmten Beispiel zeigt man GPT-4 das Foto eines Smartphones, in dessen Ladebuchse ein riesiger, veralteter **VGA-Stecker** steckt – verpackt als „Lightning Cable". Das Modell beschreibt nicht nur Panel für Panel, was zu sehen ist, sondern erkennt **die Pointe**: die Absurdität, einen klobigen Monitorstecker als modernes Handykabel auszugeben[^lappin].
 
     Einen Witz zu *verstehen* galt lange als zutiefst menschlich. 🃏
 
 ### Mehrsprachigkeit & einfache Bedienung
 
-- **Übersetzung & Mehrsprachigkeit:** Für weit verbreitete Sprachen (Englisch, Spanisch, Chinesisch …) funktioniert das Übersetzen hervorragend, da viel Trainingsmaterial existiert (Kessel et al., 2025).
+- **Übersetzung & Mehrsprachigkeit:** Für weit verbreitete Sprachen (Englisch, Spanisch, Chinesisch …) funktioniert das Übersetzen hervorragend, da viel Trainingsmaterial existiert[^kessel].
 - **Niedrige Einstiegshürde:** Man tippt einfach in natürlicher Sprache – keine Programmierkenntnisse, kein kompliziertes Setup. Diese **schnelle, natürliche Interaktion** ist ein echter Produktivitätsbooster.
 
 ???+ adv "Stärken auf einen Blick"
@@ -114,7 +114,7 @@ Lappin (2024) betont, dass Transformer weit über klassisches NLP hinaus glänze
 
 ### Rechnen & Logik – der wunde Punkt 🧮
 
-Einfache Formeln? Kein Problem. Aber **komplexere Berechnungen** (Integrale, Matrizen) oder **mehrstufige logische Schlussfolgerungen** sind eine echte Herausforderung – schließlich basiert das Modell auf **Mustern**, nicht auf echtem Rechnen oder formaler Logik (Kessel et al., 2025).
+Einfache Formeln? Kein Problem. Aber **komplexere Berechnungen** (Integrale, Matrizen) oder **mehrstufige logische Schlussfolgerungen** sind eine echte Herausforderung – schließlich basiert das Modell auf **Mustern**, nicht auf echtem Rechnen oder formaler Logik[^kessel].
 
 !!! tip "Praxis-Tipp"
 
@@ -122,7 +122,7 @@ Einfache Formeln? Kein Problem. Aber **komplexere Berechnungen** (Integrale, Mat
 
 ### Kein echtes Verständnis
 
-So eloquent die Texte auch klingen – das Modell verarbeitet Anweisungen **rein statistisch** und **völlig unabhängig von deren Inhalt**. Es kann die Konsequenzen oder Schlussfolgerungen aus einer Aussage weder *bewerten* noch *einordnen* (Kessel et al., 2025).
+So eloquent die Texte auch klingen – das Modell verarbeitet Anweisungen **rein statistisch** und **völlig unabhängig von deren Inhalt**. Es kann die Konsequenzen oder Schlussfolgerungen aus einer Aussage weder *bewerten* noch *einordnen*[^kessel].
 
 ### Halluzinationen – wenn die KI überzeugend lügt 🤥
 
@@ -144,18 +144,18 @@ LLMs sind berüchtigt dafür, **plausibel klingende, aber frei erfundene** Inhal
 
 ### Blackbox – die fehlende Nachvollziehbarkeit
 
-Warum kommt ein Modell zu *genau dieser* Antwort? Aufgrund der Komplexität der neuronalen Netze ist das **kaum nachvollziehbar** (Kessel et al., 2025). Lappin (2024) nennt das die **Opazität** von LLMs: Sie sind nicht-kompositional und schwer erklärbar – ein ernstes Problem überall dort, wo Entscheidungen begründet werden müssen (Finanz, Medizin, Recht).
+Warum kommt ein Modell zu *genau dieser* Antwort? Aufgrund der Komplexität der neuronalen Netze ist das **kaum nachvollziehbar**[^kessel]. Lappin[^lappin] nennt das die **Opazität** von LLMs: Sie sind nicht-kompositional und schwer erklärbar – ein ernstes Problem überall dort, wo Entscheidungen begründet werden müssen (Finanz, Medizin, Recht).
 
 ### Datenhunger & Machtkonzentration
 
-Ein eher unsichtbares, aber gewichtiges Problem (Lappin, 2024):
+Ein eher unsichtbares, aber gewichtiges Problem[^lappin]:
 
 - LLMs brauchen **um Größenordnungen mehr Daten** als ein Mensch, um Sprache zu lernen.
 - Die nötige **Rechenleistung, Infrastruktur und Finanzkraft** haben nur wenige große Tech-Konzerne – das **konzentriert** Entwicklung und Forschung auf eine Handvoll Akteure.
 
 ### Geschlossene Systeme & Text-Fokus
 
-- Viele kommerzielle LLMs sind **„Black Boxes"** im wörtlichen Sinn: Code und Architektur sind nicht offengelegt – heikel, wenn sie in geschäftskritische Systeme eingebunden werden (Kessel et al., 2025).
+- Viele kommerzielle LLMs sind **„Black Boxes"** im wörtlichen Sinn: Code und Architektur sind nicht offengelegt – heikel, wenn sie in geschäftskritische Systeme eingebunden werden[^kessel].
 - Die meisten LLMs konzentrieren sich (noch) stark auf **reinen Text**; Sprache, Bild und Video werden zwar zunehmend integriert, sind aber rechen- und ressourcenintensiver.
 
 ???+ disadv "Grenzen auf einen Blick"
@@ -218,7 +218,7 @@ Ein eher unsichtbares, aber gewichtiges Problem (Lappin, 2024):
 
 !!! quote "Kreativität oder nur Wiedergabe?"
 
-    LLMs lernen aus bestehenden Texten – und geben deshalb vor allem **Bekanntes** wieder, geschickt neu kombiniert. Für *echte* Innovation und neue Ideen braucht es (noch) den **Menschen**. Das LLM ist ein mächtiger Assistent, nicht der Erfinder (Kessel et al., 2025).
+    LLMs lernen aus bestehenden Texten – und geben deshalb vor allem **Bekanntes** wieder, geschickt neu kombiniert. Für *echte* Innovation und neue Ideen braucht es (noch) den **Menschen**. Das LLM ist ein mächtiger Assistent, nicht der Erfinder[^kessel].
 
 ---
 
@@ -249,12 +249,8 @@ Genau **weil** LLMs diese Stärken und Schwächen haben, ist gutes Prompting so 
 
 ## Quellen
 
-!!! info "Literatur"
+Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-    Dieses Kapitel basiert auf folgenden Quellen:
-
-    - **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach! Klare Antworten aus erster Hand.* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130–141. ISBN 978-3-8252-6276-1.
-    - **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9–20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
-    - **Bender, E. M.; Gebru, T.; McMillan-Major, A.; Shmitchell, S. (2021):** *On the Dangers of Stochastic Parrots.* FAccT '21, S. 610–623.
-
-    Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+[^kessel]: **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach! Klare Antworten aus erster Hand.* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130–141. ISBN 978-3-8252-6276-1.
+[^lappin]: **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9–20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
+[^bender]: **Bender, E. M.; Gebru, T.; McMillan-Major, A.; Shmitchell, S. (2021):** *On the Dangers of Stochastic Parrots.* FAccT '21, S. 610–623.
