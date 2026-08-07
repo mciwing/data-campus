@@ -16,7 +16,7 @@ Wer diese beiden Phänomene versteht, schreibt nicht nur bessere Prompts – er 
 
 ---
 
-## Teil 1: Halluzinationen 🦄
+## Halluzinationen
 
 ### Was ist eine Halluzination?
 
@@ -28,17 +28,6 @@ Wer diese beiden Phänomene versteht, schreibt nicht nur bessere Prompts – er 
 
 Erinnerst du dich an die [Funktionsweise](funktionsweise-llms.md)? Ein LLM macht im Kern nur eines: Es sagt das **wahrscheinlichste nächste Token** voraus. Es ist also auf **sprachliche Plausibilität** optimiert – nicht auf **Wahrheit**.
 
-```mermaid
-flowchart LR
-    A[Frage]:::peach --> B(Was klingt<br/>plausibel?):::teal
-    B --> C[flüssige Antwort]:::peach
-    B -.->|NICHT geprüft| D[Ist das wahr?]:::ghost
-
-    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
-    classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
-    classDef ghost fill:#ccc,stroke:#999,stroke-width:1px,stroke-dasharray: 4 4;
-```
-
 Eine flüssig formulierte Falschaussage ist für das Modell **genauso „wahrscheinlich"** wie eine korrekte – Hauptsache, sie klingt richtig[^kessel]. Das Modell verarbeitet Anweisungen **rein statistisch** und völlig unabhängig von deren **Inhalt**.
 
 !!! warning "Achtung: Grounding ≠ Wahrheit"
@@ -49,9 +38,15 @@ Eine flüssig formulierte Falschaussage ist für das Modell **genauso „wahrsch
 
 ???+ example "Der Anwalt und die erfundenen Urteile ⚖️"
 
-    Ein New Yorker Anwalt ließ ChatGPT Präzedenzfälle für eine Klage gegen die Airline **Avianca** recherchieren. Prompt geliefert: **sechs** juristisch perfekt formulierte Urteile – von denen **kein einziges existierte**. Auf die Nachfrage „Sind diese Fälle echt?" antwortete ChatGPT: *„Ja."* Vor Gericht flog alles auf. (Lappin, 2024; Fall *Mata v. Avianca*, 2023)
+    Ein New Yorker Anwalt nutzte ChatGPT für die Recherche zu einer Klage gegen die Fluglinie **Avianca**. ChatGPT lieferte prompt **sechs passende Präzedenzfälle** – juristisch perfekt formuliert.
 
-???+ example "Der Klassiker: die erfundene Quelle 📚"
+    Kleines Problem: **Keiner davon existierte.** Alle sechs waren frei erfunden. Der Anwalt fragte sogar nach: *„Sind diese Fälle echt?"* – ChatGPT antwortete treuherzig: *„Ja."*
+
+    Vor Gericht flog der Schwindel auf.[^lappin]<sup>,</sup>[^mata]
+
+    **Moral:** Ein LLM unterscheidet nicht zuverlässig zwischen *Fakt* und *Fiktion*. Es erzeugt, was *plausibel klingt* – nicht, was *stimmt*.
+
+???+ example "Der Klassiker: die erfundene Quelle"
 
     Bittest du ein LLM um Literatur zu einem Nischenthema, bekommst du oft Titel, Autor:innen, Jahr und sogar eine **DOI** – alles makellos formatiert, alles **ausgedacht**. Wissenschaftlich besonders heikel, weil es so **echt aussieht**.
 
@@ -72,7 +67,7 @@ Die gute Nachricht: Man ist ihnen nicht hilflos ausgeliefert.
 
 ---
 
-## Teil 2: Das Kontextfenster 🪟
+## Das Kontextfenster
 
 ### Was ist das Kontextfenster?
 
@@ -84,18 +79,6 @@ Ein LLM hat kein dauerhaftes Gedächtnis. Alles, was es „weiß", während es d
 
     Es umfasst **alles**: deinen Prompt, mitgegebene Dokumente, den bisherigen Gesprächsverlauf **und** die Antwort des Modells. Ist das **Token-Limit** erreicht, fällt vorne etwas heraus – das Modell **„vergisst"** die ältesten Teile des Dialogs.
 
-```mermaid
-flowchart LR
-    subgraph KF["🪟 Kontextfenster (begrenzt)"]
-        direction LR
-        P[System-Prompt]:::teal --> Q[Dokumente]:::teal --> R[Verlauf]:::teal --> S[deine Frage]:::peach --> T[Antwort]:::peach
-    end
-    OLD[ältester Verlauf<br/>fällt heraus 🗑️]:::ghost -.->|Limit überschritten| KF
-
-    classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
-    classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
-    classDef ghost fill:#ccc,stroke:#999,stroke-width:1px,stroke-dasharray: 4 4;
-```
 
 ### Woran merkst du, dass das Fenster voll ist?
 
@@ -105,13 +88,21 @@ Ein verräterisches Symptom ist das **Déjà-vu**: Wenn ChatGPT plötzlich Lösu
 
 Das hängt stark vom Modell ab und wächst rasant – von wenigen tausend Tokens bei frühen Modellen bis zu **Hunderttausenden oder Millionen** Tokens bei aktuellen Modellen.
 
+Die genauen Werte veröffentlichen die Anbieter in ihrer Dokumentation. Bei Anthropic findest du sie hier [Context window sizes by model](https://platform.claude.com/docs/en/build-with-claude/context-windows#context-window-sizes-by-model) *(englisch)*
+
+Aktuelle Claude-Modelle liegen dort bei **1 Million Tokens** (Opus 5), ältere bei **200.000** (Sonnet 4.5) – ein Faktor 5 zwischen zwei Modellgenerationen.
+
 !!! warning "Größer ist nicht gratis"
 
     Die Nutzung wird in der Regel **pro Token** abgerechnet (Input **und** Output). Ein riesiges Dokument in jeden Prompt zu kippen, kostet also Geld – und kann die Antwort verlangsamen[^zuckarelli]. **Mehr Kontext ist nicht automatisch besser.**
 
+    Dazu kommt ein zweiter, subtilerer Effekt: Je voller das Fenster, desto **schlechter** findet das Modell die relevanten Stellen darin wieder. Anthropic nennt das **context rot** – Genauigkeit und Erinnerungsleistung nehmen mit wachsender Token-Zahl ab.
+
+    Entscheidend ist deshalb nicht, *wie viel* im Kontext steht, sondern **was**.
+
 ### Strategien zum Managen des Kontextfensters
 
-Auch hier gilt: Mit ein paar Techniken behältst du die Kontrolle (Zuckarelli, 2025, Kap. 6.4).
+Auch hier gilt: Mit ein paar Techniken behältst du die Kontrolle.[^zuckarelli]
 
 ???+ process "So managst du das Token-Limit"
 
@@ -123,7 +114,7 @@ Auch hier gilt: Mit ein paar Techniken behältst du die Kontrolle (Zuckarelli, 2
 
 ---
 
-## Wie Halluzinationen und Kontextfenster zusammenhängen 🔗
+## Wie Halluzinationen und Kontextfenster zusammenhängen
 
 Die beiden Themen sind enger verbandelt, als es scheint: **Läuft das Kontextfenster über**, verliert das Modell wichtige Informationen aus dem Gespräch – und füllt die Lücken dann gern mit … **Halluzinationen**. Ein überquellender Kontext ist also nicht nur ein „Gedächtnisproblem", sondern auch ein **Risikofaktor für erfundene Inhalte**.
 
@@ -133,7 +124,7 @@ Die beiden Themen sind enger verbandelt, als es scheint: **Läuft das Kontextfen
 
 ---
 
-## Was heißt das für Prompt Engineering? 🎯
+## Was heißt das für Prompt Engineering?
 
 - **Gegen Halluzinationen:** relevanten **Kontext mitliefern**, **Quellen verlangen**, Ergebnisse **verifizieren**.
 - **Fürs Kontextfenster:** Prompts **knapp und fokussiert** halten, lange Aufgaben **zerlegen**, bei langen Sessions **zusammenfassen** oder neu starten.
@@ -163,3 +154,4 @@ Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 [^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT.* Springer Nature, u. a. Kap. 3 und Kap. 6.4 „Token-Limit managen". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
 [^lappin]: **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9–20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
 [^kessel]: **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach!* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130–141. ISBN 978-3-8252-6276-1.
+[^mata]: **Mata v. Avianca, Inc.**, No. 1:22-cv-01461, *Opinion and Order on Sanctions* vom 22. Juni 2023, United States District Court for the Southern District of New York, Richter P. Kevin Castel. — Das Gericht verhängte 5.000 US-Dollar Strafe gegen die Anwälte Peter LoDuca und Steven A. Schwartz sowie deren Kanzlei Levidow, Levidow & Oberman P.C.

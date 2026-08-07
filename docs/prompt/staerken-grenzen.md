@@ -129,15 +129,7 @@ So eloquent die Texte auch klingen – das Modell verarbeitet Anweisungen **rein
 
 LLMs sind berüchtigt dafür, **plausibel klingende, aber frei erfundene** Inhalte zu produzieren. Und das nicht zaghaft, sondern mit voller Überzeugung.
 
-???+ example "Wahre Geschichte: Der Anwalt und die erfundenen Urteile ⚖️"
-
-    Ein New Yorker Anwalt nutzte ChatGPT für die Recherche zu einer Klage gegen die Fluglinie **Avianca**. ChatGPT lieferte prompt **sechs passende Präzedenzfälle** – juristisch perfekt formuliert.
-
-    Kleines Problem: **Keiner davon existierte.** Alle sechs waren frei erfunden. Der Anwalt fragte sogar nach: *„Sind diese Fälle echt?"* – ChatGPT antwortete treuherzig: *„Ja."*
-
-    Vor Gericht flog der Schwindel auf.[^lappin]<sup>,</sup>[^mata]
-
-    **Moral:** Ein LLM unterscheidet nicht zuverlässig zwischen *Fakt* und *Fiktion*. Es erzeugt, was *plausibel klingt* – nicht, was *stimmt*.
+Weil diese Schwäche für die Praxis so folgenreich ist, bekommt sie ein **eigenes Kapitel**: [Halluzinationen und Kontextfenster](halluzinationen-kontextfenster.md). Dort erfährst du, *warum* Modelle erfinden, an welchen Warnsignalen du es erkennst – und was tatsächlich dagegen hilft. Inklusive des Falls, bei dem ein Anwalt einem Gericht sechs frei erfundene Urteile vorlegte. ⚖️
 
 !!! danger "Wichtig"
 
@@ -192,4 +184,3 @@ Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 [^kessel]: **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach! Klare Antworten aus erster Hand.* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130–141. ISBN 978-3-8252-6276-1.
 [^lappin]: **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9–20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
 [^bender]: **Bender, E. M.; Gebru, T.; McMillan-Major, A.; Shmitchell, S. (2021):** *On the Dangers of Stochastic Parrots.* FAccT '21, S. 610–623.
-[^mata]: **Mata v. Avianca, Inc.**, No. 1:22-cv-01461, *Opinion and Order on Sanctions* vom 22. Juni 2023, United States District Court for the Southern District of New York, Richter P. Kevin Castel. — Das Gericht verhängte 5.000 US-Dollar Strafe gegen die Anwälte Peter LoDuca und Steven A. Schwartz sowie deren Kanzlei Levidow, Levidow & Oberman P.C.
