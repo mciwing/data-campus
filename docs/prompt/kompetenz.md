@@ -24,7 +24,7 @@ Klingt simpel? Ist es im Kern auch. Und doch steckt der Teufel im Detail – son
 
 ---
 
-## Der heißeste Job der Welt – oder nur Hype? 💰
+## Der heißeste Job der Welt – oder nur Hype?
 
 Eine Zeit lang galt „Prompt Engineer" als **Traumjob**: Schlagzeilen versprachen Gehälter von bis zu **335.000 US-Dollar** – und das ganz ohne Informatikstudium[^popli]. Unternehmen suchten händeringend nach Menschen, die der KI die besten Antworten entlocken.
 
@@ -52,7 +52,7 @@ Aber lohnt sich die Euphorie? Zuckarelli[^zuckarelli] betrachtet den Boom **skep
 
 ---
 
-## Vom Geheimwissen zur Kulturtechnik 📚
+## Vom Geheimwissen zur Kulturtechnik
 
 Vielleicht wird Prompt Engineering gar kein exklusiver Beruf, sondern etwas viel **Grundlegenderes**: eine **Kulturtechnik**, die praktisch jeder beherrscht – so wie heute Lesen und Schreiben[^zuckarelli]. Gut möglich, dass Kinder schon in der Schule lernen, effizient mit KI zu kommunizieren.[^kessel]
 
@@ -76,11 +76,11 @@ Wenn LLMs schlichte Programme wären, gäbe es kein Prompt Engineering – man w
 
     KI-Modelle sind **keine deterministischen Systeme**. Sie folgen Regeln **nicht strikt** und können auf denselben Prompt unterschiedlich reagieren. Deshalb ist es durchaus eine **Herausforderung**, bestimmte Nuancen und Feinheiten im Verhalten eines Modells gezielt zu erreichen[^zuckarelli].
 
-Mit anderen Worten: Es gibt **kein** Patentrezept, das immer funktioniert. Genau das macht Prompt Engineering zu einer Fähigkeit, die man **übt** und **verfeinert** – statt sie einmal auswendig zu lernen.
+Mit anderen Worten: Es gibt **kein** Patentrezept, das immer funktioniert. Genau das macht Prompt Engineering zu einer Fähigkeit, die man **übt** und **verfeinert**.
 
 ---
 
-## Das richtige Mindset: Behandle die KI wie eine:n Junior 🧑‍💻
+## Das richtige Mindset: Behandle die KI wie eine:n Junior 
 
 Das vielleicht nützlichste mentale Modell aus Zuckarelli[^zuckarelli]:
 
@@ -91,54 +91,6 @@ Das vielleicht nützlichste mentale Modell aus Zuckarelli[^zuckarelli]:
     > *„Würde ein:e Junior-Entwickler:in die Anforderung verstehen und die Aufgabe mit den Informationen, die ich gegeben habe, bewältigen können?"*
 
 Diese Frage ist Gold wert. Sie zwingt dich, **Kontext, Ziel und Format explizit** zu machen – statt anzunehmen, die KI „weiß schon, was ich meine". (Spoiler: Tut sie nicht.)
-
----
-
-## Was du in diesem Kurs lernst 🎯
-
-Gutes Prompting verfolgt im Kern **drei Ziele**[^zuckarelli]:
-
-<div style="text-align:center; max-width:820px; margin:16px auto;">
-<table role="table"
-       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
-    <thead>
-    <tr style="background:#009485; color:#fff;">
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Ziel</th>
-        <th style="text-align:left; padding:12px 14px; font-weight:700;">Worum es geht</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Besser verstanden werden</td>
-        <td style="padding:10px 14px;">Klar formulieren, damit die KI versteht, was du wirklich willst.</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Kontextfenster managen</td>
-        <td style="padding:10px 14px;">Token-sparend kommunizieren, damit nichts „vergessen" wird.</td>
-    </tr>
-    <tr>
-        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Genaueren Output erreichen</td>
-        <td style="padding:10px 14px;">Format, Umfang und Stil so steuern, dass kaum Nachbearbeitung nötig ist.</td>
-    </tr>
-    </tbody>
-</table>
-</div>
-
-Wie du diese Ziele konkret erreichst, beginnt im nächsten Kapitel: [Anatomie eines guten Prompts](anatomie.md). Dort zerlegen wir einen Prompt in seine Bausteine – **Rolle, Kontext, Aufgabe, Einschränkungen und Ausgabeformat**.
-
-???+ question "Selbsttest"
-
-    1. Wie lautet die Kurzdefinition von **Prompt Engineering**?
-    2. Nenne **ein** Argument dafür, dass der „Prompt Engineer"-Job-Hype vorübergehend sein könnte.
-    3. Warum ist Prompt Engineering trotz einfacher Grundidee eine **echte** Fähigkeit?
-    4. Was besagt die **Junior-Developer-Analogie**?
-
-    ??? success "Lösungsskizze"
-
-        1. Das **geschickte Verfassen von Prompts**, optimiert auf Fragestellung und Tool.
-        2. Das Skillset ist leicht reproduzierbar (Angebot steigt → Gehälter sinken) **oder** die Tools verstehen zunehmend auch schlampige Prompts (Nachfrage sinkt).
-        3. Weil LLMs **nicht-deterministisch** sind und Regeln nicht strikt folgen – gewünschte Nuancen zu erreichen, muss man üben.
-        4. Behandle die KI wie eine:n **uneingearbeitete:n Junior** und gib ihr genau die Informationen, die diese Person zur Lösung bräuchte.
 
 ---
 
