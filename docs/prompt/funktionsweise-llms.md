@@ -202,9 +202,81 @@ flowchart LR
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
 ```
 
+??? info "Für alle NERDS"
+
+    Für alle, die es gerne etwas genauer wissen wollen gibt es hier eine kleine Demonstration.
+    Anders als die Wortvektoren muss hier **nichts** heruntergeladen werden – Positional Encoding ist eine reine Formel. Diese hier, aus dem „Attention Is All You Need"-Paper[^vaswani]:
+
+    ???+ defi "Die drei Symbole in der Formel"
+
+        $$PE_{(pos,\,2i)} = \sin\!\left(\frac{pos}{10000^{2i/d}}\right) \qquad PE_{(pos,\,2i+1)} = \cos\!\left(\frac{pos}{10000^{2i/d}}\right)$$
+
+        | Symbol | Bedeutung |
+        |---|---|
+        | $pos$ | **Position** des Wortes im Satz: 0, 1, 2, 3 … |
+        | $d$ | **Länge des Vektors** – wie viele Zahlen ein Token beschreiben. Im Paper heißt sie `d_model`, im Code unten genauso. |
+        | $i$ | **Stelle innerhalb** des Vektors: 0, 1, 2 … bis $d$ |
+
+        **Warum $d$ entscheidend ist:** Der Positionsvektor wird auf das Wort-Embedding **addiert** (siehe Diagramm oben). Beide müssen deshalb **exakt gleich lang** sein. Ein 8-stelliger Positionsvektor passt nur zu einem 8-stelligen Wortvektor.
+
+        Typische Werte für $d$:
+
+        - **8** und **64** in unseren Beispielen unten – klein genug zum Anschauen
+        - **50** beim GloVe-Modell aus dem vorigen Abschnitt (`glove-wiki-gigaword-50`)
+        - **512** im ursprünglichen Transformer-Paper[^vaswani] (Basismodell; die größere Variante nutzt 1.024)
+        - **12.288** bei GPT-3[^brown]
+
+        **Und wozu $i$?** Es steuert, wie schnell die Sinuskurve schwingt: vorne im Vektor schnell, nach hinten immer langsamer. Genau deshalb stehen in der Ausgabe gleich unten hinten fast überall `0.` und `1.` – dort hat sich die Kurve bei so kleinen Positionen noch kaum bewegt.
+
+    In Python sind das fünf Zeilen:
+
+    ```python
+    import numpy as np
+
+    def positional_encoding(position, d_model):
+        """Sinus-/Kosinus-Positionscodierung nach Vaswani et al. (2017)."""
+        i = np.arange(d_model) // 2 * 2          # 0,0,2,2,4,4,...
+        winkel = position / np.power(10000, i / d_model)
+        return np.where(np.arange(d_model) % 2 == 0, np.sin(winkel), np.cos(winkel))
+
+    np.set_printoptions(precision=2, suppress=True)
+
+    for pos in range(4):
+        print(f"Position {pos}: {positional_encoding(pos, d_model=8)}")
+    ```
+
+    ```title="Ausgabe"
+    Position 0: [0. 1. 0. 1. 0. 1. 0. 1.]
+    Position 1: [0.84 0.54 0.1  1.   0.01 1.   0.   1.  ]
+    Position 2: [ 0.91 -0.42  0.2   0.98  0.02  1.    0.    1.  ]
+    Position 3: [ 0.14 -0.99  0.3   0.96  0.03  1.    0.    1.  ]
+    ```
+
+    Jede Position bekommt einen **eigenen Zahlen-Fingerabdruck**. Position 0 ist dabei besonders einfach zu lesen: `sin(0) = 0` und `cos(0) = 1`, daher das Muster `0, 1, 0, 1, …`
+
+    ???+ example "Der eigentliche Punkt: dasselbe Wort, zwei Positionen"
+
+        Jetzt der Hans-Test. Wir nehmen **einen** Wortvektor und addieren einmal die Position 0 und einmal die Position 3 dazu:
+
+        ```python title="hans_test.py"
+        hans = np.array([0.9, 0.1, 0.5, 0.2, 0.7, 0.3, 0.4, 0.6])
+
+        print(f"'Hans' roh          : {hans}")
+        print(f"'Hans' an Position 0: {np.round(hans + positional_encoding(0, 8), 2)}")
+        print(f"'Hans' an Position 3: {np.round(hans + positional_encoding(3, 8), 2)}")
+        ```
+
+        ```title="Ausgabe"
+        'Hans' roh          : [0.9 0.1 0.5 0.2 0.7 0.3 0.4 0.6]
+        'Hans' an Position 0: [0.9 1.1 0.5 1.2 0.7 1.3 0.4 1.6]
+        'Hans' an Position 3: [ 1.04 -0.89  0.8   1.16  0.73  1.3   0.4   1.6 ]
+        ```
+
+        **Zwei verschiedene Vektoren für dasselbe Wort.** Genau daran erkennt das Modell, ob Hans am Satzanfang steht (und füttert) oder am Ende (und gefüttert wird).
+
 ---
 
-## Station 4: Attention – Bedeutung im Kontext ⭐
+### 4) Attention
 
 Jetzt kommt der Teil, der dem Paper seinen Namen gab. Bisher hat jedes Wort einen Vektor, der seine Bedeutung und Position kennt. Aber die wahre Stärke von LLMs liegt darin, Wörter **im Kontext der anderen Wörter** zu verstehen.
 
@@ -242,7 +314,7 @@ Du musst die Matrizenrechnung nicht auswendig können. Wichtig ist die Intuition
 
 ---
 
-## Station 5: Das nächste Token – ein Wort nach dem anderen
+### 5) Das nächste Token
 
 Jetzt versteht das Modell deinen Input. Aber wie entsteht die **Antwort**? Überraschend simpel: Das Modell sagt immer nur das **nächste Token** voraus – und zwar das mit der **höchsten Wahrscheinlichkeit**.
 
@@ -269,18 +341,27 @@ Das Spiel läuft so lange, bis ein spezielles **Stop-Token** erzeugt wird – da
 
         Weil das Modell auf **sprachliche Wahrscheinlichkeit** optimiert ist, nicht auf **Wahrheit**. Es erzeugt das, was *plausibel klingt* – nicht das, was *nachweislich stimmt*. Eine flüssig formulierte Falschaussage ist für das Modell „wahrscheinlich", auch wenn sie sachlich Unsinn ist.
 
-        👉 Genau deshalb ist **Verifikation** ein eigenes Thema – siehe Kapitel [Evaluation von KI-Ergebnissen](evaluation.md).
+        Genau deshalb ist **Verifikation** ein eigenes Thema – siehe Kapitel [Evaluation von KI-Ergebnissen](evaluation.md).
 
 ---
 
-## Wie wird ein LLM eigentlich klug? Das Training 🎓
+## Wie wird ein LLM eigentlich klug?
 
 Die beeindruckenden Fähigkeiten stecken in **Milliarden von Parametern** (GPT-3.5 z. B. ~175 Milliarden). Diese Werte entstehen in drei Trainingsphasen[^zuckarelli]:
 
 ```mermaid
 flowchart TB
-    A[1. Unsupervised Pre-Training<br/>liest riesige Textmengen<br/>aus dem Internet]:::teal --> B[2. Supervised Fine-Tuning #40;SFT#41;<br/>lernt aus Beispiel-Antworten<br/>menschlicher Trainer]:::peach
-    B --> C[3. RLHF<br/>lernt aus Bewertungen,<br/>welche Antworten gut sind]:::teal
+    A["`**1 · Unsupervised Pre-Training**
+    ────────────────────────────────
+    liest riesige Textmengen aus dem Internet`"]:::teal
+    B["`**2 · Supervised Fine-Tuning (SFT)**
+    ────────────────────────────────
+    lernt aus Beispiel-Antworten menschlicher Trainer`"]:::peach
+    C["`**3 · RLHF**
+    ────────────────────────────────
+    lernt aus Bewertungen, welche Antworten gut sind`"]:::teal
+
+    A --> B --> C
 
     classDef peach fill:#FFB482aa,stroke:#333,stroke-width:1px;
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
@@ -290,7 +371,7 @@ flowchart TB
 
     Das Modell liest **enorme Mengen** an Text aus dem Internet (z. B. Wikipedia und den gefilterten *Common Crawl Corpus*) und lernt nur eine Aufgabe: **„Was ist das nächste Wort?"**
 
-    Dabei „lernt" es sein Wissen – nicht explizit abgespeichert wie in einer Datenbank, sondern **implizit** in den Parametern. Das „P" und „T" in **GPT** stehen übrigens für *Pre-trained Transformer*. Diese Phase dauert **Monate** und verschlingt gigantische Mengen an Rechenleistung und Energie. ⚡
+    Dabei „lernt" es sein Wissen – nicht explizit abgespeichert wie in einer Datenbank, sondern **implizit** in den Parametern. Genau diese Phase steckt im „P" von **GPT** (siehe Kasten unten). Sie dauert **Monate** und verschlingt gigantische Mengen an Rechenleistung und Energie.
 
 === "2. Supervised Fine-Tuning (SFT)"
 
@@ -304,13 +385,21 @@ flowchart TB
 
     *Reinforced Learning with Human Feedback* (RLHF) macht Antworten nicht nur hilfreicher, sondern reduziert auch **faktisch falsche Aussagen** (Halluzinationen).[^ouyang]
 
-???+ tip "Der „B"-Trick in Modellnamen"
+???+ tip "Wofür „GPT" eigentlich steht"
 
-    Wenn du in Modellnamen ein „**B**" siehst (z. B. *LLaMA-3.1-405B*), steht das für *billion* – also die Anzahl der **Parameter** in Milliarden. Mehr Parameter = mehr implizit speicherbares Wissen und feinere Nuancen, aber auch teurer und langsamer.
+    Der bekannteste Modellname der Welt ist eine schlichte Beschreibung der Technik – jeder Buchstabe steht für etwas, das du in diesem Kapitel bereits kennengelernt hast:
+
+    | Buchstabe | Steht für | Bedeutet |
+    |---|---|---|
+    | **G** | *Generative* | Es **erzeugt** neuen Text, statt nur vorhandenen zu suchen oder zu sortieren – Token für Token, wie in Station 5 beschrieben. |
+    | **P** | *Pre-trained* | Es wurde **vorab** trainiert (Phase 1 oben) und bringt sein Wissen schon mit. Du musst es nicht selbst anlernen. |
+    | **T** | *Transformer* | Die **Architektur** aus diesem Kapitel – mit Tokenization, Embeddings, Positional Encoding und Attention. |
+
+    Zusammengesetzt: ein **vortrainierter Transformer, der Text erzeugt**. Kein Zauberwort, sondern eine Inhaltsangabe. 🪄
 
 ---
 
-## Zusammenfassung: Der Weg vom Prompt zur Antwort
+## Zusammenfassung 📌
 
 ```mermaid
 flowchart LR
@@ -349,3 +438,4 @@ Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 [^vaswani]: **Vaswani, A. et al. (2017):** *Attention Is All You Need.* arXiv:1706.03762. [https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
 [^mikolov]: **Mikolov, T. et al. (2013):** *Efficient Estimation of Word Representations in Vector Space.* arXiv:1301.3781. [https://arxiv.org/abs/1301.3781](https://arxiv.org/abs/1301.3781)
 [^ouyang]: **Ouyang, L. et al. (2022):** *Training language models to follow instructions with human feedback.* arXiv:2203.02155. [https://arxiv.org/abs/2203.02155](https://arxiv.org/abs/2203.02155)
+[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) — Tabelle 2.1 listet die Architekturdaten aller GPT-3-Varianten, u. a. `d_model` = 12.288 für das 175-Milliarden-Modell.

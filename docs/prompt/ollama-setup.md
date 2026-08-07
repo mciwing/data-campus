@@ -120,6 +120,27 @@ Ein Modell wird **einmal** heruntergeladen und liegt danach lokal auf deiner Fes
 
 </div>
 
+???+ defi "Modellnamen lesen: was bedeuten `270m`, `0.5b` und `1b`?"
+
+    Der Teil nach dem Doppelpunkt gibt die **Anzahl der Parameter** an – also wie viele einstellbare Zahlen im Modell stecken. Sie sind das, was beim Training „gelernt" wird.
+
+    | Kürzel | Steht für | Parameter |
+    |---|---|---|
+    | `270m` | *million* | 270 Millionen |
+    | `0.5b` | *billion* | 500 Millionen |
+    | `1b` | *billion* | 1 Milliarde |
+    | `405b` | *billion* | 405 Milliarden |
+
+    !!! warning "Achtung, falscher Freund"
+
+        Englisch **billion** = deutsch **Milliarde** (10⁹), *nicht* Billion (10¹²). `llama3.2:1b` hat also 1 Milliarde Parameter, nicht 1 Billion.
+
+    **Faustregel:** Mehr Parameter = mehr implizit gespeichertes Wissen und feinere Nuancen – aber auch mehr Speicherbedarf, mehr Rechenzeit und höhere Kosten.
+
+    Als grober Anhaltspunkt: **etwa 1 GB Download pro Milliarde Parameter** – gut zu sehen an der `ollama list`-Ausgabe unten. Deshalb passt `llama3.2:1b` mit 1,3 GB bequem auf jeden Laptop, während ein 405B-Modell spezielle Server-Hardware braucht.
+
+    Der genaue Wert schwankt, weil Modelle unterschiedlich stark **quantisiert** werden – also mit unterschiedlich vielen Bits pro Parameter gespeichert. Im Arbeitsspeicher braucht ein Modell außerdem etwas mehr Platz als auf der Festplatte, weil das Kontextfenster dazukommt.
+
 Lade alle drei herunter – zusammen rund **2 GB**:
 
 ```bash
