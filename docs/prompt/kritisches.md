@@ -1,4 +1,4 @@
-# 8. Kritisches Prompting
+# Kritisches Prompting
 
 KI kann nicht nur bestätigen, sondern auch **hinterfragen**. Kritisches Prompting nutzt das Modell gezielt als „Advocatus Diaboli", um blinde Flecken und Schwachstellen aufzudecken.
 
@@ -16,7 +16,10 @@ Das ist notwendiger, als es klingt – denn im Normalzustand ist ein LLM ein **J
 
 Der Effekt ist leicht zu reproduzieren. Frag ein Modell:
 
-> *„Ich habe eine geniale Idee: ein Lieferdienst für Bio-Lebensmittel. Was hältst du davon?"*
+```{.text .ollama title="Ollama Chat"}
+Ich habe eine geniale Idee: ein Lieferdienst für Bio-Lebensmittel.
+...Was hältst du davon?
+```
 
 Du bekommst mit hoher Wahrscheinlichkeit eine begeisterte Antwort mit ein paar sanften „Herausforderungen" am Ende. Das Wort *„genial"* in deinem Prompt hat die Wahrscheinlichkeiten bereits in Richtung Zustimmung verschoben.
 
@@ -69,12 +72,12 @@ Bitte nicht um „Feedback", sondern um **Widerspruch** – und gib eine Mindest
 
 Formuliere die Frage so, dass das **Scheitern vorausgesetzt** wird:
 
-```title="Pre-Mortem-Prompt"
+```{.text .ollama title="Pre-Mortem-Prompt"}
 Wir schreiben das Jahr 2028. Der Bio-Lieferdienst ist gescheitert und
-insolvent. Du bist die Unternehmensberaterin, die die Insolvenz aufarbeitet.
-
-Schreibe den Abschlussbericht: Was ist schiefgelaufen? Nenne die
-drei Hauptursachen in der Reihenfolge ihrer Bedeutung.
+...insolvent. Du bist die Unternehmensberaterin, die die Insolvenz aufarbeitet.
+...
+...Schreibe den Abschlussbericht: Was ist schiefgelaufen? Nenne die
+...drei Hauptursachen in der Reihenfolge ihrer Bedeutung.
 ```
 
 Das ist die **Pre-Mortem-Methode**[^klein]: Statt zu fragen *„was könnte schiefgehen?"* setzt du voraus, dass es schiefgegangen ist. Das Modell muss dann *erklären* statt *spekulieren* – und Erklärungen fallen konkreter aus.
@@ -83,14 +86,14 @@ Das ist die **Pre-Mortem-Methode**[^klein]: Statt zu fragen *„was könnte schi
 
 Jede Geschäftsidee steht auf unausgesprochenen Voraussetzungen. Genau die sind die Sollbruchstellen:
 
-```title="Annahmen-Prompt"
+```{.text .ollama title="Annahmen-Prompt"}
 Liste alle impliziten Annahmen auf, die in dieser Geschäftsidee stecken
-und die NICHT explizit genannt wurden.
-
-Format je Annahme:
-ANNAHME: <ein Satz>
-Falls falsch: <was passiert dann?>
-Prüfbar durch: <eine konkrete Maßnahme>
+...und die NICHT explizit genannt wurden.
+...
+...Format je Annahme:
+...ANNAHME: <ein Satz>
+...Falls falsch: <was passiert dann?>
+...Prüfbar durch: <eine konkrete Maßnahme>
 ```
 
 !!! quote "Merksatz"
@@ -206,10 +209,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ```
 
     Die Datei kannst du danach in Ruhe durchgehen und mit ✅ / ❓ / ❌ markieren – das bleibt Handarbeit, und das ist auch richtig so.
-
----
-
-???+
 
 ---
 

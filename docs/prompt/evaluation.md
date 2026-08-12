@@ -1,4 +1,4 @@
-# 10. Evaluation von KI-Ergebnissen
+# Evaluation von KI-Ergebnissen
 
 KI-Ausgaben sind nicht automatisch korrekt. Wer professionell mit generativer KI arbeitet, muss Ergebnisse **systematisch bewerten und überprüfen**.
 
@@ -56,7 +56,7 @@ Bisher ging es darum, *bessere Antworten zu erzeugen*. Jetzt geht es darum, *zu 
 
 ## Halluzinationen erkennen
 
-Du kennst das Phänomen bereits aus [Kapitel 1](halluzinationen-kontextfenster.md). Hier geht es um die praktische Erkennung.[^hallucination]
+Du kennst das Phänomen bereits aus [Halluzinationen und Kontextfenster](halluzinationen-kontextfenster.md). Hier geht es um die praktische Erkennung.[^hallucination]
 
 ???+ process "Fünf Warnsignale"
 
@@ -74,13 +74,13 @@ Du kennst das Phänomen bereits aus [Kapitel 1](halluzinationen-kontextfenster.m
 
 Ein wirksamer Trick: Lass das Modell seine eigene Unsicherheit **markieren**.
 
-```title="Unsicherheits-Prompt"
+```{.text .ollama title="Unsicherheits-Prompt"}
 Beantworte die Frage und markiere JEDE Aussage:
-[BELEGT]   – du bist sicher, das stimmt
-[ANNAHME]  – plausibel, aber nicht sicher
-[GESCHÄTZT] – eine Zahl, die du nicht kennst
-
-Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
+...[BELEGT]   – du bist sicher, das stimmt
+...[ANNAHME]  – plausibel, aber nicht sicher
+...[GESCHÄTZT] – eine Zahl, die du nicht kennst
+...
+...Nenne am Ende die drei Aussagen, bei denen du am unsichersten bist.
 ```
 
 !!! warning "Auch die Selbsteinschätzung ist nur Vorhersage"
@@ -166,7 +166,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 3: Faktenprüfung deiner Marktanalyse"
 
-    Nimm die Marktanalyse aus deiner Kette in [Kapitel 7](chaining.md) und markiere **jede Zahl, jeden Eigennamen, jede Jahreszahl**.
+    Nimm die Marktanalyse aus deiner Kette in [Prompt Chaining](chaining.md) und markiere **jede Zahl, jeden Eigennamen, jede Jahreszahl**.
 
     Übertrage sie in eine Tabelle und prüfe **mindestens fünf** Angaben mit unabhängigen Quellen – [Statistik Austria](https://www.statistik.at), WKO, Branchenverbände. Nicht durch dieselbe KI.
 
@@ -223,10 +223,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ```
 
     **Erweiterungsidee:** Ergänze ein Muster für Eigennamen (Großbuchstabe am Wortanfang, nicht am Satzanfang) – erfundene Studien und Personen sind die häufigste Halluzinationsform und die, die am ehesten unbemerkt durchrutscht.
-
----
-
-???+
 
 ---
 

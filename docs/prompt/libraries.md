@@ -1,4 +1,4 @@
-# 11. Prompt Libraries und Wiederverwendung
+# Prompt Libraries und Wiederverwendung
 
 Bewährte Prompts müssen nicht jedes Mal neu erfunden werden. **Prompt Libraries** sammeln, strukturieren und standardisieren erprobte Prompts für den wiederholten Einsatz – besonders wertvoll im Unternehmenskontext.
 
@@ -44,7 +44,7 @@ Damit schließt sich der Kreis: Du hast durch den ganzen Kurs Prompts entwickelt
 
 ## Modularisierung
 
-Zerlege deine Prompts in **wiederverwendbare Bausteine** – im Grunde die fünf Elemente aus [Kapitel 2](anatomie.md), jetzt als getrennte Textblöcke:
+Zerlege deine Prompts in **wiederverwendbare Bausteine** – im Grunde die fünf Elemente aus [Anatomie eines guten Prompts](anatomie.md), jetzt als getrennte Textblöcke:
 
 ```mermaid
 flowchart LR
@@ -128,7 +128,7 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
     1. **Sammeln** – jeder legt seine funktionierenden Prompts an einem gemeinsamen Ort ab.
     2. **Standardisieren** – einheitliche Struktur, Metadaten, Namensschema – am besten entlang echter Arbeitsaufgaben.[^sahoo]
     3. **Versionieren** – am besten in Git. Dann ist jede Änderung nachvollziehbar und rückgängig zu machen.
-    4. **Testen** – für kritische Prompts ein paar feste Testfälle, wie in [Kapitel 4](iteratives.md).
+    4. **Testen** – für kritische Prompts ein paar feste Testfälle, wie in [Iterative Prompting](iteratives.md).
     5. **Pflegen** – eine verantwortliche Person pro Bereich. Ohne Pflege veraltet eine Bibliothek schnell.
 
 !!! warning "Vertraulichkeit"
@@ -256,10 +256,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     - `substitute()` **wirft einen Fehler**, wenn ein Platzhalter fehlt – anders als ein f-String, bei dem du erst an der schlechten Antwort merkst, dass `$kontext` leer geblieben ist.
     - `teste_alle()` prüft in einer Sekunde alle Templates. Im Beispiel oben fällt sofort auf, dass `faktencheck` einen Platzhalter `$text` erwartet, den du gar nicht mitgegeben hast.
-
----
-
-???+
 
 ---
 

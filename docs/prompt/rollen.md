@@ -1,8 +1,8 @@
-# 6. Rollenbasiertes Prompting
+# Rollenbasiertes Prompting
 
 Indem das Modell eine **bestimmte Rolle** einnimmt, verändern sich Blickwinkel, Wortwahl und Bewertungsmaßstäbe. So lässt sich dieselbe Frage aus völlig unterschiedlichen Perspektiven beleuchten.
 
-Du kennst das Prinzip schon aus [Kapitel 2](anatomie.md) als einen der fünf Bausteine. Hier gehen wir tiefer: Rollen sind nicht nur ein Stil-Trick, sondern ein **Analysewerkzeug**.
+Du kennst das Prinzip schon aus [Anatomie eines guten Prompts](anatomie.md) als einen der fünf Bausteine. Hier gehen wir tiefer: Rollen sind nicht nur ein Stil-Trick, sondern ein **Analysewerkzeug**.
 
 ---
 
@@ -21,14 +21,21 @@ Ein LLM hat kein „Ich", das in eine Rolle schlüpft – es **simuliert** eine 
     | **Im User-Prompt** („Du bist …") | gilt für diesen einen Prompt, wird im langen Chat leicht „vergessen" |
     | **Als `system`-Message** | gilt für den **gesamten** Chat, deutlich stabiler |
 
-    ```python
-    ollama.chat(model="gemma3:1b", messages=[
-        {"role": "system", "content": "Du bist Risikokapitalgeberin."},
-        {"role": "user",   "content": "Bewerte diese Idee: ..."},
-    ])
+    Im Chat setzt du die Systemrolle mit `/set system`:
+
+    ```{.text .ollama title="Ollama Chat"}
+    /set system "Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung."
     ```
 
-    Auf der Kommandozeile: `/set system "Du bist Risikokapitalgeberin."`
+    Ab jetzt gilt sie für **jede** folgende Frage – du musst die Rolle nicht in jedem Prompt wiederholen:
+
+    ```{.text .ollama title="Ollama Chat"}
+    Bewerte diese Idee: ein Lieferdienst für regionale Bio-Lebensmittel.
+    ```
+
+    Mit `/show system` kannst du jederzeit nachsehen, welche Rolle gerade gesetzt ist.
+
+    Wer den Weg über Python gehen will, findet ihn im **🐍 Optional**-Block am Ende des Kapitels.
 
 ---
 
@@ -38,7 +45,7 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
 <div class="grid cards" markdown>
 
-- :material-school-outline: **Experte** 🎓
+- :material-school-outline: **Experte**
 
     ---
 
@@ -48,7 +55,7 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
     Blinder Fleck: unterschätzt oft die Praxis
 
-- :material-cash-multiple: **Investor** 💰
+- :material-cash-multiple: **Investor** 
 
     ---
 
@@ -58,7 +65,7 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
     Blinder Fleck: ignoriert kleine, aber solide Geschäfte
 
-- :material-account-heart-outline: **Kunde** 🛒
+- :material-account-heart-outline: **Kunde**
 
     ---
 
@@ -68,7 +75,7 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
     Blinder Fleck: denkt nicht wirtschaftlich
 
-- :material-sword-cross: **Konkurrent** ⚔️
+- :material-sword-cross: **Konkurrent**
 
     ---
 
@@ -97,12 +104,12 @@ Für die Bewertung einer Geschäftsidee haben sich vier Rollen bewährt. Jede de
 
         In der Literatur heißt dieses Muster *Persona Pattern*.[^white]
 
-    ```title="Vollständige Rolle"
+    ```{.text .ollama title="Vollständige Rolle"}
     Du bist Business Angel mit 15 Jahren Erfahrung in der
-    Lebensmittelbranche. Du hast über 40 Startups begleitet, von denen
-    30 gescheitert sind. Du bist skeptisch, zahlengetrieben und
-    formulierst direkt. Deine Aufgabe: entscheiden, ob du in die
-    vorgestellte Idee investieren würdest.
+    ...Lebensmittelbranche. Du hast über 40 Startups begleitet, von denen
+    ...30 gescheitert sind. Du bist skeptisch, zahlengetrieben und
+    ...formulierst direkt. Deine Aufgabe: entscheiden, ob du in die
+    ...vorgestellte Idee investieren würdest.
     ```
 
 !!! warning "Grenzen der Rolle"
@@ -210,10 +217,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ```
 
     Der **Stern** markiert Themen, die nur eine einzige Rolle anspricht – genau dort steckt der Mehrwert. „Logistik" nennen drei von vier Rollen; das hättest du auch ohne Rollen bekommen.
-
----
-
-???+
 
 ---
 

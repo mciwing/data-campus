@@ -1,4 +1,4 @@
-# 5. Strukturierte Ausgaben
+# Strukturierte Ausgaben
 
 Wer Ergebnisse weiterverarbeiten will, braucht **vorhersagbare Formate**. LLMs können ihre Antworten gezielt strukturieren – als Tabelle, JSON, Markdown oder nach einer Vorlage.
 
@@ -6,7 +6,7 @@ Solange du die Antwort selbst liest, ist Fließtext in Ordnung. Sobald aber ein 
 
 ---
 
-## Warum Struktur mehr ist als Kosmetik
+## Warum Struktur mehr als Kosmetik ist
 
 !!! quote "Merksatz"
 
@@ -20,16 +20,16 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 ---
 
-## Die vier Formate
+## Vier bekannte Formate
 
 === ":material-table: Tabelle"
 
     **Wofür:** Vergleiche, Bewertungen, alles mit gleichen Merkmalen über mehrere Objekte.
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Vergleiche die drei Vertriebskanäle in einer Markdown-Tabelle
-    mit den Spalten: Kanal | Reichweite | Kosten | Aufwand.
-    Eine Zeile pro Kanal, keine Erklärung davor oder danach.
+    ...mit den Spalten: Kanal | Reichweite | Kosten | Aufwand.
+    ...Eine Zeile pro Kanal, keine Erklärung davor oder danach.
     ```
 
     ✅ Sehr lesbar für Menschen · ❌ mühsam maschinell auszuwerten, wenn Zellen Kommas enthalten.
@@ -38,15 +38,15 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
     **Wofür:** alles, was ein Programm weiterverarbeiten soll.
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Antworte ausschließlich mit gültigem JSON, ohne Markdown-Codeblock
-    und ohne Erklärung. Schema:
-
-    {
-      "idee": "<string>",
-      "risiken": [{"titel": "<string>", "schwere": "hoch|mittel|niedrig"}],
-      "bewertung": <zahl 1-10>
-    }
+    ...und ohne Erklärung. Schema:
+    ...
+    ...{
+    ...  "idee": "<string>",
+    ...  "risiken": [{"titel": "<string>", "schwere": "hoch|mittel|niedrig"}],
+    ...  "bewertung": <zahl 1-10>
+    ...}
     ```
 
     ✅ Direkt in Python einlesbar · ❌ kleine Modelle produzieren gern *fast* gültiges JSON (siehe Labor unten).
@@ -55,12 +55,12 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
     **Wofür:** Dokumentation, Berichte, Website-Inhalte – Text mit Gliederung.
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Gib das Ergebnis als Markdown aus:
-    - eine H2-Überschrift pro Abschnitt
-    - darunter maximal 3 Stichpunkte
-    - Fachbegriffe **fett**
-    Keine Einleitung.
+    ...- eine H2-Überschrift pro Abschnitt
+    ...- darunter maximal 3 Stichpunkte
+    ...- Fachbegriffe **fett**
+    ...Keine Einleitung.
     ```
 
     ✅ Menschenlesbar *und* strukturiert · ❌ kein festes Schema erzwingbar.
@@ -69,15 +69,15 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
     **Wofür:** wiederkehrende Dokumente mit fester Gliederung.
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Fülle exakt diese Vorlage aus. Ersetze nur die <Platzhalter>,
-    ändere nichts an der Struktur:
-
-    PRODUKT: <name>
-    ZIELGRUPPE: <eine Zeile>
-    NUTZEN: <maximal 20 Wörter>
-    PREIS: <zahl> EUR
-    RISIKO: <ein Satz>
+    ...ändere nichts an der Struktur:
+    ...
+    ...PRODUKT: <name>
+    ...ZIELGRUPPE: <eine Zeile>
+    ...NUTZEN: <maximal 20 Wörter>
+    ...PREIS: <zahl> EUR
+    ...RISIKO: <ein Satz>
     ```
 
     ✅ Funktioniert auch bei sehr kleinen Modellen ⭐ · ❌ unflexibel bei variabler Feldanzahl.
@@ -100,15 +100,15 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 ---
 
-## Der JSON-Modus
+## Der Ollama JSON-Modus
 
 Ollama kann das Modell technisch dazu **zwingen**, gültiges JSON zu erzeugen – mit der Option `--format json`:
 
-```bash
+```title="Terminal"
 ollama run --format json gemma3:1b "Nenne 3 Risiken für einen Bio-Lieferdienst. Antworte als JSON mit dem Schlüssel 'risiken', jeder Eintrag mit 'titel' und 'schwere' (hoch, mittel oder niedrig)."
 ```
 
-```title="Beispielausgabe"
+```{.text .no-copy title="Beispielausgabe"}
 {
   "risiken": [
     {"titel": "Kühlkette bei der Zustellung", "schwere": "hoch"},
@@ -162,7 +162,10 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Wenn ein Format nicht stimmt, fang nicht von vorn an. Sag im **selben Chat**, was falsch war:
 
-    > *„Deine Antwort enthielt einleitenden Text. Gib das JSON erneut aus – ohne jeden Text davor oder danach."*
+    ```{.text .ollama title="Ollama Chat"}
+    Deine Antwort enthielt einleitenden Text.
+    ...Gib das JSON erneut aus – ohne jeden Text davor oder danach.
+    ```
 
     **Probiere aus:** Wie oft brauchst du diese Korrekturrunde? Und reicht eine, oder musst du nachfassen?
 
@@ -209,10 +212,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ```
 
     Beachte den dritten Eintrag: Das JSON ist **syntaktisch gültig**, aber `"sehr hoch"` steht nicht in der erlaubten Menge. Genau deshalb reicht `format="json"` allein nicht – die Schema-Prüfung musst du selbst machen.
-
----
-
-???+
 
 ---
 

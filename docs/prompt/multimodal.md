@@ -1,4 +1,4 @@
-# 9. Multimodales Prompting
+# Multimodales Prompting
 
 Moderne KI-Modelle verarbeiten nicht nur Text, sondern auch **Bilder, Dokumente und Diagramme**. Multimodales Prompting erweitert die Möglichkeiten erheblich – von der Analyse einer Website bis zur Auswertung einer Präsentation.
 
@@ -38,11 +38,11 @@ flowchart LR
 
     **Typische Aufgaben:** Produktfotos beschreiben, Logos bewerten, Screenshots analysieren, Handschrift transkribieren. Möglich wurde das durch Modelle, die Bild- und Textverarbeitung verschränken.[^flamingo]
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Beschreibe dieses Produktfoto für einen Online-Shop.
-    Nenne: (1) das Produkt, (2) drei sichtbare Eigenschaften,
-    (3) die vermutliche Zielgruppe.
-    Beschreibe nur, was tatsächlich zu sehen ist.
+    ...Nenne: (1) das Produkt, (2) drei sichtbare Eigenschaften,
+    ...(3) die vermutliche Zielgruppe.
+    ...Beschreibe nur, was tatsächlich zu sehen ist.
     ```
 
     Der letzte Satz ist entscheidend – ohne ihn ergänzt das Modell gern Details, die gar nicht im Bild sind.
@@ -51,14 +51,14 @@ flowchart LR
 
     **Typische Aufgaben:** Berichte zusammenfassen, Verträge nach Klauseln durchsuchen, Studien auswerten.
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Fasse dieses PDF zusammen. Struktur:
-    - Kernaussage (1 Satz)
-    - 3 wichtigste Zahlen mit Seitenangabe
-    - 2 offene Fragen
-
-    Zitiere für jede Zahl die Seite. Findest du eine Angabe nicht,
-    schreibe [NICHT IM DOKUMENT].
+    ...- Kernaussage (1 Satz)
+    ...- 3 wichtigste Zahlen mit Seitenangabe
+    ...- 2 offene Fragen
+    ...
+    ...Zitiere für jede Zahl die Seite. Findest du eine Angabe nicht,
+    ...schreibe [NICHT IM DOKUMENT].
     ```
 
     **Achtung:** Manche Werkzeuge extrahieren nur den Text, andere „sehen" die Seite als Bild. Bei Tabellen und Diagrammen macht das einen großen Unterschied.
@@ -67,11 +67,11 @@ flowchart LR
 
     **Typische Aufgaben:** Trends aus Charts ablesen, Zahlen aus Grafiken extrahieren.
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Lies die Werte aus diesem Balkendiagramm ab.
-    Gib sie als Tabelle aus: Kategorie | Wert | abgelesen/geschätzt.
-    Markiere jeden Wert, den du nicht eindeutig ablesen kannst,
-    als "geschätzt".
+    ...Gib sie als Tabelle aus: Kategorie | Wert | abgelesen/geschätzt.
+    ...Markiere jeden Wert, den du nicht eindeutig ablesen kannst,
+    ...als "geschätzt".
     ```
 
     !!! danger "Zahlen aus Diagrammen sind unzuverlässig"
@@ -82,12 +82,12 @@ flowchart LR
 
     **Typische Aufgaben:** Pitchdecks analysieren, Foliensätze zusammenfassen, Argumentationslinien prüfen.
 
-    ```title="Prompt"
+    ```{.text .ollama title="Ollama Chat"}
     Du bist Investorin und siehst dieses Pitchdeck zum ersten Mal.
-
-    1. Welche Kernaussage nimmst du mit?
-    2. Welche Information fehlt dir, um zu entscheiden?
-    3. Welche Folie würdest du streichen?
+    ...
+    ...1. Welche Kernaussage nimmst du mit?
+    ...2. Welche Information fehlt dir, um zu entscheiden?
+    ...3. Welche Folie würdest du streichen?
     ```
 
     Kombiniert Multimodalität mit [rollenbasiertem Prompting](rollen.md) – besonders wirkungsvoll.
@@ -224,10 +224,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     3. Zähle anschließend, wie viele Felder mit `[ANNAHME]` markiert sind – das ist dein Unsicherheitsmaß.
 
     **Datenschutz-Hinweis:** Alles, was du hochlädst, verlässt dein Gerät. Keine personenbezogenen Daten, keine internen Unterlagen. Genau dieser Punkt ist einer der Gründe, warum wir im Kurs lokal arbeiten.
-
----
-
-???+
 
 ---
 
