@@ -69,7 +69,7 @@ nav:
       - Prompt Engineering als Kompetenz: prompt/kompetenz.md
     - "Setup: Lokales LLM mit Ollama": prompt/ollama-setup.md
     - Anatomie eines guten Prompts: prompt/anatomie.md
-    - Zero-Shot & Few-Shot: prompt/shot-prompting.md
+    - Shot Prompting: prompt/shot-prompting.md
     - Iteratives Prompt Engineering: prompt/iteratives.md
     - Strukturierte Ausgaben: prompt/strukturierte-ausgaben.md
     - Rollenbasiertes Prompting: prompt/rollen.md

@@ -1,8 +1,19 @@
-# 3. Zero-Shot, Few-Shot und Beispiel-basiertes Prompting
+# Shot Prompting
 
 Manchmal genügt eine reine Anweisung, manchmal helfen **Beispiele** dem Modell, die gewünschte Antwort zu treffen. Die Wahl des richtigen Ansatzes ist eine zentrale Prompting-Entscheidung.
 
-Der Name klingt technischer, als es ist: Ein **Shot** ist schlicht ein *Beispiel*, das du im Prompt mitlieferst. Kein Beispiel = Zero-Shot. Ein paar Beispiele = Few-Shot.
+Der Name klingt technischer, als es ist: Ein **Shot** ist schlicht ein *Beispiel*, das du im Prompt mitlieferst. Kein Beispiel = Zero-Shot. Ein paar Beispiele = Few-Shot. Geprägt haben diese Begriffe Brown et al. in jenem Paper, das GPT-3 vorstellte – der Titel *„Language Models are Few-Shot Learners"* war Programm.[^brown]
+
+!!! quote "Merksatz"
+    Ein *Shot* ist kein Versuch. „Few-Shot" heißt nicht, dass du das Modell mehrmals fragst – es heißt, dass in **einem** Prompt mehrere Beispiele stehen.
+
+Warum das so gut funktioniert, kennst du aus dem Alltag: Versuche einmal, in Worten zu erklären, wie man einen Krawattenknoten bindet. Und dann mach es jemandem einfach vor. **Zeigen ist oft einfacher als beschreiben** – und manches lässt sich überhaupt nur zeigen. Genau das ist der Unterschied zwischen einer Anweisung und einem Beispiel.
+
+<div style="text-align: center;">
+    <img src="https://i.pinimg.com/564x/d1/30/14/d130149b34e580788e188cb0cca52ec7.jpg" alt="Meme mit der Überschrift „Wenn du keine Krawatte binden kannst…“ – daneben eine Person, die sich statt einer Krawatte einen Schuhlöffel unter den Hemdkragen geklemmt hat." style="max-width: 300px;">
+    <figcaption>Wer eine Anleitung nur gehört hat, produziert erstaunliche Ergebnisse. (Quelle: <a href="https://i.pinimg.com/564x/d1/30/14/d130149b34e580788e188cb0cca52ec7.jpg" target="_blank" rel="noopener">Pinterest</a>)</figcaption>
+</div>
+
 
 ---
 
@@ -10,7 +21,7 @@ Der Name klingt technischer, als es ist: Ein **Shot** ist schlicht ein *Beispiel
 
 ### Zero-Shot
 
-Du beschreibst die Aufgabe – ohne ein einziges Beispiel.
+Bei Zero-Shot Prompting beschreibst du die Aufgabe ohne ein einziges Beispiel zu nennen. Das ist der Normalfall: Praktisch alles, was du bisher in einen Chatbot getippt hast, war Zero-Shot. Und meistens genügt es auch, denn Aufgaben wie *übersetzen*, *zusammenfassen* oder *klassifizieren* hat das Modell im Training millionenfach gesehen.
 
 ```{.text .ollama title="Ollama Chat"}
 Klassifiziere die folgende Kundenbewertung als positiv, neutral oder negativ.
@@ -24,13 +35,13 @@ Die negative Bewertung deutet darauf hin, dass der Service von Qualität her abl
 Produkt selbst besteht.
 ```
 
-**Gut für:** Standardaufgaben, die das Modell aus dem Training kennt – übersetzen, zusammenfassen, klassifizieren. Kostet am wenigsten Aufwand und Tokens, ist aber beim Format am unzuverlässigsten.
+Wenn wir uns die Antwort ansehen, merken wir: Inhaltlich ist sie **richtig** – und trotzdem eventuell unbrauchbar, sobald du hundert Bewertungen auswerten willst. Das Modell liefert eine Begründung mit, die niemand bestellt hat. Dies steht nicht im Widerspruch zu deiner Anweisung – du hast schlicht nie gesagt, wie die Antwort **aussehen** soll.
 
 ---
 
 ### One-Shot
 
-Ein einziges Beispiel zeigt Format *und* Erwartungshaltung.
+Im Gegensatz zu Zero-Shot zeigt One-Shot Prompting ein - einziges - Beispiel, und damit meist auch das Format und die Erwartungshaltung. Wenn du dir das nachfolgende Beispiel anschaust, erkennst du, wie viel in diesen zwei Zeilen steckt, ohne dass ein einziges Wort es erklärt: die Feldnamen `Bewertung` und `Kategorie`, ihre Reihenfolge, die Kleinschreibung des Labels – und vor allem, dass die Antwort aus **einem Wort** besteht und nicht aus einem Absatz.
 
 ```{.text .ollama title="Ollama Chat"}
 Klassifiziere Kundenbewertungen.
@@ -46,13 +57,21 @@ Klassifiziere Kundenbewertungen.
 negativ
 ```
 
-**Gut für:** wenn das Ergebnis inhaltlich schon stimmt, aber das **Format** wackelt. Ein einziges Musterbeispiel genügt oft.
+???+ tip "Der Trick hier: die letzte Zeile offen lassen"
+
+    Der Prompt endet mit `Kategorie:` – und da hört er auf. Kein Fragezeichen, keine Bitte, keine Erklärung.
+
+    Das ist kein Schönheitsfehler, sondern der Kern der Technik. Ein Sprachmodell macht nichts anderes, als [den Text fortzusetzen](funktionsweise-llms.md#5-das-nachste-token). Eine angefangene Zeile ist deshalb die stärkste Anweisung, die du geben kannst: Die einzige plausible Fortsetzung ist genau das eine Wort, das du willst.
+
+    Schreibst du stattdessen *„Wie lautet die Kategorie?"*, ist auch *„Die Kategorie dieser Bewertung lautet: negativ."* eine völlig plausible Fortsetzung – und schon hast du wieder einen Satz statt eines Labels.
 
 ---
 
 ### Few-Shot
 
-Mehrere Beispiele – idealerweise auch **Grenzfälle**.
+Für Aufgaben mit **eigenen Regeln**, Grenzfällen oder ungewöhnlichen Formaten, eignet sich Few-Shot besonders gut. Dabei übergibt man dem LLM mehrere Beispiele – idealerweise auch **Grenzfälle**.
+
+**Welche** Beispiele du wählst, ist dabei keine Nebensache. Liu et al. haben systematisch untersucht, was ein gutes Beispiel ausmacht, und kommen zu einem klaren Ergebnis: Beispiele, die dem aktuellen Fall **inhaltlich ähneln**, wirken deutlich besser als zufällig gewählte.[^liu] Nimm deine Beispiele also aus demselben Themenfeld wie die Fälle, die du später wirklich bearbeiten willst.
 
 ```{.text .ollama title="Ollama Chat"}
 Klassifiziere Kundenbewertungen.
@@ -77,7 +96,75 @@ Klassifiziere Kundenbewertungen.
 negativ
 ```
 
-**Gut für:** Aufgaben mit **eigenen Regeln**, Grenzfällen oder ungewöhnlichem Format. Am zuverlässigsten – kostet aber die meisten Tokens und Vorbereitungszeit.
+
+???+ example "Beispiele sind Definitionen"
+
+    Sieh dir das vierte Beispiel an: *„Super Qualität, aber viel zu teuer."* → **neutral**. Man könnte es genauso gut *negativ* nennen – beides wäre vertretbar.
+
+    Und genau das ist der Punkt: Es gibt hier keine objektiv richtige Antwort. Es gibt nur **deine Festlegung**. Ein gemischtes Urteil als *neutral* einzustufen ist eine Entscheidung, die das Modell unmöglich erraten kann.
+
+    Solche Grenzfälle in Worte zu fassen wird schnell mühsam – *„Wenn Lob und Kritik sich ungefähr die Waage halten, dann …"*. Ein einziges Beispiel erledigt dasselbe in zwei Zeilen. **Deshalb gehören genau die Fälle in den Prompt, bei denen du selbst kurz überlegen musstest.**
+
+---
+
+## Die drei Ansätze im Vergleich
+
+Eine generell beste Methode gibt es nicht. Es gibt nur die **billigste, die für deine Aufgabe noch funktioniert** – und die findest du nicht durch Nachdenken, sondern durch Ausprobieren. Fang deshalb mit der einfachsten Variante an und rüste erst nach, wenn das Ergebnis es verlangt.
+
+
+<div style="text-align:center; max-width:780px; margin:16px auto;">
+<table role="table"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;"></th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Zero-Shot</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">One-Shot</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Few-Shot</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Beispiele im Prompt</td>
+        <td style="padding:10px 14px;">keine</td>
+        <td style="padding:10px 14px;">eines</td>
+        <td style="padding:10px 14px;">drei bis fünf</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Aufwand für dich</td>
+        <td style="padding:10px 14px;">keiner</td>
+        <td style="padding:10px 14px;">gering</td>
+        <td style="padding:10px 14px;">spürbar</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Token-Verbrauch</td>
+        <td style="padding:10px 14px;">niedrig</td>
+        <td style="padding:10px 14px;">mittel</td>
+        <td style="padding:10px 14px;">hoch</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Formattreue</td>
+        <td style="padding:10px 14px;">wackelig</td>
+        <td style="padding:10px 14px;">gut</td>
+        <td style="padding:10px 14px;">sehr gut</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Vermittelt Grenzfälle</td>
+        <td style="padding:10px 14px;">nein</td>
+        <td style="padding:10px 14px;">kaum</td>
+        <td style="padding:10px 14px;">ja</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px; font-weight:600;">Typischer Einsatz</td>
+        <td style="padding:10px 14px;">einmalige Fragen</td>
+        <td style="padding:10px 14px;">Format festzurren</td>
+        <td style="padding:10px 14px;">wiederkehrende Aufgaben mit eigenen Regeln</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+Die Reihenfolge der Spalten ist zugleich die Reihenfolge, in der du vorgehen solltest: **von links nach rechts, aber nur so weit wie nötig.** Jede Spalte weiter rechts kostet Tokens und Vorbereitungszeit – und die zahlst du bei *jedem* Aufruf.
 
 ???+ defi "In-Context Learning"
 
@@ -85,33 +172,24 @@ negativ
 
     Deshalb ist die Wirkung nach dem Chat auch wieder weg. Wer dauerhaft ein Verhalten will, braucht Fine-Tuning – oder eine [Prompt Library](libraries.md).
 
-!!! tip "Der Kurs-Trick"
+    In-Context Learning ist inzwischen ein eigenes Forschungsfeld; Dong et al. bieten dazu einen aktuellen Überblick.[^dong] Bemerkenswert ist, dass niemand die Fähigkeit einprogrammiert hat: Sie tauchte ab einer gewissen Modellgröße einfach auf – ein Nebenprodukt des Trainings, das bis heute nicht abschließend erklärt ist.
+
+!!! tip "Unterschied: kleine vs. große Modelle"
 
     Ein großes Modell braucht selten Beispiele – es rät richtig. **Kleine Modelle profitieren dramatisch von Few-Shot.** Wenn `gemma3:1b` deine Aufgabe partout nicht versteht: gib ihm zwei Beispiele, statt den Anweisungstext ein viertes Mal umzuformulieren.
 
 ---
 
-## Wann welche Methode?
+Man würde annehmen, das Modell lerne aus Beispielen die **richtige Zuordnung**. Min et al.[^min] haben das geprüft und die Labels in den Beispielen **absichtlich falsch** gesetzt – „Alles top!" → *negativ*. Das Ergebnis: Die Leistung brach kaum ein.
 
-???+ process "Entscheidungshilfe"
+Was Beispiele tatsächlich vermitteln, sind drei andere Dinge:
 
-    1. **Starte mit Zero-Shot.** Es ist billig und oft ausreichend.
-    2. **Ergebnis stimmt inhaltlich, aber das Format wackelt?** → One-Shot mit einem exakten Musterbeispiel.
-    3. **Das Modell versteht die Aufgabe grundsätzlich falsch?** → Few-Shot mit 3–5 Beispielen.
-    4. **Es gibt Grenzfälle, die immer falsch klassifiziert werden?** → genau diese Grenzfälle als Beispiele aufnehmen.
-    5. **Auch mit Few-Shot keine Besserung?** → Aufgabe ist zu groß. Zerlegen: [Prompt Chaining](chaining.md).
+1. den **Label-Raum** (welche Antworten überhaupt zulässig sind),
+2. die **Eingabeverteilung** (wie die Aufgaben aussehen),
+3. das **Format** der Antwort.
 
-???+ tip "Was Beispiele wirklich leisten – ein überraschender Befund"
+Der Befund ist allerdings nicht das letzte Wort: Yoo et al. haben die Studie mit anderen Aufgaben wiederholt und zeigen, dass richtige Labels **je nach Aufgabe und Modell sehr wohl** ins Gewicht fallen.[^yoo] Die ehrliche Zusammenfassung lautet also: Format und Abdeckung wirken *immer*, korrekte Labels wirken *manchmal*.
 
-    Man würde annehmen, das Modell lerne aus Beispielen die **richtige Zuordnung**. Min et al.[^min] haben das geprüft und die Labels in den Beispielen **absichtlich falsch** gesetzt – „Alles top!" → *negativ*. Das Ergebnis: Die Leistung brach kaum ein.
-
-    Was Beispiele tatsächlich vermitteln, sind drei andere Dinge:
-
-    1. den **Label-Raum** (welche Antworten überhaupt zulässig sind),
-    2. die **Eingabeverteilung** (wie die Aufgaben aussehen),
-    3. das **Format** der Antwort.
-
-    👉 Praktische Folgerung: Achte bei deinen Beispielen zuerst auf **Einheitlichkeit und Abdeckung** – nicht auf perfekt gewählte Musterlösungen.
 
 !!! warning "Drei typische Few-Shot-Fallen"
 
@@ -123,7 +201,28 @@ negativ
             <figcaption>Few-Shot heißt Nachahmen: Das Modell übernimmt dein Muster – auch die Unsauberkeiten darin. (Quelle: <a href="https://substack-post-media.s3.amazonaws.com/public/images/5b934fac-6ff5-4d85-81b2-490645eadfa7_1082x1285.jpeg" target="_blank" rel="noopener">Substack</a>)</figcaption>
         </div>
 
-    - **Zu viele Beispiele:** Ab ca. 5–8 Beispielen wird der Zugewinn klein, der Token-Verbrauch aber groß – und bei kleinen Modellen droht das [Kontextfenster](halluzinationen-kontextfenster.md) überzulaufen.
+    - **Zu viele Beispiele:** Der Zugewinn flacht mit jedem weiteren Beispiel ab – schon Brown et al. zeigen das an GPT-3[^brown] –, der Token-Verbrauch steigt aber linear weiter. Und bei kleinen Modellen droht das [Kontextfenster](halluzinationen-kontextfenster.md) überzulaufen. Als Faustregel für den Kurs: drei bis fünf Beispiele.
+
+???+ warning "Die vierte Falle: die Reihenfolge"
+
+    Man würde erwarten, dass es egal ist, in welcher Reihenfolge die Beispiele stehen. Ist es nicht. Lu et al. haben sämtliche Permutationen derselben Beispiele durchgetestet – und fanden Unterschiede **zwischen nahezu bestem Ergebnis und blindem Raten**, allein durch die Reihenfolge.[^lu]
+
+    Zwei Details aus der Studie sind für die Praxis wichtig:
+
+    - Der Effekt verschwindet nicht bei größeren Modellen.
+    - Eine Reihenfolge, die bei einem Modell gut funktioniert, lässt sich **nicht** auf ein anderes Modell übertragen.
+
+    Zhao et al. liefern die Erklärung: Modelle bevorzugen Labels, die **häufiger** vorkommen und die **zuletzt** im Prompt standen.[^zhao] Stehen deine drei negativen Beispiele alle am Ende, kippt die Vorhersage in Richtung *negativ*.
+
+    👉 Misch die Kategorien durch, statt sie zu gruppieren. Und wenn ein Few-Shot-Prompt unerklärlich schlecht läuft: zieh einmal die Reihenfolge um, bevor du am Text feilst.
+
+---
+
+!!! quote "Ausblick: Beispiele, die *denken* zeigen"
+
+    Bisher haben unsere Beispiele nur **Eingabe → Ausgabe** gezeigt. Wei et al. haben eine Kleinigkeit geändert: Sie schrieben in die Beispiele auch den **Rechenweg** dazu – und plötzlich lösten Modelle Aufgaben, an denen sie zuvor gescheitert waren.[^wei]
+
+    Diese Technik heißt *Chain-of-Thought* und ist nichts anderes als Few-Shot mit ausformulierten Zwischenschritten. Du triffst sie im Kapitel [Kritisches Prompting](kritisches.md) wieder.
 
 ---
 
@@ -152,7 +251,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 3: Business Model Canvas erzeugen"
 
-    Jetzt das große Stück – dein Canvas, einmal auf beide Arten:
+    Jetzt das große Stück – dein Canvas[^osterwalder], einmal auf beide Arten:
 
     1. **Zero-Shot:** *„Erstelle ein Business Model Canvas für [deine Idee]."* Zähle: Wie viele der neun Felder kommen?
     2. **Few-Shot:** Gib **zwei** vollständig ausgefüllte Felder eines *fremden* Beispiels vor (etwa für einen Fahrradkurier) und lass den Rest für deine Idee ergänzen.
@@ -215,4 +314,13 @@ Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 [^brown]: **Brown, T. B., Mann, B., Ryder, N. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) — das Paper, das die Begriffe *Zero-Shot*, *One-Shot* und *Few-Shot* geprägt hat. Zeigt auch, dass der Nutzen von Beispielen mit der Modellgröße *abnimmt* – die Grundlage unseres Kurs-Tricks.
 [^min]: **Min, S., Lyu, X., Holtzman, A. et al. (2022):** *Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?* arXiv:2202.12837. [https://arxiv.org/abs/2202.12837](https://arxiv.org/abs/2202.12837) — überraschender Befund: Selbst **falsch gelabelte** Beispiele helfen kaum weniger als richtige. Entscheidend sind Format, Label-Raum und Eingabeverteilung – nicht die Korrektheit. Das erklärt, warum die *Struktur* deiner Beispiele so wichtig ist.
 [^zhao]: **Zhao, T. Z., Wallace, E., Feng, S. et al. (2021):** *Calibrate Before Use: Improving Few-Shot Performance of Language Models.* arXiv:2102.09690. [https://arxiv.org/abs/2102.09690](https://arxiv.org/abs/2102.09690) — belegt die Verzerrung durch unausgewogene Beispiele: Das Modell bevorzugt Labels, die häufiger oder zuletzt im Prompt vorkommen.
+[^reynolds]: **Reynolds, L. & McDonell, K. (2021):** *Prompt Programming for Large Language Models: Beyond the Few-Shot Paradigm.* arXiv:2102.07350. [https://arxiv.org/abs/2102.07350](https://arxiv.org/abs/2102.07350) — zeigt an Übersetzungsaufgaben, dass ein durchdachtes Zero-Shot-Prompt Few-Shot schlagen kann. Kernthese: Beispiele *lehren* keine Aufgabe, sie *lokalisieren* eine bereits gelernte.
+[^liu]: **Liu, J., Shen, D., Zhang, Y. et al. (2022):** *What Makes Good In-Context Examples for GPT-3?* Proceedings of DeeLIO 2022 (Workshop @ ACL), S. 100–114. [https://aclanthology.org/2022.deelio-1.10/](https://aclanthology.org/2022.deelio-1.10/) — die Auswahl der Beispiele ist entscheidend: semantisch ähnliche Beispiele schlagen zufällig gezogene deutlich.
+[^lu]: **Lu, Y., Bartolo, M., Moore, A. et al. (2022):** *Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity.* ACL 2022. arXiv:2104.08786. [https://arxiv.org/abs/2104.08786](https://arxiv.org/abs/2104.08786) — dieselben Beispiele, andere Reihenfolge: Die Ergebnisse schwanken zwischen nahezu bestem Wert und Zufallsniveau. Der Effekt bleibt auch bei großen Modellen bestehen.
+[^yoo]: **Yoo, K. M., Kim, J., Kim, H. J. et al. (2022):** *Ground-Truth Labels Matter: A Deeper Look into Input-Label Demonstrations.* EMNLP 2022. arXiv:2205.12685. [https://arxiv.org/abs/2205.12685](https://arxiv.org/abs/2205.12685) — die Gegenposition zu Min et al.: Je nach Aufgabe und Modell wirken korrekte Labels sehr wohl. Beide Befunde zusammen ergeben das differenzierte Bild im Kapitel.
+[^dong]: **Dong, Q., Li, L., Dai, D. et al. (2024):** *A Survey on In-context Learning.* EMNLP 2024, S. 1107–1128. [https://aclanthology.org/2024.emnlp-main.64/](https://aclanthology.org/2024.emnlp-main.64/) — Überblicksarbeit zum gesamten Feld: Definitionen, Auswahl- und Anordnungsstrategien für Beispiele sowie Erklärungsansätze, warum In-Context Learning überhaupt funktioniert.
+[^wei]: **Wei, J., Wang, X., Schuurmans, D. et al. (2022):** *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* arXiv:2201.11903. [https://arxiv.org/abs/2201.11903](https://arxiv.org/abs/2201.11903) — Few-Shot-Beispiele, die den Lösungsweg mitliefern, verbessern das Ergebnis bei mehrschrittigen Aufgaben erheblich.
+[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) — vereinheitlicht das Vokabular des Feldes; die mitgelieferten Beispiele heißen dort *Exemplars*, das Verfahren *Few-Shot Prompting*.
+[^phoenix]: **Phoenix, J. & Taylor, M. (2024):** *Prompt Engineering for Generative AI: Future-Proof Inputs for Reliable AI Outputs.* O'Reilly, ISBN 978-1-098-15343-4.
+[^berryman]: **Berryman, J. & Ziegler, A. (2024):** *Prompt Engineering for LLMs: The Art and Science of Building Large Language Model-Based Applications.* O'Reilly, ISBN 978-1-098-15615-2.
 [^osterwalder]: **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.
