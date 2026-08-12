@@ -156,7 +156,7 @@ Einschränkungen grenzen den Lösungsraum ein: Umfang, Stil, Tonalität, Sprache
 
 Sag dem Modell **exakt**, wie das Ergebnis aussehen soll – am besten, indem du das Format vormachst:
 
-```title="Format-Vorgabe im Prompt"
+```{.text .ollama title="Ollama Chat"}
 Gib das Ergebnis in genau diesem Format aus:
 
 RISIKO 1: <Name>
@@ -174,7 +174,7 @@ Dieselbe Absicht, zwei Prompts:
 
 === "❌ Der typische Prompt"
 
-    ```
+    ```{.text .ollama title="Ollama Chat"}
     Bewerte meine Geschäftsidee: ein Lieferdienst für Bio-Lebensmittel.
     ```
 
@@ -182,30 +182,32 @@ Dieselbe Absicht, zwei Prompts:
 
 === "✅ Der strukturierte Prompt"
 
-    ```
-    # ROLLE
-    Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der
-    Lebensmittelbranche.
+    ```{.text .ollama title="Ollama Chat"}
+    """
+    ... # ROLLE
+    ...Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der
+    ...Lebensmittelbranche.
 
-    # KONTEXT
-    Ein Zwei-Personen-Startup in Innsbruck plant einen Lieferdienst für
-    regionale Bio-Lebensmittel. Startkapital: 15.000 €. Zielgruppe:
-    berufstätige Familien. Es gibt bereits zwei überregionale Wettbewerber.
+    ...# KONTEXT
+    ...Ein Zwei-Personen-Startup in Innsbruck plant einen Lieferdienst für
+    ...regionale Bio-Lebensmittel. Startkapital: 15.000 €. Zielgruppe:
+    ...berufstätige Familien. Es gibt bereits zwei überregionale Wettbewerber.
 
-    # AUFGABE
-    Nenne die drei größten Risiken, an denen dieses Geschäftsmodell
-    scheitern könnte.
+    ...# AUFGABE
+    ...Nenne die drei größten Risiken, an denen dieses Geschäftsmodell
+    ...scheitern könnte.
 
-    # EINSCHRÄNKUNGEN
-    - Antworte auf Deutsch.
-    - Maximal 2 Sätze pro Risiko.
-    - Erfinde keine Marktzahlen. Fehlt dir eine Information,
-      schreibe [ANNAHME] davor.
+    ...# EINSCHRÄNKUNGEN
+    ...- Antworte auf Deutsch.
+    ...- Maximal 2 Sätze pro Risiko.
+    ...- Erfinde keine Marktzahlen. Fehlt dir eine Information,
+    ...schreibe [ANNAHME] davor.
 
-    # FORMAT
-    RISIKO <n>: <Titel>
-    Warum kritisch: <ein Satz>
-    Gegenmaßnahme: <ein Satz>
+    ...# FORMAT
+    ...RISIKO <n>: <Titel>
+    ...Warum kritisch: <ein Satz>
+    ...Gegenmaßnahme: <ein Satz>
+    ..."""
     ```
 
     **Was zurückkommt:** konkrete, auf diesen Fall zugeschnittene Risiken in einem Format, das du direkt in eine Präsentation kopieren kannst.

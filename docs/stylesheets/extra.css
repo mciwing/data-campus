@@ -228,3 +228,87 @@
 .progress-60plus .progress-bar { --bar-color: #8bc34a; }
 .progress-80plus .progress-bar { --bar-color: #4caf50; }
 .progress-100plus .progress-bar { --bar-color: #009485; }
+/* ===================================================================
+   Nicht kopierbare Inhalte
+
+   Variante 1 - einzelner Code-Block (jede Sprache):
+
+     ```{ .sql .no-copy }
+     SELECT * FROM kunden;
+     ```
+
+     Wichtig: bei dieser Schreibweise muss die Sprache mit Punkt und als
+     erster Eintrag stehen. Fuer Bloecke ohne Sprache `.text` verwenden:
+
+     ```{ .text .no-copy }
+     Ein Prompt zum Abtippen
+     ```
+
+   Variante 2 - beliebiger Bereich (mehrere Bloecke, Tabellen, Text):
+
+     <div class="no-copy" markdown>
+
+     ```
+     ganz ohne Sprachangabe
+     ```
+
+     </div>
+   =================================================================== */
+
+/* Kopier-Icon entfernen. Material prüft selbst per closest(".no-copy") und
+   lässt den Button weg - beide Varianten oben sind damit schon abgedeckt.
+   Die Regel bleibt als Absicherung, falls sich der Klassenname des Buttons
+   mit einem Material-Update ändert (9.7: .md-code__button, früher:
+   .md-clipboard). */
+.no-copy .md-code__button,
+.no-copy .md-clipboard {
+  display: none !important;
+}
+
+/* Markieren des Codes unterbinden */
+.no-copy,
+.no-copy pre,
+.no-copy code {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Zeilennummern-Tabellen (pymdownx.highlight linenums) ebenfalls sperren */
+.no-copy .linenodiv,
+.no-copy .highlighttable {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ===================================================================
+   Chat-/REPL-Bloecke: Prompt-Zeichen anzeigen, aber nicht mitkopieren
+
+     ```{ .text .ollama title="Ollama Chat" }
+     Was ist ein Business Model Canvas?
+     ```
+
+   Angezeigt: >>> Was ist ein Business Model Canvas?
+   Kopiert:       Was ist ein Business Model Canvas?
+
+   Das Zeichen kommt aus dem ::before und steht damit weder in der
+   Textauswahl noch in innerText (= was Material beim Kopieren liest).
+   Fortsetzungszeilen mehrzeiliger Eingaben im Quelltext mit `...` beginnen.
+   =================================================================== */
+
+.md-prompt {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.md-prompt::before {
+  content: ">>> ";
+  color: var(--md-code-hl-comment-color);
+  font-weight: 700;
+}
+
+.md-prompt--cont::before {
+  content: "... ";
+  font-weight: 400;
+}

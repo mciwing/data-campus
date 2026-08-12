@@ -12,11 +12,16 @@ Der Name klingt technischer, als es ist: Ein **Shot** ist schlicht ein *Beispiel
 
 Du beschreibst die Aufgabe – ohne ein einziges Beispiel.
 
+```{.text .ollama title="Ollama Chat"}
+Klassifiziere die folgende Kundenbewertung als positiv, neutral oder negativ.
+...
+...Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
 ```
-Klassifiziere die folgende Kundenbewertung als positiv, neutral
-oder negativ.
 
-Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
+```{.text .no-copy title="Beispielausgabe"}
+Negativ
+Die negative Bewertung deutet darauf hin, dass der Service von Qualität her ablings ist und ein Problem mit dem
+Produkt selbst besteht.
 ```
 
 **Gut für:** Standardaufgaben, die das Modell aus dem Training kennt – übersetzen, zusammenfassen, klassifizieren. Kostet am wenigsten Aufwand und Tokens, ist aber beim Format am unzuverlässigsten.
@@ -27,14 +32,18 @@ Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
 
 Ein einziges Beispiel zeigt Format *und* Erwartungshaltung.
 
-```
+```{.text .ollama title="Ollama Chat"}
 Klassifiziere Kundenbewertungen.
+...
+...Bewertung: "Alles top, gerne wieder!"
+...Kategorie: positiv
+...
+...Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
+...Kategorie:
+```
 
-Bewertung: "Alles top, gerne wieder!"
-Kategorie: positiv
-
-Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
-Kategorie:
+```{.text .no-copy title="Beispielausgabe"}
+negativ
 ```
 
 **Gut für:** wenn das Ergebnis inhaltlich schon stimmt, aber das **Format** wackelt. Ein einziges Musterbeispiel genügt oft.
@@ -45,23 +54,27 @@ Kategorie:
 
 Mehrere Beispiele – idealerweise auch **Grenzfälle**.
 
-```
+```{.text .ollama title="Ollama Chat"}
 Klassifiziere Kundenbewertungen.
+...
+...Bewertung: "Alles top, gerne wieder!"
+...Kategorie: positiv
+...
+...Bewertung: "Ware kam an. Nichts Besonderes."
+...Kategorie: neutral
+...
+...Bewertung: "Zwei Tage zu spät und die Hälfte fehlte."
+...Kategorie: negativ
+...
+...Bewertung: "Super Qualität, aber viel zu teuer."
+...Kategorie: neutral
+...
+...Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
+...Kategorie:
+```
 
-Bewertung: "Alles top, gerne wieder!"
-Kategorie: positiv
-
-Bewertung: "Ware kam an. Nichts Besonderes."
-Kategorie: neutral
-
-Bewertung: "Zwei Tage zu spät und die Hälfte fehlte."
-Kategorie: negativ
-
-Bewertung: "Super Qualität, aber viel zu teuer."
-Kategorie: neutral
-
-Bewertung: "Die Lieferung kam pünktlich, aber das Gemüse war welk."
-Kategorie:
+```{.text .no-copy title="Beispielausgabe"}
+negativ
 ```
 
 **Gut für:** Aufgaben mit **eigenen Regeln**, Grenzfällen oder ungewöhnlichem Format. Am zuverlässigsten – kostet aber die meisten Tokens und Vorbereitungszeit.
@@ -104,6 +117,12 @@ Kategorie:
 
     - **Unausgewogene Beispiele:** Nur positive Beispiele → das Modell klassifiziert alles als positiv. Decke *alle* Kategorien ab.[^zhao]
     - **Uneinheitliches Format:** Wenn deine Beispiele mal `Kategorie:` und mal `Bewertung:` schreiben, kopiert das Modell die Inkonsistenz.
+
+        <div style="text-align: center;">
+            <img src="https://substack-post-media.s3.amazonaws.com/public/images/5b934fac-6ff5-4d85-81b2-490645eadfa7_1082x1285.jpeg" alt="Comic: Ein Roboter bekommt das Streichen eines Zauns vorgemacht und ahmt es exakt nach – inklusive der nur halb gestrichenen Latten." style="max-width: 300px;">
+            <figcaption>Few-Shot heißt Nachahmen: Das Modell übernimmt dein Muster – auch die Unsauberkeiten darin. (Quelle: <a href="https://substack-post-media.s3.amazonaws.com/public/images/5b934fac-6ff5-4d85-81b2-490645eadfa7_1082x1285.jpeg" target="_blank" rel="noopener">Substack</a>)</figcaption>
+        </div>
+
     - **Zu viele Beispiele:** Ab ca. 5–8 Beispielen wird der Zugewinn klein, der Token-Verbrauch aber groß – und bei kleinen Modellen droht das [Kontextfenster](halluzinationen-kontextfenster.md) überzulaufen.
 
 ---

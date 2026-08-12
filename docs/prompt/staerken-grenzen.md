@@ -96,7 +96,7 @@ Lappin[^lappin] betont, dass Transformer weit über klassisches NLP hinaus glän
         <img src="https://forum.rocketbeans.tv/uploads/default/original/4X/e/b/3/eb36af893ac1d883e35a96fcb7dec4aa9a438019.jpeg"
              alt="Foto: In der Ladebuchse eines Smartphones steckt ein großer blauer VGA-Stecker, an dem ein weißes Kabel hängt."
              style="max-width: 300px; margin: 1em 0;">
-        <figcaption>Das Foto, dessen Pointe GPT-4 erklären konnte.</figcaption>
+        <figcaption>Das Foto, dessen Pointe GPT-4 erklären konnte. (Quelle: <a href="https://forum.rocketbeans.tv" target="_blank" rel="noopener">Rocket Beans Forum</a>)</figcaption>
     </div>
 
      Das Modell beschreibt nicht nur Panel für Panel, was zu sehen ist, sondern erkennt **die Pointe**: die Absurdität, einen klobigen Monitorstecker als modernes Handykabel auszugeben[^lappin]. Einen Witz zu *verstehen* galt lange als zutiefst menschlich.

@@ -29,10 +29,10 @@ Während Maschinen Sprache schon länger übersetzen können (Google Translate, 
 Das Herzstück moderner Sprachmodelle heißt **Transformer**. Und nein – damit ist **nicht** das Auto gemeint, das sich in einen Roboter verwandelt. Gemeint ist eine Architektur, die einen Input (Text, mittlerweile auch Bilder oder Audio) in einen Output **transformiert**.
 
 <div style="text-align: center;">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSS1xjfK_kmoyAnf42fLh0VBqbeGG4juVQUlxopxgIIvmvn45euEyIrmno&s=10"
+    <img src="https://preview.redd.it/transformers-v0-as7u39shhiig1.png?auto=webp&s=e209b3f9f93c7272efb4047b3eb160f64b13ec3d"
          alt="Meme: Zwei Personen sagen „I love Transformers“ – die eine denkt an den Roboter Optimus Prime, die andere an die Transformer-Architektur mit Query-, Key- und Value-Matrizen."
          style="max-width: 330px; margin-bottom: 1em;">
-    <figcaption>Dasselbe Wort, zwei sehr verschiedene Vorstellungen.</figcaption>
+    <figcaption>Dasselbe Wort, zwei sehr verschiedene Vorstellungen. (Quelle: <a href="https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Ftransformers-v0-as7u39shhiig1.png%3Fauto%3Dwebp%26s%3De209b3f9f93c7272efb4047b3eb160f64b13ec3d" target="_blank" rel="noopener">Reddit</a>)</figcaption>
 </div>
 
 Populär wurde der Transformer durch ein Paper mit dem wohl coolsten Titel der KI-Geschichte: **„Attention Is All You Need"**[^vaswani]. Acht Google-Forscher legten damit den Grundstein für so ziemlich jeden Chatbot, den du heute kennst.
@@ -70,7 +70,7 @@ Ein Computer kann mit Buchstaben nichts anfangen. Deshalb wird dein Text zuerst 
 
 Ein Beispiel mit dem Tokenizer, den OpenAI nutzt (Python-Bibliothek `tiktoken`):
 
-```python
+```python title="Python"
 import tiktoken as tt
 
 # "cl100k_base" ist das Tokenizer-Modell, das ChatGPT-4 verwendet
@@ -81,7 +81,7 @@ encoded = enc.encode('He said: "Let me explain tokenization to you. It is compar
 print(encoded)
 ```
 
-```bash title="Ausgabe"
+```{.text .no-copy title="Ausgabe"}
 [1548, 1071, 25, 330, 10267, 757, 10552, 4037, 2065, 311, 499, 13, 1102, 374, 7809, 2915, 4228, 1210]
 ```
 
@@ -154,7 +154,7 @@ Das Faszinierende: Mit Embeddings kann man sogar **rechnen**. Das berühmteste B
 
     Solche „Bedeutungsvektoren" wurden u. a. durch das Modell **Word2Vec**[^mikolov] bekannt.
 
-    ```python
+    ```python title="Python"
     import gensim.downloader as api
 
     # Wir laden fertige Wortvektoren – **GloVe**, trainiert auf englischen Wikipedia-Texten
@@ -167,7 +167,7 @@ Das Faszinierende: Mit Embeddings kann man sogar **rechnen**. Das berühmteste B
         print(f"{wort:<12} {aehnlichkeit:.3f}")
     ```
 
-    ```title="Ausgabe"
+    ```{.text .no-copy title="Ausgabe"}
     queen        0.852
     throne       0.766
     prince       0.759

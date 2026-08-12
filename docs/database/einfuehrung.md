@@ -6,6 +6,7 @@ Doch was passiert, wenn wir **große Datenmengen strukturiert organisieren, effi
 
 <div style="text-align: center;">
     <img src="https://i.imgflip.com/64tqdl.png" alt="" style="width:220px; margin-bottom: 1em;">
+    <figcaption>(Quelle: <a href="https://imgflip.com" target="_blank" rel="noopener">imgflip</a>)</figcaption>
 </div>
 
 Hier stoßen einfache Dateisysteme schnell an ihre Grenzen.
@@ -493,4 +494,5 @@ Im nächsten Kapitel lernen wir das **relationale Modell** kennen - wie Daten in
 
 <div style="text-align: center;">
     <img src="https://media.tenor.com/81tG-DO8BcAAAAAM/omg-oh-my-god.gif" alt="" style="width:220px; margin-bottom: 1em;">
+    <figcaption>(Quelle: <a href="https://tenor.com" target="_blank" rel="noopener">Tenor</a>)</figcaption>
 </div>

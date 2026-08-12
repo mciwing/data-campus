@@ -1,7 +1,7 @@
 # Moderne Datenbanksysteme: Architektur & Alternativen
 
 <div style="text-align: center; display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem;">
-    <img src="https://substackcdn.com/image/fetch/$s_!3Es9!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa81088b7-a188-4089-845a-63936e930a71_1632x1076.png" alt="Database choices" style="width:70%; margin-bottom: 1em;">
+    <img src="https://substack-post-media.s3.amazonaws.com/public/images/a81088b7-a188-4089-845a-63936e930a71_1632x1076.png" alt="Database choices" style="width:70%; margin-bottom: 1em;">
     <figcaption style="margin-top: 0.5rem;"><i>"So viele Datenbanken, so wenig Zeit..."</i> <br> Quelle: <a href="https://blog.algomaster.io/p/sql-vs-nosql-7-key-differences">AlgoMaster</a></figcaption>
 </div>
 

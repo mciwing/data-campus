@@ -46,11 +46,11 @@ Folge dort einfach der Anleitung für dein System. Danach läuft Ollama im Hinte
 
 Tippe im Terminal:
 
-```bash
+```title="Terminal"
 ollama --version
 ```
 
-```title="Ausgabe"
+```{.text .no-copy title="Ausgabe"}
 ollama version is 0.6.2
 ```
 
@@ -91,17 +91,17 @@ Ein Modell wird **einmal** heruntergeladen und liegt danach lokal auf deiner Fes
 
 Zum Installieren genügt ein Befehl im Terminal:
 
-```bash
+```title="Terminal"
 ollama pull gemma3:1b
 ```
 
 Prüfe anschließend, ob es angekommen ist:
 
-```bash
+```title="Terminal"
 ollama list
 ```
 
-```title="Ausgabe (Beispiel)"
+```{.text .no-copy title="Ausgabe (Beispiel)"}
 NAME               ID              SIZE      MODIFIED
 gemma3:1b          8648f39daa8f    815 MB    2 minutes ago
 ```
@@ -112,7 +112,7 @@ Das war's – damit haben wir unser erstes lokales LLM installiert.
 
     In einigen Kapiteln gibt es freiwillige Zusatzübungen, die denselben Prompt auf einem **kleineren** und einem **größeren** Modell ausprobieren. Wenn du dort mitmachen möchtest, lade dir diese beiden dazu:
 
-    ```bash
+    ```title="Terminal"
     ollama pull gemma3:270m
     ollama pull gemma3:4b
     ```
@@ -130,11 +130,11 @@ Das war's – damit haben wir unser erstes lokales LLM installiert.
 
 Für einen **einzelnen** Prompt hängst du ihn direkt an den Befehl an:
 
-```bash
+```title="Terminal"
 ollama run gemma3:1b "Nenne drei Risiken eines Bio-Lieferdienstes."
 ```
 
-```title="Beispielausgabe"
+```{.text .no-copy title="Beispielausgabe"}
 Hier sind drei Risiken, die mit dem Betrieb eines Bio-Lieferdienstes verbunden sind:
 
 1.  **Hohe Kosten und Margen:** Bio-Produkte sind oft teurer als konventionelle
@@ -163,12 +163,12 @@ die Rentabilität und Glaubwürdigkeit des Unternehmens beeinträchtigen können
 
 Ohne Prompt am Ende des `ollama` Aufrufs startet ein fortlaufender Chat:
 
-```bash
+```title="Terminal"
 ollama run gemma3:1b
 ```
 
-```title="Terminal"
->>> Was ist ein Business Model Canvas?
+```{.text .ollama title="Ollama Chat"}
+Was ist ein Business Model Canvas?
 ```
 
 Das Modell antwortet – Wort für Wort, genau wie in [Station 5](funktionsweise-llms.md#5-das-nachste-token) beschrieben. Der Chat merkt sich dabei den bisherigen Verlauf (dein **Kontextfenster**).
@@ -186,8 +186,8 @@ Das Modell antwortet – Wort für Wort, genau wie in [Station 5](funktionsweise
 
 Das brauchst du ab Kapitel 2 ständig – gute Prompts sind selten einzeilig. Tippe im Chat drei Anführungszeichen, dann deinen Text über mehrere Zeilen, dann wieder drei Anführungszeichen:
 
-```title="Terminal"
->>> """
+```{.text .ollama title="Ollama Chat"}
+"""
 ... # ROLLE
 ... Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung.
 ...
@@ -246,9 +246,9 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     👉 Für einen fairen Vergleich also beides setzen:
 
-    ```title="Terminal"
-    >>> /set parameter temperature 0
-    >>> /clear
+    ```{.text .ollama title="Ollama Chat"}
+    /set parameter temperature 0
+    /clear
     ```
 
     Auch damit bleibt eine **Restunschärfe**: Fließkomma-Berechnungen auf CPU und GPU sind nicht bit-genau wiederholbar, gelegentlich weicht eine Antwort trotzdem ab. Verlass dich deshalb nie auf einen einzelnen Durchlauf – führe jeden Vergleich **mehrfach** aus und achte auf das **Muster**, nicht auf den Wortlaut.
@@ -261,11 +261,11 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     Stelle demselben Modell zweimal dieselbe Sache – einmal schlampig, einmal präzise.
 
-    ```bash
+    ```title="Terminal"
     ollama run gemma3:1b "Schreib was über mein Café"
     ```
 
-    ```bash
+    ```title="Terminal"
     ollama run gemma3:1b "Schreibe genau 3 Sätze Werbetext für ein veganes Café in Innsbruck. Zielgruppe: Studierende. Ton: locker, ohne Superlative."
     ```
 
@@ -278,12 +278,14 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     ```title="Terminal"
     ollama run gemma3:1b
+    ```
 
-    >>> /set parameter temperature 0.0
-    >>> Erfinde einen Namen für ein veganes Café in Innsbruck.
-    >>> /clear
-    >>> /set parameter temperature 1.5
-    >>> Erfinde einen Namen für ein veganes Café in Innsbruck.
+    ```{.text .ollama title="Ollama Chat"}
+    /set parameter temperature 0.0
+    Erfinde einen Namen für ein veganes Café in Innsbruck.
+    /clear
+    /set parameter temperature 1.5
+    Erfinde einen Namen für ein veganes Café in Innsbruck.
     ```
 
     Auch hier wiede: was fällt dir auf? Probiere auch verschiedene Temperaturen
@@ -292,7 +294,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     Für diese Übung brauchst du die beiden **Vergleichsmodelle** aus Schritt 2. Schicke denselben **schlechten** Prompt an alle drei:
 
-    ```bash
+    ```title="Terminal"
     ollama run gemma3:270m "Schreib was über mein Café"
     ollama run gemma3:1b   "Schreib was über mein Café"
     ollama run gemma3:4b   "Schreib was über mein Café"
