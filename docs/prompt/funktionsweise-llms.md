@@ -1,6 +1,6 @@
 # Funktionsweise von LLMs
 
-Die meisten, die ChatGPT zum ersten Mal benutzen, sind **beeindruckt**. Da sitzt scheinbar jemand am anderen Ende, der mühelos auf fast jede Frage antwortet – in fließendem Deutsch, Englisch oder Klingonisch, mal als Shakespeare, mal als SQL-Profi. Doch hinter dem freundlichen Chatfenster steckt kein kleiner Mensch, sondern **viel Mathematik, noch mehr Daten und ein bisschen Magie** (die wir gleich entzaubern).
+Die meisten, die ChatGPT zum ersten Mal benutzen, sind **beeindruckt**. Da sitzt scheinbar jemand am anderen Ende, der mühelos auf fast jede Frage antwortet - in fließendem Deutsch, Englisch oder Klingonisch, mal als Shakespeare, mal als SQL-Profi. Doch hinter dem freundlichen Chatfenster steckt kein kleiner Mensch, sondern **viel Mathematik, noch mehr Daten und ein bisschen Magie** (die wir gleich entzaubern).
 
 Bevor wir lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform bringt, sollten wir verstehen, **was unter der Haube passiert**. Denn wer weiß, wie ein Motor funktioniert, fährt am Ende auch besser.
 
@@ -8,9 +8,9 @@ Bevor wir lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform 
 
     Dieses Kapitel orientiert sich inhaltlich an **Kapitel 3** des Buchs:
 
-    > Zuckarelli, J. (2025): *Programmieren mit ChatGPT*. Kapitel 3 – „Funktionsweise des (Chat)GPT-Modells und anderer Large Language Models (LLMs)". Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6_3](https://doi.org/10.1007/978-3-662-69433-6_3)
+    > Zuckarelli, J. (2025): *Programmieren mit ChatGPT*. Kapitel 3 - „Funktionsweise des (Chat)GPT-Modells und anderer Large Language Models (LLMs)". Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6_3](https://doi.org/10.1007/978-3-662-69433-6_3)
 
-    Wir betrachten die Technik aus der **Vogelperspektive** – ohne Vorkenntnisse in linearer Algebra. Wer tiefer einsteigen will, findet die mathematischen Details in der Originalquelle.
+    Wir betrachten die Technik aus der **Vogelperspektive** - ohne Vorkenntnisse in linearer Algebra. Wer tiefer einsteigen will, findet die mathematischen Details in der Originalquelle.
 
 ---
 
@@ -18,7 +18,7 @@ Bevor wir lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform 
 
 Wenn man ChatGPT & Co. genauer betrachtet, machen vor allem **drei Fähigkeiten** den beeindruckenden Eindruck aus[^zuckarelli]:
 
-1. natürliche Sprache **zu produzieren** – und das in vielen verschiedenen Sprachen,
+1. natürliche Sprache **zu produzieren** - und das in vielen verschiedenen Sprachen,
 2. den Input des Nutzers sprachlich und inhaltlich **zu verstehen**,
 3. scheinbar **kreativ** tätig zu werden und Dinge zu erschaffen, die es so vorher nicht gab.
 
@@ -26,11 +26,11 @@ Während Maschinen Sprache schon länger übersetzen können (Google Translate, 
 
 ## Das Zauberwort: Transformer
 
-Das Herzstück moderner Sprachmodelle heißt **Transformer**. Und nein – damit ist **nicht** das Auto gemeint, das sich in einen Roboter verwandelt. Gemeint ist eine Architektur, die einen Input (Text, mittlerweile auch Bilder oder Audio) in einen Output **transformiert**.
+Das Herzstück moderner Sprachmodelle heißt **Transformer**. Und nein - damit ist **nicht** das Auto gemeint, das sich in einen Roboter verwandelt. Gemeint ist eine Architektur, die einen Input (Text, mittlerweile auch Bilder oder Audio) in einen Output **transformiert**.
 
 <div style="text-align: center;">
     <img src="https://preview.redd.it/transformers-v0-as7u39shhiig1.png?auto=webp&s=e209b3f9f93c7272efb4047b3eb160f64b13ec3d"
-         alt="Meme: Zwei Personen sagen „I love Transformers“ – die eine denkt an den Roboter Optimus Prime, die andere an die Transformer-Architektur mit Query-, Key- und Value-Matrizen."
+         alt="Meme: Zwei Personen sagen „I love Transformers“ - die eine denkt an den Roboter Optimus Prime, die andere an die Transformer-Architektur mit Query-, Key- und Value-Matrizen."
          style="max-width: 330px; margin-bottom: 1em;">
     <figcaption>Dasselbe Wort, zwei sehr verschiedene Vorstellungen. (Quelle: <a href="https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Ftransformers-v0-as7u39shhiig1.png%3Fauto%3Dwebp%26s%3De209b3f9f93c7272efb4047b3eb160f64b13ec3d" target="_blank" rel="noopener">Reddit</a>)</figcaption>
 </div>
@@ -60,13 +60,13 @@ Wie kommt das Modell aber von „deinem Prompt" zu „dem Verständnis"? Dafür 
 
 ### 1) Tokenization
 
-Ein Computer kann mit Buchstaben nichts anfangen. Deshalb wird dein Text zuerst in kleine Bausteine zerlegt, sogenannte **Tokens**. Ein Token kann ein ganzes Wort sein – oft aber auch nur ein **Wortteil**.
+Ein Computer kann mit Buchstaben nichts anfangen. Deshalb wird dein Text zuerst in kleine Bausteine zerlegt, sogenannte **Tokens**. Ein Token kann ein ganzes Wort sein - oft aber auch nur ein **Wortteil**.
 
 ???+ defi "Token & Vocabulary"
 
     Ein **Token** ist die kleinste Verarbeitungseinheit eines LLM. Jedes Token besitzt eine eindeutige ID im **Vocabulary** (dem „Wortschatz" des Modells).
 
-    Faustregel: Im Englischen entspricht **1 Token ≈ 4 Zeichen ≈ ¾ Wort**. „Tokens" und „Wörter" sind also **nicht** dasselbe – auch wenn wir der Einfachheit halber manchmal von „Wörtern" sprechen.
+    Faustregel: Im Englischen entspricht **1 Token ≈ 4 Zeichen ≈ ¾ Wort**. „Tokens" und „Wörter" sind also **nicht** dasselbe - auch wenn wir der Einfachheit halber manchmal von „Wörtern" sprechen.
 
 Ein Beispiel mit dem Tokenizer, den OpenAI nutzt (Python-Bibliothek `tiktoken`):
 
@@ -92,7 +92,7 @@ Der Satz oben hat **69 Zeichen**, wird aber zu **18 Tokens** zerlegt. Wörter wi
 
     LLMs rechnen **pro Token** ab und haben ein **Token-Limit** (das Kontextfenster). Wer das versteht, formuliert effizienter:
 
-    - Lange, umständliche Prompts kosten mehr Tokens – und damit Geld und Platz im Kontextfenster.
+    - Lange, umständliche Prompts kosten mehr Tokens - und damit Geld und Platz im Kontextfenster.
     - Seltene Begriffe, Tippfehler und Sonderzeichen erzeugen oft **überraschend viele** Tokens.
 
     Du kannst auf [platform.openai.com/tokenizer](https://platform.openai.com/tokenizer) live ausprobieren, wie dein Text zerlegt wird.
@@ -101,7 +101,7 @@ Der Satz oben hat **69 Zeichen**, wird aber zu **18 Tokens** zerlegt. Wörter wi
 
 ### 2) Word Embeddings
 
-Tokens sind erstmal nur IDs – nackte Zahlen ohne Bedeutung. Damit das Modell mit *Bedeutung* arbeiten kann, wird jedes Token in einen **Vektor** aus vielen Zahlen übersetzt: das **Embedding**.
+Tokens sind erstmal nur IDs - nackte Zahlen ohne Bedeutung. Damit das Modell mit *Bedeutung* arbeiten kann, wird jedes Token in einen **Vektor** aus vielen Zahlen übersetzt: das **Embedding**.
 
 Man kann sich jedes Element des Vektors als einen **Aspekt** des Wortes vorstellen. Je höher der Wert, desto stärker ist dieser Aspekt ausgeprägt:
 
@@ -137,10 +137,10 @@ Man kann sich jedes Element des Vektors als einen **Aspekt** des Wortes vorstell
     </tr>
     </tbody>
 </table>
-<figcaption>Stark vereinfachtes Beispiel. Echte Embeddings haben hunderte bis tausende Dimensionen – und sind <em>nicht</em> menschlich interpretierbar.</figcaption>
+<figcaption>Stark vereinfachtes Beispiel. Echte Embeddings haben hunderte bis tausende Dimensionen - und sind <em>nicht</em> menschlich interpretierbar.</figcaption>
 </div>
 
-„Programmierer" und „Entwickler" haben **ähnliche** Vektoren – kein Wunder, sie bedeuten fast dasselbe. „Wald" zeigt in eine ganz andere Richtung.
+„Programmierer" und „Entwickler" haben **ähnliche** Vektoren - kein Wunder, sie bedeuten fast dasselbe. „Wald" zeigt in eine ganz andere Richtung.
 
 Das Faszinierende: Mit Embeddings kann man sogar **rechnen**. Das berühmteste Beispiel:
 
@@ -157,7 +157,7 @@ Das Faszinierende: Mit Embeddings kann man sogar **rechnen**. Das berühmteste B
     ```python title="Python"
     import gensim.downloader as api
 
-    # Wir laden fertige Wortvektoren – **GloVe**, trainiert auf englischen Wikipedia-Texten
+    # Wir laden fertige Wortvektoren - **GloVe**, trainiert auf englischen Wikipedia-Texten
     modell = api.load("glove-wiki-gigaword-50") 
 
     # König - Mann + Frau = ?
@@ -173,9 +173,9 @@ Das Faszinierende: Mit Embeddings kann man sogar **rechnen**. Das berühmteste B
     prince       0.759
     ```
 
-    **`queen` steht an erster Stelle** – herausgerechnet aus purer Vektor-Arithmetik, ohne dass dem Modell jemals jemand erklärt hätte, was ein König ist.
+    **`queen` steht an erster Stelle** - herausgerechnet aus purer Vektor-Arithmetik, ohne dass dem Modell jemals jemand erklärt hätte, was ein König ist.
 
-    Das geladene Modell wurde auf **englischen** Wikipedia-Texten trainiert und kennt nur englische Wörter. Für deutsche Wörter bräuchtest du ein deutsches Modell – die sind allerdings deutlich größer (mehrere GB).
+    Das geladene Modell wurde auf **englischen** Wikipedia-Texten trainiert und kennt nur englische Wörter. Für deutsche Wörter bräuchtest du ein deutsches Modell - die sind allerdings deutlich größer (mehrere GB).
 
 
 ---
@@ -188,7 +188,7 @@ Bedeutung allein reicht nicht. Vergleiche:
 
 > „Das Eichhörnchen fütterte Hans." 🐿️➡️🧑
 
-Gleiche Wörter, **völlig andere Bedeutung** – nur die Reihenfolge ist anders (und in einem Fall ist Hans in Schwierigkeiten). Anders als ältere Ansätze (RNNs) verarbeitet der Transformer **alle Wörter gleichzeitig**. Das ist schnell, hat aber einen Haken: Ohne Zusatzinfo wüsste das Modell gar nicht mehr, **welches Wort wo stand**.
+Gleiche Wörter, **völlig andere Bedeutung** - nur die Reihenfolge ist anders (und in einem Fall ist Hans in Schwierigkeiten). Anders als ältere Ansätze (RNNs) verarbeitet der Transformer **alle Wörter gleichzeitig**. Das ist schnell, hat aber einen Haken: Ohne Zusatzinfo wüsste das Modell gar nicht mehr, **welches Wort wo stand**.
 
 Die Lösung heißt **Positional Encoding**: Die Position eines Wortes wird über (Sinus-/Kosinus-)Werte direkt in seinen Embedding-Vektor **hineingerechnet**. So tragen die Vektoren ab jetzt zwei Informationen: *Was* bedeutet das Wort **und** *wo* steht es im Satz.
 
@@ -205,7 +205,7 @@ flowchart LR
 ??? info "Für alle NERDS"
 
     Für alle, die es gerne etwas genauer wissen wollen gibt es hier eine kleine Demonstration.
-    Anders als die Wortvektoren muss hier **nichts** heruntergeladen werden – Positional Encoding ist eine reine Formel. Diese hier, aus dem „Attention Is All You Need"-Paper[^vaswani]:
+    Anders als die Wortvektoren muss hier **nichts** heruntergeladen werden - Positional Encoding ist eine reine Formel. Diese hier, aus dem „Attention Is All You Need"-Paper[^vaswani]:
 
     ???+ defi "Die drei Symbole in der Formel"
 
@@ -214,19 +214,19 @@ flowchart LR
         | Symbol | Bedeutung |
         |---|---|
         | $pos$ | **Position** des Wortes im Satz: 0, 1, 2, 3 … |
-        | $d$ | **Länge des Vektors** – wie viele Zahlen ein Token beschreiben. Im Paper heißt sie `d_model`, im Code unten genauso. |
+        | $d$ | **Länge des Vektors** - wie viele Zahlen ein Token beschreiben. Im Paper heißt sie `d_model`, im Code unten genauso. |
         | $i$ | **Stelle innerhalb** des Vektors: 0, 1, 2 … bis $d$ |
 
         **Warum $d$ entscheidend ist:** Der Positionsvektor wird auf das Wort-Embedding **addiert** (siehe Diagramm oben). Beide müssen deshalb **exakt gleich lang** sein. Ein 8-stelliger Positionsvektor passt nur zu einem 8-stelligen Wortvektor.
 
         Typische Werte für $d$:
 
-        - **8** und **64** in unseren Beispielen unten – klein genug zum Anschauen
+        - **8** und **64** in unseren Beispielen unten - klein genug zum Anschauen
         - **50** beim GloVe-Modell aus dem vorigen Abschnitt (`glove-wiki-gigaword-50`)
         - **512** im ursprünglichen Transformer-Paper[^vaswani] (Basismodell; die größere Variante nutzt 1.024)
         - **12.288** bei GPT-3[^brown]
 
-        **Und wozu $i$?** Es steuert, wie schnell die Sinuskurve schwingt: vorne im Vektor schnell, nach hinten immer langsamer. Genau deshalb stehen in der Ausgabe gleich unten hinten fast überall `0.` und `1.` – dort hat sich die Kurve bei so kleinen Positionen noch kaum bewegt.
+        **Und wozu $i$?** Es steuert, wie schnell die Sinuskurve schwingt: vorne im Vektor schnell, nach hinten immer langsamer. Genau deshalb stehen in der Ausgabe gleich unten hinten fast überall `0.` und `1.` - dort hat sich die Kurve bei so kleinen Positionen noch kaum bewegt.
 
     In Python sind das fünf Zeilen:
 
@@ -298,27 +298,27 @@ Das Lieblingsbeispiel dafür ist das Wort **„Bank"**:
 
 </div>
 
-Aus dem Wort „Bank" allein lässt sich das nicht erkennen – nur aus dem **Kontext**. Genau das leistet die **(Self-)Attention**: Sie passt den Embedding-Vektor jedes Wortes ein wenig an, indem sie ihn in Richtung der **relevanten Nachbarwörter** verschiebt.
+Aus dem Wort „Bank" allein lässt sich das nicht erkennen - nur aus dem **Kontext**. Genau das leistet die **(Self-)Attention**: Sie passt den Embedding-Vektor jedes Wortes ein wenig an, indem sie ihn in Richtung der **relevanten Nachbarwörter** verschiebt.
 
 ???+ defi "Self-Attention (vereinfacht)"
 
     Jedes Wort „schaut" auf alle anderen Wörter im Satz und fragt: *Wie wichtig bist du für meine Bedeutung?* Anschließend wird die eigene Bedeutung als **gewichteter Mittelwert** der anderen Wörter angepasst.
 
-    Technisch geschieht das über drei Matrizen – **Query (Q)**, **Key (K)** und **Value (V)** – und eine **Softmax**-Funktion, die die Gewichte normiert (sodass sie sich zu 1 addieren). In der Praxis passiert das mehrfach parallel und wird zur **Multihead Attention** zusammengesetzt.
+    Technisch geschieht das über drei Matrizen - **Query (Q)**, **Key (K)** und **Value (V)** - und eine **Softmax**-Funktion, die die Gewichte normiert (sodass sie sich zu 1 addieren). In der Praxis passiert das mehrfach parallel und wird zur **Multihead Attention** zusammengesetzt.
 
 Du musst die Matrizenrechnung nicht auswendig können. Wichtig ist die Intuition:
 
 !!! quote "Merksatz"
 
-    **Ein Wort bekommt seine endgültige Bedeutung erst durch seine Nachbarn.** Genau deshalb ist *Kontext* im Prompt so mächtig – mehr dazu im Kapitel [Anatomie eines guten Prompts](anatomie.md).
+    **Ein Wort bekommt seine endgültige Bedeutung erst durch seine Nachbarn.** Genau deshalb ist *Kontext* im Prompt so mächtig - mehr dazu im Kapitel [Anatomie eines guten Prompts](anatomie.md).
 
 ---
 
 ### 5) Das nächste Token
 
-Jetzt versteht das Modell deinen Input. Aber wie entsteht die **Antwort**? Überraschend simpel: Das Modell sagt immer nur das **nächste Token** voraus – und zwar das mit der **höchsten Wahrscheinlichkeit**.
+Jetzt versteht das Modell deinen Input. Aber wie entsteht die **Antwort**? Überraschend simpel: Das Modell sagt immer nur das **nächste Token** voraus - und zwar das mit der **höchsten Wahrscheinlichkeit**.
 
-Dann hängt es dieses Token an den bisherigen Text an, schaut erneut, sagt das nächste Token voraus – und so weiter. Wie eine sehr, sehr gute Autovervollständigung. 📱
+Dann hängt es dieses Token an den bisherigen Text an, schaut erneut, sagt das nächste Token voraus - und so weiter. Wie eine sehr, sehr gute Autovervollständigung. 📱
 
 ```mermaid
 flowchart LR
@@ -331,17 +331,17 @@ flowchart LR
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
 ```
 
-Das Spiel läuft so lange, bis ein spezielles **Stop-Token** erzeugt wird – das Signal: „Antwort fertig."
+Das Spiel läuft so lange, bis ein spezielles **Stop-Token** erzeugt wird - das Signal: „Antwort fertig."
 
 ???+ question "Quiz: Halluzinationen vorhergesagt 🔮"
 
-    Wenn ein LLM einfach nur das **wahrscheinlichste nächste Token** wählt – warum „erfindet" es dann manchmal selbstbewusst falsche Fakten (sogenannte *Halluzinationen*)?
+    Wenn ein LLM einfach nur das **wahrscheinlichste nächste Token** wählt - warum „erfindet" es dann manchmal selbstbewusst falsche Fakten (sogenannte *Halluzinationen*)?
 
     ??? success "Antwort anzeigen"
 
-        Weil das Modell auf **sprachliche Wahrscheinlichkeit** optimiert ist, nicht auf **Wahrheit**. Es erzeugt das, was *plausibel klingt* – nicht das, was *nachweislich stimmt*. Eine flüssig formulierte Falschaussage ist für das Modell „wahrscheinlich", auch wenn sie sachlich Unsinn ist.
+        Weil das Modell auf **sprachliche Wahrscheinlichkeit** optimiert ist, nicht auf **Wahrheit**. Es erzeugt das, was *plausibel klingt* - nicht das, was *nachweislich stimmt*. Eine flüssig formulierte Falschaussage ist für das Modell „wahrscheinlich", auch wenn sie sachlich Unsinn ist.
 
-        Genau deshalb ist **Verifikation** ein eigenes Thema – siehe Kapitel [Evaluation von KI-Ergebnissen](evaluation.md).
+        Genau deshalb ist **Verifikation** ein eigenes Thema - siehe Kapitel [Evaluation von KI-Ergebnissen](evaluation.md).
 
 ---
 
@@ -371,13 +371,13 @@ flowchart TB
 
     Das Modell liest **enorme Mengen** an Text aus dem Internet (z. B. Wikipedia und den gefilterten *Common Crawl Corpus*) und lernt nur eine Aufgabe: **„Was ist das nächste Wort?"**
 
-    Dabei „lernt" es sein Wissen – nicht explizit abgespeichert wie in einer Datenbank, sondern **implizit** in den Parametern. Genau diese Phase steckt im „P" von **GPT** (siehe Kasten unten). Sie dauert **Monate** und verschlingt gigantische Mengen an Rechenleistung und Energie.
+    Dabei „lernt" es sein Wissen - nicht explizit abgespeichert wie in einer Datenbank, sondern **implizit** in den Parametern. Genau diese Phase steckt im „P" von **GPT** (siehe Kasten unten). Sie dauert **Monate** und verschlingt gigantische Mengen an Rechenleistung und Energie.
 
 === "2. Supervised Fine-Tuning (SFT)"
 
     Ein roh trainiertes Modell folgt Anweisungen oft schlecht (es antwortet auf „Was ist die Hauptstadt von Portugal?" gern mit einer Gegenfrage, weil so etwas in Quizzen häufig vorkommt 🙃).
 
-    Deshalb wird es mit **tausenden Prompt-Antwort-Paaren** nachtrainiert, die menschliche Trainer erstellt haben. So entstand z. B. **InstructGPT** – ein Modell, das wirklich *tut, was man sagt*.
+    Deshalb wird es mit **tausenden Prompt-Antwort-Paaren** nachtrainiert, die menschliche Trainer erstellt haben. So entstand z. B. **InstructGPT** - ein Modell, das wirklich *tut, was man sagt*.
 
 === "3. RLHF"
 
@@ -387,13 +387,13 @@ flowchart TB
 
 ???+ tip "Wofür „GPT" eigentlich steht"
 
-    Der bekannteste Modellname der Welt ist eine schlichte Beschreibung der Technik – jeder Buchstabe steht für etwas, das du in diesem Kapitel bereits kennengelernt hast:
+    Der bekannteste Modellname der Welt ist eine schlichte Beschreibung der Technik - jeder Buchstabe steht für etwas, das du in diesem Kapitel bereits kennengelernt hast:
 
     | Buchstabe | Steht für | Bedeutet |
     |---|---|---|
-    | **G** | *Generative* | Es **erzeugt** neuen Text, statt nur vorhandenen zu suchen oder zu sortieren – Token für Token, wie in Station 5 beschrieben. |
+    | **G** | *Generative* | Es **erzeugt** neuen Text, statt nur vorhandenen zu suchen oder zu sortieren - Token für Token, wie in Station 5 beschrieben. |
     | **P** | *Pre-trained* | Es wurde **vorab** trainiert (Phase 1 oben) und bringt sein Wissen schon mit. Du musst es nicht selbst anlernen. |
-    | **T** | *Transformer* | Die **Architektur** aus diesem Kapitel – mit Tokenization, Embeddings, Positional Encoding und Attention. |
+    | **T** | *Transformer* | Die **Architektur** aus diesem Kapitel - mit Tokenization, Embeddings, Positional Encoding und Attention. |
 
     Zusammengesetzt: ein **vortrainierter Transformer, der Text erzeugt**. Kein Zauberwort, sondern eine Inhaltsangabe. 🪄
 
@@ -423,10 +423,10 @@ flowchart LR
 
     ??? success "Lösungsskizze"
 
-        1. Ein Token ist die kleinste Verarbeitungseinheit – oft nur ein **Wortteil**. Ein Wort kann aus mehreren Tokens bestehen.
+        1. Ein Token ist die kleinste Verarbeitungseinheit - oft nur ein **Wortteil**. Ein Wort kann aus mehreren Tokens bestehen.
         2. Weil der Transformer alle Wörter **gleichzeitig** verarbeitet und sonst die **Reihenfolge** verlieren würde.
-        3. Attention passt die Bedeutung von „Bank" an die Nachbarwörter an – *Geld* → Finanzinstitut, *Park* → Sitzmöbel.
-        4. Weil es darauf trainiert wurde, das **wahrscheinlichste nächste Token** zu erzeugen – sprachlich plausibel ≠ inhaltlich korrekt.
+        3. Attention passt die Bedeutung von „Bank" an die Nachbarwörter an - *Geld* → Finanzinstitut, *Park* → Sitzmöbel.
+        4. Weil es darauf trainiert wurde, das **wahrscheinlichste nächste Token** zu erzeugen - sprachlich plausibel ≠ inhaltlich korrekt.
 
 ---
 
@@ -434,8 +434,8 @@ flowchart LR
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*, Kapitel 3 – „Funktionsweise des (Chat)GPT-Modells und anderer Large Language Models (LLMs)". Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6_3](https://doi.org/10.1007/978-3-662-69433-6_3)
+[^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*, Kapitel 3 - „Funktionsweise des (Chat)GPT-Modells und anderer Large Language Models (LLMs)". Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6_3](https://doi.org/10.1007/978-3-662-69433-6_3)
 [^vaswani]: **Vaswani, A. et al. (2017):** *Attention Is All You Need.* arXiv:1706.03762. [https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
 [^mikolov]: **Mikolov, T. et al. (2013):** *Efficient Estimation of Word Representations in Vector Space.* arXiv:1301.3781. [https://arxiv.org/abs/1301.3781](https://arxiv.org/abs/1301.3781)
 [^ouyang]: **Ouyang, L. et al. (2022):** *Training language models to follow instructions with human feedback.* arXiv:2203.02155. [https://arxiv.org/abs/2203.02155](https://arxiv.org/abs/2203.02155)
-[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) — Tabelle 2.1 listet die Architekturdaten aller GPT-3-Varianten, u. a. `d_model` = 12.288 für das 175-Milliarden-Modell.
+[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) - Tabelle 2.1 listet die Architekturdaten aller GPT-3-Varianten, u. a. `d_model` = 12.288 für das 175-Milliarden-Modell.

@@ -6,7 +6,6 @@
     border-color: rgb(132, 132, 132);
     background-color: rgba(132, 132, 132, 0.1);
   }
-  .md-typeset .code > .admonition-title,
   .md-typeset .code > .admonition-title::before,
   .md-typeset .code > summary::before {
     background-color: rgb(132, 132, 132);
@@ -24,7 +23,6 @@
   .md-typeset details.defi {
     background-color: rgba(232, 127, 43, 0.1);
   }
-  .md-typeset .defi > .admonition-title,
   .md-typeset .defi > .admonition-title::before,
   .md-typeset .defi > summary::before {
     background-color: rgb(232, 127, 43);
@@ -44,7 +42,6 @@
     border-color: rgb(132, 132, 132);
     background-color: rgba(132, 132, 132, 0.1);
   }
-  .md-typeset .process > .admonition-title,
   .md-typeset .process > .admonition-title::before,
   .md-typeset .process > summary::before {
     background-color: rgb(132, 132, 132);
@@ -64,7 +61,6 @@
     border-color: rgb(38, 126, 38);
     background-color: rgba(38, 126, 38, 0.1);
   }
-  .md-typeset .adv > .admonition-title,
   .md-typeset .adv > .admonition-title::before,
   .md-typeset .adv > summary::before {
     background-color: rgb(38, 126, 38);
@@ -83,7 +79,6 @@
     border-color: rgb(255, 0, 0);
     background-color: rgba(255, 0, 0, 0.1);
   }
-  .md-typeset .disadv > .admonition-title,
   .md-typeset .disadv > .admonition-title::before,
   .md-typeset .disadv > summary::before {
     background-color: rgb(255, 0, 0);

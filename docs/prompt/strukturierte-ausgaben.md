@@ -1,8 +1,8 @@
 # Strukturierte Ausgaben
 
-Wer Ergebnisse weiterverarbeiten will, braucht **vorhersagbare Formate**. LLMs können ihre Antworten gezielt strukturieren – als Tabelle, JSON, Markdown oder nach einer Vorlage.
+Wer Ergebnisse weiterverarbeiten will, braucht **vorhersagbare Formate**. LLMs können ihre Antworten gezielt strukturieren - als Tabelle, JSON, Markdown oder nach einer Vorlage.
 
-Solange du die Antwort selbst liest, ist Fließtext in Ordnung. Sobald aber ein **Programm** die Antwort weiterverarbeitet – eine Tabelle füllt, eine Datenbank beschreibt, eine Website baut – wird Fließtext zum Problem. Dann brauchst du Struktur.
+Solange du die Antwort selbst liest, ist Fließtext in Ordnung. Sobald aber ein **Programm** die Antwort weiterverarbeitet - eine Tabelle füllt, eine Datenbank beschreibt, eine Website baut - wird Fließtext zum Problem. Dann brauchst du Struktur.
 
 ---
 
@@ -10,13 +10,13 @@ Solange du die Antwort selbst liest, ist Fließtext in Ordnung. Sobald aber ein 
 
 !!! quote "Merksatz"
 
-    Ein Format ist nicht nur eine Darstellungsform – es ist ein **Denkraster**. Wer neun Felder eines Canvas vorgibt, zwingt das Modell, an alle neun zu denken.
+    Ein Format ist nicht nur eine Darstellungsform - es ist ein **Denkraster**. Wer neun Felder eines Canvas vorgibt, zwingt das Modell, an alle neun zu denken.
 
 Ein vorgegebenes Format bewirkt gleich dreierlei:
 
-1. **Vollständigkeit** – leere Felder fallen sofort auf.
-2. **Vergleichbarkeit** – zwei Antworten lassen sich nebeneinanderlegen.
-3. **Weiterverarbeitbarkeit** – Python kann das Ergebnis direkt einlesen.
+1. **Vollständigkeit** - leere Felder fallen sofort auf.
+2. **Vergleichbarkeit** - zwei Antworten lassen sich nebeneinanderlegen.
+3. **Weiterverarbeitbarkeit** - Python kann das Ergebnis direkt einlesen.
 
 ---
 
@@ -53,7 +53,7 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 === ":material-language-markdown: Markdown"
 
-    **Wofür:** Dokumentation, Berichte, Website-Inhalte – Text mit Gliederung.
+    **Wofür:** Dokumentation, Berichte, Website-Inhalte - Text mit Gliederung.
 
     ```{.text .ollama title="Ollama Chat"}
     Gib das Ergebnis als Markdown aus:
@@ -84,11 +84,11 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 !!! danger "Der Preis der Struktur ⚖️"
 
-    Struktur ist nicht gratis. Tam et al.[^tam] haben gemessen, was passiert, wenn man Modelle zu striktem JSON zwingt: Auf **Denkaufgaben** fiel die Leistung teilweise deutlich ab – je enger das Format, desto stärker der Einbruch.
+    Struktur ist nicht gratis. Tam et al.[^tam] haben gemessen, was passiert, wenn man Modelle zu striktem JSON zwingt: Auf **Denkaufgaben** fiel die Leistung teilweise deutlich ab - je enger das Format, desto stärker der Einbruch.
 
     Die Erklärung ist einleuchtend: Beim freien Antworten kann ein Modell „laut mitdenken" und sich über Zwischenschritte zur Lösung vorarbeiten. Ein festes Schema erzwingt die Antwort **sofort**, ohne Umweg.
 
-    👉 Praktische Regel: **Erst denken lassen, dann formatieren.** Nutze zwei Schritte ([Prompt Chaining](chaining.md)) – Schritt 1 analysiert frei, Schritt 2 gießt das Ergebnis in JSON. Das ist zuverlässiger als beides in einem Prompt zu verlangen.
+    👉 Praktische Regel: **Erst denken lassen, dann formatieren.** Nutze zwei Schritte ([Prompt Chaining](chaining.md)) - Schritt 1 analysiert frei, Schritt 2 gießt das Ergebnis in JSON. Das ist zuverlässiger als beides in einem Prompt zu verlangen.
 
 ???+ tip "Die Format-Rangfolge für kleine Modelle"
 
@@ -102,7 +102,7 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 ## Der Ollama JSON-Modus
 
-Ollama kann das Modell technisch dazu **zwingen**, gültiges JSON zu erzeugen – mit der Option `--format json`:
+Ollama kann das Modell technisch dazu **zwingen**, gültiges JSON zu erzeugen - mit der Option `--format json`:
 
 ```title="Terminal"
 ollama run --format json gemma3:1b "Nenne 3 Risiken für einen Bio-Lieferdienst. Antworte als JSON mit dem Schlüssel 'risiken', jeder Eintrag mit 'titel' und 'schwere' (hoch, mittel oder niedrig)."
@@ -122,9 +122,9 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
 !!! warning "Gültig ≠ richtig"
 
-    `--format json` garantiert nur die **Syntax**, nicht das **Schema**. Du bekommst garantiert gültiges JSON – aber vielleicht so:
+    `--format json` garantiert nur die **Syntax**, nicht das **Schema**. Du bekommst garantiert gültiges JSON - aber vielleicht so:
 
-    ```title="Ebenfalls gültiges JSON – aber unbrauchbar"
+    ```title="Ebenfalls gültiges JSON - aber unbrauchbar"
     {
       "risks": [
         {"name": "Kühlkette", "severity": "sehr hoch"}
@@ -134,17 +134,17 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
     Englische Schlüssel, andere Feldnamen, ein Wert außerhalb der drei erlaubten. Syntaktisch einwandfrei, für die Weiterverarbeitung wertlos.
 
-    👉 Beschreibe das Schema trotzdem **im Prompt** – und prüfe die Ausgabe.
+    👉 Beschreibe das Schema trotzdem **im Prompt** - und prüfe die Ausgabe.
 
 ---
 
 ## 🔬 Ollama-Lab
 
-Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren - hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
 !!! lab "Übung 1: Wie zuverlässig ist JSON?"
 
-    Lass dir drei Risiken deiner Geschäftsidee als JSON ausgeben – Schlüssel `risiken`, je Eintrag `titel` und `schwere`.
+    Lass dir drei Risiken deiner Geschäftsidee als JSON ausgeben - Schlüssel `risiken`, je Eintrag `titel` und `schwere`.
 
     Führe das **fünfmal ohne** und **fünfmal mit** `--format json` aus.
 
@@ -152,11 +152,11 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 2: Vorlage schlägt JSON"
 
-    Baue für deine Idee eine **Vorlage** im Stil `SCHLÜSSEL: Wert` – etwa PRODUKT, ZIELGRUPPE, NUTZEN, PREIS, RISIKO.
+    Baue für deine Idee eine **Vorlage** im Stil `SCHLÜSSEL: Wert` - etwa PRODUKT, ZIELGRUPPE, NUTZEN, PREIS, RISIKO.
 
     Fünfmal ausführen, Trefferquote mit Übung 1 vergleichen. Danach dasselbe auf `gemma3:270m`.
 
-    **Die Frage:** Was überlebt beim winzigsten Modell – JSON oder Vorlage?
+    **Die Frage:** Was überlebt beim winzigsten Modell - JSON oder Vorlage?
 
 !!! lab "Übung 3: Der Reparatur-Prompt"
 
@@ -164,7 +164,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     ```{.text .ollama title="Ollama Chat"}
     Deine Antwort enthielt einleitenden Text.
-    ...Gib das JSON erneut aus – ohne jeden Text davor oder danach.
+    ...Gib das JSON erneut aus - ohne jeden Text davor oder danach.
     ```
 
     **Probiere aus:** Wie oft brauchst du diese Korrekturrunde? Und reicht eine, oder musst du nachfassen?
@@ -211,28 +211,15 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ❌ [sehr hoch] Preisdruck durch Supermärkte
     ```
 
-    Beachte den dritten Eintrag: Das JSON ist **syntaktisch gültig**, aber `"sehr hoch"` steht nicht in der erlaubten Menge. Genau deshalb reicht `format="json"` allein nicht – die Schema-Prüfung musst du selbst machen.
+    Beachte den dritten Eintrag: Das JSON ist **syntaktisch gültig**, aber `"sehr hoch"` steht nicht in der erlaubten Menge. Genau deshalb reicht `format="json"` allein nicht - die Schema-Prüfung musst du selbst machen.
 
 ---
 
-???+ question "Selbsttest"
-
-    1. Welches Format ist bei sehr kleinen Modellen am robustesten – und warum?
-    2. Was garantiert `format="json"` in Ollama, und was nicht?
-    3. Nenne zwei Gründe, warum ein vorgegebenes Format die inhaltliche Qualität verbessert.
-
-    ??? success "Lösungsskizze"
-
-        1. Die **Vorlage** (`SCHLÜSSEL: Wert`). Sie verlangt keine geschachtelte Struktur, keine Klammern und keine korrekte Kommasetzung – das Modell muss nur Zeilen fortsetzen.
-        2. Garantiert ist die **Syntax** (gültiges JSON). Nicht garantiert ist das **Schema**: Schlüsselnamen, Datentypen und erlaubte Werte musst du selbst prüfen.
-        3. (a) Es erzwingt **Vollständigkeit** – leere Felder fallen auf. (b) Es macht Antworten **vergleichbar**, weil dieselben Kategorien immer an derselben Stelle stehen.
-
----
 
 ## Quellen
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^willard]: **Willard, B. T. & Louf, R. (2023):** *Efficient Guided Generation for Large Language Models.* arXiv:2307.09702. [https://arxiv.org/abs/2307.09702](https://arxiv.org/abs/2307.09702) — beschreibt das Verfahren hinter `--format json`: Die Ausgabe wird über einen endlichen Automaten geführt, der ungültige Tokens gar nicht erst zur Auswahl zulässt. Deshalb ist gültige Syntax garantiert – und nur die Syntax.
-[^tam]: **Tam, Z. R., Wu, C.-K., Tsai, Y.-L. et al. (2024):** *Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models.* arXiv:2408.02442. [https://arxiv.org/abs/2408.02442](https://arxiv.org/abs/2408.02442) — wichtiger Gegenbefund: Strenge Formatvorgaben können die **Denkleistung senken**. Siehe den Kasten „Der Preis der Struktur" oben.
+[^willard]: **Willard, B. T. & Louf, R. (2023):** *Efficient Guided Generation for Large Language Models.* arXiv:2307.09702. [https://arxiv.org/abs/2307.09702](https://arxiv.org/abs/2307.09702) - beschreibt das Verfahren hinter `--format json`: Die Ausgabe wird über einen endlichen Automaten geführt, der ungültige Tokens gar nicht erst zur Auswahl zulässt. Deshalb ist gültige Syntax garantiert - und nur die Syntax.
+[^tam]: **Tam, Z. R., Wu, C.-K., Tsai, Y.-L. et al. (2024):** *Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models.* arXiv:2408.02442. [https://arxiv.org/abs/2408.02442](https://arxiv.org/abs/2408.02442) - wichtiger Gegenbefund: Strenge Formatvorgaben können die **Denkleistung senken**. Siehe den Kasten „Der Preis der Struktur" oben.
 [^osterwalder]: **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.

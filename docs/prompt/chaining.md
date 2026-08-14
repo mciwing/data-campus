@@ -1,6 +1,6 @@
 # Prompt Chaining
 
-Komplexe Aufgaben lassen sich selten in einem einzigen Prompt lösen. Beim **Prompt Chaining** wird eine Aufgabe in **mehrere aufeinander aufbauende Schritte** zerlegt – das Ergebnis des einen Prompts wird zur Eingabe des nächsten.
+Komplexe Aufgaben lassen sich selten in einem einzigen Prompt lösen. Beim **Prompt Chaining** wird eine Aufgabe in **mehrere aufeinander aufbauende Schritte** zerlegt - das Ergebnis des einen Prompts wird zur Eingabe des nächsten.
 
 Das ist dieselbe Idee wie beim Programmieren: Statt einer Funktion mit 300 Zeilen schreibst du fünf kleine, die du einzeln testen kannst.
 
@@ -14,26 +14,28 @@ Das ist dieselbe Idee wie beim Programmieren: Statt einer Funktion mit 300 Zeile
 
 Bei einem großen Modell fällt das kaum auf. Bei `gemma3:1b` sofort:
 
-=== "❌ Alles auf einmal"
+<div class="grid" markdown>
 
-    ```title="monolith.txt"
-    Analysiere meine Geschäftsidee (Bio-Lieferdienst in Innsbruck),
-    erstelle eine Marktanalyse, mache eine SWOT-Analyse und leite daraus
-    drei konkrete Verbesserungsvorschläge ab.
+!!! disadv "Alles auf einmal"
+
+    ```{.text .no-copy}
+    Analysiere meine Geschäftsidee (Bio-Lieferdienst in Innsbruck), erstelle eine Marktanalyse, mache eine SWOT-Analyse und leite daraus drei konkrete Verbesserungsvorschläge ab.
     ```
 
     **Ergebnis:** Alle vier Teile werden angerissen, keiner ausgeführt. Meist bricht das Modell nach der Marktanalyse ab oder wiederholt sich.
 
-=== "✅ Als Kette"
+!!! adv "Als Kette"
 
-    ```title="kette.txt"
+    ```{.text .no-copy}
     Schritt 1 → Idee präzise beschreiben
     Schritt 2 → Marktanalyse (nutzt Ergebnis 1)
     Schritt 3 → SWOT (nutzt Ergebnis 1 + 2)
     Schritt 4 → Verbesserungen (nutzt Ergebnis 3)
     ```
 
-    **Ergebnis:** Jeder Schritt bekommt die volle Aufmerksamkeit – und du kannst nach jedem Schritt korrigieren.
+    **Ergebnis:** Jeder Schritt bekommt die volle Aufmerksamkeit - und du kannst nach jedem Schritt korrigieren.
+
+</div>
 
 ---
 
@@ -54,60 +56,27 @@ flowchart LR
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
 ```
 
-Die gestrichelten Linien zeigen: Manche Schritte brauchen **mehrere** Vorergebnisse.
+Der Ablauf beim Prompt Chaining ist nicht anders, als du es vermutlich schon häufig machst. Du beginnst mit einer Idee und hättest gerne ein fertiges Ergebnis. Dazwischen liegen mehrere Schritte (hier vier), und jeder davon ist ein **eigener Prompt** in einem frisch geleerten Chat. Die durchgezogenen Pfeile bilden die eigentliche Kette - was ein Schritt ausgibt, fügst du im nächsten wieder ein. Die gestrichelten Pfeile zeigen, dass eine Kette deshalb nicht streng linear sein muss: Schritt 3 braucht neben der Marktanalyse auch die präzisierte Beschreibung aus Schritt 1, und Schritt 4 stützt die Verbesserungsvorschläge nicht nur auf die SWOT, sondern zusätzlich auf die Marktzahlen aus Schritt 2. Jeder Schritt holt sich also genau die Vorergebnisse, die er wirklich braucht - **manchmal nur das letzte, manchmal zwei.**
 
 ---
 
 ## Vier Vorteile einer Kette
 
-???+ adv "Warum sich der Mehraufwand lohnt"
+1. **Kontrollpunkte** - Nach jedem Schritt hältst du ein Zwischenergebnis in der Hand, das du lesen, prüfen und nachbessern kannst, bevor es weiterwandert. Beim Monolith bleibt dir nur die Wahl, die ganze Antwort zu akzeptieren oder komplett zu verwerfen. Wu et al. haben genau das untersucht: Chaining verbesserte nicht nur die Qualität der Ergebnisse, sondern vor allem, wie gut die Teilnehmenden nachvollziehen und eingreifen konnten.[^aichains]
 
-    1. **Kontrollpunkte** – Nach jedem Schritt kannst du prüfen und korrigieren, statt am Ende alles zu verwerfen.[^aichains]
-    2. **Fehler pflanzen sich nicht fort** – Eine falsche Marktanalyse fällt sofort auf, nicht erst im Endergebnis.
-    3. **Wiederverwendbarkeit** – Der SWOT-Schritt funktioniert auch für jede andere Idee.
-    4. **Kleinere Kontextfenster** – Jeder Prompt braucht nur die Ergebnisse, die er wirklich benötigt ([Kontextfenster](halluzinationen-kontextfenster.md)).
+2. **Fehler pflanzen sich nicht fort** - Erfindet das Modell in der Marktanalyse eine Zahl, fällt das auf, solange die Analyse noch für sich allein dasteht. Im Monolith fließt dieselbe Zahl unbemerkt in die SWOT und von dort in die Verbesserungsvorschläge - am Ende ist alles falsch, und du siehst nicht mehr, woher es kam. Der Vorteil liegt aber nur darin, dass du prüfen *kannst*: Wer die Zwischenschritte durchwinkt, hat die Fehlerkette trotzdem.
 
-???+ defi "Verwandt, aber nicht dasselbe: Chain-of-Thought"
+3. **Wiederverwendbarkeit** - Jeder Schritt ist ein eigenständiger Baustein mit klarer Ein- und Ausgabe. Dein SWOT-Prompt fragt nicht nach dem Bio-Lieferdienst, sondern nach „der Idee" - damit funktioniert er unverändert für jede weitere Idee, du tauschst nur die Eingabe. So wächst mit der Zeit eine Sammlung erprobter Bausteine ([Prompt Libraries](libraries.md)).
 
-    Neben dem *Chaining* über mehrere Prompts gibt es **Chain-of-Thought**[^cot]: Das Modell wird gebeten, seine Zwischenschritte **innerhalb einer Antwort** auszuformulieren – *„Denke Schritt für Schritt."*
-
-    | | Prompt Chaining | Chain-of-Thought |
-    |---|---|---|
-    | Wo? | mehrere Prompts | ein einziger Prompt |
-    | Kontrolle | du prüfst nach jedem Schritt | keine Zwischenkontrolle |
-    | Steuerung | du legst die Schritte fest | das Modell entscheidet selbst |
-
-    !!! warning "Warum das in unserem Labor kaum wirkt"
-
-        Wei et al. zeigen, dass Chain-of-Thought eine **emergente Fähigkeit** ist: Sie tritt erst bei sehr großen Modellen (ab etwa 100 Mrd. Parametern) zuverlässig auf. Bei kleineren Modellen erzeugt „Denke Schritt für Schritt" oft nur *längere*, aber nicht *bessere* Antworten.
-
-        Bei `gemma3:1b` – rund 100-mal kleiner – bringt der Zauberspruch also wenig. Das explizite Zerlegen in mehrere Prompts dagegen sehr viel. Genau deshalb ist Chaining unser Werkzeug der Wahl.
-
-???+ disadv "Und die Kosten"
-
-    - **Mehr Aufrufe** = mehr Zeit und (bei kommerziellen Modellen) mehr Geld.
-    - **Fehlerfortpflanzung bleibt möglich:** Wenn Schritt 1 halluziniert, baut alles Weitere darauf auf. Deshalb: **Zwischenergebnisse prüfen.**
-    - **Mehr Code** als ein einzelner Prompt.
-
----
-
-## Ketten sauber bauen
-
-???+ process "Die Regeln"
-
-    1. **Ein klares Ergebnis pro Schritt.** Wenn du den Schritt nicht in einem Satz beschreiben kannst, ist er zu groß.
-    2. **Strukturierte Zwischenergebnisse.** Jeder Schritt liefert ein [festes Format](strukturierte-ausgaben.md) – dann kann der nächste zuverlässig darauf zugreifen.
-    3. **Nur weitergeben, was gebraucht wird.** Nicht die komplette Historie anhängen, sondern gezielt die relevanten Teile.
-    4. **Nach jedem Schritt validieren.** Mindestens: Ist die Antwort nicht leer und hat sie das erwartete Format?
-    5. **Zwischenergebnisse speichern.** Dann musst du bei einem Fehler in Schritt 4 nicht wieder bei Schritt 1 anfangen.[^schulhoff]
+4. **Kleinere Kontextfenster** - Jeder Prompt bekommt nur die Vorergebnisse, die er wirklich braucht, statt der gesamten bisherigen Unterhaltung. Das hält die Eingabe kurz und die Aufmerksamkeit des Modells beisammen - wichtig bei `gemma3:1b`, dessen [Kontextfenster](halluzinationen-kontextfenster.md) schnell voll ist und dann vorne Inhalte verliert.
 
 ---
 
 ## 🔬 Ollama-Lab
 
-Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren - hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-!!! lab "Übung 1: Der Monolith – bewusst scheitern lassen"
+!!! lab "Übung 1: Der Monolith - bewusst scheitern lassen"
 
     Verlange in **einem einzigen** Prompt alles auf einmal für deine Idee: (1) Marktanalyse, (2) SWOT-Analyse, (3) drei Verbesserungsvorschläge.
 
@@ -131,7 +100,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Führe Schritt 2 **fünfmal** aus und zähle, wie oft alle vier SWOT-Kategorien vorkommen.
 
-    Wenn eine fehlt: nicht neu starten, sondern gezielt nachfassen – *„In deiner Antwort fehlen die CHANCEN. Gib die vollständige SWOT-Analyse erneut aus."*
+    Wenn eine fehlt: nicht neu starten, sondern gezielt nachfassen - *„In deiner Antwort fehlen die CHANCEN. Gib die vollständige SWOT-Analyse erneut aus."*
 
     **Optional:** dasselbe auf `gemma3:270m`. Dort wirst du den Kontrollpunkt fast immer brauchen.
 
@@ -139,7 +108,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Zeichne deine Kette zuerst **auf Papier**: Welche Schritte, welche Ein- und Ausgaben?
 
-    **Optional:** Lass die komplette Kette zusätzlich auf `gemma3:4b` laufen. Wo ist der Unterschied am größten – am Anfang oder am Ende?
+    **Optional:** Lass die komplette Kette zusätzlich auf `gemma3:4b` laufen. Wo ist der Unterschied am größten - am Anfang oder am Ende?
 
     Notiere alle Kettenschritte in `prompts.md` unter `## 05 Kette`.
 
@@ -207,29 +176,16 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Zwei Details lohnen sich zu merken:
 
-    - **`{start}` bleibt in jedem Schritt verfügbar.** Manche Schritte brauchen die Originalidee *und* das letzte Zwischenergebnis – die gestrichelten Pfeile im Diagramm oben.
+    - **`{start}` bleibt in jedem Schritt verfügbar.** Manche Schritte brauchen die Originalidee *und* das letzte Zwischenergebnis - die gestrichelten Pfeile im Diagramm oben.
     - **Zwischenergebnisse landen als Datei auf der Platte.** Scheitert Schritt 3, startest du dort neu, statt die ganze Kette zu wiederholen.
 
 ---
 
-???+ question "Selbsttest"
-
-    1. Warum liefert ein Prompt mit vier Teilaufgaben bei kleinen Modellen so schlechte Ergebnisse?
-    2. Nenne zwei Vorteile und einen Nachteil des Prompt Chaining.
-    3. Warum sollte jeder Kettenschritt ein festes Ausgabeformat haben?
-
-    ??? success "Lösungsskizze"
-
-        1. Weil sich die „Aufmerksamkeit" des Modells auf alle Teile verteilt und die Antwortlänge begrenzt ist. Jede Teilaufgabe bekommt nur einen Bruchteil – meist wird die erste ausgeführt und der Rest angerissen.
-        2. **Vorteile:** Kontrollpunkte nach jedem Schritt, wiederverwendbare Bausteine, kleinere Kontextfenster. **Nachteil:** mehr Aufrufe (Zeit/Kosten), und ein Fehler in Schritt 1 pflanzt sich fort, wenn man nicht prüft.
-        3. Damit der nächste Schritt zuverlässig auf das Ergebnis zugreifen kann. Bei Fließtext musst du raten, wo die relevante Information steht – bei `STÄRKEN: …` nicht.
-
----
 
 ## Quellen
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^aichains]: **Wu, T., Terry, M. & Cai, C. J. (2022):** *AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts.* CHI '22. [https://doi.org/10.1145/3491102.3517582](https://doi.org/10.1145/3491102.3517582) · arXiv:2110.01691 — das namensgebende Paper. In einer Studie mit 20 Personen verbesserte Chaining nicht nur die Ergebnisqualität, sondern vor allem **Transparenz und Steuerbarkeit** – die Kontrollpunkte aus Übung 3.
-[^cot]: **Wei, J., Wang, X., Schuurmans, D. et al. (2022):** *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* arXiv:2201.11903. [https://arxiv.org/abs/2201.11903](https://arxiv.org/abs/2201.11903) — der verwandte Ansatz **innerhalb** eines Prompts (siehe Kasten oben). Wichtig für uns: Der Effekt tritt erst ab etwa 100 Mrd. Parametern zuverlässig auf – bei unseren Modellen also nicht.
+[^aichains]: **Wu, T., Terry, M. & Cai, C. J. (2022):** *AI Chains: Transparent and Controllable Human-AI Interaction by Chaining Large Language Model Prompts.* CHI '22. [https://doi.org/10.1145/3491102.3517582](https://doi.org/10.1145/3491102.3517582) · arXiv:2110.01691 - das namensgebende Paper. In einer Studie mit 20 Personen verbesserte Chaining nicht nur die Ergebnisqualität, sondern vor allem **Transparenz und Steuerbarkeit** - die Kontrollpunkte aus Übung 3.
+[^cot]: **Wei, J., Wang, X., Schuurmans, D. et al. (2022):** *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* arXiv:2201.11903. [https://arxiv.org/abs/2201.11903](https://arxiv.org/abs/2201.11903) - der verwandte Ansatz **innerhalb** eines Prompts (siehe Kasten oben). Wichtig für uns: Der Effekt tritt erst ab etwa 100 Mrd. Parametern zuverlässig auf - bei unseren Modellen also nicht.
 [^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608)

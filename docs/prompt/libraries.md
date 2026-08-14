@@ -1,6 +1,6 @@
 # Prompt Libraries und Wiederverwendung
 
-Bewährte Prompts müssen nicht jedes Mal neu erfunden werden. **Prompt Libraries** sammeln, strukturieren und standardisieren erprobte Prompts für den wiederholten Einsatz – besonders wertvoll im Unternehmenskontext.
+Bewährte Prompts müssen nicht jedes Mal neu erfunden werden. **Prompt Libraries** sammeln, strukturieren und standardisieren erprobte Prompts für den wiederholten Einsatz - besonders wertvoll im Unternehmenskontext.
 
 Damit schließt sich der Kreis: Du hast durch den ganzen Kurs Prompts entwickelt und verbessert. Jetzt machst du daraus ein **Werkzeug**, das dich über den Kurs hinaus begleitet.
 
@@ -10,7 +10,7 @@ Damit schließt sich der Kreis: Du hast durch den ganzen Kurs Prompts entwickelt
 
 !!! quote "Merksatz"
 
-    Ein guter Prompt ist kein Wegwerfprodukt. Er ist **Arbeitsergebnis** – so wie eine Excel-Vorlage oder ein Codebaustein.[^white]
+    Ein guter Prompt ist kein Wegwerfprodukt. Er ist **Arbeitsergebnis** - so wie eine Excel-Vorlage oder ein Codebaustein.[^white]
 
 <div class="grid cards" markdown>
 
@@ -24,7 +24,7 @@ Damit schließt sich der Kreis: Du hast durch den ganzen Kurs Prompts entwickelt
 
     ---
 
-    Zehn Personen im Team erzeugen mit demselben Prompt vergleichbare Ergebnisse – statt zehn unterschiedliche.
+    Zehn Personen im Team erzeugen mit demselben Prompt vergleichbare Ergebnisse - statt zehn unterschiedliche.
 
 - :material-trending-up: **Qualität**
 
@@ -44,7 +44,7 @@ Damit schließt sich der Kreis: Du hast durch den ganzen Kurs Prompts entwickelt
 
 ## Modularisierung
 
-Zerlege deine Prompts in **wiederverwendbare Bausteine** – im Grunde die fünf Elemente aus [Anatomie eines guten Prompts](anatomie.md), jetzt als getrennte Textblöcke:
+Zerlege deine Prompts in **wiederverwendbare Bausteine** - im Grunde die fünf Elemente aus [Anatomie eines guten Prompts](anatomie.md), jetzt als getrennte Textblöcke:
 
 ```mermaid
 flowchart LR
@@ -97,9 +97,9 @@ Antworte auf Deutsch. Keine Einleitung.
 
     Der Block zwischen den `---` ist wertvoller, als er aussieht:
 
-    - **`version`** – damit du Verbesserungen nachvollziehen kannst
-    - **`getestet_mit`** – ein Prompt, der auf GPT-5 funktioniert, kann auf `gemma3:1b` scheitern. Diese Angabe verhindert falsche Erwartungen.
-    - **`autor`** – wer weiß, warum der Prompt so formuliert ist
+    - **`version`** - damit du Verbesserungen nachvollziehen kannst
+    - **`getestet_mit`** - ein Prompt, der auf GPT-5 funktioniert, kann auf `gemma3:1b` scheitern. Diese Angabe verhindert falsche Erwartungen.
+    - **`autor`** - wer weiß, warum der Prompt so formuliert ist
 
 ---
 
@@ -107,7 +107,7 @@ Antworte auf Deutsch. Keine Einleitung.
 
 ???+ defi "Skill"
 
-    Ein **Skill** ist ein Paket aus Anweisung, Beispielen und optional Hilfsdateien oder Code, das ein KI-System bei Bedarf **selbstständig lädt** – ohne dass du es jedes Mal in den Prompt kopierst.
+    Ein **Skill** ist ein Paket aus Anweisung, Beispielen und optional Hilfsdateien oder Code, das ein KI-System bei Bedarf **selbstständig lädt** - ohne dass du es jedes Mal in den Prompt kopierst.
 
     Der Unterschied zum Template:
 
@@ -125,15 +125,15 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
 ???+ process "Von der privaten Sammlung zur Team-Bibliothek"
 
-    1. **Sammeln** – jeder legt seine funktionierenden Prompts an einem gemeinsamen Ort ab.
-    2. **Standardisieren** – einheitliche Struktur, Metadaten, Namensschema – am besten entlang echter Arbeitsaufgaben.[^sahoo]
-    3. **Versionieren** – am besten in Git. Dann ist jede Änderung nachvollziehbar und rückgängig zu machen.
-    4. **Testen** – für kritische Prompts ein paar feste Testfälle, wie in [Iterative Prompting](iteratives.md).
-    5. **Pflegen** – eine verantwortliche Person pro Bereich. Ohne Pflege veraltet eine Bibliothek schnell.
+    1. **Sammeln** - jeder legt seine funktionierenden Prompts an einem gemeinsamen Ort ab.
+    2. **Standardisieren** - einheitliche Struktur, Metadaten, Namensschema - am besten entlang echter Arbeitsaufgaben.[^sahoo]
+    3. **Versionieren** - am besten in Git. Dann ist jede Änderung nachvollziehbar und rückgängig zu machen.
+    4. **Testen** - für kritische Prompts ein paar feste Testfälle, wie in [Iterative Prompting](iteratives.md).
+    5. **Pflegen** - eine verantwortliche Person pro Bereich. Ohne Pflege veraltet eine Bibliothek schnell.
 
 !!! warning "Vertraulichkeit"
 
-    Prompts enthalten oft **Kontext** – Kundennamen, Zahlen, Strategien. Ein Prompt-Repository ist damit potenziell so sensibel wie eine Kundendatenbank.
+    Prompts enthalten oft **Kontext** - Kundennamen, Zahlen, Strategien. Ein Prompt-Repository ist damit potenziell so sensibel wie eine Kundendatenbank.
 
     👉 Trenne **Template** (teilbar) von **Kontext** (vertraulich). Genau dafür sind Platzhalter da.
 
@@ -141,7 +141,7 @@ Der Gedanke dahinter ist derselbe wie bei einer Funktionsbibliothek im Programmi
 
 ## 🔬 Ollama-Lab
 
-Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren - hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
 !!! lab "Übung 1: Von der Sammlung zu Templates"
 
@@ -165,11 +165,11 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ---
     ```
 
-    Die Zeile `platzhalter` erspart dir späteres Suchen – bei zehn Templates weißt du nicht mehr auswendig, welches welche Werte braucht.
+    Die Zeile `platzhalter` erspart dir späteres Suchen - bei zehn Templates weißt du nicht mehr auswendig, welches welche Werte braucht.
 
 !!! lab "Übung 3: Der Härtetest 🧪"
 
-    Der entscheidende Schritt: Wende deine **gesamte Bibliothek** auf eine **völlig andere** Geschäftsidee an – eine Hundeschule, eine mobile Fahrradwerkstatt, was auch immer.
+    Der entscheidende Schritt: Wende deine **gesamte Bibliothek** auf eine **völlig andere** Geschäftsidee an - eine Hundeschule, eine mobile Fahrradwerkstatt, was auch immer.
 
     Fülle jedes Template aus und führe es aus.
 
@@ -191,7 +191,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 ??? code "🐍 Optional (Python): die Bibliothek automatisieren"
 
-    Suchen & Ersetzen von Hand funktioniert – aber bei zehn Templates und wechselnden Ideen wird es fehleranfällig. Diese Klasse lädt alle Templates aus einem Ordner und füllt sie aus:
+    Suchen & Ersetzen von Hand funktioniert - aber bei zehn Templates und wechselnden Ideen wird es fehleranfällig. Diese Klasse lädt alle Templates aus einem Ordner und füllt sie aus:
 
     ```python title="prompt_library.py"
     from pathlib import Path
@@ -228,7 +228,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
             print(f"\n{'Template':<18} {'Version':<9} Status")
             print("-" * 55)
             for name in sorted(self.templates):
-                version = self.metadaten(name).get("version", "–")
+                version = self.metadaten(name).get("version", "-")
                 try:
                     self.baue(name, **testwerte)
                     print(f"{name:<18} {version:<9} ✅ ok")
@@ -254,7 +254,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Zwei Dinge, die dieses Skript besser kann als du:**
 
-    - `substitute()` **wirft einen Fehler**, wenn ein Platzhalter fehlt – anders als ein f-String, bei dem du erst an der schlechten Antwort merkst, dass `$kontext` leer geblieben ist.
+    - `substitute()` **wirft einen Fehler**, wenn ein Platzhalter fehlt - anders als ein f-String, bei dem du erst an der schlechten Antwort merkst, dass `$kontext` leer geblieben ist.
     - `teste_alle()` prüft in einer Sekunde alle Templates. Im Beispiel oben fällt sofort auf, dass `faktencheck` einen Platzhalter `$text` erwartet, den du gar nicht mitgegeben hast.
 
 ---
@@ -268,8 +268,8 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ??? success "Lösungsskizze"
 
         1. Weil sich Bausteine **kombinieren** lassen: Aus vier Rollen, drei Aufgaben und zwei Formaten entstehen 24 Prompts aus nur neun Bausteinen. Fertige Prompts musst du dagegen einzeln pflegen.
-        2. Name, Version, Autor und die getesteten Modelle. `getestet_mit` ist wichtig, weil Prompts modellabhängig sind – ein Prompt, der auf einem großen Modell zuverlässig läuft, kann auf `gemma3:1b` komplett scheitern.
-        3. Ein Template ist ein Textblock, den **du** einfügst. Ein Skill ist ein Paket aus Anweisung, Beispielen und ggf. Dateien, das das System **bei Bedarf selbst lädt** – es belegt das Kontextfenster nur, wenn es gebraucht wird.
+        2. Name, Version, Autor und die getesteten Modelle. `getestet_mit` ist wichtig, weil Prompts modellabhängig sind - ein Prompt, der auf einem großen Modell zuverlässig läuft, kann auf `gemma3:1b` komplett scheitern.
+        3. Ein Template ist ein Textblock, den **du** einfügst. Ein Skill ist ein Paket aus Anweisung, Beispielen und ggf. Dateien, das das System **bei Bedarf selbst lädt** - es belegt das Kontextfenster nur, wenn es gebraucht wird.
 
 ---
 
@@ -277,9 +277,9 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) — die theoretische Grundlage dieses Kapitels. Überträgt den Begriff des **Entwurfsmusters** aus der Softwaretechnik auf Prompts: dokumentierte, benannte, wiederverwendbare Lösungen für wiederkehrende Probleme – statt jedes Mal neu zu formulieren.
-[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) — im Grunde die größte existierende Prompt Library: 58 systematisch benannte und beschriebene Techniken. Ein guter Startpunkt, wenn dir für ein Problem das passende Muster fehlt.
-[^sahoo]: **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927) — ordnet Prompting-Techniken nach **Anwendungsgebiet** – hilfreich beim Aufbau einer Bibliothek entlang echter Arbeitsaufgaben statt entlang von Techniknamen.
+[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) - die theoretische Grundlage dieses Kapitels. Überträgt den Begriff des **Entwurfsmusters** aus der Softwaretechnik auf Prompts: dokumentierte, benannte, wiederverwendbare Lösungen für wiederkehrende Probleme - statt jedes Mal neu zu formulieren.
+[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) - im Grunde die größte existierende Prompt Library: 58 systematisch benannte und beschriebene Techniken. Ein guter Startpunkt, wenn dir für ein Problem das passende Muster fehlt.
+[^sahoo]: **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927) - ordnet Prompting-Techniken nach **Anwendungsgebiet** - hilfreich beim Aufbau einer Bibliothek entlang echter Arbeitsaufgaben statt entlang von Techniknamen.
 !!! info "Beispiel-Bibliotheken"
 
     - **Anthropic Prompt Library:** [https://docs.anthropic.com/en/resources/prompt-library/library](https://docs.anthropic.com/en/resources/prompt-library/library)

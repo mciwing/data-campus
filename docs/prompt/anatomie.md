@@ -2,7 +2,7 @@
 
 Ein wirkungsvoller Prompt ist kein Zufall, sondern folgt einer **klaren Struktur**. Wer die Bausteine kennt, kann gezielt steuern, was das Modell liefert.
 
-Die meisten Menschen prompten wie beim Googeln: ein paar Stichworte, Enter, Daumen drücken. Bei einer Suchmaschine funktioniert das, weil sie nur *finden* muss. Ein LLM soll aber *erzeugen* – und dafür braucht es dieselbe Art von Briefing, die du auch einem neuen Teammitglied geben würdest.[^zuckarelli]
+Die meisten Menschen prompten wie beim Googeln: ein paar Stichworte, Enter, Daumen drücken. Bei einer Suchmaschine funktioniert das, weil sie nur *finden* muss. Ein LLM soll aber *erzeugen* - und dafür braucht es dieselbe Art von Briefing, die du auch einem neuen Teammitglied geben würdest.[^zuckarelli]
 
 !!! info "Voraussetzung für dieses Kapitel"
 
@@ -14,7 +14,7 @@ Die meisten Menschen prompten wie beim Googeln: ein paar Stichworte, Enter, Daum
 
 ## Die fünf Bausteine
 
-Ein vollständiger Prompt besteht aus fünf Elementen.[^schulhoff] Nicht jeder Prompt braucht alle fünf – aber je schwieriger die Aufgabe und je kleiner das Modell, desto mehr davon solltest du liefern.
+Ein vollständiger Prompt besteht aus fünf Elementen.[^schulhoff] Nicht jeder Prompt braucht alle fünf - aber je schwieriger die Aufgabe und je kleiner das Modell, desto mehr davon solltest du liefern.
 
 ```mermaid
 flowchart TB
@@ -43,7 +43,7 @@ flowchart TB
 
 !!! quote "Merksatz"
 
-    **R-K-A-E-F** – *Rolle, Kontext, Aufgabe, Einschränkungen, Format.*
+    **R-K-A-E-F** - *Rolle, Kontext, Aufgabe, Einschränkungen, Format.*
 
     Wenn eine Antwort enttäuscht, geh die fünf Buchstaben durch. In neun von zehn Fällen fehlt einer davon.
 
@@ -75,7 +75,7 @@ Die Rolle legt fest, aus **welcher Perspektive** das Modell antwortet. Technisch
 
 ???+ tip "Je spezifischer, desto besser"
 
-    „Du bist Experte" bringt fast nichts – das Modell hält sich ohnehin für alles zuständig. Wirksam wird die Rolle erst durch **Spezifikation**: Fachgebiet, Erfahrungsjahre, Haltung, Zielgruppe.
+    „Du bist Experte" bringt fast nichts - das Modell hält sich ohnehin für alles zuständig. Wirksam wird die Rolle erst durch **Spezifikation**: Fachgebiet, Erfahrungsjahre, Haltung, Zielgruppe.
 
     Weil das so mächtig ist, bekommt es ein eigenes Kapitel: [Rollenbasiertes Prompting](rollen.md).
 
@@ -83,7 +83,7 @@ Die Rolle legt fest, aus **welcher Perspektive** das Modell antwortet. Technisch
 
 ### Kontext
 
-Das Modell kennt **deine** Situation nicht. Es weiß nichts über dein Unternehmen, deine Zielgruppe, deine Vorgeschichte – außer dem, was im Prompt steht. Alles, was du weglässt, **erfindet** das Modell (siehe [Halluzinationen](halluzinationen-kontextfenster.md)).
+Das Modell kennt **deine** Situation nicht. Es weiß nichts über dein Unternehmen, deine Zielgruppe, deine Vorgeschichte - außer dem, was im Prompt steht. Alles, was du weglässt, **erfindet** das Modell (siehe [Halluzinationen](halluzinationen-kontextfenster.md)).
 
 ???+ example "Was gehört in den Kontext?"
 
@@ -130,7 +130,7 @@ Die Aufgabe ist der Kern: **ein Verb, ein Ergebnis**. Vage Verben erzeugen vage 
 
 ???+ defi "Eine Aufgabe pro Prompt"
 
-    Kleine Modelle führen **eine** Anweisung zuverlässig aus, zwei manchmal, fünf fast nie. Brauchst du mehrere Dinge, zerlege sie in mehrere Prompts – genau das ist [Prompt Chaining](chaining.md).
+    Kleine Modelle führen **eine** Anweisung zuverlässig aus, zwei manchmal, fünf fast nie. Brauchst du mehrere Dinge, zerlege sie in mehrere Prompts - genau das ist [Prompt Chaining](chaining.md).
 
 ---
 
@@ -146,7 +146,7 @@ Einschränkungen grenzen den Lösungsraum ein: Umfang, Stil, Tonalität, Sprache
 
 !!! tip "Positiv statt negativ formulieren"
 
-    „Schreibe **keine** Einleitung" wirkt schlechter als „**Beginne direkt** mit dem ersten Stichpunkt". Ein LLM sagt das nächste wahrscheinliche Token voraus – erwähnst du „Einleitung", machst du Einleitungs-Tokens *wahrscheinlicher*.
+    „Schreibe **keine** Einleitung" wirkt schlechter als „**Beginne direkt** mit dem ersten Stichpunkt". Ein LLM sagt das nächste wahrscheinliche Token voraus - erwähnst du „Einleitung", machst du Einleitungs-Tokens *wahrscheinlicher*.
 
     Denk an den rosa Elefanten, an den du gerade nicht denken sollst. 🐘
 
@@ -154,7 +154,7 @@ Einschränkungen grenzen den Lösungsraum ein: Umfang, Stil, Tonalität, Sprache
 
 ### Ausgabeformat
 
-Sag dem Modell **exakt**, wie das Ergebnis aussehen soll – am besten, indem du das Format vormachst:
+Sag dem Modell **exakt**, wie das Ergebnis aussehen soll - am besten, indem du das Format vormachst:
 
 ```{.text .ollama title="Ollama Chat"}
 Gib das Ergebnis in genau diesem Format aus:
@@ -214,21 +214,21 @@ Dieselbe Absicht, zwei Prompts:
 
 ???+ tip "Überschriften als Struktur-Anker"
 
-    Die `#`-Überschriften sind kein Selbstzweck. Sie trennen die Abschnitte für das Modell sauber voneinander – besonders hilfreich bei kleinen Modellen, die sonst Kontext und Aufgabe vermischen. `#`, `---` oder XML-Tags wie `<kontext>…</kontext>` funktionieren alle gut. Wichtig ist nur: **konsistent bleiben**. Solche wiederverwendbaren Strukturen werden in der Literatur als *Prompt Patterns* beschrieben – Entwurfsmuster für Prompts.[^white]
+    Die `#`-Überschriften sind kein Selbstzweck. Sie trennen die Abschnitte für das Modell sauber voneinander - besonders hilfreich bei kleinen Modellen, die sonst Kontext und Aufgabe vermischen. `#`, `---` oder XML-Tags wie `<kontext>…</kontext>` funktionieren alle gut. Wichtig ist nur: **konsistent bleiben**. Solche wiederverwendbaren Strukturen werden in der Literatur als *Prompt Patterns* beschrieben - Entwurfsmuster für Prompts.[^white]
 
 ---
 
 ## 🔬 Ollama-Lab
 
-Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren – hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
+Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren - hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
 !!! lab "Übung 1: Deine Geschäftsidee festlegen 💡"
 
-    Wähle eine Geschäftsidee, die dich durch den **gesamten Kurs** begleitet. Nimm etwas, zu dem du selbst eine Meinung hast – dann fällt dir auf, wenn die KI Unsinn erzählt.
+    Wähle eine Geschäftsidee, die dich durch den **gesamten Kurs** begleitet. Nimm etwas, zu dem du selbst eine Meinung hast - dann fällt dir auf, wenn die KI Unsinn erzählt.
 
     Halte sie in **drei bis fünf Sätzen** in einer Datei `idee.md` fest:
 
-    - Was wird angeboten – und für wen?
+    - Was wird angeboten - und für wen?
     - Welches Problem löst es?
     - Ausgangslage: Ort, Teamgröße, Startkapital?
 
@@ -236,7 +236,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 2: Die fünf Bausteine einzeln zuschalten"
 
-    Formuliere zu deiner Idee die Aufgabe *„Nenne die drei größten Risiken."* – und baue den Prompt dann Stufe für Stufe aus. `/clear` zwischen den Stufen nicht vergessen.
+    Formuliere zu deiner Idee die Aufgabe *„Nenne die drei größten Risiken."* - und baue den Prompt dann Stufe für Stufe aus. `/clear` zwischen den Stufen nicht vergessen.
 
     | Stufe | Was du ergänzt |
     |---|---|
@@ -246,7 +246,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     | 4 | + Einschränkungen (Länge, Sprache, keine erfundenen Zahlen) |
     | 5 | + Ausgabeformat |
 
-    **Bewerte jede Stufe** mit 0–5 Punkten in *Konkretheit*, *Nutzbarkeit* und *Formattreue*.
+    **Bewerte jede Stufe** mit 0-5 Punkten in *Konkretheit*, *Nutzbarkeit* und *Formattreue*.
 
     **Die eigentliche Frage:** Zwischen welchen beiden Stufen liegt bei *deiner* Idee der größte Sprung? Bei den meisten ist es 2 → 3. Bei dir auch?
 
@@ -254,17 +254,17 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Formuliere eine Einschränkung für deine Idee **zweimal**:
 
-    - negativ – *„Schreibe KEINE Einleitung."*
-    - positiv – *„Beginne direkt mit dem ersten Fakt."*
+    - negativ - *„Schreibe KEINE Einleitung."*
+    - positiv - *„Beginne direkt mit dem ersten Fakt."*
 
     Führe beide **je dreimal** aus, mit `/clear` dazwischen. 
 
 !!! lab "Übung 4: Härtetest und Prompt sichern"
 
-    1. **Härtetest:** Lass deinen besten Prompt aus Übung 2 auf `gemma3:270m` laufen – dem viermal kleineren Modell. Bleibt das Ergebnis brauchbar? Wenn nicht: Welcher Baustein müsste deutlicher werden?
+    1. **Härtetest:** Lass deinen besten Prompt aus Übung 2 auf `gemma3:270m` laufen - dem viermal kleineren Modell. Bleibt das Ergebnis brauchbar? Wenn nicht: Welcher Baustein müsste deutlicher werden?
     2. **Sichern:** Notiere den finalen Prompt in `prompts.md` unter `## 01 Beschreibung`.
 
-    Das ist der erste Eintrag deiner [Prompt Library](libraries.md) – sie wächst ab jetzt in jedem Kapitel.
+    Das ist der erste Eintrag deiner [Prompt Library](libraries.md) - sie wächst ab jetzt in jedem Kapitel.
 
 ??? code "🐍 Optional (Python): alle fünf Stufen automatisch durchlaufen"
 
@@ -282,11 +282,11 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     format_ = "Format je Risiko:\nRISIKO <n>: <Titel>\nGegenmaßnahme: <ein Satz>"
 
     stufen = {
-        "1 – nur Aufgabe":       aufgabe,
-        "2 – + Rolle":           f"{rolle}\n\n{aufgabe}",
-        "3 – + Kontext":         f"{rolle}\n\n{kontext}\n\n{aufgabe}",
-        "4 – + Einschränkungen": f"{rolle}\n\n{kontext}\n\n{aufgabe}\n\n{limits}",
-        "5 – + Format":          f"{rolle}\n\n{kontext}\n\n{aufgabe}\n\n{limits}\n\n{format_}",
+        "1 - nur Aufgabe":       aufgabe,
+        "2 - + Rolle":           f"{rolle}\n\n{aufgabe}",
+        "3 - + Kontext":         f"{rolle}\n\n{kontext}\n\n{aufgabe}",
+        "4 - + Einschränkungen": f"{rolle}\n\n{kontext}\n\n{aufgabe}\n\n{limits}",
+        "5 - + Format":          f"{rolle}\n\n{kontext}\n\n{aufgabe}\n\n{limits}\n\n{format_}",
     }
 
     for name, prompt in stufen.items():
@@ -296,20 +296,20 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     ```title="Ausgabe (gekürzt)"
     ============================================================
-    1 – nur Aufgabe
+    1 - nur Aufgabe
     ============================================================
     Bio-Lieferdienste stehen vor mehreren Herausforderungen. Erstens ist
     die Logistik anspruchsvoll ...
 
     ============================================================
-    5 – + Format
+    5 - + Format
     ============================================================
     RISIKO 1: Kühlkette
     Gegenmaßnahme: Zu Beginn nur ungekühlte Trockenware anbieten.
     ...
     ```
 
-    Tausche die vier Textbausteine oben gegen deine eigene Idee aus – dann vergleichst du alle fünf Stufen mit einer einzigen Ausführung.
+    Tausche die vier Textbausteine oben gegen deine eigene Idee aus - dann vergleichst du alle fünf Stufen mit einer einzigen Ausführung.
 
 ---
 
@@ -317,6 +317,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) — die derzeit umfassendste Systematik: 58 Prompting-Techniken und ein einheitliches Vokabular. Die hier verwendeten Bausteine finden sich dort als *Role*, *Additional Information*, *Directive*, *Style Instructions* und *Output Formatting*.
-[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) — überträgt den Gedanken der Software-Entwurfsmuster auf Prompts: wiederverwendbare Strukturen statt Einzelfalllösungen.
+[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) - die derzeit umfassendste Systematik: 58 Prompting-Techniken und ein einheitliches Vokabular. Die hier verwendeten Bausteine finden sich dort als *Role*, *Additional Information*, *Directive*, *Style Instructions* und *Output Formatting*.
+[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) - überträgt den Gedanken der Software-Entwurfsmuster auf Prompts: wiederverwendbare Strukturen statt Einzelfalllösungen.
 [^zuckarelli]: **Zuckarelli, J. L. (2025):** *Programmieren mit ChatGPT: Eine kompakte Einführung.* Springer, ISBN 978-3-662-69432-9. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)

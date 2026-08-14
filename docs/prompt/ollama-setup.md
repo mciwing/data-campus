@@ -1,16 +1,16 @@
 # Setup: Dein eigenes LLM mit Ollama
 
-Ab jetzt wird es praktisch. In den folgenden Kapiteln lernst du Prompting-Techniken nicht nur *kennen*, sondern probierst jede einzelne **selbst aus** – auf deinem eigenen Laptop, ohne Account, ohne Kreditkarte, ohne dass deine Daten das Gerät verlassen.
+Ab jetzt wird es praktisch. In den folgenden Kapiteln lernst du Prompting-Techniken nicht nur *kennen*, sondern probierst jede einzelne **selbst aus** - auf deinem eigenen Laptop, ohne Account, ohne Kreditkarte, ohne dass deine Daten das Gerät verlassen.
 
-Dafür nutzen wir **Ollama**: ein kleines Programm, das Sprachmodelle lokal ausführt. Du brauchst dafür **keine Programmierkenntnisse** – alles läuft über ein Terminalfenster.
+Dafür nutzen wir **Ollama**: ein kleines Programm, das Sprachmodelle lokal ausführt. Du brauchst dafür **keine Programmierkenntnisse** - alles läuft über ein Terminalfenster.
 
 !!! quote "Warum wir absichtlich *schlechte* Modelle verwenden"
 
-    Die Modelle, die du gleich installierst, sind **winzig** – teilweise 1000-mal kleiner als GPT-5. Sie machen Fehler, schweifen ab und ignorieren Anweisungen.
+    Die Modelle, die du gleich installierst, sind **winzig** - teilweise 1000-mal kleiner als GPT-5. Sie machen Fehler, schweifen ab und ignorieren Anweisungen.
 
     **Genau das ist der Punkt.** 🎯
 
-    Ein starkes Modell wie ChatGPT versteht auch einen schlampigen Prompt und liefert trotzdem etwas Brauchbares. Dabei lernst du nichts – dein Prompt wird nie *geprüft*. Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist.
+    Ein starkes Modell wie ChatGPT versteht auch einen schlampigen Prompt und liefert trotzdem etwas Brauchbares. Dabei lernst du nichts - dein Prompt wird nie *geprüft*. Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist.
 
     Wer auf einem 1-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering. Alles Größere ist danach ein Kinderspiel.[^brown]
 
@@ -24,17 +24,17 @@ Dafür nutzen wir **Ollama**: ein kleines Programm, das Sprachmodelle lokal ausf
 
 ## Ollama installieren
 
-Die Installation läuft auf jedem Betriebssystem etwas anders – Ollama beschreibt sie für **Windows, macOS und Linux** selbst und hält die Anleitung aktuell. Deshalb verweisen wir hier bewusst dorthin, statt eine zweite Version zu pflegen, die irgendwann veraltet:
+Die Installation läuft auf jedem Betriebssystem etwas anders - Ollama beschreibt sie für **Windows, macOS und Linux** selbst und hält die Anleitung aktuell. Deshalb verweisen wir hier bewusst dorthin, statt eine zweite Version zu pflegen, die irgendwann veraltet:
 
 <div class="center-button" markdown>
 [:material-link-variant: **Ollama herunterladen und installieren**](https://ollama.com/download){ .md-button .md-button--primary target="_blank" rel="noopener" }
 </div>
 
-Folge dort einfach der Anleitung für dein System. Danach läuft Ollama im Hintergrund – erkennbar am 🦙-Symbol in der Taskleiste (Windows) bzw. Menüleiste (macOS).
+Folge dort einfach der Anleitung für dein System. Danach läuft Ollama im Hintergrund - erkennbar am 🦙-Symbol in der Taskleiste (Windows) bzw. Menüleiste (macOS).
 
 !!! info "Reicht mein Laptop?"
 
-    Für die Modelle in diesem Kurs brauchst du **mindestens 8 GB RAM**. Eine eigene Grafikkarte ist **nicht** erforderlich – die Modelle sind bewusst klein gewählt.
+    Für die Modelle in diesem Kurs brauchst du **mindestens 8 GB RAM**. Eine eigene Grafikkarte ist **nicht** erforderlich - die Modelle sind bewusst klein gewählt.
 
 ### Terminal öffnen und Installation prüfen
 
@@ -76,18 +76,18 @@ Ein Modell wird **einmal** heruntergeladen und liegt danach lokal auf deiner Fes
 
     **~815 MB** · 1 Mrd. Parameter
 
-    Unser **Standardmodell** für alle Labore. Klein genug, um schlechte Prompts abzustrafen – groß genug, um bei guten Prompts sauber zu liefern.
+    Unser **Standardmodell** für alle Labore. Klein genug, um schlechte Prompts abzustrafen - groß genug, um bei guten Prompts sauber zu liefern.
 
 </div>
 
 ???+ defi "Modellnamen lesen: was bedeutet `1b`?"
 
-    Der Teil nach dem Doppelpunkt gibt die **Anzahl der Parameter** an – also wie viele einstellbare Zahlen im Modell stecken. Sie sind das, was beim Training „gelernt" wird.
-    `1b` steht also für 1 billion (englisch) = 1 Milliarde (deutsch) – also eine Milliarde einstellbare Parameter.
+    Der Teil nach dem Doppelpunkt gibt die **Anzahl der Parameter** an - also wie viele einstellbare Zahlen im Modell stecken. Sie sind das, was beim Training „gelernt" wird.
+    `1b` steht also für 1 billion (englisch) = 1 Milliarde (deutsch) - also eine Milliarde einstellbare Parameter.
 
     **Achtung, falscher Freund:** Englisch *billion* ist die deutsche **Milliarde** (10⁹), nicht die Billion (10¹²).
 
-    **Faustregel:** Mehr Parameter = mehr implizit gespeichertes Wissen und feinere Nuancen – aber auch mehr Speicherbedarf, mehr Rechenzeit und höhere Kosten.
+    **Faustregel:** Mehr Parameter = mehr implizit gespeichertes Wissen und feinere Nuancen - aber auch mehr Speicherbedarf, mehr Rechenzeit und höhere Kosten.
 
 Zum Installieren genügt ein Befehl im Terminal:
 
@@ -106,7 +106,7 @@ NAME               ID              SIZE      MODIFIED
 gemma3:1b          8648f39daa8f    815 MB    2 minutes ago
 ```
 
-Das war's – damit haben wir unser erstes lokales LLM installiert.
+Das war's - damit haben wir unser erstes lokales LLM installiert.
 
 ??? tip "Optional: zwei Modelle zum Vergleichen"
 
@@ -120,7 +120,7 @@ Das war's – damit haben wir unser erstes lokales LLM installiert.
     | Modell | Größe | Wozu |
     |---|---|---|
     | `gemma3:270m` | ~290 MB | **Der Extremtest.** Knapp viermal kleiner. Vergisst Anweisungen, erfindet Fakten, driftet ab. Was hier funktioniert, funktioniert überall. |
-    | `gemma3:4b` | ~3,3 GB | **Das Kontrastmodell.** Viermal größer – und weil alle drei aus derselben Familie stammen, ist der Unterschied wirklich die **Größe** und nicht die Trainingsdaten. Zeigt, wie viel Größe einen guten Prompt ersetzt: weniger, als man denkt. |
+    | `gemma3:4b` | ~3,3 GB | **Das Kontrastmodell.** Viermal größer - und weil alle drei aus derselben Familie stammen, ist der Unterschied wirklich die **Größe** und nicht die Trainingsdaten. Zeigt, wie viel Größe einen guten Prompt ersetzt: weniger, als man denkt. |
 
     Du kannst sie auch später jederzeit nachladen. Ein Modell wieder loswerden: `ollama rm gemma3:270m`
 
@@ -153,9 +153,9 @@ die Rentabilität und Glaubwürdigkeit des Unternehmens beeinträchtigen können
 
 !!! warning "Deine Ausgabe wird anders aussehen"
 
-    Alle Ausgaben in diesem Kurs sind **Beispiele**. Sprachmodelle antworten nicht jedes Mal gleich – schon derselbe Prompt liefert beim zweiten Aufruf einen anderen Text.
+    Alle Ausgaben in diesem Kurs sind **Beispiele**. Sprachmodelle antworten nicht jedes Mal gleich - schon derselbe Prompt liefert beim zweiten Aufruf einen anderen Text.
 
-    Wer daraus einzelne Durchläufe verallgemeinert, zieht schnell falsche Schlüsse – ein Muster, das sich bei Prompting-Neulingen regelmäßig nachweisen lässt.[^johnny]
+    Wer daraus einzelne Durchläufe verallgemeinert, zieht schnell falsche Schlüsse - ein Muster, das sich bei Prompting-Neulingen regelmäßig nachweisen lässt.[^johnny]
 
     Achte deshalb nie auf den *exakten Wortlaut*, sondern auf **Muster**: Ist die Antwort auf Deutsch? Hält sie das Format ein? Ist sie konkret oder allgemein? Genau darum geht es in den Laboren.
 
@@ -171,20 +171,20 @@ ollama run gemma3:1b
 Was ist ein Business Model Canvas?
 ```
 
-Das Modell antwortet – Wort für Wort, genau wie in [Station 5](funktionsweise-llms.md#5-das-nachste-token) beschrieben. Der Chat merkt sich dabei den bisherigen Verlauf (dein **Kontextfenster**).
+Das Modell antwortet - Wort für Wort, genau wie in [Station 5](funktionsweise-llms.md#5-das-nachste-token) beschrieben. Der Chat merkt sich dabei den bisherigen Verlauf (dein **Kontextfenster**).
 
 ???+ process "Die wichtigsten Befehle im Chat"
 
-    1. `/bye` – Chat beenden und zurück ins Terminal
-    2. `/clear` – Kontextfenster leeren, bei null anfangen
-    3. `/set system "Du bist ein Unternehmensberater."` – eine **Systemrolle** setzen (mehr dazu in [Rollenbasiertes Prompting](rollen.md))
-    4. `/set parameter temperature 0.2` – die Kreativität einstellen (siehe unten)
-    5. `/show info` – technische Daten des Modells anzeigen
-    6. `"""` – mehrzeilige Eingabe starten **und** beenden
+    1. `/bye` - Chat beenden und zurück ins Terminal
+    2. `/clear` - Kontextfenster leeren, bei null anfangen
+    3. `/set system "Du bist ein Unternehmensberater."` - eine **Systemrolle** setzen (mehr dazu in [Rollenbasiertes Prompting](rollen.md))
+    4. `/set parameter temperature 0.2` - die Kreativität einstellen (siehe unten)
+    5. `/show info` - technische Daten des Modells anzeigen
+    6. `"""` - mehrzeilige Eingabe starten **und** beenden
 
 ### Mehrzeilige Prompts eingeben
 
-Das brauchst du ab Kapitel 2 ständig – gute Prompts sind selten einzeilig. Tippe im Chat drei Anführungszeichen, dann deinen Text über mehrere Zeilen, dann wieder drei Anführungszeichen:
+Das brauchst du ab Kapitel 2 ständig - gute Prompts sind selten einzeilig. Tippe im Chat drei Anführungszeichen, dann deinen Text über mehrere Zeilen, dann wieder drei Anführungszeichen:
 
 ```{.text .ollama title="Ollama Chat"}
 """
@@ -202,7 +202,7 @@ Erst nach dem schließenden `"""` beginnt das Modell zu antworten.
 
     Lange Prompts tippt niemand gern im Terminal. Schreibe sie stattdessen in einem Texteditor und kopiere sie zwischen die `"""`.
 
-    Lege dir dafür einen Ordner `prompt-labor` mit einer Datei `prompts.md` an – dort sammelst du im Lauf des Kurses alle Prompts, die funktioniert haben. Am Ende wird daraus deine [Prompt Library](libraries.md).
+    Lege dir dafür einen Ordner `prompt-labor` mit einer Datei `prompts.md` an - dort sammelst du im Lauf des Kurses alle Prompts, die funktioniert haben. Am Ende wird daraus deine [Prompt Library](libraries.md).
 
 ---
 
@@ -234,13 +234,13 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
 ???+ tip "Es gibt noch mehr Stellschrauben"
 
-    Ollama kennt eine ganze Reihe weiterer Parameter – etwa `top_k`, `top_p`, `repeat_penalty` oder `num_ctx` (die Größe des [Kontextfensters](halluzinationen-kontextfenster.md)). Für den Kurs brauchst du sie nicht, aber wer tiefer einsteigen will, findet die vollständige Liste mit Wertebereichen hier: [Valid Parameters and Values](https://docs.ollama.com/modelfile#valid-parameters-and-values){ target="_blank" rel="noopener" } *(englisch)*
+    Ollama kennt eine ganze Reihe weiterer Parameter - etwa `top_k`, `top_p`, `repeat_penalty` oder `num_ctx` (die Größe des [Kontextfensters](halluzinationen-kontextfenster.md)). Für den Kurs brauchst du sie nicht, aber wer tiefer einsteigen will, findet die vollständige Liste mit Wertebereichen hier: [Valid Parameters and Values](https://docs.ollama.com/modelfile#valid-parameters-and-values){ target="_blank" rel="noopener" } *(englisch)*
 
 !!! warning "Dieselbe Frage, zwei verschiedene Antworten"
 
     Sprachmodelle antworten nicht reproduzierbar. Wenn du zwei Prompts vergleichst, kann der Unterschied also auch **reiner Zufall** sein. Zwei Ursachen kannst du selbst ausschalten:
 
-    **1. Der Chatverlauf.** Fragst du im selben Chat zweimal dasselbe, steht beim zweiten Mal die erste Antwort mit im Kontext – die Ausgangslage ist gar nicht dieselbe.
+    **1. Der Chatverlauf.** Fragst du im selben Chat zweimal dasselbe, steht beim zweiten Mal die erste Antwort mit im Kontext - die Ausgangslage ist gar nicht dieselbe.
 
     **2. Die Temperatur.** Bei jedem Wert über `0` würfelt das Modell bei der Wortauswahl mit.
 
@@ -251,7 +251,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
     /clear
     ```
 
-    Auch damit bleibt eine **Restunschärfe**: Fließkomma-Berechnungen auf CPU und GPU sind nicht bit-genau wiederholbar, gelegentlich weicht eine Antwort trotzdem ab. Verlass dich deshalb nie auf einen einzelnen Durchlauf – führe jeden Vergleich **mehrfach** aus und achte auf das **Muster**, nicht auf den Wortlaut.
+    Auch damit bleibt eine **Restunschärfe**: Fließkomma-Berechnungen auf CPU und GPU sind nicht bit-genau wiederholbar, gelegentlich weicht eine Antwort trotzdem ab. Verlass dich deshalb nie auf einen einzelnen Durchlauf - führe jeden Vergleich **mehrfach** aus und achte auf das **Muster**, nicht auf den Wortlaut.
 
 ---
 
@@ -259,7 +259,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
 !!! lab "Übung 1: Der Realitätscheck 🧪"
 
-    Stelle demselben Modell zweimal dieselbe Sache – einmal schlampig, einmal präzise.
+    Stelle demselben Modell zweimal dieselbe Sache - einmal schlampig, einmal präzise.
 
     ```title="Terminal"
     ollama run gemma3:1b "Schreib was über mein Café"
@@ -304,7 +304,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     ??? success "Was du beobachten solltest"
 
-        Beim **schlechten** Prompt sind alle drei Modelle schwach – das größere ist nur etwas eloquenter im Danebenliegen.
+        Beim **schlechten** Prompt sind alle drei Modelle schwach - das größere ist nur etwas eloquenter im Danebenliegen.
 
         Beim **guten** Prompt springt die Qualität bei *allen* Modellen deutlich nach oben. Der Sprung durch den besseren Prompt ist meist **größer** als der Sprung durch das größere Modell.
 
@@ -314,7 +314,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
 ## 🐍 Optional: Ollama aus Python steuern
 
-Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn nicht. Er lohnt sich, wenn du viele Varianten systematisch vergleichen willst: zehn Prompts, drei Modelle, fünf Wiederholungen. Von Hand wird das mühsam.
+Diesen Abschnitt kannst du **überspringen** - für den Kurs brauchst du ihn nicht. Er lohnt sich, wenn du viele Varianten systematisch vergleichen willst: zehn Prompts, drei Modelle, fünf Wiederholungen. Von Hand wird das mühsam.
 
 ??? code "🐍 Einrichtung und erstes Skript"
 
@@ -347,7 +347,7 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
     3. Starke Konkurrenz durch etablierte Supermärkte mit Lieferservice.
     ```
 
-    **Zur `messages`-Liste:** Ein Chat ist technisch nur eine Liste von Nachrichten mit je einer `role` – `system` (Grundsatz-Anweisung), `user` (deine Eingaben), `assistant` (bisherige Antworten). Das Modell hat **kein Gedächtnis**: Bei jedem Aufruf schickst du die komplette Liste erneut mit. Genau deshalb füllt sich das [Kontextfenster](halluzinationen-kontextfenster.md).
+    **Zur `messages`-Liste:** Ein Chat ist technisch nur eine Liste von Nachrichten mit je einer `role` - `system` (Grundsatz-Anweisung), `user` (deine Eingaben), `assistant` (bisherige Antworten). Das Modell hat **kein Gedächtnis**: Bei jedem Aufruf schickst du die komplette Liste erneut mit. Genau deshalb füllt sich das [Kontextfenster](halluzinationen-kontextfenster.md).
 
 ??? code "🐍 Der Werkzeugkasten `llm.py`"
 
@@ -403,8 +403,8 @@ Diesen Abschnitt kannst du **überspringen** – für den Kurs brauchst du ihn n
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) — zeigt, dass die Leistung eines Modells mit der Parameterzahl stark zunimmt. Genau deshalb sind kleine Modelle so stark auf gute Prompts angewiesen.
-[^johnny]: **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1–21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388) — empirische Studie: Ohne Rückmeldung über die Wirkung ihrer Prompts entwickeln Nicht-Fachleute keine systematische Vorgehensweise. Das eigene Labor ist genau diese Rückmeldung.
+[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) - zeigt, dass die Leistung eines Modells mit der Parameterzahl stark zunimmt. Genau deshalb sind kleine Modelle so stark auf gute Prompts angewiesen.
+[^johnny]: **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1-21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388) - empirische Studie: Ohne Rückmeldung über die Wirkung ihrer Prompts entwickeln Nicht-Fachleute keine systematische Vorgehensweise. Das eigene Labor ist genau diese Rückmeldung.
 !!! info "Werkzeug-Dokumentation"
 
     - **Ollama:** [https://github.com/ollama/ollama/blob/main/README.md](https://github.com/ollama/ollama/blob/main/README.md)
