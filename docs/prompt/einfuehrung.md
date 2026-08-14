@@ -11,11 +11,3 @@ Generative KI - allen voran große Sprachmodelle (**Large Language Models, LLMs*
 - **[Halluzinationen und Kontextfenster](halluzinationen-kontextfenster.md)** - warum Modelle Falsches erfinden und wie viel sie gleichzeitig "im Blick" haben
 - **[Prompt Engineering als Kompetenz](kompetenz.md)** - warum gezieltes Formulieren eine Schlüsselfähigkeit ist
 
----
-
-!!! info "Danach geht es praktisch weiter"
-
-    Im Anschluss an dieses Kapitel richtest du dein eigenes Labor ein: ein **lokales Sprachmodell** auf deinem Laptop, mit dem du jede Technik selbst ausprobierst.
-
-    👉 **[Setup: Dein eigenes LLM mit Ollama](ollama-setup.md)**
-

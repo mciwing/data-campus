@@ -4,7 +4,7 @@
 
 ## Willkommen im Modul `Prompt Engineering`! 👋
 
-In diesem Kurs lernst du, **generative KI gezielt einzusetzen**. Anhand eines durchgängigen Praxisbeispiels - der **Entwicklung und Bewertung einer eigenen Geschäftsidee** - arbeitest du dich von den Grundlagen großer Sprachmodelle bis zu wiederverwendbaren Prompt-Bibliotheken vor. Jedes Kapitel schließt mit einem **Lab** ab, in dem du das Gelernte direkt anwendest.
+In diesem Kurs lernst du, **generative KI gezielt einzusetzen**. Anhand von Beispielen arbeitest du dich von den Grundlagen großer Sprachmodelle über verschiedene Prompting-Techniken bis zur Evaluierung von KI-Ergebnissen vor. Jedes Kapitel schließt mit einem **Lab** ab, in dem du das Gelernte direkt anwendest.
 
 </div>
 
@@ -107,15 +107,9 @@ Der Kurs ist in aufeinander aufbauende Kapitel strukturiert:
 
 ---
 
-## Roter Faden: Deine Geschäftsidee 💡
+## Dein Labor: lokale & einfache Modelle 🦙
 
-Durch den gesamten Kurs begleitet dich **ein durchgängiges Projekt**: Du wählst eine Geschäftsidee, beschreibst sie, entwickelst ein Business Model Canvas, bewertest es aus verschiedenen Perspektiven und prüfst die Ergebnisse kritisch. So wird jede Prompting-Technik unmittelbar greifbar.
-
----
-
-## Dein Labor: absichtlich schwache Modelle 🦙
-
-Ab Kapitel 2 arbeitest du mit einem **lokalen Sprachmodell** auf deinem eigenen Laptop - ohne Account, ohne Kosten, ohne dass deine Daten das Gerät verlassen. Dafür nutzen wir [Ollama](ollama-setup.md) mit bewusst **sehr kleinen** Modellen.
+Im Praxis Teil des Kurses arbeitest du mit einem **lokalen Sprachmodell** auf deinem eigenen Laptop - ohne Account, ohne Kosten, ohne dass deine Daten das Gerät verlassen. Dafür nutzen wir [Ollama](ollama-setup.md) mit bewusst **sehr kleinen** Modellen.
 
 !!! quote "Warum ausgerechnet schwache Modelle?"
 
@@ -123,13 +117,13 @@ Ab Kapitel 2 arbeitest du mit einem **lokalen Sprachmodell** auf deinem eigenen 
 
     Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist. **Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering.**
 
-Ab Kapitel 2 hat jedes Kapitel ein **🔬 Ollama-Lab**: Dort wendest du die jeweilige Technik direkt auf **deine eigene Geschäftsidee** an. Übungen und Kurs-Lab sind dasselbe - du arbeitest also von Anfang an am roten Faden.
+Ab Kapitel 2 hat jedes Kapitel ein **🔬 Ollama-Lab**: Dort wendest du die jeweilige Technik direkt auf **deine Beispiele** an. 
 
 !!! info "Du brauchst keine Programmierkenntnisse"
 
     Alle Übungen laufen im **Terminal** - ein Befehl, ein Prompt, eine Antwort. Mehr ist nicht nötig.
 
-    Zusätzlich findest du in jedem Kapitel einen eingeklappten Block **🐍 Optional (Python)**, der zeigt, wie sich dieselbe Aufgabe automatisieren lässt - jeweils **mit abgedruckter Ausgabe**, damit du ihn auch verstehst, ohne ihn auszuführen. Wer mag, probiert es aus. Wer nicht, überspringt ihn ohne Verlust.
+    Zusätzlich findest du in jedem Kapitel einen eingeklappten Block **🐍 Optional (Python)**, der zeigt, wie sich dieselbe Aufgabe automatisieren lässt. Wer mag, probiert es aus. Wer nicht, überspringt ihn ohne Verlust.
 
 ---
 
@@ -143,7 +137,6 @@ Nach Abschluss dieses Moduls kannst du:
 - [x] Zero-Shot-, Few-Shot- und rollenbasierte Ansätze gezielt einsetzen
 - [x] Mehrstufige Workflows über Prompt Chaining gestalten
 - [x] KI-Ergebnisse kritisch evaluieren und verifizieren
-- [x] Eine wiederverwendbare Prompt-Bibliothek aufbauen
 
 Bereit? Starte mit der [Einführung in Generative KI](einfuehrung.md)!
 
