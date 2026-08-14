@@ -66,7 +66,7 @@ Der Ablauf beim Prompt Chaining ist nicht anders, als du es vermutlich schon hä
 
 2. **Fehler pflanzen sich nicht fort** - Erfindet das Modell in der Marktanalyse eine Zahl, fällt das auf, solange die Analyse noch für sich allein dasteht. Im Monolith fließt dieselbe Zahl unbemerkt in die SWOT und von dort in die Verbesserungsvorschläge - am Ende ist alles falsch, und du siehst nicht mehr, woher es kam. Der Vorteil liegt aber nur darin, dass du prüfen *kannst*: Wer die Zwischenschritte durchwinkt, hat die Fehlerkette trotzdem.
 
-3. **Wiederverwendbarkeit** - Jeder Schritt ist ein eigenständiger Baustein mit klarer Ein- und Ausgabe. Dein SWOT-Prompt fragt nicht nach dem Bio-Lieferdienst, sondern nach „der Idee" - damit funktioniert er unverändert für jede weitere Idee, du tauschst nur die Eingabe. So wächst mit der Zeit eine Sammlung erprobter Bausteine ([Prompt Libraries](libraries.md)).
+3. **Wiederverwendbarkeit** - Jeder Schritt ist ein eigenständiger Baustein mit klarer Ein- und Ausgabe. Dein SWOT-Prompt fragt nicht nach dem Bio-Lieferdienst, sondern nach „der Idee" - damit funktioniert er unverändert für jede weitere Idee, du tauschst nur die Eingabe. So wächst in deiner `prompts.md` mit der Zeit eine Sammlung erprobter Bausteine.
 
 4. **Kleinere Kontextfenster** - Jeder Prompt bekommt nur die Vorergebnisse, die er wirklich braucht, statt der gesamten bisherigen Unterhaltung. Das hält die Eingabe kurz und die Aufmerksamkeit des Modells beisammen - wichtig bei `gemma3:1b`, dessen [Kontextfenster](halluzinationen-kontextfenster.md) schnell voll ist und dann vorne Inhalte verliert.
 

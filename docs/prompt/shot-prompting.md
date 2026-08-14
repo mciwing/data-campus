@@ -170,7 +170,7 @@ Die Reihenfolge der Spalten ist zugleich die Reihenfolge, in der du vorgehen sol
 
     Das Modell **lernt** durch Few-Shot-Prompting nicht wirklich dazu - seine Parameter ändern sich nicht. Es erkennt lediglich im Kontext ein **Muster** und setzt es fort. Fachbegriff: *In-Context Learning*[^brown].
 
-    Deshalb ist die Wirkung nach dem Chat auch wieder weg. Wer dauerhaft ein Verhalten will, braucht Fine-Tuning - oder eine [Prompt Library](libraries.md).
+    Deshalb ist die Wirkung nach dem Chat auch wieder weg. Wer dauerhaft ein Verhalten will, braucht Fine-Tuning - oder eine Prompt-Sammlung, aus der er die Beispiele jedes Mal wieder mitschickt.
 
     In-Context Learning ist inzwischen ein eigenes Forschungsfeld; Dong et al. bieten dazu einen aktuellen Überblick.[^dong] Bemerkenswert ist, dass niemand die Fähigkeit einprogrammiert hat: Sie tauchte ab einer gewissen Modellgröße einfach auf - ein Nebenprodukt des Trainings, das bis heute nicht abschließend erklärt ist.
 

@@ -103,14 +103,6 @@ Der Kurs ist in aufeinander aufbauende Kapitel strukturiert:
     - Bias & Halluzinationen
     - Verifikation
 
-- :material-bookshelf: **Prompt Libraries**
-
-    ---
-
-    - Modularisierung
-    - Templates
-    - Skills
-
 </div>
 
 ---

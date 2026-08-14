@@ -202,7 +202,7 @@ Erst nach dem schließenden `"""` beginnt das Modell zu antworten.
 
     Lange Prompts tippt niemand gern im Terminal. Schreibe sie stattdessen in einem Texteditor und kopiere sie zwischen die `"""`.
 
-    Lege dir dafür einen Ordner `prompt-labor` mit einer Datei `prompts.md` an - dort sammelst du im Lauf des Kurses alle Prompts, die funktioniert haben. Am Ende wird daraus deine [Prompt Library](libraries.md).
+    Lege dir dafür einen Ordner `prompt-labor` mit einer Datei `prompts.md` an - dort sammelst du im Lauf des Kurses alle Prompts, die funktioniert haben. Am Ende hast du damit deine eigene, erprobte Prompt-Sammlung.
 
 ---
 

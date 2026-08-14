@@ -77,7 +77,6 @@ nav:
     - Kritisches Prompting: prompt/kritisches.md
     - Multimodales Prompting: prompt/multimodal.md
     - Evaluation von KI-Ergebnissen: prompt/evaluation.md
-    - Prompt Libraries: prompt/libraries.md
 
 
 extra_css:

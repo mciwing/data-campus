@@ -264,7 +264,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     1. **Härtetest:** Lass deinen besten Prompt aus Übung 2 auf `gemma3:270m` laufen - dem viermal kleineren Modell. Bleibt das Ergebnis brauchbar? Wenn nicht: Welcher Baustein müsste deutlicher werden?
     2. **Sichern:** Notiere den finalen Prompt in `prompts.md` unter `## 01 Beschreibung`.
 
-    Das ist der erste Eintrag deiner [Prompt Library](libraries.md) - sie wächst ab jetzt in jedem Kapitel.
+    Das ist der erste Eintrag deiner eigenen Prompt-Sammlung - sie wächst ab jetzt in jedem Kapitel.
 
 ??? code "🐍 Optional (Python): alle fünf Stufen automatisch durchlaufen"
 
