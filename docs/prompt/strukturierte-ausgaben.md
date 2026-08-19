@@ -147,14 +147,14 @@ Diese Option erzwingt syntaktisch gültiges JSON **auf Ebene der Token-Auswahl**
 
 Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben im Kapitel zeigen das Verfahren - hier wendest du es an. Terminal auf, `ollama run gemma3:1b`, los.
 
-!!! adv "Erst die Messbedingungen 🌡️"
+!!! info "Erst die Messbedingungen"
 
-    Dieses Lab besteht fast nur aus Zähllaufen. Damit du Formattreue misst und nicht das Würfeln, gilt hier durchgehend die Regel aus dem [Setup](ollama-setup.md): **`/set parameter temperature 0.2`** und **`/clear` vor jedem Lauf**.
+    Dieses Lab besteht fast nur aus Zähllaufen. Damit du Formattreue misst und nicht irgendwelche Zufallsergebnisse bekommst, gilt hier durchgehend die Regel aus dem [Setup](ollama-setup.md): **`/set parameter temperature 0.2`** und **`/clear` vor jedem Lauf**.
 
     Und du brauchst ein **Prüfmittel**. „Sieht nach JSON aus" reicht nicht - genau die subtilen Fehler (ein Komma zu viel, eine fehlende Klammer) übersieht das Auge. Lass die Maschine urteilen:
 
     ```title="Terminal"
-    ollama run gemma3:1b --format json "Nenne 3 Risiken für ..." | python -m json.tool
+    ollama run gemma3:1b --format json "Nenne 3 Ursachen für Schlaflosigkeit" | python -m json.tool
     ```
 
     Kommt eingerücktes JSON zurück, war die Antwort gültig. Kommt `Expecting value` oder `Extra data`, war sie es nicht - unabhängig davon, wie gut sie aussah.
@@ -167,31 +167,8 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Zähle:** Wie oft ist das Ergebnis wirklich gültiges JSON? Achte besonders auf einleitende Sätze, umschließende Codeblöcke und Kommas zu viel.
 
-    ??? success "Was du beobachten solltest"
 
-        **Ohne** `--format json` liegt die Quote typischerweise bei 1/5 bis 3/5. Der häufigste Fehler ist kein Syntaxfehler, sondern Höflichkeit: *„Gerne! Hier ist das JSON:"* davor, ein erklärender Satz danach, das Ganze in ```` ```json ````-Zäunen.
-
-        **Mit** `--format json` sind es fast immer 5/5 - die Syntax wird technisch erzwungen.
-
-        Der Haken zeigt sich erst beim Lesen: Die *Struktur* kann trotzdem falsch sein. Statt `{"risiken": [...]}` kommt manchmal `{"risiko1": ..., "risiko2": ...}`, oder `schwere` enthält einen ganzen Satz. **Gültiges JSON ist nicht dasselbe wie erwartetes JSON** - dazu der 🐍-Block unten.
-
-!!! lab "Übung 2: Vorlage schlägt JSON"
-
-    Baue für deine Idee eine **Vorlage** im Stil `SCHLÜSSEL: Wert` - etwa PRODUKT, ZIELGRUPPE, NUTZEN, PREIS, RISIKO.
-
-    Fünfmal ausführen, Trefferquote mit Übung 1 vergleichen. Danach dasselbe auf `gemma3:270m`.
-
-    **Die Frage:** Was überlebt beim winzigsten Modell - JSON oder Vorlage?
-
-    ??? success "Was du beobachten solltest"
-
-        Das Ergebnis ist kontraintuitiv, also erschrick nicht: **Auf `gemma3:270m` gewinnt die Vorlage deutlich.** Das JSON bricht dort mitten in der Klammerstruktur ab, verliert Anführungszeichen oder erfindet Schlüssel. Die `SCHLÜSSEL: Wert`-Zeilen kommen dagegen meist vollständig durch - notfalls mit einer Zeile zu viel, die du einfach ignorierst.
-
-        Der Grund: JSON ist **alles-oder-nichts**. Ein fehlendes Zeichen macht die gesamte Antwort unbrauchbar. Eine Zeilenvorlage ist **fehlertolerant** - vier von fünf Zeilen sind vier verwertbare Zeilen.
-
-        👉 Praxisregel: JSON, wenn ein Programm es weiterverarbeitet. Vorlage, wenn ein Mensch es liest oder das Modell klein ist.
-
-!!! lab "Übung 3: Der Reparatur-Prompt"
+!!! lab "Übung 2: Der Reparatur-Prompt"
 
     Wenn ein Format nicht stimmt, fang nicht von vorn an. Sag im **selben Chat**, was falsch war:
 
@@ -204,23 +181,13 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Die Abbruchregel:** Nach **zwei** erfolglosen Reparaturversuchen hörst du auf zu bitten und baust den Prompt um. Wer dreimal nachfasst, hat den Chat mit lauter fehlerhaften Beispielen gefüllt - und die stehen jetzt als Kontext im Fenster und machen den nächsten Fehler *wahrscheinlicher*. `/clear` und neu formulieren ist ab da schneller.
 
-    ??? success "Was du beobachten solltest"
-
-        Eine Reparaturrunde reicht meistens - der Hinweis auf den konkreten Fehler wirkt zuverlässiger als jede Vorab-Ermahnung.
-
-        Was du dabei bemerkst: Das Modell entschuldigt sich, korrigiert brav - und macht denselben Fehler zwei Antworten später wieder. Es hat nichts *gelernt*, es hat nur den letzten Hinweis noch im Kontextfenster.
-
-!!! lab "Übung 4: Dein Canvas in mehreren Formaten"
+!!! lab "Übung 3: Dein Canvas in mehreren Formaten"
 
     Erzeuge dein Business Model Canvas in **zwei** Formaten deiner Wahl - eines für Menschen (Tabelle oder Markdown), eines für Maschinen (JSON oder Vorlage).
 
-    Führe jedes Format fünfmal aus und notiere die Fehlversuche. Halte für jedes fest: *Wofür würde ich es einsetzen?*
+    Führe jedes Format fünfmal aus und notiere die Fehlversuche.
 
     Speichere den zuverlässigsten Prompt im `lab_log.md` unter `## 03 Canvas strukturiert`.
-
-    !!! tip "Für Gruppen: alle vier Formate abdecken"
-
-        Im Kurs lohnt sich die Arbeitsteilung - jede Person nimmt **ein** Format (Tabelle, JSON, Markdown, Vorlage), alle führen fünf Läufe durch, danach werden die Trefferquoten nebeneinandergelegt. So habt ihr in einem Bruchteil der Zeit gemeinsam eine Datengrundlage, für die eine Person allein alle zwanzig Läufe machen müsste.
 
 ??? code "🐍 Optional (Python): JSON einlesen und Schema prüfen"
 
