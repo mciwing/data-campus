@@ -207,7 +207,7 @@ Erst nach dem schließenden `"""` beginnt das Modell zu antworten.
 
     Lange Prompts tippt niemand gern im Terminal. Schreibe sie stattdessen in einem Texteditor und kopiere sie zwischen die `"""`.
 
-    Lege dir dafür einen Ordner `prompt-labor` mit einer Datei `prompts.md` an - dort sammelst du im Lauf des Kurses alle Prompts, die funktioniert haben. Am Ende hast du damit deine eigene, erprobte Prompt-Sammlung.
+    Genau dafür richtest du gleich im [Ollama-Lab](#ollama-lab) einen Ordner `prompt-labor` ein - dort sammelst du im Lauf des Kurses alle Prompts, die funktioniert haben. Am Ende hast du damit deine eigene, erprobte Prompt-Sammlung.
 
 ---
 
@@ -262,7 +262,60 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
 ## 🔬 Ollama-Lab
 
-!!! lab "Übung 1: Der Realitätscheck 🧪"
+!!! info "So arbeitest du in allen Labs"
+
+    Ab hier endet jedes Kapitel mit einem Ollama-Lab. Die Übungen bauen aufeinander auf - mach sie deshalb der Reihe nach. 
+
+    ---
+
+    **Dein Arbeitsordner.** Damit wir am Ende unseres Labors auch eine schöne Dokumentation haben, werden wir die wichtigesten Informationen immer niederschreiben. Dafür benötigen wir im Laufe des Kurses ein paar Dateien, welche wir am besten jetzt schon einrichten. Lege einen Ordner `prompt-labor` an und darin diese sechs Dateien:
+
+    ```
+    📁 prompt-labor
+    ├── idee.md
+    ├── prompts.md
+    ├── lab_log.md
+    ├── prompt_log.md
+    ├── testfaelle.md
+    └── kritik.md
+    ```
+
+    Wozu jede Datei da ist:
+
+    | Datei | Was hineinkommt | Ab Kapitel |
+    |---|---|---|
+    | `idee.md` | **Deine Geschäftsidee** in 3-5 Sätzen - der Kontext-Baustein, den du ab jetzt in fast jeden Prompt kopierst. Wird am Kursende als *Version 2* fortgeschrieben. | [Anatomie](anatomie.md) |
+    | `prompts.md` | Deine **Prompt-Sammlung**: pro Kapitel ein erprobter Prompt, nummeriert von `## 01` bis `## 08`. Das ist am Ende dein Portfolio. | [Anatomie](anatomie.md) |
+    | `lab_log.md` | Das **Laborbuch**: jede Zahl oder Wert, die du in einem Lab erhebst. Ohne das sind deine Messwerte nach zwei Kapiteln verschwunden. | hier |
+    | `prompt_log.md` | Das **Iterationsprotokoll**: was du an einem Prompt geändert hast und was es bewirkt hat. | [Iteratives Prompting](iteratives.md) |
+    | `testfaelle.md` | Deine **Testfälle** für Klassifikationsaufgaben - vorher festgelegt, damit die Messung fair bleibt. | [Shot Prompting](shot-prompting.md) |
+    | `kritik.md` | Alle **Schwachstellen**, die die KI an deiner Idee findet - inklusive deiner Bewertung, welche davon stimmen. | [Kritisches Prompting](kritisches.md) |
+
+    Dazu kommen im Kapitel [Prompt Chaining](chaining.md) noch ein paar `kette_*.md`-Dateien - die entstehen unterwegs von selbst.
+
+    So sieht dein Laborbuch aus - eine Zeile pro Messung:
+
+    ```markdown title="lab_log.md"
+    | Kapitel | Übung | Messgröße | Wert | Beobachtung in einem Satz |
+    |---|---|---|---|---|
+    | Setup | 2 | Namen bei temp 0.0 / 0.7 / 1.5 | … | … |
+    ```
+
+    Und so deine Prompt-Sammlung - die Überschriften kannst du gleich anlegen, gefüllt werden sie Kapitel für Kapitel:
+
+    ```markdown title="prompts.md"
+    ## 01 Beschreibung
+    ## 02a Canvas (Few-Shot)
+    ## 02b Canvas (iteriert)
+    ## 03 Canvas strukturiert
+    ## 04 Rollen
+    ## 05 Kette
+    ## 06 Kritik
+    ## 07 Multimodal
+    ## 08 Evaluation
+    ```
+
+!!! lab "Übung 1: Der Realitätscheck"
 
     Stelle demselben Modell zweimal dieselbe Sache - einmal schlampig, einmal präzise.
 
@@ -276,8 +329,15 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     Vergleiche den Output. Was fällt dir auf?
 
+    💡 **Du hast schon eine eigene Geschäftsidee im Kopf?** Dann nimm sie statt des Cafés. Ab dem [nächsten Kapitel](anatomie.md) begleitet sie dich ohnehin durch jedes Lab - je früher du an eigenem Material arbeitest, desto eher merkst du, wenn das Modell Unsinn erzählt.
 
-!!! lab "Übung 2: Temperatur erfühlen 🌡️"
+    ??? success "Was du beobachten solltest"
+
+        Der **schlampige** Prompt liefert Fließtext von der Stange: *„In unserem gemütlichen Café erwartet Sie …"* - austauschbar, ohne Ort, ohne Zielgruppe, und meist erheblich länger als gewollt.
+
+        Der **präzise** Prompt trifft Länge und Ton oft schon im ersten Versuch. Was er dir aber **nicht** liefert: Fakten, die du nicht mitgegeben hast. Erfundene Öffnungszeiten, Adressen oder Preise sind ein erster Vorgeschmack auf [Halluzinationen](halluzinationen-kontextfenster.md).
+
+!!! lab "Übung 2: Temperatur erfühlen"
 
     Starte den Chat-Modus und probiere denselben Prompt bei verschiedenen Temperaturen:
 
@@ -289,15 +349,50 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
     /set parameter temperature 0.0
     Erfinde einen Namen für ein veganes Café in Innsbruck.
     /clear
+    /set parameter temperature 0.7
+    Erfinde einen Namen für ein veganes Café in Innsbruck.
+    /clear
     /set parameter temperature 1.5
     Erfinde einen Namen für ein veganes Café in Innsbruck.
     ```
 
-    Auch hier wiede: was fällt dir auf? Probiere auch verschiedene Temperaturen
+    Auch hier wieder: Was fällt dir auf? Probiere ruhig weitere Werte und trage die drei Namen in dein `lab_log.md` ein.
 
-??? lab "Übung 3: Der Modell-Vergleich (optional) ⚖️"
+    ??? success "Was du beobachten solltest"
 
-    Für diese Übung brauchst du die beiden **Vergleichsmodelle** aus Schritt 2. Schicke denselben **schlechten** Prompt an alle drei:
+        Bei `0.0` bekommst du bei jedem Aufruf praktisch denselben, oft biederen Namen - das Modell nimmt immer das wahrscheinlichste Wort.
+
+        Bei `1.5` wird es originell, aber auch schief: erfundene Wörter, gebrochene Grammatik, gelegentlich Unsinn.
+
+        `0.7` ist der Grund, warum dieser Wert in fast allen Chat-Oberflächen voreingestellt ist: abwechslungsreich, aber noch verlässlich. **Merke dir 0.7 als Standard und 0.2 für alles, was vergleichbar sein soll.**
+
+!!! lab "Übung 3: Das Kontextfenster zum Überlaufen bringen"
+
+    Diese Übung macht greifbar, was im Kapitel [Halluzinationen und Kontextfenster](halluzinationen-kontextfenster.md) steht: Ein Modell hat kein Gedächtnis, sondern ein **Fenster** - und was hinausfällt, ist weg.
+
+    Verkleinere das Fenster künstlich und gib dem Modell eine Regel, an die es sich halten soll:
+
+    ```{.text .ollama title="Ollama Chat"}
+    /set parameter num_ctx 512
+    Du antwortest ausschließlich auf Französisch.
+    Erzähl mir etwas über Innsbruck.
+    ```
+
+    Jetzt füttere den Chat: Stelle sechs, acht, zehn weitere Fragen, die **lange** Antworten provozieren (*„Erzähl mir mehr über die Geschichte der Stadt."*). **Zähle, nach wie vielen Runden die Regel bricht** - ab wann also wieder Deutsch kommt.
+
+    Danach dasselbe mit `/set parameter num_ctx 4096`.
+
+    ??? success "Was du beobachten solltest"
+
+        Mit 512 Tokens hält die Systemregel oft nur zwei bis vier Runden durch. Sie steht ganz am **Anfang** des Kontextes - und der Anfang fällt zuerst hinaus, wenn neue Tokens nachrücken.
+
+        Das Modell merkt davon nichts. Es kündigt nicht an *„ich habe deine Anweisung vergessen"*, es antwortet einfach wieder auf Deutsch. Genauso verhält sich jedes Modell in jedem langen Chat - nur später.
+
+        👉 Das erklärt zwei Beobachtungen, die dir im Kurs noch begegnen: warum sehr kleine Modelle ihre [Rolle vergessen](rollen.md), und warum es bei langen Sitzungen besser ist, mit einer Zusammenfassung **neu zu starten**, statt weiterzureden.
+
+??? lab "Übung 4: Der Modell-Vergleich (optional)"
+
+    Für diese Übung brauchst du die beiden **Vergleichsmodelle** aus dem Abschnitt [Modelle herunterladen](#modelle-herunterladen). Schicke denselben **schlechten** Prompt an alle drei:
 
     ```title="Terminal"
     ollama run gemma3:270m "Schreib was über mein Café"
@@ -305,7 +400,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
     ollama run gemma3:4b   "Schreib was über mein Café"
     ```
 
-    Wiederhole das Ganze mit dem **guten** Prompt aus Übung 0.
+    Wiederhole das Ganze mit dem **guten** Prompt aus Übung 1.
 
     ??? success "Was du beobachten solltest"
 

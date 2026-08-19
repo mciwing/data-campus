@@ -232,14 +232,41 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 1: Zero-Shot vs. Few-Shot messen"
 
-    Denk dir eine **Klassifikationsaufgabe** aus deinem Geschäftsfeld aus - etwa Kundenanfragen in *Beschwerde / Frage / Lob* einsortieren. Schreibe dir **fünf Testfälle** auf, darunter mindestens einen Grenzfall.
+    Denk dir eine **Klassifikationsaufgabe** aus deinem Geschäftsfeld aus - etwa Kundenanfragen in *Beschwerde / Frage / Lob* einsortieren.
+
+    **Schreibe deine fünf Testfälle zuerst auf**, in eine Datei `testfaelle.md`, *bevor* der erste Prompt läuft. Das ist keine Förmlichkeit: Wer die Fälle unterwegs anpasst, vergleicht am Ende zwei verschiedene Prüfungen miteinander und kann die Zahlen wegwerfen.
+
+    Mindestens einer davon soll ein **Grenzfall** sein - eine Eingabe, bei der du selbst kurz überlegen musst:
+
+    ```markdown title="testfaelle.md"
+    1. "Die Lieferung kam zwei Tage zu spät."              → Beschwerde
+    2. "Liefert ihr auch nach Hall?"                       → Frage
+    3. "Super Gemüse, danke!"                              → Lob
+    4. "Preis okay, Qualität mittel."                      → Grenzfall: ?
+    5. "Kann ich das Abo pausieren? Sonst top."            → Grenzfall: ?
+    ```
 
     Dann beide Varianten durchspielen:
 
     1. **Zero-Shot** - nur die Anweisung, dazu *„Antworte mit genau einem Wort."*
     2. **Few-Shot** - dieselbe Anweisung plus drei Beispiele, letztes Label offen lassen.
 
-    **Zähle:** Wie oft bekommst du wirklich nur ein Wort zurück? Notiere beide Trefferquoten als Bruch.
+    **Zähle zwei Dinge getrennt** und notiere beide als Bruch in dein `lab_log.md`:
+
+    | Messgröße | Frage |
+    |---|---|
+    | **Formattreue** | Wie oft kommt wirklich nur *ein* Wort zurück - ohne Erklärsatz, ohne Punkt, ohne Wiederholung der Frage? |
+    | **Richtigkeit** | Wie oft stimmt das Label mit deiner eigenen Einordnung überein? |
+
+    **Der Unterschied zwischen den beiden Zahlen ist die eigentliche Lektion** dieses Kapitels - halte fest, welche der beiden sich durch die Beispiele stärker verbessert.
+
+    ??? success "Was du beobachten solltest"
+
+        **Formattreue** springt durch Few-Shot fast immer deutlich nach oben, oft von etwa 2/5 auf 5/5. Beispiele zeigen dem Modell das Format, ohne dass du es beschreiben musst - das ist die Stärke der Technik.
+
+        **Richtigkeit** verbessert sich viel weniger. Bei den drei eindeutigen Fällen liegt meist schon Zero-Shot richtig; die beiden Grenzfälle bleiben auch mit Beispielen wacklig - und schwanken zwischen den Läufen.
+
+        Die Lehre: **Few-Shot bringt dir Form, nicht Verständnis.** Wer die Trefferquote nur über die Formattreue misst, hält die Technik für stärker, als sie ist.
 
 !!! lab "Übung 2: Deinen Stil beibringen"
 
@@ -248,6 +275,12 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     Schreibe zwei Produkt- oder Angebotsnamen im Stil deiner Idee selbst und lass das Modell den dritten ergänzen. Tausche danach die Beispiele gegen einen **völlig anderen** Stil (z. B. englische Tech-Namen) und wiederhole.
 
     **Die Frage:** Übernimmt das Modell den neuen Stil, ohne dass du ihn je beschrieben hast?
+
+    ??? success "Was du beobachten solltest"
+
+        Ja - und zwar verblüffend zuverlässig. Zwei Beispiele genügen meist, damit der dritte Vorschlag in Silbenzahl, Sprache und Klangfarbe passt.
+
+        Das ist die Antwort auf die Frage *„Wozu Beispiele, wenn ich es auch beschreiben kann?"*: Versuch einmal, den Stil *„kurz, alpin, mit Augenzwinkern, aber nicht kitschig"* so zu formulieren, dass ein Modell ihn trifft. Zwei Beispiele erledigen das in einer Zeile.
 
 !!! lab "Übung 3: Business Model Canvas erzeugen"
 
@@ -258,7 +291,17 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Vergleiche** nach Vollständigkeit (0-9 Felder), Formattreue und inhaltlicher Substanz.
 
-    Speichere den besseren Prompt in `prompts.md` unter `## 02 Canvas`.
+    Speichere den besseren Prompt in `prompts.md` unter `## 02a Canvas (Few-Shot)`. Die Nummerierung mit Buchstaben ist Absicht: In den nächsten beiden Kapiteln entstehen `02b` und `03` aus demselben Canvas - und am Ende willst du den Weg sehen, nicht nur das Ziel.
+
+    👉 Vergiss den [Härtetest](anatomie.md) nicht: Schick den Gewinner-Prompt einmal durch `gemma3:270m`.
+
+    ??? success "Was du beobachten solltest"
+
+        Zero-Shot liefert typischerweise vier bis sechs der neun Felder, oft mit eigenwilligen Namen (*„Marketing"* statt *„Kanäle"*) und ungleich verteilter Tiefe.
+
+        Few-Shot hebt vor allem die **Struktur**: Die Feldnamen stimmen jetzt, die Reihenfolge auch, jedes Feld ist ähnlich lang. Vollständig sind aber auch hier selten alle neun - die letzten Felder fallen gern hinten runter.
+
+        Damit ist die Bühne für das nächste Kapitel bereitet: Was Beispiele allein nicht schaffen, schafft **Iteration**.
 
 ??? code "🐍 Optional (Python): Few-Shot-Baukasten"
 

@@ -131,25 +131,90 @@ Wenn ein Modell nicht nur *antwortet*, sondern **Werkzeuge benutzt** - eine Webs
 
 Dieses Labor beginnt ausnahmsweise nicht im Terminal, sondern im Browser. Bisher haben wir dir gesagt, welches Modell du laden sollst - diesmal suchst du es dir selbst.
 
-!!! lab "Übung: Ein multimodales Modell selbst finden und füttern"
+!!! adv "Wenn dein Rechner nicht mitspielt 💻"
 
-    **1 · Modelle nach Fähigkeit filtern.** Öffne [ollama.com/search](https://ollama.com/search). Die Modelle lassen sich nach Fähigkeiten filtern: **Vision**, **Tools**, **Thinking**, **Embedding** und **Cloud**. Der Filter steckt auch in der Adresse - [`?c=vision`](https://ollama.com/search?c=vision) zeigt alle Modelle, die Bilder verarbeiten können.
+    Vision-Modelle sind deutlich größer als `gemma3:1b` - mehrere Gigabyte sind normal. Das Lab fällt deshalb für niemanden aus; es gibt zwei gleichwertige Wege:
+
+    - **Cloud-Modelle.** Der Filter [`?c=cloud`](https://ollama.com/search?c=cloud) zeigt Modelle, die auf Ollamas Servern laufen statt auf deiner Festplatte. Sie brauchen einen kostenlosen Account, aber keinen Speicher. Beachte: Deine Bilder verlassen dabei den Rechner - nimm nichts Persönliches.
+    - **Zu zweit arbeiten.** Ein Laptop mit genug Arbeitsspeicher pro Team genügt. Teil 1 und 2 macht ohnehin jede Person für sich.
+
+    Wer ein lokales Modell lädt: `ollama rm <modell>` gibt den Platz danach wieder frei.
+
+!!! lab "Übung 1: Modelle nach Fähigkeit filtern"
+
+    Öffne [ollama.com/search](https://ollama.com/search). Die Modelle lassen sich nach Fähigkeiten filtern: **Vision**, **Tools**, **Thinking**, **Embedding** und **Cloud**. Der Filter steckt auch in der Adresse - [`?c=vision`](https://ollama.com/search?c=vision) zeigt alle Modelle, die Bilder verarbeiten können.
 
     Verschaffe dir einen Überblick: Wie viele Modelle können sehen? Welche können zusätzlich Werkzeuge benutzen (`tools`) - die Grundlage für die [Agenten](#agenten) von oben?
 
     Suche dir **drei Vision-Modelle** heraus, die auf deinen Rechner passen. Faustregel: Der Download sollte kleiner sein als dein halber freier Arbeitsspeicher. Notiere zu jedem: Name mit Tag, Größe, Kontextfenster.
 
-    **2 · Herausfinden, wie eine Datei in den Prompt kommt.** Das steht nicht in diesem Kapitel - du findest es auf den Modellseiten und in der [Ollama-Dokumentation](https://docs.ollama.com). Beantworte für dich:
+!!! lab "Übung 2: Herausfinden, wie eine Datei in den Prompt kommt"
+
+    Das steht nicht in diesem Kapitel - du findest es auf den Modellseiten und in der [Ollama-Dokumentation](https://docs.ollama.com). Beantworte für dich:
 
     - Wie übergibst du ein **Bild** an `ollama run`?
     - Woran erkennst du in der Ausgabe, dass das Bild tatsächlich angenommen wurde - und nicht bloß ignoriert?
     - Und ein **PDF**: Geht das genauso, oder brauchst du einen Umweg? Wenn ja, welchen?
 
-    **3 · Ausprobieren.** Lade eines deiner drei Modelle mit `ollama pull` und schicke ihm ein Bild, das zu deiner Geschäftsidee passt - ein Produkt, ein Ladenlokal, ein Regal. Verlange ausdrücklich, nur zu beschreiben, was wirklich zu sehen ist.
+    Diese Übung ist der eigentliche Kern des Kapitels: Ab hier musst du dir Werkzeuge selbst erschließen. Probier es wirklich erst selbst - schau danach in den Lösungsblock.
+
+    ??? success "Wenn du nicht weiterkommst"
+
+        **Bild:** Du hängst den Dateipfad einfach an den Prompt an - Ollama erkennt ihn selbst und lädt das Bild:
+
+        ```title="Terminal"
+        ollama run llava "Beschreibe genau, was auf diesem Bild zu sehen ist: ./laden.jpg"
+        ```
+
+        Pfade mit Leerzeichen gehören in Anführungszeichen. Relative Pfade beziehen sich auf das Verzeichnis, in dem du das Terminal geöffnet hast.
+
+        **Angenommen oder ignoriert?** Der verlässlichste Test ist eine Frage, die man ohne das Bild nicht beantworten kann - *„Welche Farbe hat der Hintergrund?"* oder *„Wie viele Personen sind zu sehen?"*. Kommt eine plausible, aber vage Antwort ohne Bezug zum Bild, wurde der Pfad als Text gelesen und nicht als Datei. Ein Modell ohne `vision`-Fähigkeit sagt das übrigens meist nicht dazu - es beschreibt einfach irgendetwas.
+
+        **PDF:** Nein, das geht nicht genauso. Ollama nimmt Bilder entgegen, keine Dokumente. Du brauchst einen Umweg - entweder den Text extrahieren (`pdftotext`, Python-Bibliotheken) und als Text mitschicken, oder die Seiten in PNGs umwandeln und als Bilder übergeben. Beides sind zwei Schritte, keine Ollama-Funktion.
+
+!!! lab "Übung 3: Ausprobieren"
+
+    Lade eines deiner drei Modelle mit `ollama pull` und schicke ihm ein Bild, das zu deiner Geschäftsidee passt - ein Produkt, ein Ladenlokal, ein Regal. Verlange ausdrücklich, nur zu beschreiben, was wirklich zu sehen ist.
 
     **Prüfe:** Markiere jede Aussage, die du im Bild nicht belegen kannst. Schicke denselben Prompt anschließend an `gemma3:1b`, das kein `vision` kann. Der Unterschied zwischen beiden Antworten ist die eigentliche Lektion dieses Kapitels.
 
     Notiere Modellwahl und Prompt in `prompts.md` unter `## 07 Multimodal`.
+
+    ??? success "Was du beobachten solltest"
+
+        Das Vision-Modell beschreibt zuverlässig, was groß und mittig im Bild ist - und wird unzuverlässig bei Details: Schrift auf Verpackungen, Zahlen, Mengenangaben, Gesichtsausdrücke.
+
+        Auffällig ist die Sorte Fehler: Es erfindet **Plausibles**. Auf dem Foto eines Gemüseregals stehen dann „frische Bio-Tomaten aus der Region" - obwohl kein Schild das hergibt. Das ist dieselbe [Halluzination](halluzinationen-kontextfenster.md) wie im Text, nur schwerer zu bemerken, weil das Bild als Beleg wirkt.
+
+        `gemma3:1b` antwortet trotzdem - flüssig, ausführlich und komplett erfunden, denn es hat nie ein Bild gesehen. **Ein Modell sagt dir nicht, dass es etwas nicht kann.**
+
+??? code "🐍 Optional (Python): Bilder programmatisch übergeben"
+
+    In Python geht das Bild nicht über den Prompttext, sondern über ein eigenes Feld `images` - eine Liste von Dateipfaden:
+
+    ```python title="bild_beschreiben.py"
+    import ollama
+
+    antwort = ollama.chat(
+        model="llava",
+        messages=[{
+            "role": "user",
+            "content": ("Beschreibe ausschließlich, was tatsächlich zu sehen ist. "
+                        "Wenn du etwas nicht erkennen kannst, schreibe 'nicht erkennbar'."),
+            "images": ["./laden.jpg"],
+        }],
+        options={"temperature": 0.1},
+    )
+
+    print(antwort["message"]["content"])
+    ```
+
+    Zwei Dinge lohnen sich hier:
+
+    - **`temperature` niedrig setzen.** Bei einer Beschreibungsaufgabe willst du keine Kreativität, sondern Wiedergabe.
+    - **Die Ausrede erlauben.** Der Satz *„schreibe 'nicht erkennbar'"* gibt dem Modell einen zulässigen Ausweg. Ohne ihn ist Erfinden die einzige Möglichkeit, die Aufgabe zu erfüllen - dieselbe Technik, die in [Evaluation von KI-Ergebnissen](evaluation.md) gegen Halluzinationen hilft.
+
+    Mit einer Schleife über mehrere Bilder hast du damit in fünf Zeilen einen Beschreibungs-Stapelbetrieb - etwa für einen ganzen Produktkatalog.
 
 ---
 

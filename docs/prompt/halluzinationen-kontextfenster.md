@@ -115,6 +115,10 @@ Auch hier gilt: Mit ein paar Techniken behältst du die Kontrolle.[^zuckarelli]
     4. **Neuen Chat starten** - bei „Verrennen": relevanten Inhalt in einen frischen Chat kopieren (das löscht den Altlasten-Kontext).
     5. **Größeres Modell wählen** - ein Modell mit größerem Kontextfenster nutzen, wenn die Aufgabe es wirklich braucht.
 
+!!! adv "Zum Selbst-Ausprobieren 🔬"
+
+    Den Kontext-Überlauf kannst du selbst herbeiführen - man muss das Fenster nur künstlich klein machen. Sobald du im übernächsten Kapitel [Ollama eingerichtet](ollama-setup.md) hast, wartet dort **Übung 4** genau darauf: `num_ctx` auf 512 setzen, eine Systemregel vergeben und zählen, nach wie vielen Runden das Modell sie vergisst.
+
 ---
 
 ## Wie Halluzinationen und Kontextfenster zusammenhängen

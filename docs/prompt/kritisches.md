@@ -125,7 +125,17 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Zähle** in jeder Antwort die Lobwörter (*großartig, ideal, perfekt, Erfolg*) und die Warnwörter (*Risiko, Problem, Konkurrenz, teuer*).
 
+    **Und notiere zusätzlich ein schlichtes Ja/Nein:** Nennt die Antwort mindestens ein **K.-o.-Risiko** - etwas, das die Idee wirklich scheitern lassen könnte? Diese Frage ist unbestechlicher als jede Wortzählung, denn genau darauf kommt es in der Praxis an.
+
     **Die unangenehme Frage:** Wie weit liegen Variante 1 und 3 auseinander - bei identischer Idee?
+
+    ??? success "Was du beobachten solltest"
+
+        Variante 1 liefert typischerweise drei bis fünf Lobwörter, keine oder eine sanft formulierte Einschränkung („eine gewisse Herausforderung könnte sein …") - und **kein** K.-o.-Risiko.
+
+        Variante 3 findet plötzlich Probleme, die es in Variante 1 nicht gab. Nicht weil das Modell nachgedacht hätte, sondern weil dein Wort *„schlecht"* die Wahrscheinlichkeiten in Richtung Kritik verschoben hat.
+
+        Variante 2 liegt dazwischen und ist trotzdem meist zu freundlich. **Die Idee war die ganze Zeit dieselbe.** Was sich geändert hat, warst du.
 
 !!! lab "Übung 2: Das Pre-Mortem"
 
@@ -134,6 +144,14 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     Stelle dieselbe Sache vorher höflich (*„Welche Herausforderungen siehst du?"*) und **vergleiche**.
 
     **Die Frage:** Welche Variante nennt Punkte, die du wirklich noch nicht bedacht hattest?
+
+    **Leg jetzt deine Datei `kritik.md` an** und schreibe die drei Ursachen samt Frühwarnzeichen als erste Einträge hinein - in der nächsten Übung kommen zwölf weitere dazu.
+
+    ??? success "Was du beobachten solltest"
+
+        Die höfliche Variante liefert Kategorien (*„Finanzierung", „Wettbewerb"*), das Pre-Mortem liefert **Geschichten**: *„Im zweiten Winter fielen die Lastenrad-Zustellungen aus, die Stammkunden wechselten zum Supermarkt und kamen nicht zurück."*
+
+        Der Unterschied liegt nicht am Wissen des Modells, sondern an der Aufgabe: Ein Scheitern zu **erklären** verlangt eine kausale Kette, ein Risiko zu **nennen** nicht. Die Frühwarnzeichen sind der eigentliche Ertrag - sie sind das Einzige, worauf du ab morgen achten kannst.
 
 !!! lab "Übung 3: Der Red-Team-Durchlauf"
 
@@ -146,17 +164,49 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     | ⚔️ Konkurrent | *„Wie zerstörst du dieses Startup in 12 Monaten? Genau 3 Wege."* |
     | 🔍 Skeptiker | *„Liste genau 3 unausgesprochene Annahmen auf, die falsch sein könnten."* |
 
-    Sammle alle zwölf Punkte in `kritik.md`.
+    Sammle alle zwölf Punkte in `kritik.md` - unter den Einträgen aus dem Pre-Mortem.
+
+    ??? success "Was du beobachten solltest"
+
+        Die vier Angreifer überschneiden sich weniger, als man erwartet. Der Konkurrent ist meist der produktivste: Weil er *gewinnen* will statt zu *warnen*, benennt er Schwachstellen, die die anderen höflich umgehen.
+
+        Rechne mit zwei bis drei offensichtlich unzutreffenden Punkten - Kostenfallen für ein Geschäftsmodell, das du gar nicht betreibst. Das ist kein Fehler der Übung, das ist Übung 4.
 
 !!! lab "Übung 4: Aus Kritik Arbeit machen"
 
-    Markiere jeden der zwölf Punkte:
+    Markiere jeden Punkt in `kritik.md`:
 
     ✅ *stimmt - muss ich lösen* · ❓ *muss ich prüfen* · ❌ *trifft nicht zu*
 
     Nur ✅ und ❓ sind echte Arbeit. Dass es ❌ gibt, ist die zweite Lehre dieser Übung - auch Kritik wird halluziniert.
 
+    !!! warning "Jedes ❌ braucht eine Begründung - einen Satz"
+
+        Das ❌ ist die gefährlichste Markierung des Kurses. Es ist der Ort, an dem berechtigte, aber unbequeme Kritik lautlos verschwindet - und zwar nicht, weil das Modell sich geirrt hat, sondern weil du an deiner Idee hängst.
+
+        Deshalb: **Schreibe hinter jedes ❌ einen Satz, warum der Punkt nicht zutrifft.** Wenn dir dieser Satz schwerfällt, war es in Wahrheit ein ❓.
+
+        Zähle am Ende: Wie viele ❌ hast du vergeben - und bei wie vielen davon war die Begründung wirklich überzeugend?
+
     Formuliere aus den ✅-Punkten **drei konkrete Änderungen** an deiner Idee. Speichere deine Kritik-Prompts in `prompts.md` unter `## 06 Kritik`.
+
+!!! lab "Übung 5: Die Idee fortschreiben"
+
+    Jetzt schließt sich der Kreis. Nimm deine `idee.md` aus dem Kapitel [Anatomie](anatomie.md) - die drei bis fünf Sätze, mit denen alles anfing - und schreibe sie als **`idee.md` Version 2** neu.
+
+    Eingearbeitet werden:
+
+    - die **drei Änderungen** aus Übung 4,
+    - die **Auflösung des Zielkonflikts** aus [Rollenbasiertes Prompting](rollen.md),
+    - alles, was du beim Canvas über deine eigene Idee gelernt hast.
+
+    **Lass Version 1 stehen.** Die beiden Fassungen nebeneinander sind das beste Argument dafür, dass sich der ganze Aufwand gelohnt hat - und die Grundlage für den Portfolio-Check am Ende des Kurses.
+
+    ??? success "Was du beobachten solltest"
+
+        Version 2 ist fast immer **konkreter und kleiner**: engere Zielgruppe, klarerer Startpunkt, ein Risiko bewusst ausgeklammert.
+
+        Das ist kein Zurückrudern, sondern das übliche Ergebnis ernsthafter Kritik - und der Punkt, an dem aus einem Einfall ein Vorhaben wird.
 
 ??? code "🐍 Optional (Python): Red Team automatisieren"
 

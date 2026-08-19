@@ -117,7 +117,14 @@ Im Praxis Teil des Kurses arbeitest du mit einem **lokalen Sprachmodell** auf de
 
     Ein winziges Modell ist gnadenlos ehrlich: Es liefert nur dann ein gutes Ergebnis, wenn dein Prompt wirklich gut ist. **Wer auf einem 0,5-Milliarden-Parameter-Modell saubere Ergebnisse erzeugt, kann Prompt Engineering.**
 
-Ab Kapitel 2 hat jedes Kapitel ein **🔬 Ollama-Lab**: Dort wendest du die jeweilige Technik direkt auf **deine Beispiele** an. 
+Ab Kapitel 2 hat jedes Kapitel ein **🔬 Ollama-Lab**: Dort wendest du die jeweilige Technik direkt auf **deine Beispiele** an - genauer gesagt auf **eine eigene Geschäftsidee**, die dich durch den gesamten Kurs begleitet.
+
+Zwei Dinge gelten in allen Labs:
+
+- **Die Übungen bauen aufeinander auf.** Die erste eines Kapitels liefert meist den Vergleichspunkt, die letzte sichert das Ergebnis für das nächste Kapitel - arbeite sie der Reihe nach durch.
+- Fast jede Übung hat einen eingeklappten Block **„Was du beobachten solltest"** - lies ihn erst *nach* dem eigenen Versuch. Er ist zum Abgleichen da, nicht zum Abkürzen.
+
+Am Ende des Kurses steht ein **Portfolio-Check**, der alles zusammenführt: deine Prompt-Sammlung, dein Laborbuch und die zwei Fassungen deiner Idee.
 
 !!! info "Du brauchst keine Programmierkenntnisse"
 

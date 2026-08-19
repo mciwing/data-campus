@@ -82,7 +82,24 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Prüfe:** Wie viele der drei Teile kommen wirklich brauchbar an? Wo bricht der Text ab?
 
-!!! lab "Übung 2: Dieselbe Aufgabe als Kette"
+    💡 **Falls der Monolith bei dir standhält:** Kurze Ideen mit wenig Kontext überfordern das Modell manchmal nicht genug. Dreh die Schraube fester - verlange zusätzlich genaue Formate je Teil (*„SWOT mit genau 2 Punkten pro Kategorie, Vorschläge je mit Erstem Schritt"*) und einen vierten Teil. Irgendwo bricht jede Kette; du sollst sehen, wo.
+
+    ??? success "Was du beobachten solltest"
+
+        Teil 1 ist meist ordentlich, Teil 2 verkürzt sich sichtbar, Teil 3 besteht aus zwei dürren Zeilen - oder fehlt ganz.
+
+        Das ist kein Zufall: Das Modell verteilt seine Aufmerksamkeit über die gesamte Aufgabe und läuft dabei gegen die Grenze der Antwortlänge. Was am Ende steht, wird am schlechtesten - unabhängig davon, wie wichtig es dir ist.
+
+!!! lab "Übung 2: Die Kette zuerst zeichnen"
+
+    Bevor du sie ausführst: Zeichne deine Kette **auf Papier**. Welche Schritte, welche Ein- und Ausgaben?
+
+    Prüfe an der Skizze zwei Dinge, die sich später schwer korrigieren lassen:
+
+    - Braucht ein Schritt außer dem letzten Zwischenergebnis auch noch die **Originalidee**? (Meist ja - das sind die gestrichelten Pfeile im Diagramm oben.)
+    - Ist jede Ausgabe so formatiert, dass der **nächste** Schritt damit etwas anfangen kann?
+
+!!! lab "Übung 3: Dieselbe Aufgabe als Kette"
 
     Jetzt in drei Schritten, jeder mit festem Format und `/clear` dazwischen:
 
@@ -92,21 +109,52 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     | 2 | SWOT | genau 2 Punkte je Kategorie |
     | 3 | Verbesserungen | 3 Vorschläge mit *Adressiert* und *Erster Schritt* |
 
-    Das Ergebnis jedes Schritts kopierst du in den nächsten Prompt. Speichere die Zwischenstände als `kette_1_markt.md`, `kette_2_swot.md`, …
+    Speichere die Zwischenstände als `kette_1_markt.md`, `kette_2_swot.md`, …
+
+    **Damit du nicht copy-paste-müde wirst:** Speichere jede Antwort in eine Datei und gib sie dem nächsten Schritt direkt mit - dafür brauchst du kein Python, das kann die Kommandozeile selbst.
+
+    ```title="Terminal"
+    ollama run gemma3:1b "Idee: ... Beschreibe den Zielmarkt in genau 3 Stichpunkten." > kette_1_markt.md
+
+    ollama run gemma3:1b "Marktanalyse:
+    $(cat kette_1_markt.md)
+
+    Erstelle daraus eine SWOT-Analyse. Genau 2 Punkte pro Kategorie." > kette_2_swot.md
+    ```
+
+    *(Unter Windows funktioniert `$(cat …)` in der PowerShell als `$(Get-Content kette_1_markt.md -Raw)`.)*
 
     **Vergleiche** das Endergebnis mit dem Monolith aus Übung 1.
 
-!!! lab "Übung 3: Der Kontrollpunkt"
+    ??? success "Was du beobachten solltest"
 
-    Führe Schritt 2 **fünfmal** aus und zähle, wie oft alle vier SWOT-Kategorien vorkommen.
+        Der auffälligste Unterschied ist nicht die Qualität von Schritt 1 - die ist ähnlich. Es ist die Qualität von **Schritt 3**: Statt zwei müder Zeilen bekommst du drei durchdachte Vorschläge, weil das Modell die volle Antwortlänge nur noch für diese eine Aufgabe hat.
+
+        Der zweite Gewinn ist unsichtbar, bis etwas schiefgeht: Du kannst Schritt 2 wiederholen, ohne Schritt 1 zu verlieren.
+
+!!! lab "Übung 4: Der Kontrollpunkt - und was ohne ihn passiert"
+
+    **Teil 1 - Vollständigkeit.** Führe Schritt 2 **fünfmal** aus und zähle, wie oft alle vier SWOT-Kategorien vorkommen.
 
     Wenn eine fehlt: nicht neu starten, sondern gezielt nachfassen - *„In deiner Antwort fehlen die CHANCEN. Gib die vollständige SWOT-Analyse erneut aus."*
 
+    **Teil 2 - Fehlerfortpflanzung.** Jetzt der eigentliche Test, und der ist unangenehm: Öffne `kette_1_markt.md` und **schmuggle eine falsche Zahl hinein** - etwa eine Marktgröße, die zehnmal zu hoch ist. Lass die Kette ab Schritt 2 normal weiterlaufen.
+
+    - Taucht die falsche Zahl in der SWOT wieder auf?
+    - Und in den Verbesserungsvorschlägen?
+    - Widerspricht das Modell an irgendeiner Stelle?
+
     **Optional:** dasselbe auf `gemma3:270m`. Dort wirst du den Kontrollpunkt fast immer brauchen.
 
-!!! lab "Übung 4: Die Kette abschließen"
+    ??? success "Was du beobachten solltest"
 
-    Zeichne deine Kette zuerst **auf Papier**: Welche Schritte, welche Ein- und Ausgaben?
+        Die vier Kategorien kommen typischerweise in drei bis vier von fünf Läufen vollständig - schon das rechtfertigt den Kontrollpunkt.
+
+        Der Schmuggeltest fällt fast immer gleich aus: **Die falsche Zahl wandert unbeanstandet bis in den letzten Schritt** und begründet dort Empfehlungen. Das Modell prüft Eingaben nicht, es verarbeitet sie.
+
+        👉 Das ist der Preis der Kette: Sie ist besser als der Monolith - und sie **verstärkt** Fehler, statt sie abzufangen. Deshalb gehört ein Blick auf jedes Zwischenergebnis dazu, und deshalb hat [Evaluation von KI-Ergebnissen](evaluation.md) ein eigenes Kapitel.
+
+!!! lab "Übung 5: Die Kette abschließen"
 
     **Optional:** Lass die komplette Kette zusätzlich auf `gemma3:4b` laufen. Wo ist der Unterschied am größten - am Anfang oder am Ende?
 

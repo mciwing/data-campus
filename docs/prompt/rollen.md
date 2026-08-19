@@ -164,21 +164,63 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Baue eine Matrix:** Zeilen = Rollen, Spalten = genannte Punkte. Markiere die **Einzelnennungen** - Punkte, die nur *eine* Rolle sieht. Genau dort liegt der Gewinn; was alle sagen, hättest du auch ohne Rollen bekommen.
 
+    Nimm dieses Gerüst und trage deine Themen als Spalten ein - ⭐ für jedes Thema, das nur eine einzige Rolle anspricht:
+
+    ```markdown title="lab_log.md"
+    | Thema →        | Logistik | Preis | Kapital | Zeitersparnis | … |
+    |----------------|----------|-------|---------|---------------|---|
+    | 🎓 Experte     |    x     |       |         |               |   |
+    | 💰 Investor    |    x     |       |    x    |               |   |
+    | 🛒 Kunde       |          |   x   |         |       x       |   |
+    | ⚔️ Konkurrent  |    x     |   x   |         |               |   |
+    | **Einzeln?**   |          |       |    ⭐   |       ⭐      |   |
+    ```
+
+    ??? success "Was du beobachten solltest"
+
+        Ein bis zwei Themen nennen **alle vier** Rollen - meist das Offensichtliche (Wettbewerb, Logistik). Diese Punkte hättest du auch ohne Rollen bekommen; sie sind der Beleg dafür, dass die Rollen nicht bloß Zufall produzieren.
+
+        Interessant sind die zwei bis vier **Einzelnennungen**. Erfahrungsgemäß liefert die Kundenrolle die überraschendsten - sie fragt nach Dingen, an die man beim Bauen der Idee nicht denkt (Wann wird geliefert? Was, wenn ich nicht da bin?).
+
+        Wenn bei dir **alle** Rollen dasselbe sagen: Deine Rollen sind zu dünn. Prüfe, ob wirklich alle vier Bestandteile drin sind - besonders die **Haltung** (skeptisch, ungeduldig, angriffslustig) macht den Unterschied.
+
 !!! lab "Übung 2: Wirkt die Rolle wirklich?"
 
     Stelle dieselbe Frage zu deiner Idee **einmal ohne** und **einmal mit** Investoren-Rolle.
 
     **Zähle die Investoren-Wörter** in beiden Antworten: *Markt, Marge, Umsatz, Kapital, skalieren, Wettbewerb, Risiko*.
 
-    Wiederhole es auf `gemma3:270m`. **Beobachte:** Sehr kleine Modelle „vergessen" die Systemrolle oft nach wenigen Sätzen.
+    Wiederhole es auf `gemma3:270m`. **Beobachte:** Sehr kleine Modelle „vergessen" die Systemrolle oft nach wenigen Sätzen - warum das so ist, erklärt das [Kontextfenster](halluzinationen-kontextfenster.md).
+
+    !!! warning "Diese Messgröße ist mit Absicht grob"
+
+        Sieben Stichwörter zu zählen ist ein **Proxy**, kein Beweis. Eine Antwort kann durch und durch investorenhaft denken, ohne das Wort *„Marge"* zu benutzen - und eine andere kann alle sieben Begriffe enthalten und trotzdem nichts sagen.
+
+        Du kennst das Muster schon aus dem [iterativen Prompting](iteratives.md): Eine Metrik misst nur, was sie misst. Sie zeigt dir hier, **dass** sich etwas verändert hat. **Was** sich verändert hat, siehst du nur beim Lesen.
 
 !!! lab "Übung 3: Den Zielkonflikt finden"
 
     Geh deine Matrix aus Übung 1 durch und suche eine Stelle, an der sich zwei Rollen **widersprechen** - etwa Investor fordert Skalierung, Kunde schätzt Regionalität.
 
-    Beschreibe den Konflikt in zwei Sätzen. Das ist ein echter Fund: etwas, das dir kein einzelner Prompt geliefert hätte.
+    1. **Beschreibe den Konflikt** in zwei Sätzen. Das ist ein echter Fund: etwas, das dir kein einzelner Prompt geliefert hätte.
+    2. **Löse ihn auf.** Welcher der beiden Seiten gibst du nach - und was ändert das konkret an deiner Idee? Ein Satz genügt, aber er muss eine Entscheidung enthalten.
+    3. **Halte die Änderung fest**, im `lab_log.md`. In [Kritisches Prompting](kritisches.md) schreibst du deine `idee.md` fort - diese Entscheidung gehört dann mit hinein.
 
     Speichere deine vier Rollendefinitionen in `prompts.md` unter `## 04 Rollen`.
+
+    ??? success "Was du beobachten solltest"
+
+        Der häufigste Konflikt ist **Wachstum gegen Charakter**: Was die Idee attraktiv macht (regional, persönlich, handgemacht), ist genau das, was sie schwer skalierbar macht.
+
+        Die Auflösung ist selten „einer hat recht". Meist ist sie eine **Reihenfolge**: erst das eine, dann das andere - und die Frage wird, woran man merkt, dass der Zeitpunkt zum Wechseln da ist.
+
+!!! warning "Rollen tragen die Vorurteile ihrer Trainingsdaten 🧭"
+
+    Wenn du *„Du bist Investor"* schreibst, holst du nicht *die* Investorenperspektive - du holst den **statistischen Durchschnitt dessen, was im Internet über Investoren steht**: männlich, angelsächsisch geprägt, wachstumsfixiert, zahlengetrieben.
+
+    Das ist manchmal genau das, was du willst - und manchmal blendet es aus, was zählt. Probier den Gegentest: Formuliere die Investorenrolle einmal als *„Business Angel mit Fokus auf regionale Kreislaufwirtschaft, bewertet Rendite und Wirkung gleichrangig"* und vergleiche.
+
+    Rollen sind ein Werkzeug zum **Perspektivwechsel**, keine Quelle für Wahrheit über echte Menschen. Wie sich solche Verzerrungen systematisch aufspüren lassen, siehst du in [Evaluation von KI-Ergebnissen](evaluation.md).
 
 ??? code "🐍 Optional (Python): alle Rollen automatisch durchlaufen"
 

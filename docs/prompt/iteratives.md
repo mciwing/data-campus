@@ -165,7 +165,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 1: Eine Schraube pro Runde"
 
-    Nimm deinen Canvas-Prompt aus [Shot Prompting](shot-prompting.md) und verbessere ihn in **mindestens vier Runden** - pro Runde **genau eine** Änderung.
+    Nimm deinen Canvas-Prompt aus [Shot Prompting](shot-prompting.md) (`## 02a` in deiner `prompts.md`) und verbessere ihn in **mindestens vier Runden** - pro Runde **genau eine** Änderung.
 
     Naheliegende Reihenfolge:
 
@@ -178,6 +178,12 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Führe dabei ein `prompt_log.md` nach dem Muster oben - *was geändert, was bewirkt*.
 
+    ??? success "Was du beobachten solltest"
+
+        Runde 2 ist meist der große Sprung: Sobald die neun Feldnamen wörtlich im Prompt stehen, kommen sie auch in der Antwort - oft von 5/9 auf 9/9.
+
+        Runde 3 und 4 ändern an der **Zahl** dagegen nichts mehr. Die Antwort wird trotzdem besser: konkreter, auf deine Idee bezogen, gleichmäßig ausführlich. Genau dieser Widerspruch ist das Thema von Übung 3 - achte schon jetzt darauf.
+
 !!! lab "Übung 2: Das Modell als Prompt-Kritiker"
 
     Nimm deinen **schwächsten** Prompt und frage im selben Chat direkt nach:
@@ -188,14 +194,33 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Prüfe:** Sind die Vorschläge brauchbar? Und decken sie sich mit den [fünf Bausteinen](anatomie.md)?
 
+    ??? success "Was du beobachten solltest - und der Haken daran"
+
+        Die Vorschläge sind meist erstaunlich brauchbar und landen fast immer bei Kontext, Zielgruppe und Format - also bei den Bausteinen 2 bis 5.
+
+        Der Haken: Du fragst hier ausgerechnet **die Selbsteinschätzung** des Modells ab. Wie wenig die im Allgemeinen wert ist, weist du in [Evaluation von KI-Ergebnissen](evaluation.md) selbst nach - dort hält das Modell Aussagen für belegt, die frei erfunden sind.
+
+        Warum es hier trotzdem funktioniert: Nach *fehlendem Kontext* zu fragen ist eine **Sprachaufgabe** („was fehlt einem Text dieser Art?"), keine Faktenfrage. Genau dafür sind LLMs gebaut. Nimm die Antworten als Ideenliste - nicht als Diagnose.
+
 !!! lab "Übung 3: Wo hört es auf?"
 
     Iteriere weiter, bis sich nichts mehr verbessert. Halte fest:
 
     - Nach welcher Runde brachte eine Änderung **keinen** Zuwachs mehr?
-    - Welche Änderung hat das Ergebnis sogar **verschlechtert**?
+    - **Gab es eine Runde, in der die Feldzahl gleich blieb, die Antwort aber merklich besser wurde?** Was sagt das über deine Messgröße aus?
+    - **Sabotage-Runde:** Überlade einen Prompt absichtlich - drei Rollen gleichzeitig, fünf Formatvorgaben, widersprüchliche Längenangaben. Was passiert mit deiner Zahl, was mit der Antwort?
 
-    Speichere die beste Version in `prompts.md` unter `## 02 Canvas` (ersetzt die alte Fassung).
+    Speichere die beste Version in `prompts.md` unter `## 02b Canvas (iteriert)`. **Lass `## 02a` stehen** - am Ende des Kurses willst du den Weg sehen, nicht nur das Ziel.
+
+    ??? success "Was du beobachten solltest"
+
+        Die Feldzahl erreicht typischerweise ab Runde 2 ihr Maximum und bleibt dort - obwohl Runde 3 und 4 inhaltlich deutlich stärker sind. **Deine Metrik ist blind für genau die Verbesserung, an der dir am meisten liegt.**
+
+        Das ist keine Anfängerfalle, sondern ein offenes Forschungsproblem: Wie sich die Qualität von Sprachmodell-Ausgaben überhaupt sinnvoll messen lässt, füllt ganze Übersichtsarbeiten - mit dem Fazit, dass automatische Metriken menschliche Bewertung ergänzen, aber nicht ersetzen.[^chang]
+
+        👉 Merke: **Eine Metrik misst nur, was sie misst.** Sie sagt dir, *wo* du hinschauen sollst - das Hinschauen nimmt sie dir nicht ab.
+
+        Die Sabotage-Runde zeigt die andere Richtung: Widersprüchliche Vorgaben lassen das Modell meist die *zuletzt* genannte befolgen und den Rest ignorieren. Mehr Anweisung ist nicht mehr Steuerung.
 
 ??? code "🐍 Optional (Python): Prompts automatisch bewerten"
 
@@ -248,9 +273,9 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     Runde 4: Felder: 9/9 · Wörter: 97/200 · Score: 100
     ```
 
-    **Achtung, wichtige Lehre:** Ab Runde 2 ist der Score bei 100 - aber du hast oben gesehen, dass Runde 3 inhaltlich **deutlich** besser ist als Runde 2. Eine Metrik misst nur das, was sie misst. Sie ersetzt das Lesen nicht, sie priorisiert es nur.
+    **Die Zahl bestätigt, was du in Übung 3 von Hand gesehen hast:** Ab Runde 2 steht der Score bei 100, obwohl Runde 3 inhaltlich deutlich besser ist. Das Skript automatisiert die Messung - die Blindheit der Messgröße automatisiert es gleich mit.
 
-    Das ist kein Anfängerproblem, sondern ein offenes Feld: Wie sich die Qualität von Sprachmodell-Ausgaben überhaupt sinnvoll messen lässt, ist Gegenstand umfangreicher Übersichtsarbeiten - mit dem Fazit, dass automatische Metriken menschliche Bewertung ergänzen, aber nicht ersetzen.[^chang]
+    Genau deshalb lohnt sich der Aufwand trotzdem: Ein Score macht **Regressionen** sichtbar. Wenn ein Prompt nach einer Änderung von 100 auf 78 fällt, weißt du es sofort, statt es zu überlesen.
 
 ---
 

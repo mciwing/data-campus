@@ -195,6 +195,14 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Dann der eigentliche Test:** Versuche, **eine einzige** der genannten Zahlen, Studien oder Namen im Internet zu belegen. Wie viele halten stand?
 
+    ??? success "Was du beobachten solltest"
+
+        Du bekommst vier flüssige, konkrete, vollständig formulierte Antworten - mit Prozentwerten auf eine Nachkommastelle und Studien mit Autorennamen und Jahreszahl.
+
+        Und dann findest du meist **keine einzige** davon wieder. Besonders lehrreich sind die erfundenen Studien: Autor, Titel und Jahr wirken einzeln plausibel, weil das Modell sie aus echten Bausteinen zusammensetzt - nur diese Kombination hat es nie gegeben.
+
+        Merke dir das Gefühl von diesem Moment. Es ist der Grund, warum es dieses Kapitel gibt.
+
 !!! lab "Übung 2: Unsicherheit markieren lassen"
 
     Stelle dieselben Fragen erneut, diesmal mit der Auflage, jede Aussage zu kennzeichnen:
@@ -205,11 +213,29 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Wiederhole den Prompt dreimal - bleiben dieselben Aussagen in derselben Kategorie? Die Antwort sagt dir, was die Selbsteinschätzung wert ist.
 
-!!! lab "Übung 3: Faktenprüfung deiner Marktanalyse"
+    ??? success "Was du beobachten solltest - und der Rückbezug"
 
-    Nimm die Marktanalyse aus deiner Kette in [Prompt Chaining](chaining.md) und markiere **jede Zahl, jeden Eigennamen, jede Jahreszahl**.
+        An das *Format* hält sich das Modell meist brav. An die *Bedeutung* nicht: Erfundene Zahlen tragen genauso selbstverständlich ein `[BELEGT]` wie echte, und über drei Läufe wandern dieselben Aussagen zwischen den Kategorien hin und her.
 
-    Übertrage sie in eine Tabelle und prüfe **mindestens fünf** Angaben mit unabhängigen Quellen - [Statistik Austria](https://www.statistik.at), WKO, Branchenverbände. Nicht durch dieselbe KI.
+        Damit hast du die Gegenprobe zum [iterativen Prompting](iteratives.md) in der Hand. Dort hast du das Modell gefragt, **welche Informationen ihm fehlen** - und die Antwort war brauchbar. Hier fragst du, **was es weiß** - und die Antwort ist wertlos.
+
+        Der Unterschied ist kein Zufall: Das eine ist eine Sprachaufgabe („was fehlt einem Text dieser Art?"), das andere eine Faktenfrage über die eigene Wissensbasis. Für Letzteres hat ein Sprachmodell kein Organ.
+
+        👉 Die Markierungen sind trotzdem nützlich - nicht als Urteil, sondern als **Arbeitsliste**: Sie zeigen dir, wo das Modell überhaupt Fakten behauptet.
+
+!!! lab "Übung 3: Faktenprüfung deiner Marktanalyse · Hausaufgabe"
+
+    !!! warning "Diese Übung passt nicht in eine Laboreinheit"
+
+        Fünf Angaben ernsthaft mit externen Quellen zu prüfen dauert länger als alles andere in diesem Kurs - das ist keine Schwäche der Aufgabe, sondern ihre Aussage: **Nachprüfen kostet mehr Zeit als Erzeugen.** Genau deshalb wird es so oft übersprungen.
+
+        Im Labor machst du **Schritt 1 und 2** (markieren, Tabelle anlegen), die eigentliche Recherche nimmst du mit nach Hause.
+
+    **Schritt 1:** Nimm die Marktanalyse aus deiner Kette in [Prompt Chaining](chaining.md) und markiere **jede Zahl, jeden Eigennamen, jede Jahreszahl**.
+
+    **Schritt 2:** Übertrage sie in eine Tabelle.
+
+    **Schritt 3:** Prüfe **mindestens fünf** Angaben mit unabhängigen Quellen - [Statistik Austria](https://www.statistik.at), WKO, Branchenverbände. Nicht durch dieselbe KI.
 
     <div style="text-align:center; max-width:620px; margin:16px auto;">
     <table role="table"
@@ -233,12 +259,37 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Wie hoch ist dein Anteil ✅ nach ehrlicher Prüfung?**
 
-!!! lab "Übung 4: Austauschtest und Bias"
+!!! lab "Übung 4: Der Austauschtest - dein Füllmaterial-Anteil"
 
-    1. **Austauschtest:** Ersetze im Fließtext deine Geschäftsidee durch eine völlig andere. Wie viel Prozent des Textes ergibt trotzdem noch Sinn? Das ist dein Füllmaterial-Anteil.
-    2. **Bias:** Finde mindestens eine Stelle, an der die Analyse eine unausgesprochene Annahme über Größe, Wachstum oder Kultur macht.
+    Der schnellste Substanztest, den es gibt, und du brauchst dafür kein Modell:
+
+    Nimm einen KI-erzeugten Fließtext über deine Idee und **ersetze deine Geschäftsidee durch eine völlig andere** - aus dem Bio-Lieferdienst wird eine Yogaschule, aus der Softwarefirma ein Friseursalon. Nur die Bezeichnung tauschen, sonst nichts ändern.
+
+    Dann lies den Text noch einmal und markiere jeden Satz, der **immer noch stimmt**.
+
+    **Der Anteil markierter Sätze ist dein Füllmaterial-Anteil.** Notiere ihn in Prozent in dein `lab_log.md`.
+
+    ??? success "Was du beobachten solltest"
+
+        Erwarte etwas zwischen 40 % und 70 %. Sätze wie *„Eine klare Positionierung ist entscheidend für den Markterfolg"* oder *„Die Kundenbindung sollte kontinuierlich gestärkt werden"* überleben jeden Austausch - sie sagen über deine Idee genau nichts.
+
+        Der Test funktioniert übrigens auch bei Texten von Menschen. Du wirst ihn nach diesem Kapitel nicht mehr los.
+
+        👉 Und die praktische Konsequenz: Was den Austauschtest überlebt, hättest du nicht generieren lassen müssen. Der Weg zu weniger Füllmaterial führt über die fünf Bausteine aus [Anatomie](anatomie.md) - vor allem über **Kontext**.
+
+!!! lab "Übung 5: Bias aufspüren"
+
+    Finde in deiner Analyse mindestens eine Stelle, an der der Text eine **unausgesprochene Annahme** macht - über Größe, Wachstum oder Kultur.
+
+    Typische Kandidaten: dass Wachstum das Ziel ist. Dass Digitalisierung eine Verbesserung ist. Dass der Markt einem westlichen Konsummuster folgt. Dass Konkurrenz schlecht ist.
 
     Speichere deinen Prüf-Prompt in `prompts.md` unter `## 08 Evaluation`.
+
+    ??? success "Was du beobachten solltest"
+
+        Am häufigsten findet sich die **Wachstumsannahme**: Der Text behandelt Skalierung selbstverständlich als Ziel, obwohl viele gute Geschäftsideen bewusst klein bleiben.
+
+        Das ist kein Fehler des Modells im engeren Sinn - es gibt wieder, was in seinen Trainingsdaten überwiegt. Dieselbe Mechanik hast du bei den [Rollen](rollen.md) gesehen: Du bekommst nicht *eine* Perspektive, du bekommst den statistischen Durchschnitt.
 
 ??? code "🐍 Optional (Python): prüfpflichtige Angaben automatisch finden"
 
@@ -280,6 +331,52 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ```
 
     **Erweiterungsidee:** Ergänze ein Muster für Eigennamen (Großbuchstabe am Wortanfang, nicht am Satzanfang) - erfundene Studien und Personen sind die häufigste Halluzinationsform und die, die am ehesten unbemerkt durchrutscht.
+
+---
+
+## 🎓 Abschluss: dein Portfolio
+
+Acht Kapitel, acht Prompts, ein Laborbuch und zwei Fassungen deiner Idee. Zeit, das Ganze einmal als Ganzes anzusehen.
+
+!!! lab "Abschlussübung: Der Portfolio-Check"
+
+    **1 · Bestandsaufnahme.** Geh deine `prompts.md` durch. Vollständig wäre sie so:
+
+    | Eintrag | aus Kapitel |
+    |---|---|
+    | `## 01 Beschreibung` | [Anatomie](anatomie.md) |
+    | `## 02a Canvas (Few-Shot)` | [Shot Prompting](shot-prompting.md) |
+    | `## 02b Canvas (iteriert)` | [Iteratives Prompting](iteratives.md) |
+    | `## 03 Canvas strukturiert` | [Strukturierte Ausgaben](strukturierte-ausgaben.md) |
+    | `## 04 Rollen` | [Rollenbasiertes Prompting](rollen.md) |
+    | `## 05 Kette` | [Prompt Chaining](chaining.md) |
+    | `## 06 Kritik` | [Kritisches Prompting](kritisches.md) |
+    | `## 07 Multimodal` | [Multimodales Prompting](multimodal.md) |
+    | `## 08 Evaluation` | dieses Kapitel |
+
+    **Fehlt dir ein Eintrag?** Halte fest, welcher - und welche Technik dir damit fehlt. Eine ehrliche Lücke ist ein besseres Ergebnis als ein nachträglich hingeschriebener Prompt, den du nie ausprobiert hast.
+
+    **2 · Ein Satz je Eintrag.** Schreibe hinter jeden Prompt **eine** Zeile: *Welche Technik trägt ihn - und woran erkennt man das?* Wenn dir die Zeile nicht einfällt, ist der Eintrag Deko und kann weg.
+
+    **3 · Die besten drei.** Markiere die drei Prompts, die du morgen tatsächlich wieder benutzen würdest. Was haben sie gemeinsam? Bei den meisten ist die Antwort: **viel Kontext, klares Format, eine einzige Aufgabe.**
+
+    **4 · Der Vergleich.** Lies `idee.md` Version 1 und Version 2 nacheinander. Der Unterschied zwischen den beiden ist das Ergebnis dieses Kurses - nicht die Prompts.
+
+??? lab "Optional: Der Realitätsabgleich - gilt das auch für die Großen? ⚖️"
+
+    Der ganze Kurs läuft auf einem absichtlich schwachen Modell. Die naheliegende Frage: **Wäre das alles mit einem großen Modell nicht überflüssig gewesen?**
+
+    Probier es aus. Nimm deinen besten und deinen schlechtesten Prompt aus `prompts.md` und schicke beide an ein großes Modell - `gemma3:4b` lokal, ein Cloud-Modell über [ollama.com](https://ollama.com/search?c=cloud) oder einen der bekannten Chat-Dienste. Vergleiche mit den Antworten von `gemma3:1b`.
+
+    ??? success "Was du beobachten solltest"
+
+        Beim **guten** Prompt schrumpft der Abstand: Das große Modell formuliert eleganter, aber inhaltlich liegen beide erstaunlich nah beieinander. Der Prompt hat die Arbeit gemacht.
+
+        Beim **schlechten** Prompt ist der Abstand riesig - das große Modell rettet erstaunlich viel. Es rät besser, was du gemeint haben könntest.
+
+        Und genau darin liegt die Falle: Ein großes Modell **verdeckt** schlechte Prompts, es behebt sie nicht. Es liefert etwas Brauchbares, aber nicht unbedingt das, was du wolltest - und du merkst den Unterschied nicht mehr, weil das Ergebnis gut klingt.
+
+        👉 Was du hier gelernt hast, wird durch bessere Modelle nicht überflüssig. Es wird nur **schwerer zu überprüfen**. Deshalb üben wir es am Zwerg.
 
 ---
 
