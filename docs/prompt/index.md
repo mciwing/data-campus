@@ -124,7 +124,7 @@ Zwei Dinge gelten in allen Labs:
 - **Die Übungen bauen aufeinander auf.** Die erste eines Kapitels liefert meist den Vergleichspunkt, die letzte sichert das Ergebnis für das nächste Kapitel - arbeite sie der Reihe nach durch.
 - Fast jede Übung hat einen eingeklappten Block **„Was du beobachten solltest"** - lies ihn erst *nach* dem eigenen Versuch. Er ist zum Abgleichen da, nicht zum Abkürzen.
 
-Am Ende des Kurses steht ein **Portfolio-Check**, der alles zusammenführt: deine Prompt-Sammlung, dein Laborbuch und die zwei Fassungen deiner Idee.
+Du führst dabei nur **zwei Dateien**: `idee.md` mit deiner Geschäftsidee und `lab_log.md` als Laborbuch, in dem alles andere landet - Messwerte, erprobte Prompts, Zwischenergebnisse. Am Ende des Kurses steht ein **Portfolio-Check**, der beides zusammenführt.
 
 !!! info "Du brauchst keine Programmierkenntnisse"
 

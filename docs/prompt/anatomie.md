@@ -298,15 +298,15 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 !!! lab "Übung 4: Härtetest und Prompt sichern"
 
     1. **Härtetest:** Lass deinen besten Prompt aus Übung 2 auf `gemma3:270m` laufen - dem viermal kleineren Modell. Bleibt das Ergebnis brauchbar? Wenn nicht: Welcher Baustein müsste deutlicher werden?
-    2. **Sichern:** Notiere den finalen Prompt in `prompts.md` unter `## 01 Beschreibung`.
+    2. **Sichern:** Notiere den finalen Prompt in deinem `lab_log.md` unter `## 01 Beschreibung`.
 
-    Das ist der erste Eintrag deiner eigenen Prompt-Sammlung - sie wächst ab jetzt in jedem Kapitel.
+    Das ist der erste Prompt-Eintrag in deinem Laborbuch - es wächst ab jetzt in jedem Kapitel um einen weiteren.
 
     !!! tip "Der Härtetest wird dein Standardwerkzeug"
 
         Ein Prompt, der auf `gemma3:270m` noch etwas Brauchbares erzeugt, ist robust. Einer, der nur auf großen Modellen funktioniert, verlässt sich darauf, dass das Modell errät, was du meinst.
 
-        Nimm dir vor, **jeden** Prompt, den du in `prompts.md` sicherst, einmal durch den Zwerg zu schicken - in allen folgenden Kapiteln. Das kostet 30 Sekunden und ist das ehrlichste Qualitätsmaß, das du hast.
+        Nimm dir vor, **jeden** Prompt, den du im `lab_log.md` sicherst, einmal durch den Zwerg zu schicken - in allen folgenden Kapiteln. Das kostet 30 Sekunden und ist das ehrlichste Qualitätsmaß, das du hast.
 
 ??? code "🐍 Optional (Python): alle fünf Stufen automatisch durchlaufen"
 

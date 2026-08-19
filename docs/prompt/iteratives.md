@@ -165,7 +165,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 1: Eine Schraube pro Runde"
 
-    Nimm deinen Canvas-Prompt aus [Shot Prompting](shot-prompting.md) (`## 02a` in deiner `prompts.md`) und verbessere ihn in **mindestens vier Runden** - pro Runde **genau eine** Änderung.
+    Nimm deinen Canvas-Prompt aus [Shot Prompting](shot-prompting.md) (`## 02a` in deinem `lab_log.md`) und verbessere ihn in **mindestens vier Runden** - pro Runde **genau eine** Änderung.
 
     Naheliegende Reihenfolge:
 
@@ -176,7 +176,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Deine Messgröße:** Wie viele der neun Felder kommen tatsächlich vor? Zähle nach jeder Runde.
 
-    Führe dabei ein `prompt_log.md` nach dem Muster oben - *was geändert, was bewirkt*.
+    Protokolliere jede Runde im `lab_log.md` unter `## 02b` nach dem Muster oben - *was geändert, was bewirkt*.
 
     ??? success "Was du beobachten solltest"
 
@@ -210,7 +210,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     - **Gab es eine Runde, in der die Feldzahl gleich blieb, die Antwort aber merklich besser wurde?** Was sagt das über deine Messgröße aus?
     - **Sabotage-Runde:** Überlade einen Prompt absichtlich - drei Rollen gleichzeitig, fünf Formatvorgaben, widersprüchliche Längenangaben. Was passiert mit deiner Zahl, was mit der Antwort?
 
-    Speichere die beste Version in `prompts.md` unter `## 02b Canvas (iteriert)`. **Lass `## 02a` stehen** - am Ende des Kurses willst du den Weg sehen, nicht nur das Ziel.
+    Speichere die beste Version im `lab_log.md` unter `## 02b Canvas (iteriert)`. **Lass `## 02a` stehen** - am Ende des Kurses willst du den Weg sehen, nicht nur das Ziel.
 
     ??? success "Was du beobachten solltest"
 

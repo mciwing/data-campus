@@ -207,7 +207,7 @@ Erst nach dem schließenden `"""` beginnt das Modell zu antworten.
 
     Lange Prompts tippt niemand gern im Terminal. Schreibe sie stattdessen in einem Texteditor und kopiere sie zwischen die `"""`.
 
-    Genau dafür richtest du gleich im [Ollama-Lab](#ollama-lab) einen Ordner `prompt-labor` ein - dort sammelst du im Lauf des Kurses alle Prompts, die funktioniert haben. Am Ende hast du damit deine eigene, erprobte Prompt-Sammlung.
+    Genau dafür richtest du gleich im [Ollama-Lab](#ollama-lab) einen Ordner `prompt-labor` ein - dort sammelst du im Lauf des Kurses in deinem Laborbuch alle Prompts, die funktioniert haben. Am Ende hast du damit deine eigene, erprobte Prompt-Sammlung.
 
 ---
 
@@ -268,52 +268,31 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     ---
 
-    **Dein Arbeitsordner.** Damit wir am Ende unseres Labors auch eine schöne Dokumentation haben, werden wir die wichtigesten Informationen immer niederschreiben. Dafür benötigen wir im Laufe des Kurses ein paar Dateien, welche wir am besten jetzt schon einrichten. Lege einen Ordner `prompt-labor` an und darin diese sechs Dateien:
+    **Dein Arbeitsordner.** Damit wir am Ende unseres Labors auch eine schöne Dokumentation haben, werden wir die wichtigesten Informationen immer niederschreiben. Dafür brauchst du genau **zwei Dateien** - lege dir jetzt einen Ordner `prompt-labor` an und darin:
 
     ```
     📁 prompt-labor
-    ├── idee.md
-    ├── prompts.md
-    ├── lab_log.md
-    ├── prompt_log.md
-    ├── testfaelle.md
-    └── kritik.md
+    ├── 📄 idee.md          # Deine Geschäftsidee
+    └── 📄 lab_log.md       # Dein Laborbuch
     ```
 
-    Wozu jede Datei da ist:
-
-    | Datei | Was hineinkommt | Ab Kapitel |
-    |---|---|---|
-    | `idee.md` | **Deine Geschäftsidee** in 3-5 Sätzen - der Kontext-Baustein, den du ab jetzt in fast jeden Prompt kopierst. Wird am Kursende als *Version 2* fortgeschrieben. | [Anatomie](anatomie.md) |
-    | `prompts.md` | Deine **Prompt-Sammlung**: pro Kapitel ein erprobter Prompt, nummeriert von `## 01` bis `## 08`. Das ist am Ende dein Portfolio. | [Anatomie](anatomie.md) |
-    | `lab_log.md` | Das **Laborbuch**: jede Zahl oder Wert, die du in einem Lab erhebst. Ohne das sind deine Messwerte nach zwei Kapiteln verschwunden. | hier |
-    | `prompt_log.md` | Das **Iterationsprotokoll**: was du an einem Prompt geändert hast und was es bewirkt hat. | [Iteratives Prompting](iteratives.md) |
-    | `testfaelle.md` | Deine **Testfälle** für Klassifikationsaufgaben - vorher festgelegt, damit die Messung fair bleibt. | [Shot Prompting](shot-prompting.md) |
-    | `kritik.md` | Alle **Schwachstellen**, die die KI an deiner Idee findet - inklusive deiner Bewertung, welche davon stimmen. | [Kritisches Prompting](kritisches.md) |
-
-    Dazu kommen im Kapitel [Prompt Chaining](chaining.md) noch ein paar `kette_*.md`-Dateien - die entstehen unterwegs von selbst.
-
-    So sieht dein Laborbuch aus - eine Zeile pro Messung:
+    Das Laborbuch hat pro Kapitel einen Abschnitt, und in jedem stehen **Prompts**, **Ergebnisse**, **Notizen** und **Erkenntnisse**. Lege dir das Gerüst gleich an, gefüllt wird es Kapitel für Kapitel:
 
     ```markdown title="lab_log.md"
-    | Kapitel | Übung | Messgröße | Wert | Beobachtung in einem Satz |
-    |---|---|---|---|---|
-    | Setup | 2 | Namen bei temp 0.0 / 0.7 / 1.5 | … | … |
+    # Laborbuch
+
+    ## 00 Setup                 ← Ollama Setup
+    ## 01 Beschreibung          ← Anatomie
+    ## 02a Canvas (Few-Shot)    ← Shot Prompting
+    ## 02b Canvas (iteriert)    ← Iteratives Prompting
+    ## 03 Canvas strukturiert   ← Strukturierte Ausgaben
+    ## 04 Rollen                ← Rollenbasiertes Prompting
+    ## 05 Kette                 ← Prompt Chaining
+    ## 06 Kritik                ← Kritisches Prompting
+    ## 07 Multimodal            ← Multimodales Prompting
+    ## 08 Evaluation            ← Evaluation von KI-Ergebnissen
     ```
 
-    Und so deine Prompt-Sammlung - die Überschriften kannst du gleich anlegen, gefüllt werden sie Kapitel für Kapitel:
-
-    ```markdown title="prompts.md"
-    ## 01 Beschreibung
-    ## 02a Canvas (Few-Shot)
-    ## 02b Canvas (iteriert)
-    ## 03 Canvas strukturiert
-    ## 04 Rollen
-    ## 05 Kette
-    ## 06 Kritik
-    ## 07 Multimodal
-    ## 08 Evaluation
-    ```
 
 !!! lab "Übung 1: Der Realitätscheck"
 
@@ -329,14 +308,6 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
 
     Vergleiche den Output. Was fällt dir auf?
 
-    💡 **Du hast schon eine eigene Geschäftsidee im Kopf?** Dann nimm sie statt des Cafés. Ab dem [nächsten Kapitel](anatomie.md) begleitet sie dich ohnehin durch jedes Lab - je früher du an eigenem Material arbeitest, desto eher merkst du, wenn das Modell Unsinn erzählt.
-
-    ??? success "Was du beobachten solltest"
-
-        Der **schlampige** Prompt liefert Fließtext von der Stange: *„In unserem gemütlichen Café erwartet Sie …"* - austauschbar, ohne Ort, ohne Zielgruppe, und meist erheblich länger als gewollt.
-
-        Der **präzise** Prompt trifft Länge und Ton oft schon im ersten Versuch. Was er dir aber **nicht** liefert: Fakten, die du nicht mitgegeben hast. Erfundene Öffnungszeiten, Adressen oder Preise sind ein erster Vorgeschmack auf [Halluzinationen](halluzinationen-kontextfenster.md).
-
 !!! lab "Übung 2: Temperatur erfühlen"
 
     Starte den Chat-Modus und probiere denselben Prompt bei verschiedenen Temperaturen:
@@ -346,6 +317,7 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
     ```
 
     ```{.text .ollama title="Ollama Chat"}
+    /clear
     /set parameter temperature 0.0
     Erfinde einen Namen für ein veganes Café in Innsbruck.
     /clear

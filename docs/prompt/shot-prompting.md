@@ -234,11 +234,11 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Denk dir eine **Klassifikationsaufgabe** aus deinem Geschäftsfeld aus - etwa Kundenanfragen in *Beschwerde / Frage / Lob* einsortieren.
 
-    **Schreibe deine fünf Testfälle zuerst auf**, in eine Datei `testfaelle.md`, *bevor* der erste Prompt läuft. Das ist keine Förmlichkeit: Wer die Fälle unterwegs anpasst, vergleicht am Ende zwei verschiedene Prüfungen miteinander und kann die Zahlen wegwerfen.
+    **Schreibe deine fünf Testfälle zuerst auf**, in dein `lab_log.md` unter `## 02a`, *bevor* der erste Prompt läuft. Das ist keine Förmlichkeit: Wer die Fälle unterwegs anpasst, vergleicht am Ende zwei verschiedene Prüfungen miteinander und kann die Zahlen wegwerfen.
 
     Mindestens einer davon soll ein **Grenzfall** sein - eine Eingabe, bei der du selbst kurz überlegen musst:
 
-    ```markdown title="testfaelle.md"
+    ```markdown title="lab_log.md → ## 02a"
     1. "Die Lieferung kam zwei Tage zu spät."              → Beschwerde
     2. "Liefert ihr auch nach Hall?"                       → Frage
     3. "Super Gemüse, danke!"                              → Lob
@@ -291,7 +291,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Vergleiche** nach Vollständigkeit (0-9 Felder), Formattreue und inhaltlicher Substanz.
 
-    Speichere den besseren Prompt in `prompts.md` unter `## 02a Canvas (Few-Shot)`. Die Nummerierung mit Buchstaben ist Absicht: In den nächsten beiden Kapiteln entstehen `02b` und `03` aus demselben Canvas - und am Ende willst du den Weg sehen, nicht nur das Ziel.
+    Speichere den besseren Prompt in deinem `lab_log.md` unter `## 02a Canvas (Few-Shot)` - direkt unter deinen Testfällen. Die Nummerierung mit Buchstaben ist Absicht: In den nächsten beiden Kapiteln entstehen `02b` und `03` aus demselben Canvas, und am Ende willst du den Weg sehen, nicht nur das Ziel.
 
     👉 Vergiss den [Härtetest](anatomie.md) nicht: Schick den Gewinner-Prompt einmal durch `gemma3:270m`.
 

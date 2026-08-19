@@ -178,7 +178,7 @@ Dieses Labor beginnt ausnahmsweise nicht im Terminal, sondern im Browser. Bisher
 
     **Prüfe:** Markiere jede Aussage, die du im Bild nicht belegen kannst. Schicke denselben Prompt anschließend an `gemma3:1b`, das kein `vision` kann. Der Unterschied zwischen beiden Antworten ist die eigentliche Lektion dieses Kapitels.
 
-    Notiere Modellwahl und Prompt in `prompts.md` unter `## 07 Multimodal`.
+    Notiere Modellwahl und Prompt im `lab_log.md` unter `## 07 Multimodal`.
 
     ??? success "Was du beobachten solltest"
 

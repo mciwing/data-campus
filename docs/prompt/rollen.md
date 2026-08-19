@@ -206,7 +206,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     2. **Löse ihn auf.** Welcher der beiden Seiten gibst du nach - und was ändert das konkret an deiner Idee? Ein Satz genügt, aber er muss eine Entscheidung enthalten.
     3. **Halte die Änderung fest**, im `lab_log.md`. In [Kritisches Prompting](kritisches.md) schreibst du deine `idee.md` fort - diese Entscheidung gehört dann mit hinein.
 
-    Speichere deine vier Rollendefinitionen in `prompts.md` unter `## 04 Rollen`.
+    Speichere deine vier Rollendefinitionen im `lab_log.md` unter `## 04 Rollen` - zusammen mit deiner Matrix.
 
     ??? success "Was du beobachten solltest"
 

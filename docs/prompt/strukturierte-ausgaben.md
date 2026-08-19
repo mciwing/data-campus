@@ -216,7 +216,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Führe jedes Format fünfmal aus und notiere die Fehlversuche. Halte für jedes fest: *Wofür würde ich es einsetzen?*
 
-    Speichere den zuverlässigsten Prompt in `prompts.md` unter `## 03 Canvas strukturiert`.
+    Speichere den zuverlässigsten Prompt im `lab_log.md` unter `## 03 Canvas strukturiert`.
 
     !!! tip "Für Gruppen: alle vier Formate abdecken"
 

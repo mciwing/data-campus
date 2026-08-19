@@ -66,7 +66,7 @@ Der Ablauf beim Prompt Chaining ist nicht anders, als du es vermutlich schon hä
 
 2. **Fehler pflanzen sich nicht fort** - Erfindet das Modell in der Marktanalyse eine Zahl, fällt das auf, solange die Analyse noch für sich allein dasteht. Im Monolith fließt dieselbe Zahl unbemerkt in die SWOT und von dort in die Verbesserungsvorschläge - am Ende ist alles falsch, und du siehst nicht mehr, woher es kam. Der Vorteil liegt aber nur darin, dass du prüfen *kannst*: Wer die Zwischenschritte durchwinkt, hat die Fehlerkette trotzdem.
 
-3. **Wiederverwendbarkeit** - Jeder Schritt ist ein eigenständiger Baustein mit klarer Ein- und Ausgabe. Dein SWOT-Prompt fragt nicht nach dem Bio-Lieferdienst, sondern nach „der Idee" - damit funktioniert er unverändert für jede weitere Idee, du tauschst nur die Eingabe. So wächst in deiner `prompts.md` mit der Zeit eine Sammlung erprobter Bausteine.
+3. **Wiederverwendbarkeit** - Jeder Schritt ist ein eigenständiger Baustein mit klarer Ein- und Ausgabe. Dein SWOT-Prompt fragt nicht nach dem Bio-Lieferdienst, sondern nach „der Idee" - damit funktioniert er unverändert für jede weitere Idee, du tauschst nur die Eingabe. So wächst in deinem Laborbuch mit der Zeit eine Sammlung erprobter Bausteine.
 
 4. **Kleinere Kontextfenster** - Jeder Prompt bekommt nur die Vorergebnisse, die er wirklich braucht, statt der gesamten bisherigen Unterhaltung. Das hält die Eingabe kurz und die Aufmerksamkeit des Modells beisammen - wichtig bei `gemma3:1b`, dessen [Kontextfenster](halluzinationen-kontextfenster.md) schnell voll ist und dann vorne Inhalte verliert.
 
@@ -109,20 +109,20 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     | 2 | SWOT | genau 2 Punkte je Kategorie |
     | 3 | Verbesserungen | 3 Vorschläge mit *Adressiert* und *Erster Schritt* |
 
-    Speichere die Zwischenstände als `kette_1_markt.md`, `kette_2_swot.md`, …
+    **Jedes Zwischenergebnis kommt ins Laborbuch**, unter `## 05 Kette` - so:
 
-    **Damit du nicht copy-paste-müde wirst:** Speichere jede Antwort in eine Datei und gib sie dem nächsten Schritt direkt mit - dafür brauchst du kein Python, das kann die Kommandozeile selbst.
+    ```markdown title="lab_log.md → ## 05 Kette"
+    ### Schritt 1 - Zielmarkt
+    <Antwort des Modells>
 
-    ```title="Terminal"
-    ollama run gemma3:1b "Idee: ... Beschreibe den Zielmarkt in genau 3 Stichpunkten." > kette_1_markt.md
+    ### Schritt 2 - SWOT
+    <Antwort des Modells>
 
-    ollama run gemma3:1b "Marktanalyse:
-    $(cat kette_1_markt.md)
-
-    Erstelle daraus eine SWOT-Analyse. Genau 2 Punkte pro Kategorie." > kette_2_swot.md
+    ### Schritt 3 - Verbesserungen
+    <Antwort des Modells>
     ```
 
-    *(Unter Windows funktioniert `$(cat …)` in der PowerShell als `$(Get-Content kette_1_markt.md -Raw)`.)*
+    Von dort kopierst du es in den nächsten Prompt. Das klingt umständlich, ist aber der Kern der Sache: **Du siehst jedes Zwischenergebnis, bevor es weiterwandert** - und genau darum geht es in Übung 4.
 
     **Vergleiche** das Endergebnis mit dem Monolith aus Übung 1.
 
@@ -138,7 +138,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Wenn eine fehlt: nicht neu starten, sondern gezielt nachfassen - *„In deiner Antwort fehlen die CHANCEN. Gib die vollständige SWOT-Analyse erneut aus."*
 
-    **Teil 2 - Fehlerfortpflanzung.** Jetzt der eigentliche Test, und der ist unangenehm: Öffne `kette_1_markt.md` und **schmuggle eine falsche Zahl hinein** - etwa eine Marktgröße, die zehnmal zu hoch ist. Lass die Kette ab Schritt 2 normal weiterlaufen.
+    **Teil 2 - Fehlerfortpflanzung.** Jetzt der eigentliche Test, und der ist unangenehm: Nimm dein Schritt-1-Ergebnis aus dem Laborbuch und **schmuggle eine falsche Zahl hinein** - etwa eine Marktgröße, die zehnmal zu hoch ist. Lass die Kette ab Schritt 2 mit dieser manipulierten Fassung weiterlaufen.
 
     - Taucht die falsche Zahl in der SWOT wieder auf?
     - Und in den Verbesserungsvorschlägen?
@@ -158,7 +158,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Optional:** Lass die komplette Kette zusätzlich auf `gemma3:4b` laufen. Wo ist der Unterschied am größten - am Anfang oder am Ende?
 
-    Notiere alle Kettenschritte in `prompts.md` unter `## 05 Kette`.
+    Notiere die drei Prompts deiner Kette im `lab_log.md` unter `## 05 Kette` - über den Zwischenergebnissen, die dort schon stehen.
 
 ??? code "🐍 Optional (Python): die Kette automatisieren"
 
@@ -197,7 +197,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
             ergebnisse[name] = antwort
             eingabe = antwort          # Ergebnis wird Eingabe des nächsten Schritts
 
-            Path(f"kette_{nummer}_{name}.md").write_text(antwort, encoding="utf-8")
+            Path(f"zwischenstand_{nummer}_{name}.txt").write_text(antwort, encoding="utf-8")
 
         return ergebnisse
 
@@ -225,7 +225,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     Zwei Details lohnen sich zu merken:
 
     - **`{start}` bleibt in jedem Schritt verfügbar.** Manche Schritte brauchen die Originalidee *und* das letzte Zwischenergebnis - die gestrichelten Pfeile im Diagramm oben.
-    - **Zwischenergebnisse landen als Datei auf der Platte.** Scheitert Schritt 3, startest du dort neu, statt die ganze Kette zu wiederholen.
+    - **Zwischenergebnisse landen als Textdatei auf der Platte.** Scheitert Schritt 3, startest du dort neu, statt die ganze Kette zu wiederholen. Das sind reine Arbeitsdateien - was du behalten willst, kopierst du ins `lab_log.md`.
 
 ---
 

@@ -233,7 +233,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Schritt 1:** Nimm die Marktanalyse aus deiner Kette in [Prompt Chaining](chaining.md) und markiere **jede Zahl, jeden Eigennamen, jede Jahreszahl**.
 
-    **Schritt 2:** Übertrage sie in eine Tabelle.
+    **Schritt 2:** Übertrage sie in eine Tabelle im `lab_log.md` unter `## 08 Evaluation`.
 
     **Schritt 3:** Prüfe **mindestens fünf** Angaben mit unabhängigen Quellen - [Statistik Austria](https://www.statistik.at), WKO, Branchenverbände. Nicht durch dieselbe KI.
 
@@ -283,7 +283,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Typische Kandidaten: dass Wachstum das Ziel ist. Dass Digitalisierung eine Verbesserung ist. Dass der Markt einem westlichen Konsummuster folgt. Dass Konkurrenz schlecht ist.
 
-    Speichere deinen Prüf-Prompt in `prompts.md` unter `## 08 Evaluation`.
+    Speichere deinen Prüf-Prompt im `lab_log.md` unter `## 08 Evaluation`.
 
     ??? success "Was du beobachten solltest"
 
@@ -340,7 +340,7 @@ Acht Kapitel, acht Prompts, ein Laborbuch und zwei Fassungen deiner Idee. Zeit, 
 
 !!! lab "Abschlussübung: Der Portfolio-Check"
 
-    **1 · Bestandsaufnahme.** Geh deine `prompts.md` durch. Vollständig wäre sie so:
+    **1 · Bestandsaufnahme.** Geh dein `lab_log.md` durch. Vollständig hat es diese Abschnitte:
 
     | Eintrag | aus Kapitel |
     |---|---|
@@ -366,7 +366,7 @@ Acht Kapitel, acht Prompts, ein Laborbuch und zwei Fassungen deiner Idee. Zeit, 
 
     Der ganze Kurs läuft auf einem absichtlich schwachen Modell. Die naheliegende Frage: **Wäre das alles mit einem großen Modell nicht überflüssig gewesen?**
 
-    Probier es aus. Nimm deinen besten und deinen schlechtesten Prompt aus `prompts.md` und schicke beide an ein großes Modell - `gemma3:4b` lokal, ein Cloud-Modell über [ollama.com](https://ollama.com/search?c=cloud) oder einen der bekannten Chat-Dienste. Vergleiche mit den Antworten von `gemma3:1b`.
+    Probier es aus. Nimm deinen besten und deinen schlechtesten Prompt aus dem `lab_log.md` und schicke beide an ein großes Modell - `gemma3:4b` lokal, ein Cloud-Modell über [ollama.com](https://ollama.com/search?c=cloud) oder einen der bekannten Chat-Dienste. Vergleiche mit den Antworten von `gemma3:1b`.
 
     ??? success "Was du beobachten solltest"
 

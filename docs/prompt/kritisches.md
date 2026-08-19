@@ -145,7 +145,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Die Frage:** Welche Variante nennt Punkte, die du wirklich noch nicht bedacht hattest?
 
-    **Leg jetzt deine Datei `kritik.md` an** und schreibe die drei Ursachen samt Frühwarnzeichen als erste Einträge hinein - in der nächsten Übung kommen zwölf weitere dazu.
+    **Leg jetzt im `lab_log.md` den Abschnitt `## 06 Kritik` an** und schreibe die drei Ursachen samt Frühwarnzeichen als erste Einträge hinein - in der nächsten Übung kommen zwölf weitere dazu.
 
     ??? success "Was du beobachten solltest"
 
@@ -164,7 +164,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     | ⚔️ Konkurrent | *„Wie zerstörst du dieses Startup in 12 Monaten? Genau 3 Wege."* |
     | 🔍 Skeptiker | *„Liste genau 3 unausgesprochene Annahmen auf, die falsch sein könnten."* |
 
-    Sammle alle zwölf Punkte in `kritik.md` - unter den Einträgen aus dem Pre-Mortem.
+    Sammle alle zwölf Punkte im `lab_log.md` unter `## 06 Kritik` - direkt unter den Einträgen aus dem Pre-Mortem.
 
     ??? success "Was du beobachten solltest"
 
@@ -174,7 +174,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 4: Aus Kritik Arbeit machen"
 
-    Markiere jeden Punkt in `kritik.md`:
+    Markiere jeden Punkt in deiner Kritikliste:
 
     ✅ *stimmt - muss ich lösen* · ❓ *muss ich prüfen* · ❌ *trifft nicht zu*
 
@@ -188,7 +188,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
         Zähle am Ende: Wie viele ❌ hast du vergeben - und bei wie vielen davon war die Begründung wirklich überzeugend?
 
-    Formuliere aus den ✅-Punkten **drei konkrete Änderungen** an deiner Idee. Speichere deine Kritik-Prompts in `prompts.md` unter `## 06 Kritik`.
+    Formuliere aus den ✅-Punkten **drei konkrete Änderungen** an deiner Idee. Speichere auch deine vier Kritik-Prompts im `lab_log.md` unter `## 06 Kritik`.
 
 !!! lab "Übung 5: Die Idee fortschreiben"
 
@@ -213,7 +213,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     Vier Angriffe von Hand sind machbar - aber bei drei Ideen und acht Angreifern lohnt sich das Skript:
 
     ```python title="redteam.py"
-    from pathlib import Path
     from llm import frage
 
     IDEE = ("Bio-Lieferdienst in Innsbruck, zwei Gründer, "
@@ -236,8 +235,8 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
                        "Antworte auf Deutsch, ein Satz pro Punkt, keine Einleitung.")
         zeilen += [f"## {name}", "", kritik, ""]
 
-    Path("kritik.md").write_text("\n".join(zeilen), encoding="utf-8")
-    print("\n📄 12 Kritikpunkte gespeichert in kritik.md")
+    print("\n".join(zeilen))
+    print("\n📄 Fertig - kopiere die Punkte in dein lab_log.md unter ## 06 Kritik.")
     ```
 
     ```title="Ausgabe"
@@ -246,10 +245,10 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     ⚔️  Konkurrent ...
     ⚔️  Skeptiker ...
 
-    📄 12 Kritikpunkte gespeichert in kritik.md
+    📄 Fertig - kopiere die Punkte in dein lab_log.md unter ## 06 Kritik.
     ```
 
-    Die Datei kannst du danach in Ruhe durchgehen und mit ✅ / ❓ / ❌ markieren - das bleibt Handarbeit, und das ist auch richtig so.
+    Im Laborbuch gehst du sie danach in Ruhe durch und markierst jeden Punkt mit ✅ / ❓ / ❌ - das bleibt Handarbeit, und das ist auch richtig so.
 
 ---
 
