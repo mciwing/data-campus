@@ -76,7 +76,6 @@ nav:
     - Prompt Chaining: prompt/chaining.md
     - Kritisches Prompting: prompt/kritisches.md
     - Ausblick: prompt/ausblick.md
-    - Quellen: prompt/quellen.md
 
 
 extra_css:
