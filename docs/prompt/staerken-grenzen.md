@@ -191,6 +191,6 @@ Genau **weil** LLMs diese Stärken und Schwächen haben, ist gutes Prompting so 
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^kessel]: **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach! Klare Antworten aus erster Hand.* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130-141. ISBN 978-3-8252-6276-1.
-[^lappin]: **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9-20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
-[^bender]: **Bender, E. M.; Gebru, T.; McMillan-Major, A.; Shmitchell, S. (2021):** *On the Dangers of Stochastic Parrots.* FAccT '21, S. 610-623.
+--8<-- "quellen.md:bender"
+--8<-- "quellen.md:kessel"
+--8<-- "quellen.md:lappin"

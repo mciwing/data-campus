@@ -249,12 +249,11 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^johnny]: **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1-21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388) - die empirische Grundlage dieses Kapitels: Nicht-Fachleute iterieren meist **opportunistisch** statt systematisch, verallgemeinern aus Einzelfällen und verwerfen funktionierende Ansätze zu früh. Genau dagegen hilft „eine Änderung pro Runde" plus Logbuch.
-[^madaan]: **Madaan, A., Tandon, N., Gupta, P. et al. (2023):** *Self-Refine: Iterative Refinement with Self-Feedback.* arXiv:2303.17651. [https://arxiv.org/abs/2303.17651](https://arxiv.org/abs/2303.17651) - zeigt, dass ein Modell seine eigene Ausgabe kritisieren und daraufhin verbessern kann - die Grundlage von Übung 2. Wichtig: Der Effekt ist bei **kleinen** Modellen deutlich schwächer.
-[^huang]: **Huang, J., Chen, X., Mishra, S. et al. (2024):** *Large Language Models Cannot Self-Correct Reasoning Yet.* ICLR 2024. arXiv:2310.01798. [https://arxiv.org/abs/2310.01798](https://arxiv.org/abs/2310.01798) - die Gegenposition zu *Self-Refine*: Ohne externe Rückmeldung verschlechtert Selbstkorrektur die Ergebnisse bei Reasoning-Aufgaben eher, als sie zu verbessern. Deshalb im Kapitel die Einschränkung auf „fehlenden Kontext aufspüren".
-[^pryzant]: **Pryzant, R., Iter, D., Li, J. et al. (2023):** *Automatic Prompt Optimization with „Gradient Descent" and Beam Search.* EMNLP 2023. arXiv:2305.03495. [https://arxiv.org/abs/2305.03495](https://arxiv.org/abs/2305.03495) - automatisiert genau den Zyklus dieses Kapitels: Fehler analysieren, in Sprache formulierte „Gradienten" ableiten, Prompt gezielt ändern.
-[^zhou]: **Zhou, Y., Muresanu, A. I., Han, Z. et al. (2023):** *Large Language Models Are Human-Level Prompt Engineers.* ICLR 2023. arXiv:2211.01910. [https://arxiv.org/abs/2211.01910](https://arxiv.org/abs/2211.01910) - Modelle erzeugen und bewerten Prompts selbst und erreichen dabei menschliches Niveau. Zeigt, wie systematisierbar das Iterieren ist.
-[^holtzman]: **Holtzman, A., Buys, J., Du, L. et al. (2020):** *The Curious Case of Neural Text Degeneration.* ICLR 2020. arXiv:1904.09751. [https://arxiv.org/abs/1904.09751](https://arxiv.org/abs/1904.09751) - Grundlagenarbeit zu den Sampling-Verfahren, aus denen die Nichtdeterminiertheit folgt: Der Text wird gezogen, nicht berechnet. Deshalb muss jede Variante mehrfach laufen.
-[^chang]: **Chang, Y., Wang, X., Wang, J. et al. (2024):** *A Survey on Evaluation of Large Language Models.* ACM Transactions on Intelligent Systems and Technology 15(3), S. 1-45. arXiv:2307.03109. [https://arxiv.org/abs/2307.03109](https://arxiv.org/abs/2307.03109) - Überblick über Bewertungsverfahren und ihre Grenzen; Hintergrund für die Warnung, dass eine Metrik das Lesen nicht ersetzt.
-[^sahoo]: **Sahoo, P., Singh, A. K., Saha, S. et al. (2024):** *A Systematic Survey of Prompt Engineering in Large Language Models: Techniques and Applications.* arXiv:2402.07927. [https://arxiv.org/abs/2402.07927](https://arxiv.org/abs/2402.07927) - Systematik der gängigen Prompting-Techniken; Grundlage für die fünf Verfeinerungswerkzeuge.
-[^liu2021]: **Liu, P., Yuan, W., Fu, J. et al. (2023):** *Pre-train, Prompt, and Predict: A Systematic Survey of Prompting Methods in Natural Language Processing.* ACM Computing Surveys 55(9), S. 1-35. arXiv:2107.13586. [https://arxiv.org/abs/2107.13586](https://arxiv.org/abs/2107.13586) - die erste große Systematisierung des Feldes; ordnet Prompt-Entwurf als eigenständigen Arbeitsschritt ein.
+--8<-- "quellen.md:holtzman"
+--8<-- "quellen.md:huang"
+--8<-- "quellen.md:johnny"
+--8<-- "quellen.md:liu2021"
+--8<-- "quellen.md:madaan"
+--8<-- "quellen.md:pryzant"
+--8<-- "quellen.md:sahoo"
+--8<-- "quellen.md:zhou"

@@ -335,6 +335,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^schulhoff]: **Schulhoff, S., Ilie, M., Balepur, N. et al. (2024):** *The Prompt Report: A Systematic Survey of Prompt Engineering Techniques.* arXiv:2406.06608. [https://arxiv.org/abs/2406.06608](https://arxiv.org/abs/2406.06608) - die derzeit umfassendste Systematik: 58 Prompting-Techniken und ein einheitliches Vokabular. Die hier verwendeten Bausteine finden sich dort als *Role*, *Additional Information*, *Directive*, *Style Instructions* und *Output Formatting*.
-[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) - überträgt den Gedanken der Software-Entwurfsmuster auf Prompts: wiederverwendbare Strukturen statt Einzelfalllösungen.
-[^zuckarelli]: **Zuckarelli, J. L. (2025):** *Programmieren mit ChatGPT: Eine kompakte Einführung.* Springer, ISBN 978-3-662-69432-9. [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
+--8<-- "quellen.md:schulhoff"
+--8<-- "quellen.md:white"
+--8<-- "quellen.md:zuckarelli"

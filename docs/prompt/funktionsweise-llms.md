@@ -439,8 +439,8 @@ flowchart LR
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT*, Kapitel 3 - „Funktionsweise des (Chat)GPT-Modells und anderer Large Language Models (LLMs)". Springer Nature. [https://doi.org/10.1007/978-3-662-69433-6_3](https://doi.org/10.1007/978-3-662-69433-6_3)
-[^vaswani]: **Vaswani, A. et al. (2017):** *Attention Is All You Need.* arXiv:1706.03762. [https://arxiv.org/abs/1706.03762](https://arxiv.org/abs/1706.03762)
-[^mikolov]: **Mikolov, T. et al. (2013):** *Efficient Estimation of Word Representations in Vector Space.* arXiv:1301.3781. [https://arxiv.org/abs/1301.3781](https://arxiv.org/abs/1301.3781)
-[^ouyang]: **Ouyang, L. et al. (2022):** *Training language models to follow instructions with human feedback.* arXiv:2203.02155. [https://arxiv.org/abs/2203.02155](https://arxiv.org/abs/2203.02155)
-[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) - Tabelle 2.1 listet die Architekturdaten aller GPT-3-Varianten, u. a. `d_model` = 12.288 für das 175-Milliarden-Modell.
+--8<-- "quellen.md:brown"
+--8<-- "quellen.md:mikolov"
+--8<-- "quellen.md:ouyang"
+--8<-- "quellen.md:vaswani"
+--8<-- "quellen.md:zuckarelli"

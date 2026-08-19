@@ -182,6 +182,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^sycophancy]: **Sharma, M., Tong, M., Korbak, T. et al. (2023):** *Towards Understanding Sycophancy in Language Models.* arXiv:2310.13548. [https://arxiv.org/abs/2310.13548](https://arxiv.org/abs/2310.13548) - weist Schmeichelei bei fünf führenden KI-Assistenten nach und führt sie auf das Training zurück: In den Präferenzdaten wird eine Antwort, die zur Meinung der nutzenden Person passt, systematisch bevorzugt - auch wenn sie weniger zutrifft.
-[^perez]: **Perez, E., Ringer, S., Lukošiūtė, K. et al. (2022):** *Discovering Language Model Behaviors with Model-Written Evaluations.* arXiv:2212.09251. [https://arxiv.org/abs/2212.09251](https://arxiv.org/abs/2212.09251) - der beunruhigende Zusatzbefund: Sycophancy **nimmt mit der Modellgröße zu** und wird durch RLHF eher verstärkt als behoben. Bessere Modelle lösen dieses Problem also nicht von selbst.
-[^klein]: **Klein, G. (2007):** *Performing a Project Premortem.* Harvard Business Review, September 2007. [https://hbr.org/2007/09/performing-a-project-premortem](https://hbr.org/2007/09/performing-a-project-premortem) - die Originalquelle der Pre-Mortem-Methode aus der Entscheidungsforschung - lange vor jeder KI entwickelt und hier lediglich auf Prompts übertragen.
+--8<-- "quellen.md:klein"
+--8<-- "quellen.md:perez"
+--8<-- "quellen.md:sycophancy"

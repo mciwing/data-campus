@@ -251,6 +251,5 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^shanahan]: **Shanahan, M., McDonell, K. & Reynolds, L. (2023):** *Role play with large language models.* Nature 623, S. 493-498. [https://doi.org/10.1038/s41586-023-06647-8](https://doi.org/10.1038/s41586-023-06647-8) - der theoretische Rahmen dieses Kapitels: Ein Dialogsystem „ist" keine Rolle, es **simuliert** sie. Die Autoren zeigen, warum diese Unterscheidung nötig ist, um über KI-Verhalten zu sprechen, ohne es zu vermenschlichen.
-[^persona]: **Zheng, M., Pei, J., Logeswaran, L. et al. (2023):** *When „A Helpful Assistant" Is Not Really Helpful: Personas in System Prompts Do Not Improve Performances of Large Language Models.* arXiv:2311.10054. [https://arxiv.org/abs/2311.10054](https://arxiv.org/abs/2311.10054) - der Gegenbefund, siehe Kasten „Was Rollen nicht können" oben.
-[^white]: **White, J., Fu, Q., Hays, S. et al. (2023):** *A Prompt Pattern Catalog to Enhance Prompt Engineering with ChatGPT.* arXiv:2302.11382. [https://arxiv.org/abs/2302.11382](https://arxiv.org/abs/2302.11382) - beschreibt die Rollenvorgabe als *Persona Pattern* - eines der grundlegenden Entwurfsmuster im Prompting.
+--8<-- "quellen.md:persona"
+--8<-- "quellen.md:shanahan"

@@ -158,7 +158,7 @@ Beides läuft auf dieselbe Kernkompetenz hinaus: **bewusst steuern, was das Mode
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT.* Springer Nature, u. a. Kap. 3 und Kap. 6.4 „Token-Limit managen". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
-[^lappin]: **Lappin, S. (2024):** *Assessing the Strengths and Weaknesses of Large Language Models.* Journal of Logic, Language and Information 33, S. 9-20. [https://doi.org/10.1007/s10849-023-09409-x](https://doi.org/10.1007/s10849-023-09409-x) (CC BY 4.0)
-[^kessel]: **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach!* UVK Verlag (UTB), Kapitel „Stärken und Schwächen von LLMs", S. 130-141. ISBN 978-3-8252-6276-1.
-[^mata]: **Mata v. Avianca, Inc.**, No. 1:22-cv-01461, *Opinion and Order on Sanctions* vom 22. Juni 2023, United States District Court for the Southern District of New York, Richter P. Kevin Castel. - Das Gericht verhängte 5.000 US-Dollar Strafe gegen die Anwälte Peter LoDuca und Steven A. Schwartz sowie deren Kanzlei Levidow, Levidow & Oberman P.C.
+--8<-- "quellen.md:kessel"
+--8<-- "quellen.md:lappin"
+--8<-- "quellen.md:mata"
+--8<-- "quellen.md:zuckarelli"

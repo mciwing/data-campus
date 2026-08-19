@@ -103,6 +103,6 @@ Diese Frage ist Gold wert. Sie zwingt dich, **Kontext, Ziel und Format explizit*
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^zuckarelli]: **Zuckarelli, J. (2025):** *Programmieren mit ChatGPT.* Springer Nature, Kap. 6.1 „Prompt Engineering". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)
-[^kessel]: **Kessel, T.; Brandt, A.; Offtermatt, J.; Augenstein, F.; Praeg, C. (2025):** *ChatGPT und Large Language Models? Frag doch einfach!* UVK Verlag (UTB). ISBN 978-3-8252-6276-1.
-[^popli]: **Popli, N. (2023):** *The AI Job That Pays Up to \$335K-and You Don't Need a Computer Engineering Background.* Time. [https://time.com/6272103/ai-prompt-engineer-job/](https://time.com/6272103/ai-prompt-engineer-job/)
+--8<-- "quellen.md:kessel"
+--8<-- "quellen.md:popli"
+--8<-- "quellen.md:zuckarelli"

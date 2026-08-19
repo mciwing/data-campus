@@ -473,8 +473,6 @@ Diesen Abschnitt kannst du **überspringen** - für den Kurs brauchst du ihn nic
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^brown]: **Brown, T. B. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) - zeigt, dass die Leistung eines Modells mit der Parameterzahl stark zunimmt. Genau deshalb sind kleine Modelle so stark auf gute Prompts angewiesen.
-[^johnny]: **Zamfirescu-Pereira, J. D., Wong, R. Y., Hartmann, B. & Yang, Q. (2023):** *Why Johnny Can't Prompt: How Non-AI Experts Try (and Fail) to Design LLM Prompts.* CHI '23, S. 1-21. [https://doi.org/10.1145/3544548.3581388](https://doi.org/10.1145/3544548.3581388) - empirische Studie: Ohne Rückmeldung über die Wirkung ihrer Prompts entwickeln Nicht-Fachleute keine systematische Vorgehensweise. Das eigene Labor ist genau diese Rückmeldung.
 !!! info "Werkzeug-Dokumentation"
 
     - **Ollama:** [https://github.com/ollama/ollama/blob/main/README.md](https://github.com/ollama/ollama/blob/main/README.md)
@@ -482,3 +480,6 @@ Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
     - **Modell-Bibliothek:** [https://ollama.com/library](https://ollama.com/library)
 
     Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
+
+--8<-- "quellen.md:brown"
+--8<-- "quellen.md:johnny"

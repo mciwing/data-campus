@@ -232,6 +232,5 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^willard]: **Willard, B. T. & Louf, R. (2023):** *Efficient Guided Generation for Large Language Models.* arXiv:2307.09702. [https://arxiv.org/abs/2307.09702](https://arxiv.org/abs/2307.09702) - beschreibt das Verfahren hinter `--format json`: Die Ausgabe wird über einen endlichen Automaten geführt, der ungültige Tokens gar nicht erst zur Auswahl zulässt. Deshalb ist gültige Syntax garantiert - und nur die Syntax.
-[^tam]: **Tam, Z. R., Wu, C.-K., Tsai, Y.-L. et al. (2024):** *Let Me Speak Freely? A Study on the Impact of Format Restrictions on Performance of Large Language Models.* arXiv:2408.02442. [https://arxiv.org/abs/2408.02442](https://arxiv.org/abs/2408.02442) - wichtiger Gegenbefund: Strenge Formatvorgaben können die **Denkleistung senken**. Siehe den Kasten „Der Preis der Struktur" oben.
-[^osterwalder]: **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.
+--8<-- "quellen.md:tam"
+--8<-- "quellen.md:willard"

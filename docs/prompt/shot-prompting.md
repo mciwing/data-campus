@@ -335,12 +335,12 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 Zur Ausarbeitung wurden generative Tools unterstützend eingesetzt.
 
-[^brown]: **Brown, T. B., Mann, B., Ryder, N. et al. (2020):** *Language Models are Few-Shot Learners.* arXiv:2005.14165. [https://arxiv.org/abs/2005.14165](https://arxiv.org/abs/2005.14165) - das Paper, das die Begriffe *Zero-Shot*, *One-Shot* und *Few-Shot* geprägt hat. Zeigt auch, dass der Nutzen von Beispielen mit der Modellgröße *abnimmt* - die Grundlage unseres Kurs-Tricks.
-[^min]: **Min, S., Lyu, X., Holtzman, A. et al. (2022):** *Rethinking the Role of Demonstrations: What Makes In-Context Learning Work?* arXiv:2202.12837. [https://arxiv.org/abs/2202.12837](https://arxiv.org/abs/2202.12837) - überraschender Befund: Selbst **falsch gelabelte** Beispiele helfen kaum weniger als richtige. Entscheidend sind Format, Label-Raum und Eingabeverteilung - nicht die Korrektheit. Das erklärt, warum die *Struktur* deiner Beispiele so wichtig ist.
-[^zhao]: **Zhao, T. Z., Wallace, E., Feng, S. et al. (2021):** *Calibrate Before Use: Improving Few-Shot Performance of Language Models.* arXiv:2102.09690. [https://arxiv.org/abs/2102.09690](https://arxiv.org/abs/2102.09690) - belegt die Verzerrung durch unausgewogene Beispiele: Das Modell bevorzugt Labels, die häufiger oder zuletzt im Prompt vorkommen.
-[^liu]: **Liu, J., Shen, D., Zhang, Y. et al. (2022):** *What Makes Good In-Context Examples for GPT-3?* Proceedings of DeeLIO 2022 (Workshop @ ACL), S. 100-114. [https://aclanthology.org/2022.deelio-1.10/](https://aclanthology.org/2022.deelio-1.10/) - die Auswahl der Beispiele ist entscheidend: semantisch ähnliche Beispiele schlagen zufällig gezogene deutlich.
-[^lu]: **Lu, Y., Bartolo, M., Moore, A. et al. (2022):** *Fantastically Ordered Prompts and Where to Find Them: Overcoming Few-Shot Prompt Order Sensitivity.* ACL 2022. arXiv:2104.08786. [https://arxiv.org/abs/2104.08786](https://arxiv.org/abs/2104.08786) - dieselben Beispiele, andere Reihenfolge: Die Ergebnisse schwanken zwischen nahezu bestem Wert und Zufallsniveau. Der Effekt bleibt auch bei großen Modellen bestehen.
-[^yoo]: **Yoo, K. M., Kim, J., Kim, H. J. et al. (2022):** *Ground-Truth Labels Matter: A Deeper Look into Input-Label Demonstrations.* EMNLP 2022. arXiv:2205.12685. [https://arxiv.org/abs/2205.12685](https://arxiv.org/abs/2205.12685) - die Gegenposition zu Min et al.: Je nach Aufgabe und Modell wirken korrekte Labels sehr wohl. Beide Befunde zusammen ergeben das differenzierte Bild im Kapitel.
-[^dong]: **Dong, Q., Li, L., Dai, D. et al. (2024):** *A Survey on In-context Learning.* EMNLP 2024, S. 1107-1128. [https://aclanthology.org/2024.emnlp-main.64/](https://aclanthology.org/2024.emnlp-main.64/) - Überblicksarbeit zum gesamten Feld: Definitionen, Auswahl- und Anordnungsstrategien für Beispiele sowie Erklärungsansätze, warum In-Context Learning überhaupt funktioniert.
-[^wei]: **Wei, J., Wang, X., Schuurmans, D. et al. (2022):** *Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.* arXiv:2201.11903. [https://arxiv.org/abs/2201.11903](https://arxiv.org/abs/2201.11903) - Few-Shot-Beispiele, die den Lösungsweg mitliefern, verbessern das Ergebnis bei mehrschrittigen Aufgaben erheblich.
-[^osterwalder]: **Osterwalder, A. & Pigneur, Y. (2010):** *Business Model Generation: A Handbook for Visionaries, Game Changers, and Challengers.* Wiley, ISBN 978-0-470-87641-1.
+--8<-- "quellen.md:brown"
+--8<-- "quellen.md:dong"
+--8<-- "quellen.md:liu"
+--8<-- "quellen.md:lu"
+--8<-- "quellen.md:min"
+--8<-- "quellen.md:osterwalder"
+--8<-- "quellen.md:wei"
+--8<-- "quellen.md:yoo"
+--8<-- "quellen.md:zhao"

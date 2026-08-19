@@ -76,6 +76,7 @@ nav:
     - Prompt Chaining: prompt/chaining.md
     - Kritisches Prompting: prompt/kritisches.md
     - Ausblick: prompt/ausblick.md
+    - Quellen: prompt/quellen.md
 
 
 extra_css:
@@ -111,6 +112,10 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.progressbar
+  - pymdownx.snippets:
+      base_path:
+        - includes
+      check_paths: true
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
