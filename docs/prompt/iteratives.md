@@ -170,23 +170,16 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     Naheliegende Reihenfolge:
 
     1. Baseline - was du jetzt hast
-    2. + die neun Feldnamen explizit auflisten
-    3. + Kontext aus deiner `idee.md`
-    4. + Format und Umfang je Feld
+    2. \+ die neun Feldnamen explizit auflisten
+    3. \+ Kontext aus deiner `idee.md`
+    4. \+ Format und Umfang je Feld
 
-    **Deine Messgröße:** Wie viele der neun Felder kommen tatsächlich vor? Zähle nach jeder Runde.
+    Protokolliere jede Runde im `lab_log.md` unter `## 02b` nach dem Muster - *was geändert, was bewirkt*.
 
-    Protokolliere jede Runde im `lab_log.md` unter `## 02b` nach dem Muster oben - *was geändert, was bewirkt*.
-
-    ??? success "Was du beobachten solltest"
-
-        Runde 2 ist meist der große Sprung: Sobald die neun Feldnamen wörtlich im Prompt stehen, kommen sie auch in der Antwort - oft von 5/9 auf 9/9.
-
-        Runde 3 und 4 ändern an der **Zahl** dagegen nichts mehr. Die Antwort wird trotzdem besser: konkreter, auf deine Idee bezogen, gleichmäßig ausführlich. Genau dieser Widerspruch ist das Thema von Übung 3 - achte schon jetzt darauf.
 
 !!! lab "Übung 2: Das Modell als Prompt-Kritiker"
 
-    Nimm deinen **schwächsten** Prompt und frage im selben Chat direkt nach:
+    Nimm deinen bislang **schwächsten** Prompt und frage im selben Chat direkt nach:
 
     ```{.text .ollama title="Ollama Chat"}
     Welche drei Informationen hätte ich dir mitliefern müssen, damit deine Antwort konkret und nützlich wird?
@@ -194,33 +187,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Prüfe:** Sind die Vorschläge brauchbar? Und decken sie sich mit den [fünf Bausteinen](anatomie.md)?
 
-    ??? success "Was du beobachten solltest - und der Haken daran"
-
-        Die Vorschläge sind meist erstaunlich brauchbar und landen fast immer bei Kontext, Zielgruppe und Format - also bei den Bausteinen 2 bis 5.
-
-        Der Haken: Du fragst hier ausgerechnet **die Selbsteinschätzung** des Modells ab. Wie wenig die im Allgemeinen wert ist, weist du in [Evaluation von KI-Ergebnissen](evaluation.md) selbst nach - dort hält das Modell Aussagen für belegt, die frei erfunden sind.
-
-        Warum es hier trotzdem funktioniert: Nach *fehlendem Kontext* zu fragen ist eine **Sprachaufgabe** („was fehlt einem Text dieser Art?"), keine Faktenfrage. Genau dafür sind LLMs gebaut. Nimm die Antworten als Ideenliste - nicht als Diagnose.
-
-!!! lab "Übung 3: Wo hört es auf?"
-
-    Iteriere weiter, bis sich nichts mehr verbessert. Halte fest:
-
-    - Nach welcher Runde brachte eine Änderung **keinen** Zuwachs mehr?
-    - **Gab es eine Runde, in der die Feldzahl gleich blieb, die Antwort aber merklich besser wurde?** Was sagt das über deine Messgröße aus?
-    - **Sabotage-Runde:** Überlade einen Prompt absichtlich - drei Rollen gleichzeitig, fünf Formatvorgaben, widersprüchliche Längenangaben. Was passiert mit deiner Zahl, was mit der Antwort?
-
-    Speichere die beste Version im `lab_log.md` unter `## 02b Canvas (iteriert)`. **Lass `## 02a` stehen** - am Ende des Kurses willst du den Weg sehen, nicht nur das Ziel.
-
-    ??? success "Was du beobachten solltest"
-
-        Die Feldzahl erreicht typischerweise ab Runde 2 ihr Maximum und bleibt dort - obwohl Runde 3 und 4 inhaltlich deutlich stärker sind. **Deine Metrik ist blind für genau die Verbesserung, an der dir am meisten liegt.**
-
-        Das ist keine Anfängerfalle, sondern ein offenes Forschungsproblem: Wie sich die Qualität von Sprachmodell-Ausgaben überhaupt sinnvoll messen lässt, füllt ganze Übersichtsarbeiten - mit dem Fazit, dass automatische Metriken menschliche Bewertung ergänzen, aber nicht ersetzen.[^chang]
-
-        👉 Merke: **Eine Metrik misst nur, was sie misst.** Sie sagt dir, *wo* du hinschauen sollst - das Hinschauen nimmt sie dir nicht ab.
-
-        Die Sabotage-Runde zeigt die andere Richtung: Widersprüchliche Vorgaben lassen das Modell meist die *zuletzt* genannte befolgen und den Rest ignorieren. Mehr Anweisung ist nicht mehr Steuerung.
 
 ??? code "🐍 Optional (Python): Prompts automatisch bewerten"
 
