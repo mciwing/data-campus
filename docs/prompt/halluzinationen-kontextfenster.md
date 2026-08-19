@@ -18,6 +18,11 @@ Wer diese beiden Phänomene versteht, schreibt nicht nur bessere Prompts - er f�
 
 ## Halluzinationen
 
+<div style="text-align: center;">
+    <img src="https://miro.medium.com/v2/resize:fit:520/0*YZhxBXgGo9pl9-Dg" alt="Halluzination eines LLMs" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://miro.medium.com/v2/resize:fit:520/0*YZhxBXgGo9pl9-Dg">Medium</a></figcaption>
+</div>
+
 ### Was ist eine Halluzination?
 
 ???+ defi "Halluzination"
@@ -52,14 +57,12 @@ Eine flüssig formulierte Falschaussage ist für das Modell **genauso „wahrsch
 
 ### Was hilft gegen Halluzinationen?
 
-Die gute Nachricht: Man ist ihnen nicht hilflos ausgeliefert.
+Die gute Nachricht: Man ist ihnen nicht hilflos ausgeliefert. Es gibt mehrere Strategien gegen Halluzinationen:
 
-???+ adv "Strategien gegen Halluzinationen"
-
-    - **Kontext mitgeben:** Liefere die Fakten/Dokumente gleich im Prompt mit, statt das Modell aus dem „Gedächtnis" raten zu lassen.
-    - **Verifizieren:** Jede faktische Aussage (Zahlen, Zitate, Namen, Quellen) gegenprüfen. → Kapitel [Evaluation von KI-Ergebnissen](evaluation.md)
-    - **Quellen verlangen:** Nach überprüfbaren Belegen fragen - und diese tatsächlich anklicken.
-    - **Unsicherheit zulassen:** Das Modell explizit auffordern, „Ich weiß es nicht" zu sagen, statt zu raten.
+- **Kontext mitgeben:** Liefere die Fakten/Dokumente gleich im Prompt mit, statt das Modell aus dem „Gedächtnis" raten zu lassen.
+- **Verifizieren:** Jede faktische Aussage (Zahlen, Zitate, Namen, Quellen) gegenprüfen. → Kapitel [Evaluation von KI-Ergebnissen](evaluation.md)
+- **Quellen verlangen:** Nach überprüfbaren Belegen fragen - und diese tatsächlich anklicken.
+- **Unsicherheit zulassen:** Das Modell explizit auffordern, „Ich weiß es nicht" zu sagen, statt zu raten.
 
 !!! tip "Training reduziert - beseitigt aber nicht"
 

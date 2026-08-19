@@ -1,6 +1,11 @@
-# Einführung in Generative KI und Prompt Engineering
+# Generative KI und Prompt Engineering
 
 Generative KI - allen voran große Sprachmodelle (**Large Language Models, LLMs**) - verändert, wie wir mit Computern arbeiten. Statt zu programmieren, **formulieren** wir. Wie gut die Ergebnisse werden, hängt entscheidend davon ab, wie wir unsere Anweisungen gestalten. Genau das ist **Prompt Engineering**.
+
+<div style="text-align: center;">
+    <img src="https://i.imgflip.com/82cixh.jpg" alt="Prompt Engineering Meme" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://i.imgflip.com/82cixh.jpg">imgflip</a></figcaption>
+</div>
 
 ---
 

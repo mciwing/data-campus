@@ -102,6 +102,11 @@ Ein vorgegebenes Format bewirkt gleich dreierlei:
 
 ## Der Ollama JSON-Modus
 
+<div style="text-align: center;">
+    <img src="https://i.programmerhumor.io/2025/06/c5b8b1145b14842fa8b4ded98c26b52afc289d50339c5ce502b37ddf69f37b23.jpeg" alt="JSON-Meme" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://i.programmerhumor.io/2025/06/c5b8b1145b14842fa8b4ded98c26b52afc289d50339c5ce502b37ddf69f37b23.jpeg">Programmerhumor.io</a></figcaption>
+</div>
+
 Ollama kann das Modell technisch dazu **zwingen**, gültiges JSON zu erzeugen - mit der Option `--format json`:
 
 ```title="Terminal"

@@ -4,6 +4,11 @@ Ab jetzt wird es praktisch. In den folgenden Kapiteln lernst du Prompting-Techni
 
 Dafür nutzen wir **Ollama**: ein kleines Programm, das Sprachmodelle lokal ausführt. Du brauchst dafür **keine Programmierkenntnisse** - alles läuft über ein Terminalfenster.
 
+<div style="text-align: center;">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0rpxgcG10XjUzAoQLjJqUhopmz_PWxNXhFDcobDKXpw0AFgwvPjiG82g&s=10" alt="Terminal-Meme" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0rpxgcG10XjUzAoQLjJqUhopmz_PWxNXhFDcobDKXpw0AFgwvPjiG82g&s=10">gstatic</a></figcaption>
+</div>
+
 !!! quote "Warum wir absichtlich *schlechte* Modelle verwenden"
 
     Die Modelle, die du gleich installierst, sind **winzig** - teilweise 1000-mal kleiner als GPT-5. Sie machen Fehler, schweifen ab und ignorieren Anweisungen.

@@ -2,7 +2,12 @@
 
 Die meisten, die ChatGPT zum ersten Mal benutzen, sind **beeindruckt**. Da sitzt scheinbar jemand am anderen Ende, der mühelos auf fast jede Frage antwortet - in fließendem Deutsch, Englisch oder Klingonisch, mal als Shakespeare, mal als SQL-Profi. Doch hinter dem freundlichen Chatfenster steckt kein kleiner Mensch, sondern **viel Mathematik, noch mehr Daten und ein bisschen Magie** (die wir gleich entzaubern).
 
-Bevor wir lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform bringt, sollten wir verstehen, **was unter der Haube passiert**. Denn wer weiß, wie ein Motor funktioniert, fährt am Ende auch besser.
+<div style="text-align: center;">
+    <img src="https://media.licdn.com/dms/image/v2/C5622AQG3kT-IvFivJw/feedshare-shrink_800/feedshare-shrink_800/0/1663536139489?e=2147483647&v=beta&t=GX_vlAR6iqTgpCiPIuvQKSg3dTp2oreAKsjymA5DAS8" alt="Was ein LLM wirklich macht" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://media.licdn.com/dms/image/v2/C5622AQG3kT-IvFivJw/feedshare-shrink_800/feedshare-shrink_800/0/1663536139489?e=2147483647&v=beta&t=GX_vlAR6iqTgpCiPIuvQKSg3dTp2oreAKsjymA5DAS8">LinkedIn</a></figcaption>
+</div>
+
+Bevor wir jedoch lernen, wie man diese Werkzeuge mit guten **Prompts** zur Höchstform bringt, sollten wir verstehen, wie sie funktionieren.
 
 !!! info "Grundlage dieses Kapitels"
 
@@ -35,7 +40,7 @@ Das Herzstück moderner Sprachmodelle heißt **Transformer**. Und nein - damit i
     <figcaption>Dasselbe Wort, zwei sehr verschiedene Vorstellungen. (Quelle: <a href="https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Ftransformers-v0-as7u39shhiig1.png%3Fauto%3Dwebp%26s%3De209b3f9f93c7272efb4047b3eb160f64b13ec3d" target="_blank" rel="noopener">Reddit</a>)</figcaption>
 </div>
 
-Populär wurde der Transformer durch ein Paper mit dem wohl coolsten Titel der KI-Geschichte: **„Attention Is All You Need"**[^vaswani]. Acht Google-Forscher legten damit den Grundstein für so ziemlich jeden Chatbot, den du heute kennst.
+Populär wurde der Transformer durch eine Veröffentlichung mit dem wohl coolsten Titel der KI-Geschichte: **„Attention Is All You Need"**[^vaswani]. Acht Google-Forscher legten damit den Grundstein für so ziemlich jeden Chatbot, den du heute kennst.
 
 Grob besteht ein Transformer aus zwei Teilen:
 
@@ -414,7 +419,7 @@ flowchart LR
     classDef teal fill:#009485aa,stroke:#333,stroke-width:1px;
 ```
 
-???+ question "Selbsttest: Hast du den Motor verstanden?"
+???+ question "Selbsttest: Hast du den Aufbau verstanden?"
 
     1. Was ist der Unterschied zwischen einem **Token** und einem **Wort**?
     2. Warum brauchen Transformer ein **Positional Encoding**?

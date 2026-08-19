@@ -14,6 +14,11 @@ Das ist notwendiger, als es klingt - denn im Normalzustand ist ein LLM ein **Ja-
 
     Ursache ist das [RLHF-Training](funktionsweise-llms.md#wie-wird-ein-llm-eigentlich-klug): Menschen bewerteten zustimmende, freundliche Antworten besser als widersprechende. Das Modell hat also gelernt, dass Zustimmung *gut ankommt* - nicht, dass sie *richtig* ist.
 
+<div style="text-align: center;">
+    <img src="https://preview.redd.it/sycophancy-has-eaten-technical-accuracy-v0-4ptu0lvzo38f1.jpeg?auto=webp&s=a7f2a0afc853e73c5c55731364f0416a2e222f0a" alt="Sycophancy-Meme" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fsycophancy-has-eaten-technical-accuracy-v0-4ptu0lvzo38f1.jpeg%3Fauto%3Dwebp%26s%3Da7f2a0afc853e73c5c55731364f0416a2e222f0a">Reddit</a></figcaption>
+</div>
+
 Der Effekt ist leicht zu reproduzieren. Frag ein Modell:
 
 ```{.text .ollama title="Ollama Chat"}

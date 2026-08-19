@@ -110,6 +110,11 @@ Die folgenden Beispiele zeigen, wie multimodale Prompts aussehen. Ausprobieren k
 
 ## Agenten
 
+<div style="text-align: center;">
+    <img src="https://i.imgflip.com/az61ja.jpg" alt="Agenten-Meme" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://imgflip.com/i/az61ja">imgflip</a></figcaption>
+</div>
+
 Wenn ein Modell nicht nur *antwortet*, sondern **Werkzeuge benutzt** - eine Website aufrufen, ein PDF öffnen, Code ausführen, eine Datei schreiben - spricht man von einem **Agenten**.
 
 ???+ defi "Agent"
@@ -117,6 +122,8 @@ Wenn ein Modell nicht nur *antwortet*, sondern **Werkzeuge benutzt** - eine Webs
     Ein System, das ein LLM in einer Schleife betreibt: *Ziel verstehen → Werkzeug wählen → ausführen → Ergebnis bewerten → nächster Schritt*, bis das Ziel erreicht ist.
 
     Der Unterschied zu [Prompt Chaining](chaining.md): Bei einer Kette legst **du** die Schritte vorher fest. Ein Agent entscheidet **selbst**, welcher Schritt als Nächstes kommt.
+
+
 
 ---
 

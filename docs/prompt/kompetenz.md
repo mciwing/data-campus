@@ -4,6 +4,11 @@ Du weißt jetzt, **wie** ein LLM funktioniert, **was** es gut kann und wo seine 
 
 Die Antwort ist eine eigene Fähigkeit - und das Thema des gesamten restlichen Kurses: **Prompt Engineering**.
 
+<div style="text-align: center;">
+    <img src="https://i.programmerhumor.io/2024/08/programmerhumor-io-programming-memes-7bd832b137a5e4e.png" alt="Prompt Engineering Meme" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://i.programmerhumor.io/2024/08/programmerhumor-io-programming-memes-7bd832b137a5e4e.png">Programmerhumor.io</a></figcaption>
+</div>
+
 !!! info "Grundlage dieses Kapitels"
 
     > Zuckarelli, J. (2025): *Programmieren mit ChatGPT.* Springer Nature, Kap. 6.1 „Prompt Engineering". [https://doi.org/10.1007/978-3-662-69433-6](https://doi.org/10.1007/978-3-662-69433-6)

@@ -48,6 +48,11 @@ Was beim ersten Kontakt am meisten beeindruckt: die **Eloquenz** der Antworten u
 
     Für uns Menschen korreliert sprachliche Ausdrucksfähigkeit mit Intelligenz - wer eloquent spricht, *wirkt* klug. Genau deshalb **täuschen** flüssige LLM-Antworten leicht ein tieferes Verständnis vor, das so gar nicht existiert. Merke dir das gut - es erklärt später die Halluzinationen und auch die ein oder andere Begegnung mit Menschen in deinem Umfeld. 😉
 
+    <div style="text-align: center;">
+        <img src="https://scontent-vie1-1.cdninstagram.com/v/t51.82787-15/775798826_18215683678340773_6135904056719128746_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ig_cache_key=Mzk2NTAwMzMzMDU1NzgwMzk0OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=1XZGMVahe0sQ7kNvwGcuale&_nc_oc=AdoIIkxXs7wBBRy7cx2XWQQtgfD_wAeCMt6dEnP4RCpFAToyYmSU2lcMZpp-fIiGqt0&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-vie1-1.cdninstagram.com&_nc_gid=y8h77t8KmM1UhrJqnOiAOQ&_nc_ss=7a22e&oh=00_AQFB907OW9IdE7xWyy-MTqeINpCjdVHnUo91mlpAwYWqJA&oe=6A8B4B99" alt="Eloquenz ist nicht gleich Intelligenz" style="max-width: 60%;">
+        <figcaption>HR-konforme Wege, einen Kollegen „Vollidiot“ zu nennen <br> (Quelle: <a href="https://scontent-vie1-1.cdninstagram.com/v/t51.82787-15/775798826_18215683678340773_6135904056719128746_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ig_cache_key=Mzk2NTAwMzMzMDU1NzgwMzk0OA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTA4MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=1XZGMVahe0sQ7kNvwGcuale&_nc_oc=AdoIIkxXs7wBBRy7cx2XWQQtgfD_wAeCMt6dEnP4RCpFAToyYmSU2lcMZpp-fIiGqt0&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent-vie1-1.cdninstagram.com&_nc_gid=y8h77t8KmM1UhrJqnOiAOQ&_nc_ss=7a22e&oh=00_AQFB907OW9IdE7xWyy-MTqeINpCjdVHnUo91mlpAwYWqJA&oe=6A8B4B99">Instagram</a>)</figcaption>
+    </div>
+
 ### Textarbeit
 
 Hier liegt die **natürliche Stärke** von LLMs. Die häufigsten (und zuverlässigsten) Aufgaben[^kessel]:
@@ -128,6 +133,11 @@ So eloquent die Texte auch klingen - das Modell verarbeitet Anweisungen **rein s
 ### Halluzinationen
 
 LLMs sind berüchtigt dafür, **plausibel klingende, aber frei erfundene** Inhalte zu produzieren. Und das nicht zaghaft, sondern mit voller Überzeugung.
+
+<div style="text-align: center;">
+    <img src="https://i.redd.it/9ij0rabazhig1.jpeg" alt="Halluzinationen-Meme" style="max-width: 50%;">
+    <figcaption>Quelle: <a href="https://www.reddit.com/media?url=https%3A%2F%2Fi.redd.it%2F9ij0rabazhig1.jpeg">Reddit</a></figcaption>
+</div>
 
 Weil diese Schwäche für die Praxis so folgenreich ist, bekommt sie ein **eigenes Kapitel**: [Halluzinationen und Kontextfenster](halluzinationen-kontextfenster.md). Dort erfährst du, *warum* Modelle erfinden, an welchen Warnsignalen du es erkennst - und was tatsächlich dagegen hilft. Inklusive des Falls, bei dem ein Anwalt einem Gericht sechs frei erfundene Urteile vorlegte. ⚖️
 
