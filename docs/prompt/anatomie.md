@@ -244,15 +244,19 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
 !!! lab "Übung 2: Die fünf Bausteine einzeln zuschalten"
 
-    Formuliere zu deiner Idee die Aufgabe *„Nenne die drei größten Risiken."* - und baue den Prompt dann Stufe für Stufe aus. `/clear` zwischen den Stufen nicht vergessen.
+    Füge zu deiner Idee die Aufgabe *„Nenne die drei größten Risiken."* hinzu. 
+    
+    ```{.text .ollama title="Ollama Chat"}
+    Ein Lieferdienst für regionale Bio-Lebensmittel in Innsbruck. Nenne die drei größten Risiken.
+    ```
 
-    | Stufe | Was du ergänzt |
-    |---|---|
-    | 1 | nur die Aufgabe |
-    | 2 | + Rolle |
-    | 3 | + Kontext aus deiner `idee.md` |
-    | 4 | + Einschränkungen (Länge, Sprache, keine erfundenen Zahlen) |
-    | 5 | + Ausgabeformat |
+    Anschließend ergänze Schritt für Schritt (`/clear` dazwischen nicht vergessen):
+
+    1. Rolle (z.B. "Du bist Risikokapitalgeberin mit 15 Jahren Erfahrung in der Lebensmittelbranche.")
+    - Kontext (z.B. "Ein Zwei-Personen-Startup in Innsbruck, 15.000 € Startkapital, Zielgruppe berufstätige Familien, zwei große Wettbewerber.")
+    - Einschränkungen (z.B. "Antworte auf Deutsch. Maximal 2 Sätze pro Risiko. Erfinde keine Zahlen.")
+    - Ausgabeformat (z.B. "Format je Risiko: RISIKO <n>: <Titel> Gegenmaßnahme: <ein Satz>")
+    
 
     **Bewerte jede Stufe** mit 0-5 Punkten in *Konkretheit*, *Nutzbarkeit* und *Formattreue*. Kopiere dir dafür diese Tabelle ins `lab_log.md` und fülle sie direkt beim Ausführen aus - nachträglich erinnerst du dich nicht mehr:
 
@@ -268,15 +272,6 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     **Die eigentliche Frage:** Zwischen welchen beiden Stufen liegt bei *deiner* Idee der größte Sprung? Bei den meisten ist es 2 → 3. Bei dir auch?
 
-    ??? success "Was du beobachten solltest"
-
-        **Stufe 1** liefert Allgemeinplätze, die für jedes Unternehmen der Welt gelten: *„Wettbewerb", „Finanzierung", „Marketing".*
-
-        **Stufe 2** ändert vor allem den *Ton* - fachlicher, selbstbewusster - aber selten den Inhalt. Das ist die häufigste Enttäuschung dieser Übung, und sie ist lehrreich: Eine Rolle ohne Kontext ist Kostüm ohne Rolle.
-
-        **Stufe 3** ist meist der Sprung: Plötzlich stehen *Lastenrad*, *Kühlkette*, *Innsbruck* im Text. Das Modell kann nur mit dem arbeiten, was es weiß.
-
-        **Stufe 4 und 5** verbessern nicht mehr den Inhalt, sondern die **Weiterverwendbarkeit** - kürzer, gleichförmig, kopierbar. Erwarte hier keinen Erkenntnissprung mehr; erwarte Verlässlichkeit.
 
 !!! lab "Übung 3: Der rosa Elefant 🐘"
 
@@ -285,28 +280,9 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     - negativ - *„Schreibe KEINE Einleitung."*
     - positiv - *„Beginne direkt mit dem ersten Fakt."*
 
-    Führe beide **je dreimal** aus, mit `/clear` dazwischen.
+    Funktioniert eine der beiden Formulierungen besser? Führe beide **je dreimal** aus, mit `/clear` dazwischen. Probier selbst eine bessere Formulierung zu finden. 
+    Notiere deine Ergebnisse in deinem `lab_log.md`.
 
-    **Zähle mit** - ohne Zahl bleibt es Bauchgefühl: In wie vielen der drei Läufe kommt **trotzdem** eine Einleitung? Notiere `x/3` für beide Formulierungen in dein `lab_log.md`.
-
-    ??? success "Was du beobachten solltest"
-
-        Die negative Formulierung scheitert typischerweise in ein bis zwei von drei Läufen - das Wort *„Einleitung"* steht im Prompt und macht eine Einleitung dadurch *wahrscheinlicher*, nicht unwahrscheinlicher. Genau das ist der rosa Elefant.
-
-        Die positive Formulierung hält meist in allen drei Läufen. Wenn bei dir beide gleich gut abschneiden: Verschärfe das Verbot (*„Schreibe keine Einleitung, keine Begrüßung, keine Zusammenfassung am Ende"*) - je mehr Verneinungen, desto deutlicher der Effekt.
-
-!!! lab "Übung 4: Härtetest und Prompt sichern"
-
-    1. **Härtetest:** Lass deinen besten Prompt aus Übung 2 auf `gemma3:270m` laufen - dem viermal kleineren Modell. Bleibt das Ergebnis brauchbar? Wenn nicht: Welcher Baustein müsste deutlicher werden?
-    2. **Sichern:** Notiere den finalen Prompt in deinem `lab_log.md` unter `## 01 Beschreibung`.
-
-    Das ist der erste Prompt-Eintrag in deinem Laborbuch - es wächst ab jetzt in jedem Kapitel um einen weiteren.
-
-    !!! tip "Der Härtetest wird dein Standardwerkzeug"
-
-        Ein Prompt, der auf `gemma3:270m` noch etwas Brauchbares erzeugt, ist robust. Einer, der nur auf großen Modellen funktioniert, verlässt sich darauf, dass das Modell errät, was du meinst.
-
-        Nimm dir vor, **jeden** Prompt, den du im `lab_log.md` sicherst, einmal durch den Zwerg zu schicken - in allen folgenden Kapiteln. Das kostet 30 Sekunden und ist das ehrlichste Qualitätsmaß, das du hast.
 
 ??? code "🐍 Optional (Python): alle fünf Stufen automatisch durchlaufen"
 
