@@ -238,6 +238,10 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
     Klassifiziere die folgende Kundenbewertung als Beschwerde, Frage oder Lob.
     ```
 
+    Teste nun, wie gut Zero-Shot funktioniert, indem du die Aufgabe und eine Kundenanfrage ohne Beispiele übergibst. Ergänze noch *„Antworte mit genau einem Wort."* zu deiner Anweisung. Entspricht das Ergebnis dem, was du erwartest?
+
+    ---
+
     **Schreibe nun fünf Testfälle** in dein `lab_log.md` unter `## 02a`.
 
     Mindestens einer davon soll ein **Grenzfall** sein - eine Eingabe, bei der du selbst kurz überlegen musst:
@@ -260,12 +264,11 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     ```
 
-    Dann beide Varianten durchspielen:
+    Nun testen wir, ob der Few-Shopt Ansatz besser funktioniert. Übergib dieselbe Anweisung plus deine fünf Beispiele. Am Ende lässt du das Label offen.
 
-    1. **Zero-Shot** - nur die Aufgabe und eine Kundenanfrage, dazu *„Antworte mit genau einem Wort."*
-    2. **Few-Shot** - dieselbe Anweisung plus drei Beispiele, letztes Label offen lassen.
+    ---
 
-    **Zähle zwei Dinge getrennt** und notiere beide als Bruch in dein `lab_log.md`:
+    Vergleiche nun beide Ansätze. **Zähle zwei Dinge getrennt** und notiere beide als Bruch in dein `lab_log.md`:
 
     - **Formattreue**: Wie oft kommt wirklich nur *ein* Wort zurück - ohne Erklärsatz, ohne Punkt, ohne Wiederholung der Frage?
     - **Richtigkeit**: Wie oft stimmt das Label mit deiner eigenen Einordnung überein?
