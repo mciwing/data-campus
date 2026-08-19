@@ -117,3 +117,5 @@ ENV/
 
 # claude
 /.claude
+
+/input/

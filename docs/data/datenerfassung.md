@@ -14,6 +14,7 @@ Ein wichtiges Merkmal aller Lebewesen ist es, **Daten aus der Umwelt zu erfassen
 
 <div style="text-align: center;">
     <img src="https://www.watson.ch/imgdb/dfb2/Qx,A,0,0,375,375,156,156,62,62;Ani/226293179999364" alt="Sinnesorgane" style="width:220px; margin-bottom: 1em;">
+    <figcaption>(Quelle: <a href="https://www.watson.ch" target="_blank" rel="noopener">watson.ch</a>)</figcaption>
 </div>
 
 Dieser Prozess läuft bei uns Menschen über unsere **Sinnesorgane** ab – sie sind unsere Sensoren zur Umwelt. Unsere Umgebung sendet fortlaufend Reize aus – in Form von Licht, Schall, Druck, Geruch oder chemischen Stoffen.

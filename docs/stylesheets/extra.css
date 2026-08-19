@@ -6,7 +6,6 @@
     border-color: rgb(132, 132, 132);
     background-color: rgba(132, 132, 132, 0.1);
   }
-  .md-typeset .code > .admonition-title,
   .md-typeset .code > .admonition-title::before,
   .md-typeset .code > summary::before {
     background-color: rgb(132, 132, 132);
@@ -24,7 +23,6 @@
   .md-typeset details.defi {
     background-color: rgba(232, 127, 43, 0.1);
   }
-  .md-typeset .defi > .admonition-title,
   .md-typeset .defi > .admonition-title::before,
   .md-typeset .defi > summary::before {
     background-color: rgb(232, 127, 43);
@@ -44,7 +42,6 @@
     border-color: rgb(132, 132, 132);
     background-color: rgba(132, 132, 132, 0.1);
   }
-  .md-typeset .process > .admonition-title,
   .md-typeset .process > .admonition-title::before,
   .md-typeset .process > summary::before {
     background-color: rgb(132, 132, 132);
@@ -64,7 +61,6 @@
     border-color: rgb(38, 126, 38);
     background-color: rgba(38, 126, 38, 0.1);
   }
-  .md-typeset .adv > .admonition-title,
   .md-typeset .adv > .admonition-title::before,
   .md-typeset .adv > summary::before {
     background-color: rgb(38, 126, 38);
@@ -83,7 +79,6 @@
     border-color: rgb(255, 0, 0);
     background-color: rgba(255, 0, 0, 0.1);
   }
-  .md-typeset .disadv > .admonition-title,
   .md-typeset .disadv > .admonition-title::before,
   .md-typeset .disadv > summary::before {
     background-color: rgb(255, 0, 0);
@@ -93,6 +88,81 @@
   .md-typeset .disadv > summary::after {
     background-color: rgb(255, 0, 0);
   }
+
+/* Lab: Erlenmeyerkolben in Material-Grün (#64dd17, identisch zu "question").
+   Verwendung:  !!! lab "Titel"   bzw.  ???+ lab "Titel"  (aufklappbar) */
+:root {
+    --md-admonition-icon--lab: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M288 0L160 0 128 0C110.3 0 96 14.3 96 32s14.3 32 32 32l0 132.8c0 11.8-3.3 23.5-9.5 33.5L10.3 406.2C3.6 417.2 0 429.7 0 442.6C0 480.9 31.1 512 69.4 512l309.2 0c38.3 0 69.4-31.1 69.4-69.4c0-12.8-3.6-25.4-10.3-36.4L329.5 230.4c-6.2-10.1-9.5-21.7-9.5-33.5L320 64c17.7 0 32-14.3 32-32s-14.3-32-32-32L288 0zM192 196.8L192 64l64 0 0 132.8c0 23.7 6.6 46.9 19 67.1L309.5 320l-171 0L173 263.9c12.4-20.2 19-43.4 19-67.1z"/></svg>')
+  }
+  .md-typeset .admonition.lab,
+  .md-typeset details.lab {
+    background-color: rgba(100, 221, 23, 0.1);
+  }
+  .md-typeset .lab > .admonition-title::before,
+  .md-typeset .lab > summary::before {
+    background-color: rgb(100, 221, 23);
+    -webkit-mask-image: var(--md-admonition-icon--lab);
+            mask-image: var(--md-admonition-icon--lab);
+  }
+  /* Aufklapp-Pfeil: das Theme rendert ihn als Maske mit
+     `background-color: currentcolor` – deshalb `color`, nicht `background-color`. */
+  .md-typeset .lab > .admonition-title::after,
+  .md-typeset .lab > summary::after {
+    color: rgb(100, 221, 23);
+  }
+
+/* Zeilenumbruch in Code-Blöcken.
+
+   Standardmäßig scrollen Code-Blöcke horizontal – lange Modell-Ausgaben und
+   `ollama run "…"`-Befehle laufen dadurch aus dem Bild. Deshalb brechen sie
+   hier um.
+
+   Abschalten für einzelne Blöcke ist nur AUSSERHALB von Admonitions möglich
+   (in Admonitions verwirft der Parser das umschließende <div>):
+
+       <div class="nowrap" markdown>
+       ```python
+       … Block, der scrollen soll …
+       ```
+       </div>                                                             */
+.md-typeset pre > code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.md-typeset .nowrap pre > code {
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+/* Quellenverzeichnis (Fußnoten) wie eine Admonition rahmen.
+
+   Die Fußnoten-Erweiterung hängt alle Definitionen zwingend ans Seitenende,
+   außerhalb jeder Admonition – sie lassen sich im Markdown also nicht in
+   eine Box setzen. Deshalb bekommt der erzeugte Container hier die
+   Admonition-Optik (Maße aus dem Modern-Theme übernommen). */
+.md-typeset .footnote {
+  background-color: rgba(0, 148, 133, 0.1);
+  border-radius: .4rem;
+  margin: 1.5625em 0;
+  padding: .6rem .8rem;
+  font-size: .7rem;
+}
+/* Die Trennlinie über den Fußnoten wird durch die Box überflüssig */
+.md-typeset .footnote > hr {
+  display: none;
+}
+.md-typeset .footnote > ol {
+  margin-left: 1rem;
+}
+.md-typeset .footnote > ol > li {
+  margin-bottom: .4em;
+}
+.md-typeset .footnote > ol > li:last-child {
+  margin-bottom: 0;
+}
 
 /* Glass-Header leicht in Brand-Peach tönen (überlagert die Default-Bg-Farbe,
    backdrop-filter aus dem Modern-Theme bleibt erhalten) */
@@ -153,3 +223,87 @@
 .progress-60plus .progress-bar { --bar-color: #8bc34a; }
 .progress-80plus .progress-bar { --bar-color: #4caf50; }
 .progress-100plus .progress-bar { --bar-color: #009485; }
+/* ===================================================================
+   Nicht kopierbare Inhalte
+
+   Variante 1 - einzelner Code-Block (jede Sprache):
+
+     ```{ .sql .no-copy }
+     SELECT * FROM kunden;
+     ```
+
+     Wichtig: bei dieser Schreibweise muss die Sprache mit Punkt und als
+     erster Eintrag stehen. Fuer Bloecke ohne Sprache `.text` verwenden:
+
+     ```{ .text .no-copy }
+     Ein Prompt zum Abtippen
+     ```
+
+   Variante 2 - beliebiger Bereich (mehrere Bloecke, Tabellen, Text):
+
+     <div class="no-copy" markdown>
+
+     ```
+     ganz ohne Sprachangabe
+     ```
+
+     </div>
+   =================================================================== */
+
+/* Kopier-Icon entfernen. Material prüft selbst per closest(".no-copy") und
+   lässt den Button weg - beide Varianten oben sind damit schon abgedeckt.
+   Die Regel bleibt als Absicherung, falls sich der Klassenname des Buttons
+   mit einem Material-Update ändert (9.7: .md-code__button, früher:
+   .md-clipboard). */
+.no-copy .md-code__button,
+.no-copy .md-clipboard {
+  display: none !important;
+}
+
+/* Markieren des Codes unterbinden */
+.no-copy,
+.no-copy pre,
+.no-copy code {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Zeilennummern-Tabellen (pymdownx.highlight linenums) ebenfalls sperren */
+.no-copy .linenodiv,
+.no-copy .highlighttable {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ===================================================================
+   Chat-/REPL-Bloecke: Prompt-Zeichen anzeigen, aber nicht mitkopieren
+
+     ```{ .text .ollama title="Ollama Chat" }
+     Was ist ein Business Model Canvas?
+     ```
+
+   Angezeigt: >>> Was ist ein Business Model Canvas?
+   Kopiert:       Was ist ein Business Model Canvas?
+
+   Das Zeichen kommt aus dem ::before und steht damit weder in der
+   Textauswahl noch in innerText (= was Material beim Kopieren liest).
+   Fortsetzungszeilen mehrzeiliger Eingaben im Quelltext mit `...` beginnen.
+   =================================================================== */
+
+.md-prompt {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.md-prompt::before {
+  content: ">>> ";
+  color: var(--md-code-hl-comment-color);
+  font-weight: 700;
+}
+
+.md-prompt--cont::before {
+  content: "... ";
+  font-weight: 400;
+}

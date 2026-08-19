@@ -89,6 +89,29 @@
           </a>
         </article>
 
+        <!-- Prompt Engineering -->
+        <article class="module-card" data-accent="prompt">
+          <div class="card-glow"></div>
+          <header class="module-card__header">
+            <span class="module-card__icon">
+              {% include ".icons/fontawesome/solid/robot.svg" %}
+            </span>
+            <h3>Prompt Engineering</h3>
+          </header>
+          <div class="module-card__content">
+            <p>Generative KI gezielt für Geschäftsideen einsetzen</p>
+            <ul class="feature-list">
+              <li>{% include ".icons/fontawesome/solid/check.svg" %} Anatomie guter Prompts</li>
+              <li>{% include ".icons/fontawesome/solid/check.svg" %} Few-Shot & Prompt Chaining</li>
+              <li>{% include ".icons/fontawesome/solid/check.svg" %} Evaluation & Bias-Prüfung</li>
+            </ul>
+          </div>
+          <a href="{{ 'prompt/' | url }}" class="module-card__cta">
+            <span>Zum Modul</span>
+            <span class="arrow">{% include ".icons/fontawesome/solid/arrow-right.svg" %}</span>
+          </a>
+        </article>
+
         <!-- Excel -->
         <article class="module-card module-card--coming-soon" data-accent="excel">
           <div class="card-glow"></div>
@@ -312,6 +335,7 @@
 
 .module-card[data-accent="data"]     { --card-accent: #FFB482; }
 .module-card[data-accent="database"] { --card-accent: #009485; }
+.module-card[data-accent="prompt"]   { --card-accent: #C77DFF; }
 .module-card[data-accent="excel"]    { --card-accent: #66D4CC; }
 
 .module-card::before {
@@ -568,6 +592,7 @@
   .contact-card { animation: hp-fade-up .55s ease-out both; }
   .modules-grid > .module-card:nth-child(2) { animation-delay: .08s; }
   .modules-grid > .module-card:nth-child(3) { animation-delay: .16s; }
+  .modules-grid > .module-card:nth-child(4) { animation-delay: .24s; }
   @keyframes hp-fade-up {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
