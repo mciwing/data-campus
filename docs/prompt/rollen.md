@@ -146,7 +146,7 @@ Nutze Rollen als **Perspektivwechsel**, nicht als Qualitätsverstärker. Bei Fra
 
     Eine Rolle ändert **Stil und Fokus** - aber sie schafft **kein Wissen**. Ein Modell, das den Innsbrucker Lebensmittelmarkt nicht kennt, kennt ihn auch als „Expertin für den Innsbrucker Lebensmittelmarkt" nicht. Es klingt dann nur **überzeugender falsch**.
 
-    Rollen erhöhen das Halluzinationsrisiko, weil sie Selbstsicherheit erzeugen. Prüfe Fakten immer nach ([Evaluation](evaluation.md)).
+    Rollen erhöhen das [Halluzinationsrisiko](halluzinationen-kontextfenster.md), weil sie Selbstsicherheit erzeugen. Prüfe Fakten immer nach.
 
 ---
 
@@ -190,7 +190,7 @@ Alles ab hier drehst du an **deiner eigenen Geschäftsidee**. Die Beispiele oben
 
     Das ist manchmal genau das, was du willst - und manchmal blendet es aus, was zählt. Probier den Gegentest: Formuliere die Investorenrolle einmal als *„Business Angel mit Fokus auf regionale Kreislaufwirtschaft, bewertet Rendite und Wirkung gleichrangig"* und vergleiche.
 
-    Rollen sind ein Werkzeug zum **Perspektivwechsel**, keine Quelle für Wahrheit über echte Menschen. Wie sich solche Verzerrungen systematisch aufspüren lassen, siehst du in [Evaluation von KI-Ergebnissen](evaluation.md).
+    Rollen sind ein Werkzeug zum **Perspektivwechsel**, keine Quelle für Wahrheit über echte Menschen. Wenn dir eine Rollenantwort verdächtig glatt vorkommt, ist das meist ein Hinweis auf ein Klischee - nicht auf eine Erkenntnis.
 
 ??? code "🐍 Optional (Python): alle Rollen automatisch durchlaufen"
 

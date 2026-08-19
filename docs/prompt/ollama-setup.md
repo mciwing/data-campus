@@ -289,8 +289,6 @@ Zwei Einstellungen verändern das Verhalten des Modells spürbar. Du setzt sie i
     ## 04 Rollen                ← Rollenbasiertes Prompting
     ## 05 Kette                 ← Prompt Chaining
     ## 06 Kritik                ← Kritisches Prompting
-    ## 07 Multimodal            ← Multimodales Prompting
-    ## 08 Evaluation            ← Evaluation von KI-Ergebnissen
     ```
 
 

@@ -75,8 +75,7 @@ nav:
     - Rollenbasiertes Prompting: prompt/rollen.md
     - Prompt Chaining: prompt/chaining.md
     - Kritisches Prompting: prompt/kritisches.md
-    - Multimodales Prompting: prompt/multimodal.md
-    - Evaluation von KI-Ergebnissen: prompt/evaluation.md
+    - Ausblick: prompt/ausblick.md
 
 
 extra_css:

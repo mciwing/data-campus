@@ -346,7 +346,7 @@ Das Spiel läuft so lange, bis ein spezielles **Stop-Token** erzeugt wird - das 
 
         Weil das Modell auf **sprachliche Wahrscheinlichkeit** optimiert ist, nicht auf **Wahrheit**. Es erzeugt das, was *plausibel klingt* - nicht das, was *nachweislich stimmt*. Eine flüssig formulierte Falschaussage ist für das Modell „wahrscheinlich", auch wenn sie sachlich Unsinn ist.
 
-        Genau deshalb ist **Verifikation** ein eigenes Thema - siehe Kapitel [Evaluation von KI-Ergebnissen](evaluation.md).
+        Genau deshalb musst du jede faktische Aussage **selbst verifizieren** - mit unabhängigen Quellen, nicht mit derselben KI. Mehr dazu im Kapitel [Halluzinationen und Kontextfenster](halluzinationen-kontextfenster.md).
 
 ---
 

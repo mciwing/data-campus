@@ -107,7 +107,7 @@ Liste alle impliziten Annahmen auf, die in dieser Geschäftsidee stecken
 
     Ein Modell, das fünf Gründe fürs Scheitern nennen soll, **wird** fünf nennen - notfalls erfundene. Kritische Prompts erzeugen kritisch klingenden Text, keine geprüfte Wahrheit.
 
-    Behandle jeden Kritikpunkt als **Hypothese**, die du selbst verifizieren musst ([Evaluation](evaluation.md)). Der Wert liegt darin, dass dir das Modell Punkte nennt, an die du nicht gedacht hast - nicht darin, dass sie stimmen.
+    Behandle jeden Kritikpunkt als **Hypothese**, die du selbst verifizieren musst. Der Wert liegt darin, dass dir das Modell Punkte nennt, an die du nicht gedacht hast - nicht darin, dass sie stimmen.
 
 ---
 

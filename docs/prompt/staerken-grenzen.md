@@ -143,7 +143,7 @@ Weil diese Schwäche für die Praxis so folgenreich ist, bekommt sie ein **eigen
 
 !!! danger "Wichtig"
 
-    Halluzinationen machen LLMs zu **gefährlichen Quellen für (Fehl-)Informationen**. Jede faktische Aussage gehört **verifiziert** - siehe Kapitel [Evaluation von KI-Ergebnissen](evaluation.md).
+    Halluzinationen machen LLMs zu **gefährlichen Quellen für (Fehl-)Informationen**. Jede faktische Aussage gehört **verifiziert** - mit unabhängigen Quellen, nicht mit derselben KI.
 
 ### Blackbox
 

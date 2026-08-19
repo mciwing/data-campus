@@ -87,21 +87,13 @@ Der Kurs ist in aufeinander aufbauende Kapitel strukturiert:
     - Schwächen finden
     - Annahmen hinterfragen
 
-- :material-image-multiple-outline: **Multimodales Prompting**
+- :material-telescope: **Ausblick**
 
     ---
 
-    - Bilder, PDFs, Diagramme
-    - Präsentationen
-    - Agenten
-
-- :material-check-decagram-outline: **Evaluation von KI-Ergebnissen**
-
-    ---
-
-    - Qualitätskriterien
-    - Bias & Halluzinationen
-    - Verifikation
+    - Multimodales Prompting
+    - Bias
+    - Tools, Agenten, Skills, MCP
 
 </div>
 

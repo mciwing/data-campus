@@ -60,7 +60,7 @@ Eine flüssig formulierte Falschaussage ist für das Modell **genauso „wahrsch
 Die gute Nachricht: Man ist ihnen nicht hilflos ausgeliefert. Es gibt mehrere Strategien gegen Halluzinationen:
 
 - **Kontext mitgeben:** Liefere die Fakten/Dokumente gleich im Prompt mit, statt das Modell aus dem „Gedächtnis" raten zu lassen.
-- **Verifizieren:** Jede faktische Aussage (Zahlen, Zitate, Namen, Quellen) gegenprüfen. → Kapitel [Evaluation von KI-Ergebnissen](evaluation.md)
+- **Verifizieren:** Jede faktische Aussage (Zahlen, Zitate, Namen, Quellen) gegenprüfen - mit **unabhängigen** Quellen, nicht mit derselben KI.
 - **Quellen verlangen:** Nach überprüfbaren Belegen fragen - und diese tatsächlich anklicken.
 - **Unsicherheit zulassen:** Das Modell explizit auffordern, „Ich weiß es nicht" zu sagen, statt zu raten.
 
