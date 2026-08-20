@@ -19,6 +19,11 @@ Die Stärke von Excel liegt in seiner **Vielseitigkeit**: Vom kleinen Haushaltsb
 !!! tip "Excel ist ein Werkzeug, kein Selbstzweck"
     Excel ist enorm mächtig - aber nicht für alles die richtige Wahl. Bei sehr großen Datenmengen, komplexen Datenbankabfragen oder reproduzierbaren Auswertungen sind oft **Datenbanken** oder **Programmiersprachen** besser geeignet. Wer die Grundlagen von Excel beherrscht, hat aber das beste Sprungbrett, um diese Werkzeuge später gezielt zu ergänzen.
 
+<figure class="hotspot-image" style="max-width: 450px;">
+  <img src="../assets/excel/grundlagen/basic_sciences_meme.jpg" alt="Meme: Basic Sciences in the Life of Engineers - die Kurve der Grundlagenkenntnisse steigt bis zur Universität und endet im Berufsleben bei Excel">
+  <figcaption>Basic Sciences in the Life of Engineers - im Berufsalltag läuft dann doch vieles auf Excel hinaus (Quelle: <a href="https://www.instagram.com/p/DYZqQ76tdjj/" target="_blank" rel="noopener">Instagram</a>)</figcaption>
+</figure>
+
 ## Tastenbelegung
 
 Um Excel - und auch andere Software - effizient bedienen zu können, lernen wir in den kommenden Kapiteln einige **Shortcuts** (deutsch: Tastenkombination) kennen. Zur Wiederholung findest du hier die wichtigsten Tasten einer klassischen QWERTZ-Tastatur:
