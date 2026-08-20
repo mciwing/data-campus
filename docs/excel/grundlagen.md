@@ -192,6 +192,8 @@ Die folgende Tabelle fasst die wichtigsten Aktionen rund ums **Eingeben und Mark
 
 ## Zeilen und Spalten
 
+Während einzelne Zellen die Inhalte tragen, geben **Zeilen und Spalten** dem Arbeitsblatt seine Struktur: Eine Zeile fasst z. B. einen zusammengehörigen Datensatz zusammen, eine Spalte sammelt gleichartige Werte wie Namen, Datumsangaben oder Beträge. In der Praxis arbeitest du deshalb selten nur mit einer Zelle, sondern fügst ganze Zeilen ein, blendest Spalten aus oder ordnest Bereiche neu an. Die folgende Tabelle zeigt dir die wichtigsten Handgriffe - vom Selektieren über das Einfügen und Löschen bis zum Ein- und Ausblenden:
+
 | Aktion | Shortcut |
 |---|---|
 | Zeile selektieren | Auf den Zeilenkopf klicken oder <kbd>SHIFT</kbd> + <kbd>Leertaste</kbd> |
@@ -210,7 +212,14 @@ Die **Zeilen- und Spaltengröße** kann beliebig angepasst werden. Dabei gibt es
 - **Automatisch**: Durch Doppelklick auf den Rand wird die Größe automatisch angepasst. Es können auch gleichzeitig mehrere Spalten und Zeilen automatisch angepasst werden.
 - **Exakter Wert**: Sollen die Größen genau festgelegt werden, müssen die Zeilen/Spalten markiert werden und anschließend mit der rechten Maustaste auf die Beschriftung geklickt werden. Anschließend kann *Spaltenbreite* bzw. *Zeilenhöhe* ausgewählt und ein Wert eingetragen werden.
 
+!!! example "Fun Fact"
+    Excel misst Zeilen und Spalten in **unterschiedlichen Einheiten**: Die **Zeilenhöhe** wird in *Punkt* angegeben (1 Punkt = 1/72 Zoll ≈ 0,35 mm) - eine Einheit aus der Typografie. Die **Spaltenbreite** dagegen wird in *Zeichen* gemessen: Der Standardwert 8,43 bedeutet, dass etwa 8,43 Ziffern der Standardschriftart in die Zelle passen. Änderst du also die Standardschrift, ändert sich auch die tatsächliche Breite aller Spalten. 
+    
+    Ein kleiner Tip dazu: Wer Zeilen und Spalten exakt gleich groß machen will (z. B. quadratisch), stellt am besten auf die Ansicht [*Seitenlayout*](../finalisieren/?h=ansicht#ansichten) um - dort lassen sich beide in Zentimetern angeben.
+
 ## Navigation in und zwischen Arbeitsblättern
+
+Bei 17 Milliarden Zellen pro Arbeitsblatt wird schnell klar: Nur mit Scrollen und Klicken kommst du nicht weit. Wer größere Tabellen bearbeitet, springt gezielt - an den Rand eines Datenbereichs, an den Anfang des Blattes oder direkt in die nächste Arbeitsmappe. Genau dafür gibt es eine Handvoll Navigations-Shortcuts, die dir auf Dauer enorm viel Zeit sparen:
 
 | Aktion | Shortcut |
 |---|---|
