@@ -57,7 +57,7 @@ Parameter:
 
 ### Beschreibung
 
-Bei der Datenanalyse braucht man oft ein **Maß der zentralen Tendenz**. Die drei bekanntesten Arten — Arithmetisches Mittel, Median und Modus:
+Bei der Datenanalyse braucht man oft ein **Maß der zentralen Tendenz**. Die drei bekanntesten Arten - Arithmetisches Mittel, Median und Modus:
 
 - `MITTELWERT`: Arithmetisches Mittel der Zahlenwerte
 - `MEDIAN`: Wert, der den Datensatz in eine obere und eine untere Hälfte teilt
@@ -74,7 +74,7 @@ Bei der Datenanalyse braucht man oft ein **Maß der zentralen Tendenz**. Die dre
 
 Parameter:
 
-- **Zahl1, Zahl2, …**: Eine oder mehrere Zahlen, die zur Berechnung herangezogen werden — direkt oder als Zellbezug (einzeln oder Bereiche).
+- **Zahl1, Zahl2, …**: Eine oder mehrere Zahlen, die zur Berechnung herangezogen werden - direkt oder als Zellbezug (einzeln oder Bereiche).
 
 ### Beispiel
 
@@ -107,7 +107,7 @@ Excel bietet eine einfache Möglichkeit, den **minimalen** und **maximalen** Wer
 
 Parameter:
 
-- **Zahl1, Zahl2, …**: Eine oder mehrere Zahlen — direkt oder als Zellbezug.
+- **Zahl1, Zahl2, …**: Eine oder mehrere Zahlen - direkt oder als Zellbezug.
 - **Matrix**: Bereich, in dem nach dem k-größten/k-kleinsten Wert gesucht wird.
 - **k**: Gibt an, der wievielt-größte/-kleinste Wert zurückgegeben werden soll.
 
@@ -166,7 +166,7 @@ Parameter:
 ![Anwendung des SVerweises](../assets/excel/funktionen/sc_sverweis.png)
 
 !!! warning "Hinweis"
-    Sollten mehrere Einträge mit dem Suchergebnis übereinstimmen, wird nur das erste zurückgegeben. Außerdem können `SVERWEIS` und `WVERWEIS` keine negativen Zeilen-/Spaltenindizes — d. h. der zurückgegebene Wert kann nur rechts oder unterhalb der Suchspalte liegen. Eine Lösung dafür bieten `VERGLEICH` und `INDEX`, die wir später besprechen.
+    Sollten mehrere Einträge mit dem Suchergebnis übereinstimmen, wird nur das erste zurückgegeben. Außerdem können `SVERWEIS` und `WVERWEIS` keine negativen Zeilen-/Spaltenindizes - d. h. der zurückgegebene Wert kann nur rechts oder unterhalb der Suchspalte liegen. Eine Lösung dafür bieten `VERGLEICH` und `INDEX`, die wir später besprechen.
 
 ## XVERWEIS
 
@@ -245,7 +245,7 @@ Parameter:
 
 ### Beschreibung
 
-Üblicherweise werden zwischen zwei Zellen "normale" direkte Bezüge hergestellt. Mit der Funktion `INDIREKT` kann ebenfalls ein Bezug auf eine bestimmte Zelle hergestellt werden — allerdings kann dieser Bezug aus zusammengesetzten **Textbausteinen** bestehen, die wiederum von anderen Zellen abhängen können. Der daraus entstehende Zellbezug wird sofort ausgewertet und der Inhalt dargestellt.
+Üblicherweise werden zwischen zwei Zellen "normale" direkte Bezüge hergestellt. Mit der Funktion `INDIREKT` kann ebenfalls ein Bezug auf eine bestimmte Zelle hergestellt werden - allerdings kann dieser Bezug aus zusammengesetzten **Textbausteinen** bestehen, die wiederum von anderen Zellen abhängen können. Der daraus entstehende Zellbezug wird sofort ausgewertet und der Inhalt dargestellt.
 
 ### Syntax
 
@@ -339,7 +339,7 @@ Parameter:
 - **Wert_wenn_falsch**: Wird zurückgegeben, falls der Wahrheitstest `FALSCH` ist.
 
 !!! warning "Hinweis"
-    `WENN` besitzt eine erweiterte Variante (`WENNS`) für mehrere Kriterien — und kann zusätzlich kaskadiert werden.
+    `WENN` besitzt eine erweiterte Variante (`WENNS`) für mehrere Kriterien - und kann zusätzlich kaskadiert werden.
 
 #### Beispiel
 

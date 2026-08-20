@@ -1,16 +1,16 @@
 # Cheatsheet: Zahlenformate
 
-Excel erlaubt es, eigene **Zahlenformate** zu definieren — über *Start* → *Zahl* → *Weitere Zahlenformate* → *Benutzerdefiniert*. In diesem Cheatsheet findest du die wichtigsten Platzhalter und Format-Codes auf einen Blick.
+Excel erlaubt es, eigene **Zahlenformate** zu definieren - über *Start* → *Zahl* → *Weitere Zahlenformate* → *Benutzerdefiniert*. In diesem Cheatsheet findest du die wichtigsten Platzhalter und Format-Codes auf einen Blick.
 
 ## Grundlegende Platzhalter
 
 | Code | Bedeutung |
 |---|---|
 | `0` | Zeigt **nicht-signifikante Nullen** an, wenn eine Zahl weniger Stellen hat als Nullen im Format. |
-| `#` | Zeigt **nur signifikante Ziffern** an — nicht-signifikante Nullen werden ignoriert. |
+| `#` | Zeigt **nur signifikante Ziffern** an - nicht-signifikante Nullen werden ignoriert. |
 | `,` (Komma) | Dezimaltrennzeichen |
 | `.` (Punkt) | 1.000er-Trennzeichen oder Anzeige in Tausendern |
-| `?` | Reserviert Platz für nicht-signifikante Nullen, zeigt sie aber als Leerzeichen — nützlich, um Dezimalpunkte auszurichten |
+| `?` | Reserviert Platz für nicht-signifikante Nullen, zeigt sie aber als Leerzeichen - nützlich, um Dezimalpunkte auszurichten |
 
 ### Beispiele: Nullen und Ziffern
 
@@ -71,38 +71,38 @@ Um **Text gemeinsam mit Zahlen** in einer Zelle anzuzeigen, gibt es zwei Wege:
 
 | Code | Bedeutung |
 |---|---|
-| `T` | Tage als 1–31 |
-| `TT` | Tage als 01–31 (immer zweistellig) |
-| `TTT` | Tage als So–Sa |
-| `TTTT` | Tage als Sonntag–Samstag |
+| `T` | Tage als 1-31 |
+| `TT` | Tage als 01-31 (immer zweistellig) |
+| `TTT` | Tage als So-Sa |
+| `TTTT` | Tage als Sonntag-Samstag |
 
 ### Monate
 
 | Code | Bedeutung |
 |---|---|
-| `M` | Monate als 1–12 |
-| `MM` | Monate als 01–12 (immer zweistellig) |
-| `MMM` | Monate als Jan–Dez |
-| `MMMM` | Monate als Januar–Dezember |
+| `M` | Monate als 1-12 |
+| `MM` | Monate als 01-12 (immer zweistellig) |
+| `MMM` | Monate als Jan-Dez |
+| `MMMM` | Monate als Januar-Dezember |
 | `MMMMM` | Monate mit dem ersten Buchstaben des Monats |
 
 ### Jahre
 
 | Code | Bedeutung |
 |---|---|
-| `JJ` | Jahre als 00–99 |
-| `JJJJ` | Jahre als 1900–9999 |
+| `JJ` | Jahre als 00-99 |
+| `JJJJ` | Jahre als 1900-9999 |
 
 ### Stunden, Minuten, Sekunden
 
 | Code | Bedeutung |
 |---|---|
-| `h` | Stunden als 0–23 |
-| `hh` | Stunden als 00–23 |
-| `m` | Minuten als 0–59 |
-| `mm` | Minuten als 00–59 |
-| `s` | Sekunden als 0–59 |
-| `ss` | Sekunden als 00–59 |
+| `h` | Stunden als 0-23 |
+| `hh` | Stunden als 00-23 |
+| `m` | Minuten als 0-59 |
+| `mm` | Minuten als 00-59 |
+| `s` | Sekunden als 0-59 |
+| `ss` | Sekunden als 00-59 |
 
 !!! warning "Hinweis"
     `m` und `mm` werden je nach Kontext als **Monat** oder **Minute** interpretiert. Direkt nach `h`/`hh` (Stunden) oder vor `s`/`ss` (Sekunden) erkennt Excel sie als Minuten.
@@ -153,4 +153,4 @@ Dieses Format zeigt Werte ab 1.000.000 in Millionen, ab 1.000 in Tausend und son
 | Negative Zahl in Klammern | `#.##0,00;(#.##0,00)` |
 
 !!! tip "Tipp"
-    Wenn dir ein Excel-Standardformat fast passt, aber nicht ganz: Wähle es zuerst aus, gehe dann auf *Benutzerdefiniert* — Excel zeigt dort den dahinterliegenden Format-Code, den du als Vorlage anpassen kannst.
+    Wenn dir ein Excel-Standardformat fast passt, aber nicht ganz: Wähle es zuerst aus, gehe dann auf *Benutzerdefiniert* - Excel zeigt dort den dahinterliegenden Format-Code, den du als Vorlage anpassen kannst.

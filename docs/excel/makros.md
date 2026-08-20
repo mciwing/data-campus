@@ -14,10 +14,10 @@ Unabhängig vom Weg öffnet sich ein neues Dialogfenster. Folgende Einstellungen
 
 - **Makroname**: Name, unter dem das Makro gespeichert werden soll.
 - **Tastenkombination**: Optional ein Shortcut. **Achtung**: Dabei können auch gängige Shortcuts (wie <kbd>STRG</kbd> + <kbd>C</kbd>) lokal überschrieben werden. Durch Drücken von <kbd>SHIFT</kbd> sind weitere Kombinationen möglich.
-- **Makro speichern in**: Typischerweise werden Makros in der gleichen Arbeitsmappe (*diese Arbeitsmappe*) gespeichert und sind nur dort aufrufbar. Außerdem gibt es die Möglichkeit, eine *neue Arbeitsmappe* zu erstellen oder eine *persönliche Makroarbeitsmappe* anzulegen. Letztere kann verwendet werden, um Makros zu definieren, die später vom Ersteller in mehreren Arbeitsmappen genutzt werden — sie wird fortan mit allen Excel-Mappen geöffnet.
+- **Makro speichern in**: Typischerweise werden Makros in der gleichen Arbeitsmappe (*diese Arbeitsmappe*) gespeichert und sind nur dort aufrufbar. Außerdem gibt es die Möglichkeit, eine *neue Arbeitsmappe* zu erstellen oder eine *persönliche Makroarbeitsmappe* anzulegen. Letztere kann verwendet werden, um Makros zu definieren, die später vom Ersteller in mehreren Arbeitsmappen genutzt werden - sie wird fortan mit allen Excel-Mappen geöffnet.
 - **Beschreibung**: Optionale Beschreibung des Makros.
 
-Nach Bestätigung mit *OK* läuft die Aufnahme. In der Statusleiste wird das optisch angezeigt. Nun können beliebige Schritte durchgeführt werden. Am Ende wird das **Stoppsymbol** in der Statuszeile geklickt — oder über *Ansicht* → *Makros* → *Aufzeichnung beenden* wird die Aufnahme beendet.
+Nach Bestätigung mit *OK* läuft die Aufnahme. In der Statusleiste wird das optisch angezeigt. Nun können beliebige Schritte durchgeführt werden. Am Ende wird das **Stoppsymbol** in der Statuszeile geklickt - oder über *Ansicht* → *Makros* → *Aufzeichnung beenden* wird die Aufnahme beendet.
 
 ![Links: Dialogfenster zum Aufzeichnen eines neuen Makros. Rechts: Übersicht über alle bereits erstellten Makros](../assets/excel/makros/sc_makroneu.png)
 
@@ -33,9 +33,9 @@ Zum **Ausführen** von Makros gibt es mehrere Möglichkeiten:
 
 - **Makroübersicht**: Klick auf *Ausführen*.
 - **Shortcut**: Der beim Erstellen vergebene Shortcut.
-- **Shape**: Eine Verknüpfung mit einem Element herstellen — z. B. ein Rechteck zeichnen, dann Rechtsklick → *Makro zuweisen* → Makro auswählen. Anschließend kann das Rechteck wie eine Schaltfläche verwendet werden.
+- **Shape**: Eine Verknüpfung mit einem Element herstellen - z. B. ein Rechteck zeichnen, dann Rechtsklick → *Makro zuweisen* → Makro auswählen. Anschließend kann das Rechteck wie eine Schaltfläche verwendet werden.
 - **Button**: Unter *Entwicklertools* → *Steuerelemente* → *Einfügen* → *Formularsteuerelemente* → *Schaltfläche* einen Button einfügen und mit einem Makro verknüpfen. Mit gedrückter <kbd>ALT</kbd>-Taste kann am Gitternetz gerastert werden.
-- **Schnellzugriff**: Unter *Optionen* → *Symbolleiste für den Schnellzugriff* unter *Befehle auswählen* auf *Makros* gehen — und das entsprechende Makro hinzufügen.
+- **Schnellzugriff**: Unter *Optionen* → *Symbolleiste für den Schnellzugriff* unter *Befehle auswählen* auf *Makros* gehen - und das entsprechende Makro hinzufügen.
 
 ## Makro programmieren
 

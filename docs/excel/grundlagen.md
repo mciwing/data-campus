@@ -4,20 +4,20 @@ Damit wir Excel produktiv einsetzen können, brauchen wir zuerst ein solides Fun
 
 ## Was ist Excel?
 
-**Microsoft Excel** ist das wohl bekannteste **Tabellenkalkulationsprogramm** der Welt — und seit über 35 Jahren der De-facto-Standard, wenn es darum geht, Daten zu erfassen, zu strukturieren, zu berechnen und auszuwerten. Im Kern ist Excel ein riesiges Raster aus **Zellen**, in dem du Zahlen, Texte und Formeln ablegst und über Funktionen, Verknüpfungen und Diagramme miteinander in Beziehung setzen kannst.
+**Microsoft Excel** ist das wohl bekannteste **Tabellenkalkulationsprogramm** der Welt - und seit über 35 Jahren der De-facto-Standard, wenn es darum geht, Daten zu erfassen, zu strukturieren, zu berechnen und auszuwerten. Im Kern ist Excel ein riesiges Raster aus **Zellen**, in dem du Zahlen, Texte und Formeln ablegst und über Funktionen, Verknüpfungen und Diagramme miteinander in Beziehung setzen kannst.
 
-Die Stärke von Excel liegt in seiner **Vielseitigkeit**: Vom kleinen Haushaltsbudget bis hin zu komplexen Finanzmodellen, Projektplänen oder Auswertungen mit zehntausenden Datensätzen lässt sich vieles realisieren — ohne dass du dafür programmieren können musst.
+Die Stärke von Excel liegt in seiner **Vielseitigkeit**: Vom kleinen Haushaltsbudget bis hin zu komplexen Finanzmodellen, Projektplänen oder Auswertungen mit zehntausenden Datensätzen lässt sich vieles realisieren - ohne dass du dafür programmieren können musst.
 
 ### Warum Excel so beliebt ist
 
-- **Niedrige Einstiegshürde**: Erste sinnvolle Ergebnisse erzielst du schon nach wenigen Minuten — die Lernkurve skaliert mit deinem Anspruch.
+- **Niedrige Einstiegshürde**: Erste sinnvolle Ergebnisse erzielst du schon nach wenigen Minuten - die Lernkurve skaliert mit deinem Anspruch.
 - **Sofortiges visuelles Feedback**: Du siehst direkt, was passiert, und kannst Werte und Formeln interaktiv ausprobieren.
 - **Riesiger Funktionsumfang**: Von einfachen Summen über Pivot-Tabellen bis hin zu Power Query, Power Pivot und Makros (VBA) ist alles in einem Tool vereint.
-- **Universell verbreitet**: Praktisch jeder Computer-Arbeitsplatz hat Excel — der Austausch von Dateien funktioniert ohne zusätzliche Tools.
-- **Brücke zu anderen Welten**: Excel-Dateien lassen sich problemlos mit Datenbanken, BI-Tools (Power BI, Tableau) oder Programmiersprachen wie Python und R austauschen — ein idealer Startpunkt für alles, was später in Richtung Datenanalyse geht.
+- **Universell verbreitet**: Praktisch jeder Computer-Arbeitsplatz hat Excel - der Austausch von Dateien funktioniert ohne zusätzliche Tools.
+- **Brücke zu anderen Welten**: Excel-Dateien lassen sich problemlos mit Datenbanken, BI-Tools (Power BI, Tableau) oder Programmiersprachen wie Python und R austauschen - ein idealer Startpunkt für alles, was später in Richtung Datenanalyse geht.
 
 !!! tip "Excel ist ein Werkzeug, kein Selbstzweck"
-    Excel ist enorm mächtig — aber nicht für alles die richtige Wahl. Bei sehr großen Datenmengen, komplexen Datenbankabfragen oder reproduzierbaren Auswertungen sind oft **Datenbanken** oder **Programmiersprachen** besser geeignet. Wer die Grundlagen von Excel beherrscht, hat aber das beste Sprungbrett, um diese Werkzeuge später gezielt zu ergänzen.
+    Excel ist enorm mächtig - aber nicht für alles die richtige Wahl. Bei sehr großen Datenmengen, komplexen Datenbankabfragen oder reproduzierbaren Auswertungen sind oft **Datenbanken** oder **Programmiersprachen** besser geeignet. Wer die Grundlagen von Excel beherrscht, hat aber das beste Sprungbrett, um diese Werkzeuge später gezielt zu ergänzen.
 
 ## Tastenbelegung
 
@@ -76,14 +76,14 @@ Um Excel - und auch andere Software - effizient bedienen zu können, lernen wir 
 
 ## Datei öffnen, speichern und schließen
 
-Bevor wir uns mit den Inhalten einer Arbeitsmappe beschäftigen, schauen wir uns die ganz grundlegenden Tätigkeiten an: **Wie öffne, speichere und schließe ich eine Excel-Datei?** Klar, das geht alles über das *Datei*-Menü mit der Maus — schneller bist du aber fast immer mit den passenden **Tastenkombinationen**. Es lohnt sich, die wichtigsten davon im Muskelgedächtnis zu haben, weil sie dir über alle weiteren Kapitel hinweg viel Zeit sparen.
+Bevor wir uns mit den Inhalten einer Arbeitsmappe beschäftigen, schauen wir uns die ganz grundlegenden Tätigkeiten an: **Wie öffne, speichere und schließe ich eine Excel-Datei?** Klar, das geht alles über das *Datei*-Menü mit der Maus - schneller bist du aber fast immer mit den passenden **Tastenkombinationen**. Es lohnt sich, die wichtigsten davon im Muskelgedächtnis zu haben, weil sie dir über alle weiteren Kapitel hinweg viel Zeit sparen.
 
 Die folgende Tabelle fasst die wichtigsten Aktionen rund ums Öffnen, Speichern und Schließen samt Shortcut zusammen.
 
 | Aktion | Shortcut |
 |---|---|
 | Excel öffnen | Klick auf die Verknüpfung im Startmenü oder Doppelklick auf die Verknüpfung am Desktop |
-| Arbeitsmappe öffnen | Doppelklick auf die Excel-Datei — oder bei geöffnetem Excel <kbd>STRG</kbd> + <kbd>O</kbd> |
+| Arbeitsmappe öffnen | Doppelklick auf die Excel-Datei - oder bei geöffnetem Excel <kbd>STRG</kbd> + <kbd>O</kbd> |
 | Mehrere Arbeitsmappen gleichzeitig öffnen | Mehrere Dateien anwählen und dann <kbd>ENTER</kbd> |
 | Startbildschirm ausblenden | *Datei* → *Optionen* → *Allgemein* → *Startbildschirm beim Start dieser Anwendung anzeigen* → Häkchen entfernen |
 | Arbeitsmappe schließen, Programm offen halten | <kbd>STRG</kbd> + <kbd>F4</kbd> |
@@ -107,13 +107,13 @@ Die folgende Tabelle fasst die wichtigsten Aktionen rund ums Öffnen, Speichern 
     <div class="excel-pyramid__level">Arbeitsmappe</div>
     <div class="excel-pyramid__level">Excel-Applikation</div>
   </div>
-  <figcaption>Hierarchie in Excel — von der kleinsten Einheit (oben) zur umschließenden Anwendung (unten)</figcaption>
+  <figcaption>Hierarchie in Excel - von der kleinsten Einheit (oben) zur umschließenden Anwendung (unten)</figcaption>
 </figure>
 
-Die **Excel-Applikation** ist die eigentliche Software — sie läuft auch ohne geöffnete Datei. In ihr lassen sich mehrere **Arbeitsmappen** gleichzeitig öffnen; jede Arbeitsmappe entspricht einer Excel-Datei und kann ihrerseits ein oder mehrere **Arbeitsblätter** enthalten. Innerhalb eines Arbeitsblattes ist alles in **Zeilen und Spalten** organisiert. Deren Schnittpunkte bilden schließlich die **Zellen** — die kleinste Einheit, in der die eigentliche Information (Text, Zahlen, Wahrheitswerte) abgelegt wird.
+Die **Excel-Applikation** ist die eigentliche Software - sie läuft auch ohne geöffnete Datei. In ihr lassen sich mehrere **Arbeitsmappen** gleichzeitig öffnen; jede Arbeitsmappe entspricht einer Excel-Datei und kann ihrerseits ein oder mehrere **Arbeitsblätter** enthalten. Innerhalb eines Arbeitsblattes ist alles in **Zeilen und Spalten** organisiert. Deren Schnittpunkte bilden schließlich die **Zellen** - die kleinste Einheit, in der die eigentliche Information (Text, Zahlen, Wahrheitswerte) abgelegt wird.
 
 !!! example "Fun Fact"
-    Ein einzelnes modernes Excel-Arbeitsblatt umfasst **1.048.576 Zeilen** (entspricht $2^{20}$) und **16.384 Spalten** (von A bis XFD, entspricht $2^{14}$). Das macht über **17 Milliarden Zellen** auf einem einzigen Blatt — würdest du jede Sekunde eine Zelle befüllen, wärst du mehr als 500 Jahre beschäftigt.
+    Ein einzelnes modernes Excel-Arbeitsblatt umfasst **1.048.576 Zeilen** (entspricht $2^{20}$) und **16.384 Spalten** (von A bis XFD, entspricht $2^{14}$). Das macht über **17 Milliarden Zellen** auf einem einzigen Blatt - würdest du jede Sekunde eine Zelle befüllen, wärst du mehr als 500 Jahre beschäftigt.
 
 ## Benutzeroberfläche
 
@@ -157,27 +157,27 @@ Speziell der **Schnellzugriff** (Nummer 7) kann einiges an Zeit sparen. Zum Anpa
     - Rechtsklick auf eine Funktion in den Registerkarten → *Zu Symbolleiste für den Schnellzugriff hinzufügen*
     - Rechtsklick auf ein Symbol → *Aus Symbolleiste für den Schnellzugriff entfernen*
 
-Auch die **Statusleiste** (Nummer 11) kann sehr hilfreich sein. Wenn du beispielsweise mehrere Zellen markierst, werden gewisse Operationen — z. B. Anzahl, Mittelwert, Summe — automatisch berechnet. Die Statusleiste lässt sich per Rechtsklick anpassen.
+Auch die **Statusleiste** (Nummer 11) kann sehr hilfreich sein. Wenn du beispielsweise mehrere Zellen markierst, werden gewisse Operationen - z. B. Anzahl, Mittelwert, Summe - automatisch berechnet. Die Statusleiste lässt sich per Rechtsklick anpassen.
 
 ## Daten eingeben und markieren
 
-Die zentrale Bühne in Excel sind die **Zellen**: Hier landen alle Werte — Zahlen, Texte, Wahrheitswerte — und genau hier passiert auch die Weiterverarbeitung. Eine Zelle kann auf andere Zellen zugreifen, deren Inhalte aufgreifen, kombinieren, in Berechnungen einfließen lassen und das Ergebnis wiederum bereitstellen. Aus diesem Zusammenspiel entsteht aus einer leeren Tabelle nach und nach ein lebendiges Modell.
+Die zentrale Bühne in Excel sind die **Zellen**: Hier landen alle Werte - Zahlen, Texte, Wahrheitswerte - und genau hier passiert auch die Weiterverarbeitung. Eine Zelle kann auf andere Zellen zugreifen, deren Inhalte aufgreifen, kombinieren, in Berechnungen einfließen lassen und das Ergebnis wiederum bereitstellen. Aus diesem Zusammenspiel entsteht aus einer leeren Tabelle nach und nach ein lebendiges Modell.
 
-Damit dieses Zusammenspiel funktioniert, hat jede Zelle eine **eindeutige Adresse** — quasi ihre Koordinaten im Tabellenblatt. Diese Adresse setzt sich aus **Spalte** (Buchstabe) und **Zeile** (Nummer) zusammen, z. B. `B4` für die Zelle in Spalte B, Zeile 4.
+Damit dieses Zusammenspiel funktioniert, hat jede Zelle eine **eindeutige Adresse** - quasi ihre Koordinaten im Tabellenblatt. Diese Adresse setzt sich aus **Spalte** (Buchstabe) und **Zeile** (Nummer) zusammen, z. B. `B4` für die Zelle in Spalte B, Zeile 4.
 
 <figure markdown style="text-align: center;">
   ![Aktive Zelle B4 mit grünem Rahmen und Anzeige im Namensfeld](../assets/excel/grundlagen/aktive_zelle.png)
 </figure>
 
-Welche Zelle gerade aktiv ist, erkennst du am **grünen Rahmen**. Ihre Adresse wird dir parallel links oben im **Namensfeld** angezeigt — im vorigen Beispiel ist das die Zelle `B4`.
+Welche Zelle gerade aktiv ist, erkennst du am **grünen Rahmen**. Ihre Adresse wird dir parallel links oben im **Namensfeld** angezeigt - im vorigen Beispiel ist das die Zelle `B4`.
 
-Die folgende Tabelle fasst die wichtigsten Aktionen rund ums **Eingeben und Markieren** von Zellinhalten zusammen — vom einfachen Überschreiben bis hin zur Auswahl mehrerer Bereiche gleichzeitig.
+Die folgende Tabelle fasst die wichtigsten Aktionen rund ums **Eingeben und Markieren** von Zellinhalten zusammen - vom einfachen Überschreiben bis hin zur Auswahl mehrerer Bereiche gleichzeitig.
 
 | Aktion | Shortcut |
 |---|---|
-| Zellinhalt überschreiben | Zelle auswählen und tippen — Inhalt der Zelle wird überschrieben |
+| Zellinhalt überschreiben | Zelle auswählen und tippen - Inhalt der Zelle wird überschrieben |
 | Zellinhalt ergänzen | Zelle auswählen und in die Bearbeitungsleiste klicken, oder <kbd>F2</kbd>, oder Doppelklick auf die Zelle |
-| Angrenzenden Zellbereich selektieren | Mit gedrückter Maustaste auswählen — oder Zelle auswählen → <kbd>SHIFT</kbd> halten → weitere Zellen anklicken |
+| Angrenzenden Zellbereich selektieren | Mit gedrückter Maustaste auswählen - oder Zelle auswählen → <kbd>SHIFT</kbd> halten → weitere Zellen anklicken |
 | Nicht angrenzende Zellen selektieren | Zelle auswählen → <kbd>STRG</kbd> halten → weitere Zellen anklicken |
 | Eingabe bestätigen | <kbd>ENTER</kbd> drücken oder andere Zelle anklicken |
 | Gleichen Inhalt in mehrere Zellen schreiben | Mehrere Zellen auswählen → <kbd>F2</kbd> → Wert eingeben → mit <kbd>STRG</kbd> + <kbd>ENTER</kbd> bestätigen |
@@ -255,7 +255,7 @@ Neben den klassischen Zellbezügen gibt es die Möglichkeit, Zellen oder Bereich
 2. **Zelle(n) benennen**:
     1. **Adressdropdownbox**: Direkt in der linken oberen Ecke einen Namen für die Zelle(n) vergeben.
     2. **Namen definieren**: Unter *Formeln* → *Definierte Namen* → *Namen definieren* öffnet sich ein eigenes Fenster, in dem ein Name für die Zelle(n) vergeben werden kann. Zusätzlich kann der Geltungsbereich (z. B. die ganze Arbeitsmappe) festgelegt werden.
-    3. **Namensmanager**: Unter *Formeln* → *Definierte Namen* → *Namensmanager* findest du eine Übersicht über alle bereits vergebenen Namen. Hier kann auch ein neuer Name angelegt werden — es öffnet sich das gleiche Fenster wie bei *Namen definieren*.
+    3. **Namensmanager**: Unter *Formeln* → *Definierte Namen* → *Namensmanager* findest du eine Übersicht über alle bereits vergebenen Namen. Hier kann auch ein neuer Name angelegt werden - es öffnet sich das gleiche Fenster wie bei *Namen definieren*.
     4. **Aus Auswahl erstellen**: Wenn du einem Zellbereich einen bereits in der obersten/untersten Zeile/Spalte definierten Namen geben willst, kannst du dies über *Formeln* → *Definierte Namen* → *Aus Auswahl erstellen* erledigen.
 
 ![Vier Möglichkeiten, einem Zellbereich einen Namen zu geben: 2a) Adressdropdownbox, 2b) Namen definieren, 2c) Namensmanager, 2d) Aus Auswahl erstellen](../assets/excel/grundlagen/sc2.svg)

@@ -4,7 +4,7 @@ Im vorliegenden Kapitel lernen wir, wie wir Daten in Tabellenform einfach und in
 
 ## Bedingte Formatierung
 
-Wir haben uns bereits mit der Formatierung einzelner Zellen und Zellbereiche beschäftigt — und auch deren Nachteil kennengelernt: sie sind statisch. Um Zellen entsprechend gewisser Regeln **dynamisch** optisch zu verändern, eignet sich die **Bedingte Formatierung**. Damit können wir Daten in Tabellenform graphisch aufbereiten und so einen schnellen Überblick über die enthaltene Information bekommen.
+Wir haben uns bereits mit der Formatierung einzelner Zellen und Zellbereiche beschäftigt - und auch deren Nachteil kennengelernt: sie sind statisch. Um Zellen entsprechend gewisser Regeln **dynamisch** optisch zu verändern, eignet sich die **Bedingte Formatierung**. Damit können wir Daten in Tabellenform graphisch aufbereiten und so einen schnellen Überblick über die enthaltene Information bekommen.
 
 ![Verschiedene Arten von Vorlagen der bedingten Formatierung](../assets/excel/visualisierung/sc_befo_vorlagen.png)
 
@@ -28,21 +28,21 @@ Neben den Vorlagen lassen sich bedingte Formatierungen auch selbst erstellen. Da
 
 #### Regelvorlagen
 
-Im Bild oben (Bereich 1) findest du Regelvorlagen zum *Hervorheben von Zellen* und *für oberste/unterste Werte*. Hier kann aus **13 verschiedenen Typen** eine Regel gewählt werden — anschließend werden ein oder mehrere Schwellwerte und eine Formatierung festgelegt. Im folgenden Bild sind mehrere solcher Regeln auf einen kleinen Datensatz angewandt:
+Im Bild oben (Bereich 1) findest du Regelvorlagen zum *Hervorheben von Zellen* und *für oberste/unterste Werte*. Hier kann aus **13 verschiedenen Typen** eine Regel gewählt werden - anschließend werden ein oder mehrere Schwellwerte und eine Formatierung festgelegt. Im folgenden Bild sind mehrere solcher Regeln auf einen kleinen Datensatz angewandt:
 
 - Spalte *Student*: Hervorheben von 'Textinhalt' (alle Wörter, die *al* enthalten)
 - Spalte *2019*: 'Obere 10 %' & 'Untere 10 %'
 - Spalte *2020*: 'Größer als' & 'Kleiner als' (Schwellen 5 und 15)
-- Spalte *2021*: 'Zwischen' (5–15)
+- Spalte *2021*: 'Zwischen' (5-15)
 
 ![Anwendung von verschiedenen Regelvorlagen](../assets/excel/visualisierung/sc_befo_regelvorlagen.png)
 
 #### Neue Regel erstellen
 
-Neben den Formatierungs- und Regelvorlagen können auch eigene Regeln erstellt werden. Diese bieten den **größten Freiraum**, brauchen aber etwas Übung. Unter *Bedingte Formatierung* → *Neue Regel* öffnet sich ein Fenster, in dem zwischen sechs verschiedenen Typen gewählt werden kann. Die ersten fünf basieren auf den bereits bekannten Regelvorlagen — mit dem Unterschied, dass sie direkt angepasst werden können.
+Neben den Formatierungs- und Regelvorlagen können auch eigene Regeln erstellt werden. Diese bieten den **größten Freiraum**, brauchen aber etwas Übung. Unter *Bedingte Formatierung* → *Neue Regel* öffnet sich ein Fenster, in dem zwischen sechs verschiedenen Typen gewählt werden kann. Die ersten fünf basieren auf den bereits bekannten Regelvorlagen - mit dem Unterschied, dass sie direkt angepasst werden können.
 
 !!! warning "Hinweis"
-    Bei der Erstellung neuer Regeln können neben direkten Zahlen und Texten auch **Zellbezüge** verwendet werden — z. B. für Rand-, Schwell- oder Vergleichswerte.
+    Bei der Erstellung neuer Regeln können neben direkten Zahlen und Texten auch **Zellbezüge** verwendet werden - z. B. für Rand-, Schwell- oder Vergleichswerte.
 
 ![Fenster zum Erstellen neuer bedingter Formatierungen](../assets/excel/visualisierung/sc_befo_neueregel.png)
 
@@ -72,7 +72,7 @@ Wie beim Löschen führt der Weg über *Bedingte Formatierung* → *Regeln verwa
 
 Eine Regel kann **kopiert** werden, indem sie wie zuvor beschrieben dupliziert oder mit *Format übertragen* (siehe [Formatvorlagen und Tabellen](datenaufbereitung.md#formatvorlagen-und-tabellen)) auf andere Zellen übertragen wird.
 
-Beim **Verschieben und Kopieren** von Zellen wandert auch die bedingte Formatierung mit. In manchen Situationen kann das zu Problemen führen — wenn nicht gewünscht, beim Einfügen auf *Werte einfügen* umschalten.
+Beim **Verschieben und Kopieren** von Zellen wandert auch die bedingte Formatierung mit. In manchen Situationen kann das zu Problemen führen - wenn nicht gewünscht, beim Einfügen auf *Werte einfügen* umschalten.
 
 !!! warning "Hinweis"
     Bedingte Formatierungen werden bei jeder Änderung von Zellinhalten neu ausgewertet. Bei großen, dynamischen Datensätzen kann das das Arbeitsblatt deutlich verlangsamen.
@@ -84,7 +84,7 @@ Beim **Verschieben und Kopieren** von Zellen wandert auch die bedingte Formatier
 
 ## Datenüberprüfung
 
-Eine weitere hilfreiche Möglichkeit — speziell bei der Interaktion mit Nutzern — ist die **Datenüberprüfung**. Sie erlaubt es uns, die Eingabe von Inhalten zu steuern und **unerwünschte Eingaben zu verhindern**. Außerdem kann der Nutzer über die korrekte Eingabe informiert werden. Unter *Daten* → *Datentools* → *Datenüberprüfung* öffnet sich ein neues Dialogfenster.
+Eine weitere hilfreiche Möglichkeit - speziell bei der Interaktion mit Nutzern - ist die **Datenüberprüfung**. Sie erlaubt es uns, die Eingabe von Inhalten zu steuern und **unerwünschte Eingaben zu verhindern**. Außerdem kann der Nutzer über die korrekte Eingabe informiert werden. Unter *Daten* → *Datentools* → *Datenüberprüfung* öffnet sich ein neues Dialogfenster.
 
 <div markdown class="three-figs">
 
@@ -98,11 +98,11 @@ Eine weitere hilfreiche Möglichkeit — speziell bei der Interaktion mit Nutzer
 
 ### Inhalte einschränken
 
-Wie im linken Dialogfenster zu sehen, können verschiedene Gültigkeitskriterien ausgewählt werden. Neben der Einschränkung von Zahlen-, Datums- und Textinhalten gibt es eine besonders interessante Möglichkeit: **Liste**. Damit können **Dropdown-Menüs** in Excel erstellt werden. Bei *Quelle* werden die erlaubten Werte festgelegt — entweder direkt (z. B. `ja;nein`) oder als Zellbezug.
+Wie im linken Dialogfenster zu sehen, können verschiedene Gültigkeitskriterien ausgewählt werden. Neben der Einschränkung von Zahlen-, Datums- und Textinhalten gibt es eine besonders interessante Möglichkeit: **Liste**. Damit können **Dropdown-Menüs** in Excel erstellt werden. Bei *Quelle* werden die erlaubten Werte festgelegt - entweder direkt (z. B. `ja;nein`) oder als Zellbezug.
 
 ### Eingabemeldung
 
-Eingabemeldungen sind Hinweise für den Nutzer der Tabelle — z. B., um erlaubte Eingaben hervorzuheben. Es werden ein Titel und eine Eingabemeldung festgelegt.
+Eingabemeldungen sind Hinweise für den Nutzer der Tabelle - z. B., um erlaubte Eingaben hervorzuheben. Es werden ein Titel und eine Eingabemeldung festgelegt.
 
 ### Fehlermeldung
 

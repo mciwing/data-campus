@@ -27,7 +27,7 @@
 
 ## Willkommen im Modul `Excel`! 👋
 
-In diesem Kurs lernst du den **professionellen Umgang mit Microsoft Excel** – von den ersten Tastenkombinationen über Funktionen, Visualisierungen und Pivot-Tabellen bis hin zu Power Query, Power Pivot, Power BI und Makros. Du verstehst, wie du Daten effizient aufbereitest, auswertest und für andere zugänglich machst.
+In diesem Kurs lernst du den **professionellen Umgang mit Microsoft Excel** - von den ersten Tastenkombinationen über Funktionen, Visualisierungen und Pivot-Tabellen bis hin zu Power Query, Power Pivot, Power BI und Makros. Du verstehst, wie du Daten effizient aufbereitest, auswertest und für andere zugänglich machst.
 
 </div>
 
@@ -122,7 +122,7 @@ Nach Abschluss dieses Moduls kannst du:
 - [x] Excel mit Tastenkombinationen effizient bedienen
 - [x] Daten aus mehreren Quellen zusammenführen und sauber aufbereiten
 - [x] Mit den wichtigsten Funktionen arbeiten
-- [x] Daten ansprechend visualisieren – mit Diagrammen und bedingter Formatierung
+- [x] Daten ansprechend visualisieren - mit Diagrammen und bedingter Formatierung
 - [x] Pivot-Tabellen und Pivot-Charts aufbauen und auswerten
 - [x] ETL-Prozesse mit Power Query realisieren
 - [x] Datenmodelle mit Power Pivot und Dashboards mit Power BI erstellen
@@ -193,12 +193,12 @@ Bereit, in die Welt von Excel einzutauchen? Starte mit den [Grundlagen](grundlag
 }
 
 /* === Excel-Index: dezente Farbtönung pro Bereich === */
-/* Karten 1–5 = Grundwissen (Peach, wie Daten-Box auf der Landingpage) */
+/* Karten 1-5 = Grundwissen (Peach, wie Daten-Box auf der Landingpage) */
 .excel-overview > ul > li:nth-child(-n+5) {
   background: color-mix(in oklab, #FFB482 7%, transparent);
 }
 
-/* Karten 6–8 = Fortgeschritten (Teal, wie Datenbanken-Box) */
+/* Karten 6-8 = Fortgeschritten (Teal, wie Datenbanken-Box) */
 .excel-overview > ul > li:nth-child(n+6):nth-child(-n+8) {
   background: color-mix(in oklab, #009485 7%, transparent);
 }
