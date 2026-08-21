@@ -193,3 +193,19 @@ Im genannten Reiter findest du auch die Möglichkeit, mehr oder weniger Nachkomm
     Nachdem wir nun gelernt haben, Daten zu bereinigen und optisch ansprechend darzustellen, ist es an der Zeit, das Erlernte zu üben:
 
     - :material-microsoft-excel: `02_DataCleanUp.xlsx`
+    - :material-microsoft-excel: `02_DataCleanUp_Extern.xlsx` (zweite Datei für die Verknüpfungs-Aufgabe)
+
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Blätter` | Arbeitsblätter kopieren, umbenennen, einfärben, aus- und einblenden |
+    | `2 Einfügen` | Einfügeoptionen: Werte, Transponieren, Verknüpfung, Formatierung |
+    | `3 Verknüpfen` | Bezüge über Arbeitsblätter und über Arbeitsmappen hinweg |
+    | `4 Formatierung` | Schrift, Rahmen, Hintergrund, Hoch-/Tiefstellen, Format übertragen |
+    | `5 Ausrichtung` | Textumbruch, Rotation, Einzug, Verbinden vs. Über Auswahl zentrieren |
+    | `6 Suchen+Ersetzen` | Suchen und Ersetzen, Inhalte auswählen, Sortieren und Filtern |
+    | `7 Wildcards` | Platzhalter `?`, `*` und `~` in Suche, Filter und Formeln |
+    | `8 Ausfüllen+Fixieren` | Ausfüllkästchen, Reihen fortsetzen, Fenster fixieren |
+    | `9 Zahlenformate` | Standardformate, eigene Formate mit Einheiten, Datum und Uhrzeit |
+    | `10 Quelldaten` / `11 Zielbild` | Praxisfall: aus den Rohdaten das Zielbild nachbauen |
+
+    **So funktioniert die Datei:** Gelb hinterlegte Zellen füllst du aus, graue Werte sind vorgegeben. Wo eine **Kontrollspalte** steht, prüft sie deine Eingabe automatisch. Kommst du nicht weiter, findest du im letzten Arbeitsblatt `Lösungen` den Weg.

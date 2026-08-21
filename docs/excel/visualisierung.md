@@ -82,6 +82,17 @@ Beim **Verschieben und Kopieren** von Zellen wandert auch die bedingte Formatier
 
     - :material-microsoft-excel: `04_BedingteFormatierung.xlsx`
 
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Vorlagen` | Datenbalken, Farbskalen und Symbolsätze anwenden |
+    | `2 Regelvorlagen` | Zellen hervorheben, obere/untere Werte - und warum die Reihenfolge zählt |
+    | `3 Farbskala` | Dreifarbige Skala, deren Mittelpunkt auf eine Zelle verweist |
+    | `4 Eigene Regeln` | Formeln als Regel: ganze Zeilen einfärben, Zebrastreifen, leere Zellen |
+    | `5 Regeln verwalten` | Reihenfolge, Bearbeiten, Duplizieren, Löschen, Format übertragen |
+    | `6 Stundenzettel` | Praxisfall: Wochenenden, Wochenwechsel, fehlende Einträge |
+
+    Formatierungen kann Excel nicht selbst prüfen - deshalb steht neben jeder Aufgabe eine **Verständnisfrage**, die du mit einer Formel beantwortest. Stimmt deine Zahl, hast du auch die richtige Schwelle für die Regel erwischt.
+
 ## Datenüberprüfung
 
 Eine weitere hilfreiche Möglichkeit - speziell bei der Interaktion mit Nutzern - ist die **Datenüberprüfung**. Sie erlaubt es uns, die Eingabe von Inhalten zu steuern und **unerwünschte Eingaben zu verhindern**. Außerdem kann der Nutzer über die korrekte Eingabe informiert werden. Unter *Daten* → *Datentools* → *Datenüberprüfung* öffnet sich ein neues Dialogfenster.
@@ -113,6 +124,16 @@ Eingabemeldungen sind Hinweise für den Nutzer der Tabelle - z. B., um erlaubte 
 
     - :material-microsoft-excel: `04_Datenueberpruefung.xlsx`
 
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Zahlen+Datum` | Zahlen- und Datumsbereiche einschränken, Eingabe- und Fehlermeldung |
+    | `2 Textlänge` | Länge einer Eingabe begrenzen, benutzerdefinierte Prüfung |
+    | `3 Dropdown` | Listen direkt eingegeben oder aus einem Zellbereich |
+    | `4 Abhängige Listen` | Zweistufiges Dropdown mit `INDIREKT` |
+    | `5 Stundenzettel` | Praxisfall: vollständig geprüftes Formular |
+
+    Auf jedem Blatt ist die Prüfung in einer **grauen Musterzelle bereits eingerichtet** - probiere sie aus (auch mit bewusst falschen Eingaben) und baue sie dann in der gelben Zelle nach.
+
 ## Diagramme
 
 Eine der gängigsten Varianten der Visualisierung in Excel sind **Diagramme**. Es gibt eine Vielzahl an Möglichkeiten, passende Darstellungen zu realisieren. Um sich mit Diagrammen näher auseinanderzusetzen, folgt eine Selbstlerneinheit.
@@ -130,3 +151,13 @@ Eine der gängigsten Varianten der Visualisierung in Excel sind **Diagramme**. E
     Nun können wir unser erlerntes Wissen zum Thema Diagramme anwenden:
 
     - :material-microsoft-excel: `04_Diagramme.xlsx`
+
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Säulendiagramm` | Ein Säulendiagramm in 14 Schritten aufbauen und formatieren |
+    | `Zielbild 1` | Das fertige Säulendiagramm - anklicken und Einstellungen ansehen |
+    | `2 Verbunddiagramm` | Zwei Datenreihen mit stark unterschiedlichen Größenordnungen |
+    | `Zielbild 2` | Das fertige Verbunddiagramm mit Sekundärachse |
+    | `3 Weitere Typen` | Kreis-, Linien- und Punktdiagramm - wann passt welcher Typ? |
+
+    Die beiden **Zielbild**-Blätter enthalten die fertigen Diagramme. Wenn du bei einer Einstellung nicht weiterkommst, klicke das Zielbild an und sieh im Formatbereich nach, wie es gemacht wurde.

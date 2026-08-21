@@ -55,6 +55,18 @@ Eine Auswahl an möglichen Einstellungen:
 
     - :material-microsoft-excel: `06_Tabellen.xlsx`
 
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Erstellen` | Einen Bereich in eine echte Tabelle umwandeln |
+    | `Muster Tabelle` | Fertige Tabelle `Umsatzdaten` zum Ansehen und Ausprobieren |
+    | `2 Name+Bezüge` | Tabellenname und strukturierte Verweise wie `Umsatzdaten[Umsatz]` und `[@Spalte]` |
+    | `3 Ergebniszeile` | Ergebniszeile, AutoFilter und `TEILERGEBNIS` |
+    | `4 Datenschnitt` | Datenschnitte als erste Dashboard-Elemente |
+    | `5 Ändern` | Größe ändern, Formatoptionen, in Bereich zurückwandeln |
+    | `6 Praxisfall` | Abteilungsumsätze komplett auswerten |
+
+    **So funktioniert die Datei:** Gelb hinterlegte Zellen füllst du aus, graue Werte sind vorgegeben. Wo eine **Kontrollspalte** steht, prüft sie deine Eingabe automatisch. Kommst du nicht weiter, findest du im letzten Arbeitsblatt `Lösungen` den Weg.
+
 ## Pivot-Tabellen und Pivot-Charts
 
 **Pivot-Tabellen** sind eine besondere Möglichkeit, Datensätze in Listenform möglichst einfach zu analysieren. Um sich damit näher auseinanderzusetzen, folgt eine Selbstlerneinheit.
@@ -65,8 +77,12 @@ Eine Auswahl an möglichen Einstellungen:
     - :material-file-pdf-box: `SLE_Pivot.pdf`
     - :material-microsoft-excel: `SLE_Pivot.xlsx`
 
+    Die Arbeitsmappe enthält auf dem Blatt `Daten` eine Verkaufsliste (Datum, Filiale, Verkäufer, Firma, Produkt, Umsatz für 2017 und 2018) - bereits als echte Tabelle namens `Verkaeufe`, damit sich jede Pivot-Auswertung beim Ergänzen neuer Zeilen automatisch mitzieht.
+
 !!! question "Übungsaufgabe"
     Aufbauend auf der Tabelle und dem Dokument aus der Selbstlerneinheit kannst du nun die nachfolgenden Übungen bearbeiten.
 
     - :material-file-pdf-box: `06_Pivot.pdf`
     - :material-microsoft-excel: `SLE_Pivot.xlsx`
+
+    Auf dem Blatt `1 Kontrollwerte` findest du zu jeder Aufgabe des PDF-Übungsteils die erwartete Zahl: Lies den Wert aus deiner Pivot-Tabelle ab, trage ihn ein - stimmt er, hast du die Felder richtig angeordnet. Das Blatt `2 Zusatzaufgaben` geht darüber hinaus (Pivot-Chart, berechnetes Feld, Aktualisierung bei neuen Zeilen).

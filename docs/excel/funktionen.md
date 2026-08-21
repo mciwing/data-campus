@@ -372,3 +372,18 @@ Parameter:
     Nachdem wir nun einige Funktionen in Excel kennengelernt haben, ist es an der Zeit, das Erlernte zu üben:
 
     - :material-microsoft-excel: `03_Funktionen.xlsx`
+
+    Die Blätter mit **rotem Register** enthalten die Rohdaten (Studierende, Noten, Notenschlüssel, zwei Jahrgänge) und werden nicht verändert - genau so, wie Daten aus einem Vorsystem kämen. Auf den blauen Blättern wertest du sie aus:
+
+    | Arbeitsblatt | Funktionen |
+    |---|---|
+    | `1 Basis` | `SUMME`, `ANZAHL`, `ANZAHL2`, `ANZAHLLEERZELLEN`, `MITTELWERT` |
+    | `2 MinMax+Rang` | `MIN`, `MAX`, `KGRÖSSTE`, `KKLEINSTE`, `RANG` |
+    | `3 Verweise` | `SVERWEIS`, `WVERWEIS`, `XVERWEIS` |
+    | `4 INDEX+VERGLEICH` | `VERGLEICH`, `INDEX` und die Kombination aus beiden |
+    | `5 INDIREKT` | Bezüge aus Textbausteinen - mit umschaltbarem Jahrgang |
+    | `6 WENN-Familie` | `SUMMEWENN`, `MITTELWERTWENN`, `ZÄHLENWENN`, `MAXWENNS`, `MINWENNS` |
+    | `7 WENN+Fehler` | `WENN`, `UND`, `ODER`, `WENNFEHLER`, `WENNNV` |
+    | `8 Praxisfall` | Notenliste komplett auswerten - alles zusammen |
+
+    **So funktioniert die Datei:** Gelb hinterlegte Zellen füllst du aus, graue Werte sind vorgegeben. Wo eine **Kontrollspalte** steht, prüft sie deine Eingabe automatisch. Kommst du nicht weiter, findest du im letzten Arbeitsblatt `Lösungen` den Weg.

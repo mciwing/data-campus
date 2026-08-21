@@ -44,4 +44,17 @@ Um den Sprung zu **Visual Basic for Applications (VBA)** zu schaffen, kannst du 
 ![Darstellung des VBA-Codes in Excel](../assets/excel/makros/sc_vba.png)
 
 !!! question "Übungsaufgabe"
-    Nachdem wir nun eine einfache Möglichkeit kennengelernt haben, Makros zu erstellen, ist es an der Zeit, das Erlernte zu üben. Probiere die in diesem Kapitel beschriebenen Tätigkeiten an einer beliebigen Datei aus.
+    Nachdem wir nun eine einfache Möglichkeit kennengelernt haben, Makros zu erstellen, ist es an der Zeit, das Erlernte zu üben:
+
+    - :material-microsoft-excel: `08_Makros.xlsx`
+
+    Die Mappe enthält **drei identisch aufgebaute Monatsberichte**: Beim ersten zeichnest du die Aufbereitung auf, die anderen beiden erledigt dein Makro in Sekunden. Das Blatt `Zielbild` zeigt, wie ein fertig aufbereiteter Bericht aussehen soll.
+
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Aufzeichnen` | Entwicklertools einblenden, Makro aufzeichnen, relative Verweise |
+    | `2 Ausführen` | Makroübersicht, Shortcut, Shape, Schaltfläche, Schnellzugriff |
+    | `3 Bearbeiten` | Makroübersicht, VBA-Editor, Code aufräumen, persönliche Makroarbeitsmappe |
+
+!!! warning "Dateiformat nicht vergessen"
+    Sobald eine Arbeitsmappe ein Makro enthält, muss sie als **Excel-Arbeitsmappe mit Makros** (`.xlsm`) gespeichert werden. Speicherst du weiter als `.xlsx`, verwirft Excel den Code beim Schließen - mit einer Warnung, die man leicht überliest.

@@ -84,3 +84,15 @@ Häufig sollen Excel-Diagramme oder -Tabellen in anderen Office-Programmen **wei
     Nachdem wir nun einige Funktionen in Excel kennengelernt haben, ist es an der Zeit, das Erlernte zu üben. Öffne die nachfolgende Datei und probiere die besprochenen Inhalte aus:
 
     - :material-microsoft-excel: `05_Finalisieren.xlsx`
+
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Design` | Designs, Farben, Schriftarten - und der Unterschied zu festen Farben |
+    | `2 Drucklayout` | Umbruchvorschau, Skalierung, Wiederholungszeilen, Druckbereich, PDF |
+    | `3 Kommentare` | Kommentare und Notizen - inklusive fertiger Beispielnotiz |
+    | `4 Schutz` | Zellen entsperren, Blatt schützen, Struktur schützen, Datei schützen |
+    | `Muster Formular` | Bereits geschütztes Blatt - so soll dein Ergebnis funktionieren |
+    | `5 Dokument prüfen` | Auf Probleme überprüfen - findet u. a. das versteckte Blatt dieser Mappe |
+    | `6 Weitergeben` | Die vier Einfügevarianten in PowerPoint und wann welche passt |
+
+    Diese Aufgaben verändern Ansicht, Schutz und Druckeinstellungen - Excel kann das nicht per Formel prüfen. Die Kontrolle ist hier die Seitenansicht (<kbd>STRG</kbd> + <kbd>P</kbd>) bzw. der Test, ob eine Änderung wirklich blockiert wird.

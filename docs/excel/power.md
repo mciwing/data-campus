@@ -99,7 +99,18 @@ Neben den beschriebenen Abfragen gibt es die Möglichkeit, Daten von **Webseiten
     Nachdem wir nun Power Query kennengelernt haben, ist es an der Zeit, das Erlernte zu üben. Verwende die nachfolgenden Dateien:
 
     - :material-microsoft-excel: `07_PQ_Einfach.xlsx`
+    - :material-microsoft-excel: `07_PQ_Quelle.xlsx` (externe Quelldatei für die Abfrage aus einer anderen Mappe)
     - :material-folder-zip: `07_PQ_Ordner.zip`
+
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `Rohdaten Umsatz` | Bewusst unsaubere Verkaufsliste: Kopfzeilen, Datum als Text, Kunde und Nummer in einer Spalte, Umsatz mit Einheit |
+    | `1 Erste Abfrage` | Aus Tabelle/Bereich, Editor, angewendete Schritte, Ladeoptionen, Kopie vs. Verweis |
+    | `2 Transformieren` | Spalten teilen, Werte ersetzen, Datentypen, Datum zerlegen, berechnete Spalte |
+    | `3 Zusammenführen` | Zwei Abfragen über ein Schlüsselfeld verbinden - der Ersatz für `SVERWEIS` |
+    | `4 Entpivotieren` | Kreuztabelle in eine auswertbare Liste umwandeln (und zurück) |
+    | `5 Aus Ordner` | Alle Jahresdateien aus `07_PQ_Ordner` in einem Rutsch einlesen |
+    | `6 Kontrollwerte` | Prüfe, ob deine geladenen Daten stimmen |
 
 ## Power Pivot
 
@@ -202,6 +213,15 @@ Mit *OK* wird der KPI eingefügt und steht in der Pivot-Tabellen-Oberfläche zur
     Nachdem wir nun Power Pivot kennengelernt haben, ist es an der Zeit, das Erlernte zu üben:
 
     - :material-microsoft-excel: `07_PPivot.xlsx`
+
+    Die Mappe enthält eine **Faktentabelle** (`tab_bestellungen`) und zwei **Dimensionstabellen** (`tab_kunden`, `tab_artikel`) - jeweils als echte Tabellen, damit sie sich direkt ins Datenmodell laden lassen. Die Bestelltabelle enthält bewusst nur die IDs, keine Namen und keine Preise.
+
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Datenmodell` | Tabellen laden, Diagrammansicht, 1:N-Beziehungen herstellen |
+    | `2 Auswerten` | Pivot aus dem Datenmodell, `RELATED`, berechnete Spalten |
+    | `3 Measures+KPI` | Measures anlegen (`SUM`, `SUMX`, `DIVIDE`) und daraus KPIs bauen |
+    | `4 Kontrollwerte` | Prüfe deine Auswertung gegen die erwarteten Zahlen |
 
 ## Power BI
 
