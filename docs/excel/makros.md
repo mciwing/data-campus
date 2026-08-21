@@ -50,11 +50,31 @@ Um den Sprung zu **Visual Basic for Applications (VBA)** zu schaffen, kannst du 
 
     Die Mappe enthält **drei identisch aufgebaute Monatsberichte**: Beim ersten zeichnest du die Aufbereitung auf, die anderen beiden erledigt dein Makro in Sekunden. Das Blatt `Zielbild` zeigt, wie ein fertig aufbereiteter Bericht aussehen soll.
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Aufzeichnen` | Entwicklertools einblenden, Makro aufzeichnen, relative Verweise |
-    | `2 Ausführen` | Makroübersicht, Shortcut, Shape, Schaltfläche, Schnellzugriff |
-    | `3 Bearbeiten` | Makroübersicht, VBA-Editor, Code aufräumen, persönliche Makroarbeitsmappe |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Aufzeichnen</code></td>
+            <td style="padding:10px 14px;">Entwicklertools einblenden, Makro aufzeichnen, relative Verweise</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Ausführen</code></td>
+            <td style="padding:10px 14px;">Makroübersicht, Shortcut, Shape, Schaltfläche, Schnellzugriff</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Bearbeiten</code></td>
+            <td style="padding:10px 14px;">Makroübersicht, VBA-Editor, Code aufräumen, persönliche Makroarbeitsmappe</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
 !!! warning "Dateiformat nicht vergessen"
     Sobald eine Arbeitsmappe ein Makro enthält, muss sie als **Excel-Arbeitsmappe mit Makros** (`.xlsm`) gespeichert werden. Speicherst du weiter als `.xlsx`, verwirft Excel den Code beim Schließen - mit einer Warnung, die man leicht überliest.

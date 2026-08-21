@@ -375,15 +375,50 @@ Parameter:
 
     Die Blätter mit **rotem Register** enthalten die Rohdaten (Studierende, Noten, Notenschlüssel, zwei Jahrgänge) und werden nicht verändert - genau so, wie Daten aus einem Vorsystem kämen. Auf den blauen Blättern wertest du sie aus:
 
-    | Arbeitsblatt | Funktionen |
-    |---|---|
-    | `1 Basis` | `SUMME`, `ANZAHL`, `ANZAHL2`, `ANZAHLLEERZELLEN`, `MITTELWERT` |
-    | `2 MinMax+Rang` | `MIN`, `MAX`, `KGRÖSSTE`, `KKLEINSTE`, `RANG` |
-    | `3 Verweise` | `SVERWEIS`, `WVERWEIS`, `XVERWEIS` |
-    | `4 INDEX+VERGLEICH` | `VERGLEICH`, `INDEX` und die Kombination aus beiden |
-    | `5 INDIREKT` | Bezüge aus Textbausteinen - mit umschaltbarem Jahrgang |
-    | `6 WENN-Familie` | `SUMMEWENN`, `MITTELWERTWENN`, `ZÄHLENWENN`, `MAXWENNS`, `MINWENNS` |
-    | `7 WENN+Fehler` | `WENN`, `UND`, `ODER`, `WENNFEHLER`, `WENNNV` |
-    | `8 Praxisfall` | Notenliste komplett auswerten - alles zusammen |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Funktionen"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Funktionen</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Basis</code></td>
+            <td style="padding:10px 14px;"><code>SUMME</code>, <code>ANZAHL</code>, <code>ANZAHL2</code>, <code>ANZAHLLEERZELLEN</code>, <code>MITTELWERT</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 MinMax+Rang</code></td>
+            <td style="padding:10px 14px;"><code>MIN</code>, <code>MAX</code>, <code>KGRÖSSTE</code>, <code>KKLEINSTE</code>, <code>RANG</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Verweise</code></td>
+            <td style="padding:10px 14px;"><code>SVERWEIS</code>, <code>WVERWEIS</code>, <code>XVERWEIS</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 INDEX+VERGLEICH</code></td>
+            <td style="padding:10px 14px;"><code>VERGLEICH</code>, <code>INDEX</code> und die Kombination aus beiden</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>5 INDIREKT</code></td>
+            <td style="padding:10px 14px;">Bezüge aus Textbausteinen - mit umschaltbarem Jahrgang</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>6 WENN-Familie</code></td>
+            <td style="padding:10px 14px;"><code>SUMMEWENN</code>, <code>MITTELWERTWENN</code>, <code>ZÄHLENWENN</code>, <code>MAXWENNS</code>, <code>MINWENNS</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>7 WENN+Fehler</code></td>
+            <td style="padding:10px 14px;"><code>WENN</code>, <code>UND</code>, <code>ODER</code>, <code>WENNFEHLER</code>, <code>WENNNV</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>8 Praxisfall</code></td>
+            <td style="padding:10px 14px;">Notenliste komplett auswerten - alles zusammen</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     **So funktioniert die Datei:** Gelb hinterlegte Zellen füllst du aus, graue Werte sind vorgegeben. Wo eine **Kontrollspalte** steht, prüft sie deine Eingabe automatisch. Kommst du nicht weiter, findest du im letzten Arbeitsblatt `Lösungen` den Weg.

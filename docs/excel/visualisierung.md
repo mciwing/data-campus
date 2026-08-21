@@ -82,14 +82,43 @@ Beim **Verschieben und Kopieren** von Zellen wandert auch die bedingte Formatier
 
     - :material-microsoft-excel: `04_BedingteFormatierung.xlsx`
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Vorlagen` | Datenbalken, Farbskalen und Symbolsätze anwenden |
-    | `2 Regelvorlagen` | Zellen hervorheben, obere/untere Werte - und warum die Reihenfolge zählt |
-    | `3 Farbskala` | Dreifarbige Skala, deren Mittelpunkt auf eine Zelle verweist |
-    | `4 Eigene Regeln` | Formeln als Regel: ganze Zeilen einfärben, Zebrastreifen, leere Zellen |
-    | `5 Regeln verwalten` | Reihenfolge, Bearbeiten, Duplizieren, Löschen, Format übertragen |
-    | `6 Stundenzettel` | Praxisfall: Wochenenden, Wochenwechsel, fehlende Einträge |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Vorlagen</code></td>
+            <td style="padding:10px 14px;">Datenbalken, Farbskalen und Symbolsätze anwenden</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Regelvorlagen</code></td>
+            <td style="padding:10px 14px;">Zellen hervorheben, obere/untere Werte - und warum die Reihenfolge zählt</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Farbskala</code></td>
+            <td style="padding:10px 14px;">Dreifarbige Skala, deren Mittelpunkt auf eine Zelle verweist</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 Eigene Regeln</code></td>
+            <td style="padding:10px 14px;">Formeln als Regel: ganze Zeilen einfärben, Zebrastreifen, leere Zellen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>5 Regeln verwalten</code></td>
+            <td style="padding:10px 14px;">Reihenfolge, Bearbeiten, Duplizieren, Löschen, Format übertragen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>6 Stundenzettel</code></td>
+            <td style="padding:10px 14px;">Praxisfall: Wochenenden, Wochenwechsel, fehlende Einträge</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     Formatierungen kann Excel nicht selbst prüfen - deshalb steht neben jeder Aufgabe eine **Verständnisfrage**, die du mit einer Formel beantwortest. Stimmt deine Zahl, hast du auch die richtige Schwelle für die Regel erwischt.
 
@@ -124,13 +153,39 @@ Eingabemeldungen sind Hinweise für den Nutzer der Tabelle - z. B., um erlaubte 
 
     - :material-microsoft-excel: `04_Datenueberpruefung.xlsx`
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Zahlen+Datum` | Zahlen- und Datumsbereiche einschränken, Eingabe- und Fehlermeldung |
-    | `2 Textlänge` | Länge einer Eingabe begrenzen, benutzerdefinierte Prüfung |
-    | `3 Dropdown` | Listen direkt eingegeben oder aus einem Zellbereich |
-    | `4 Abhängige Listen` | Zweistufiges Dropdown mit `INDIREKT` |
-    | `5 Stundenzettel` | Praxisfall: vollständig geprüftes Formular |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Zahlen+Datum</code></td>
+            <td style="padding:10px 14px;">Zahlen- und Datumsbereiche einschränken, Eingabe- und Fehlermeldung</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Textlänge</code></td>
+            <td style="padding:10px 14px;">Länge einer Eingabe begrenzen, benutzerdefinierte Prüfung</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Dropdown</code></td>
+            <td style="padding:10px 14px;">Listen direkt eingegeben oder aus einem Zellbereich</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 Abhängige Listen</code></td>
+            <td style="padding:10px 14px;">Zweistufiges Dropdown mit <code>INDIREKT</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>5 Stundenzettel</code></td>
+            <td style="padding:10px 14px;">Praxisfall: vollständig geprüftes Formular</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     Auf jedem Blatt ist die Prüfung in einer **grauen Musterzelle bereits eingerichtet** - probiere sie aus (auch mit bewusst falschen Eingaben) und baue sie dann in der gelben Zelle nach.
 
@@ -152,12 +207,38 @@ Eine der gängigsten Varianten der Visualisierung in Excel sind **Diagramme**. E
 
     - :material-microsoft-excel: `04_Diagramme.xlsx`
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Säulendiagramm` | Ein Säulendiagramm in 14 Schritten aufbauen und formatieren |
-    | `Zielbild 1` | Das fertige Säulendiagramm - anklicken und Einstellungen ansehen |
-    | `2 Verbunddiagramm` | Zwei Datenreihen mit stark unterschiedlichen Größenordnungen |
-    | `Zielbild 2` | Das fertige Verbunddiagramm mit Sekundärachse |
-    | `3 Weitere Typen` | Kreis-, Linien- und Punktdiagramm - wann passt welcher Typ? |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Säulendiagramm</code></td>
+            <td style="padding:10px 14px;">Ein Säulendiagramm in 14 Schritten aufbauen und formatieren</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>Zielbild 1</code></td>
+            <td style="padding:10px 14px;">Das fertige Säulendiagramm - anklicken und Einstellungen ansehen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Verbunddiagramm</code></td>
+            <td style="padding:10px 14px;">Zwei Datenreihen mit stark unterschiedlichen Größenordnungen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>Zielbild 2</code></td>
+            <td style="padding:10px 14px;">Das fertige Verbunddiagramm mit Sekundärachse</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Weitere Typen</code></td>
+            <td style="padding:10px 14px;">Kreis-, Linien- und Punktdiagramm - wann passt welcher Typ?</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     Die beiden **Zielbild**-Blätter enthalten die fertigen Diagramme. Wenn du bei einer Einstellung nicht weiterkommst, klicke das Zielbild an und sieh im Formatbereich nach, wie es gemacht wurde.

@@ -55,15 +55,47 @@ Eine Auswahl an möglichen Einstellungen:
 
     - :material-microsoft-excel: `06_Tabellen.xlsx`
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Erstellen` | Einen Bereich in eine echte Tabelle umwandeln |
-    | `Muster Tabelle` | Fertige Tabelle `Umsatzdaten` zum Ansehen und Ausprobieren |
-    | `2 Name+Bezüge` | Tabellenname und strukturierte Verweise wie `Umsatzdaten[Umsatz]` und `[@Spalte]` |
-    | `3 Ergebniszeile` | Ergebniszeile, AutoFilter und `TEILERGEBNIS` |
-    | `4 Datenschnitt` | Datenschnitte als erste Dashboard-Elemente |
-    | `5 Ändern` | Größe ändern, Formatoptionen, in Bereich zurückwandeln |
-    | `6 Praxisfall` | Abteilungsumsätze komplett auswerten |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Erstellen</code></td>
+            <td style="padding:10px 14px;">Einen Bereich in eine echte Tabelle umwandeln</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>Muster Tabelle</code></td>
+            <td style="padding:10px 14px;">Fertige Tabelle <code>Umsatzdaten</code> zum Ansehen und Ausprobieren</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Name+Bezüge</code></td>
+            <td style="padding:10px 14px;">Tabellenname und strukturierte Verweise wie <code>Umsatzdaten[Umsatz]</code> und <code>[@Spalte]</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Ergebniszeile</code></td>
+            <td style="padding:10px 14px;">Ergebniszeile, AutoFilter und <code>TEILERGEBNIS</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 Datenschnitt</code></td>
+            <td style="padding:10px 14px;">Datenschnitte als erste Dashboard-Elemente</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>5 Ändern</code></td>
+            <td style="padding:10px 14px;">Größe ändern, Formatoptionen, in Bereich zurückwandeln</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>6 Praxisfall</code></td>
+            <td style="padding:10px 14px;">Abteilungsumsätze komplett auswerten</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     **So funktioniert die Datei:** Gelb hinterlegte Zellen füllst du aus, graue Werte sind vorgegeben. Wo eine **Kontrollspalte** steht, prüft sie deine Eingabe automatisch. Kommst du nicht weiter, findest du im letzten Arbeitsblatt `Lösungen` den Weg.
 

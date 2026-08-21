@@ -85,14 +85,46 @@ Häufig sollen Excel-Diagramme oder -Tabellen in anderen Office-Programmen **wei
 
     - :material-microsoft-excel: `05_Finalisieren.xlsx`
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Design` | Designs, Farben, Schriftarten - und der Unterschied zu festen Farben |
-    | `2 Drucklayout` | Umbruchvorschau, Skalierung, Wiederholungszeilen, Druckbereich, PDF |
-    | `3 Kommentare` | Kommentare und Notizen - inklusive fertiger Beispielnotiz |
-    | `4 Schutz` | Zellen entsperren, Blatt schützen, Struktur schützen, Datei schützen |
-    | `Muster Formular` | Bereits geschütztes Blatt - so soll dein Ergebnis funktionieren |
-    | `5 Dokument prüfen` | Auf Probleme überprüfen - findet u. a. das versteckte Blatt dieser Mappe |
-    | `6 Weitergeben` | Die vier Einfügevarianten in PowerPoint und wann welche passt |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Design</code></td>
+            <td style="padding:10px 14px;">Designs, Farben, Schriftarten - und der Unterschied zu festen Farben</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Drucklayout</code></td>
+            <td style="padding:10px 14px;">Umbruchvorschau, Skalierung, Wiederholungszeilen, Druckbereich, PDF</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Kommentare</code></td>
+            <td style="padding:10px 14px;">Kommentare und Notizen - inklusive fertiger Beispielnotiz</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 Schutz</code></td>
+            <td style="padding:10px 14px;">Zellen entsperren, Blatt schützen, Struktur schützen, Datei schützen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>Muster Formular</code></td>
+            <td style="padding:10px 14px;">Bereits geschütztes Blatt - so soll dein Ergebnis funktionieren</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>5 Dokument prüfen</code></td>
+            <td style="padding:10px 14px;">Auf Probleme überprüfen - findet u. a. das versteckte Blatt dieser Mappe</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>6 Weitergeben</code></td>
+            <td style="padding:10px 14px;">Die vier Einfügevarianten in PowerPoint und wann welche passt</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     Diese Aufgaben verändern Ansicht, Schutz und Druckeinstellungen - Excel kann das nicht per Formel prüfen. Die Kontrolle ist hier die Seitenansicht (<kbd>STRG</kbd> + <kbd>P</kbd>) bzw. der Test, ob eine Änderung wirklich blockiert wird.

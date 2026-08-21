@@ -130,6 +130,21 @@ Nach Abschluss dieses Moduls kannst du:
 
 Bereit, in die Welt von Excel einzutauchen? Starte mit den [Grundlagen](grundlagen.md) und arbeite dich durch die Kapitel!
 
+
+!!! info "Deutsche und englische Funktionsnamen"
+
+    In diesem Kurs verwenden wir durchgehend die **deutschen** Funktionsnamen - also `SVERWEIS` statt `VLOOKUP` und `SUMME` statt `SUM`. Excel übersetzt die Namen abhängig von der Sprache der Installation; intern wird jede Formel aber immer in Englisch gespeichert. Eine in deutschem Excel erstellte Datei funktioniert deshalb problemlos auch in einer englischen Version - dort erscheinen die Funktionen einfach mit ihrer englischen Bezeichnung.
+
+    Trotzdem wirst du früher oder später über die englischen Namen stolpern: In Foren, in Tutorials, in der Microsoft-Dokumentation und bei praktisch jeder Antwort aus einem KI-Chatbot sind Formeln in Englisch geschrieben. Eine übersichtliche Gegenüberstellung aller Funktionen in beiden Sprachen - inklusive Kategorie und Klick-zum-Kopieren - findest du hier:
+
+    :material-open-in-new: [**Excel-Funktionen Deutsch ↔ Englisch**](https://excelhero.de/excel-funktionen-deutsch-englisch/){ target="_blank" rel="noopener" }
+
+    **Zwei Stolpersteine beim Übernehmen englischer Formeln:**
+
+    - Die **Argumente** werden im deutschen Excel mit Semikolon getrennt, im englischen mit Komma: aus `=SUM(A1,A2)` wird `=SUMME(A1;A2)`.
+    - **Nicht alles wird übersetzt:** VBA-Makros, die Formelsprache **M** in Power Query und **DAX** in Power Pivot verwenden *immer* englische Bezeichnungen - dort heißt es also auch im deutschen Excel `SUM` und `RELATED`.
+
+
 ---
 
 <div style="text-align: center">

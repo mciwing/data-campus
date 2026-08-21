@@ -133,17 +133,65 @@ Excel erlaubt auch die Verwendung von **Wildcards**. Diese Platzhalter können b
 
 Beispiele:
 
-| Verwendung | Verhalten | Treffer |
-|---|---|---|
-| `?` | Genau ein Zeichen | 'A', 'B', 'c', 'z' |
-| `???` | Genau drei Zeichen | 'Jet', 'AAA', 'ccc' |
-| `*` | Beliebig viele Zeichen (= alles) | 'apple', 'APPLE', 'A100' |
-| `*th` | Endet mit 'th' | 'bath', 'fourth' |
-| `c*` | Startet mit 'c' | 'Cat', 'CAB', 'cindy', 'candy' |
-| `?*` | Mindestens ein Zeichen | 'a', 'b', 'ab', 'ABCD' |
-| `???-??` | Fünf Zeichen mit Strich zwischen 3. und 4. Stelle | 'ABC-99', '100-ZT' |
-| `*~?` | Endet mit Fragezeichen | 'Hello?', 'Anybody home?' |
-| `*xyz*` | Beinhaltet 'xyz' | 'code is XYZ', '100-XYZ-2', 'XyZ90' |
+<div style="text-align:center; max-width:820px; margin:16px auto;">
+<table role="table" aria-label="Verwendung / Verhalten / Treffer"
+       style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+    <thead>
+    <tr style="background:#009485; color:#fff;">
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Verwendung</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Verhalten</th>
+        <th style="text-align:left; padding:12px 14px; font-weight:700;">Treffer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>?</code></td>
+        <td style="padding:10px 14px;">Genau ein Zeichen</td>
+        <td style="padding:10px 14px;">'A', 'B', 'c', 'z'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>???</code></td>
+        <td style="padding:10px 14px;">Genau drei Zeichen</td>
+        <td style="padding:10px 14px;">'Jet', 'AAA', 'ccc'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>&#42;</code></td>
+        <td style="padding:10px 14px;">Beliebig viele Zeichen (= alles)</td>
+        <td style="padding:10px 14px;">'apple', 'APPLE', 'A100'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>&#42;th</code></td>
+        <td style="padding:10px 14px;">Endet mit 'th'</td>
+        <td style="padding:10px 14px;">'bath', 'fourth'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>c&#42;</code></td>
+        <td style="padding:10px 14px;">Startet mit 'c'</td>
+        <td style="padding:10px 14px;">'Cat', 'CAB', 'cindy', 'candy'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>?&#42;</code></td>
+        <td style="padding:10px 14px;">Mindestens ein Zeichen</td>
+        <td style="padding:10px 14px;">'a', 'b', 'ab', 'ABCD'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>???-??</code></td>
+        <td style="padding:10px 14px;">Fünf Zeichen mit Strich zwischen 3. und 4. Stelle</td>
+        <td style="padding:10px 14px;">'ABC-99', '100-ZT'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>&#42;~?</code></td>
+        <td style="padding:10px 14px;">Endet mit Fragezeichen</td>
+        <td style="padding:10px 14px;">'Hello?', 'Anybody home?'</td>
+    </tr>
+    <tr>
+        <td style="background:#00948511; padding:10px 14px;"><code>&#42;xyz&#42;</code></td>
+        <td style="padding:10px 14px;">Beinhaltet 'xyz'</td>
+        <td style="padding:10px 14px;">'code is XYZ', '100-XYZ-2', 'XyZ90'</td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
 !!! warning "Hinweis"
     Wildcards können auch in Formeln verwendet werden, um z. B. Vergleiche durchzuführen.
@@ -195,17 +243,58 @@ Im genannten Reiter findest du auch die Möglichkeit, mehr oder weniger Nachkomm
     - :material-microsoft-excel: `02_DataCleanUp.xlsx`
     - :material-microsoft-excel: `02_DataCleanUp_Extern.xlsx` (zweite Datei für die Verknüpfungs-Aufgabe)
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Blätter` | Arbeitsblätter kopieren, umbenennen, einfärben, aus- und einblenden |
-    | `2 Einfügen` | Einfügeoptionen: Werte, Transponieren, Verknüpfung, Formatierung |
-    | `3 Verknüpfen` | Bezüge über Arbeitsblätter und über Arbeitsmappen hinweg |
-    | `4 Formatierung` | Schrift, Rahmen, Hintergrund, Hoch-/Tiefstellen, Format übertragen |
-    | `5 Ausrichtung` | Textumbruch, Rotation, Einzug, Verbinden vs. Über Auswahl zentrieren |
-    | `6 Suchen+Ersetzen` | Suchen und Ersetzen, Inhalte auswählen, Sortieren und Filtern |
-    | `7 Wildcards` | Platzhalter `?`, `*` und `~` in Suche, Filter und Formeln |
-    | `8 Ausfüllen+Fixieren` | Ausfüllkästchen, Reihen fortsetzen, Fenster fixieren |
-    | `9 Zahlenformate` | Standardformate, eigene Formate mit Einheiten, Datum und Uhrzeit |
-    | `10 Quelldaten` / `11 Zielbild` | Praxisfall: aus den Rohdaten das Zielbild nachbauen |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Blätter</code></td>
+            <td style="padding:10px 14px;">Arbeitsblätter kopieren, umbenennen, einfärben, aus- und einblenden</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Einfügen</code></td>
+            <td style="padding:10px 14px;">Einfügeoptionen: Werte, Transponieren, Verknüpfung, Formatierung</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Verknüpfen</code></td>
+            <td style="padding:10px 14px;">Bezüge über Arbeitsblätter und über Arbeitsmappen hinweg</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 Formatierung</code></td>
+            <td style="padding:10px 14px;">Schrift, Rahmen, Hintergrund, Hoch-/Tiefstellen, Format übertragen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>5 Ausrichtung</code></td>
+            <td style="padding:10px 14px;">Textumbruch, Rotation, Einzug, Verbinden vs. Über Auswahl zentrieren</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>6 Suchen+Ersetzen</code></td>
+            <td style="padding:10px 14px;">Suchen und Ersetzen, Inhalte auswählen, Sortieren und Filtern</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>7 Wildcards</code></td>
+            <td style="padding:10px 14px;">Platzhalter <code>?</code>, <code>&#42;</code> und <code>~</code> in Suche, Filter und Formeln</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>8 Ausfüllen+Fixieren</code></td>
+            <td style="padding:10px 14px;">Ausfüllkästchen, Reihen fortsetzen, Fenster fixieren</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>9 Zahlenformate</code></td>
+            <td style="padding:10px 14px;">Standardformate, eigene Formate mit Einheiten, Datum und Uhrzeit</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>10 Quelldaten</code> / <code>11 Zielbild</code></td>
+            <td style="padding:10px 14px;">Praxisfall: aus den Rohdaten das Zielbild nachbauen</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
     **So funktioniert die Datei:** Gelb hinterlegte Zellen füllst du aus, graue Werte sind vorgegeben. Wo eine **Kontrollspalte** steht, prüft sie deine Eingabe automatisch. Kommst du nicht weiter, findest du im letzten Arbeitsblatt `Lösungen` den Weg.

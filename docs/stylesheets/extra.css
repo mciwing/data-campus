@@ -111,6 +111,29 @@
     color: rgb(100, 221, 23);
   }
 
+/* Facts: Glühbirne in Magenta (#E91E63). Bewusst eine Farbfamilie, die sonst
+   nirgends auf der Seite vorkommt - damit sich Randnotizen und Kuriositäten
+   klar von warning (Orange) und example (Violett) abheben.
+   Verwendung:  !!! facts "Titel"   bzw.  ???+ facts "Titel"  (aufklappbar) */
+:root {
+    --md-admonition-icon--facts: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M292.9 384c7.3-22.3 21.9-42.5 38.4-59.9C364 289.7 384 243.2 384 192 384 86 298 0 192 0S0 86 0 192c0 51.2 20 97.7 52.7 132.1 16.5 17.4 31.2 37.6 38.4 59.9h201.7zm-4.9 48H96v16c0 44.2 35.8 80 80 80h32c44.2 0 80-35.8 80-80zM184 112c-39.8 0-72 32.2-72 72 0 13.3-10.7 24-24 24s-24-10.7-24-24c0-66.3 53.7-120 120-120 13.3 0 24 10.7 24 24s-10.7 24-24 24"/></svg>')
+  }
+  .md-typeset .admonition.facts,
+  .md-typeset details.facts {
+    border-color: rgb(233, 30, 99);
+    background-color: rgba(233, 30, 99, 0.1);
+  }
+  .md-typeset .facts > .admonition-title::before,
+  .md-typeset .facts > summary::before {
+    background-color: rgb(233, 30, 99);
+    -webkit-mask-image: var(--md-admonition-icon--facts);
+            mask-image: var(--md-admonition-icon--facts);
+  }
+  .md-typeset .facts > .admonition-title::after,
+  .md-typeset .facts > summary::after {
+    color: rgb(233, 30, 99);
+  }
+
 /* Zeilenumbruch in Code-Blöcken.
 
    Standardmäßig scrollen Code-Blöcke horizontal – lange Modell-Ausgaben und
@@ -325,10 +348,33 @@
 
 .hotspot-image figcaption {
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.65rem;
+  line-height: 1.6;
   font-style: italic;
   margin-top: 0.5rem;
   opacity: 0.8;
+}
+
+/* Bildunterschriften laufen ueber die volle Textbreite, auch wenn das Bild
+   selbst schmaler ist. Ausgenommen sind Figures mit Hotspots: Dort sind die
+   Punkte prozentual zur Figure positioniert - die muss deshalb exakt so breit
+   bleiben wie das Bild, sonst verrutschen die Markierungen. */
+.hotspot-image:not(:has(.hotspot)) {
+  width: 100%;
+  text-align: center;
+}
+
+/* glightbox haengt einen <a>-Wrapper um jedes Bild - der muss schrumpfen,
+   damit das Bild nicht auf volle Breite gezogen wird. */
+.hotspot-image:not(:has(.hotspot)) > a {
+  display: inline-block;
+  max-width: 100%;
+}
+
+.hotspot-image:not(:has(.hotspot)) > img,
+.hotspot-image:not(:has(.hotspot)) > div {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hotspot {
@@ -502,4 +548,171 @@
 .excel-pyramid__level:nth-child(5) {
   background: #009485;
   clip-path: polygon(9% 0, 91% 0, 100% 100%, 0% 100%);
+}
+
+/* === Tabellen in Admonitions uebernehmen deren Akzentfarbe ===
+
+   Kopfzeile und getoente erste Spalte richten sich nach dem Typ der Box,
+   statt immer Tuerkis zu verwenden. Der Standardwert greift fuer Tabellen
+   ausserhalb von Admonitions.
+
+   !important ist noetig, weil die HTML-Tabellen ihre Farben als Inline-Style
+   tragen - und Inline-Styles gewinnen sonst gegen jede Regel. */
+.md-typeset .admonition,
+.md-typeset details {
+  --dc-table-accent: #009485;
+}
+
+.md-typeset .admonition.note,
+.md-typeset details.note {
+  --dc-table-accent: #448aff;
+}
+.md-typeset .admonition.abstract,
+.md-typeset details.abstract {
+  --dc-table-accent: #00b0ff;
+}
+.md-typeset .admonition.info,
+.md-typeset details.info {
+  --dc-table-accent: #00b8d4;
+}
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  --dc-table-accent: #00bfa5;
+}
+.md-typeset .admonition.success,
+.md-typeset details.success {
+  --dc-table-accent: #00c853;
+}
+.md-typeset .admonition.question,
+.md-typeset details.question {
+  --dc-table-accent: #64dd17;
+}
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  --dc-table-accent: #ff9100;
+}
+.md-typeset .admonition.failure,
+.md-typeset details.failure {
+  --dc-table-accent: #ff5252;
+}
+.md-typeset .admonition.danger,
+.md-typeset details.danger {
+  --dc-table-accent: #ff1744;
+}
+.md-typeset .admonition.bug,
+.md-typeset details.bug {
+  --dc-table-accent: #f50057;
+}
+.md-typeset .admonition.example,
+.md-typeset details.example {
+  --dc-table-accent: #7c4dff;
+}
+.md-typeset .admonition.quote,
+.md-typeset details.quote {
+  --dc-table-accent: #9e9e9e;
+}
+.md-typeset .admonition.code,
+.md-typeset details.code {
+  --dc-table-accent: #848484;
+}
+.md-typeset .admonition.defi,
+.md-typeset details.defi {
+  --dc-table-accent: #e87f2b;
+}
+.md-typeset .admonition.lab,
+.md-typeset details.lab {
+  --dc-table-accent: #64dd17;
+}
+.md-typeset .admonition.adv,
+.md-typeset details.adv {
+  --dc-table-accent: #267e26;
+}
+.md-typeset .admonition.disadv,
+.md-typeset details.disadv {
+  --dc-table-accent: #ff0000;
+}
+.md-typeset .admonition.process,
+.md-typeset details.process {
+  --dc-table-accent: #848484;
+}
+.md-typeset .admonition.facts,
+.md-typeset details.facts {
+  --dc-table-accent: #e91e63;
+}
+
+.md-typeset .admonition table thead tr,
+.md-typeset details table thead tr {
+  background: var(--dc-table-accent) !important;
+}
+
+.md-typeset .admonition table tbody td:first-child,
+.md-typeset details table tbody td:first-child {
+  background: color-mix(in oklab, var(--dc-table-accent) 9%, transparent) !important;
+}
+
+/* === Tabellen in Admonitions kompakter setzen ===
+
+   In einer Admonition steht deutlich weniger Breite zur Verfuegung als im
+   Fliesstext. Formelzellen wie =D2*(1+$F$1) enthalten keine Leerzeichen und
+   koennen deshalb nicht umbrechen - ohne knapperes Padding laeuft eine
+   siebenspaltige Tabelle aus der Box heraus und muss gescrollt werden.
+   !important, weil die Tabellen ihr Padding als Inline-Style tragen. */
+.md-typeset .admonition table th,
+.md-typeset .admonition table td,
+.md-typeset details table th,
+.md-typeset details table td {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+/* === Tabellenblatt-Nachbauten (Spaltenbuchstaben + Zeilennummern) ===
+
+   Die erste Spalte enthaelt nur die Zeilennummer und soll so schmal wie
+   moeglich bleiben. width:1px zwingt den Auto-Layout-Algorithmus, ihr nur
+   die Mindestbreite zuzuteilen; der Rest verteilt sich auf die Datenspalten. */
+/* Kein width:100% - und damit kein Ueberschuss, der verteilt werden muesste.
+
+   Bei table-layout:auto ist eine Breitenangabe an einer Zelle nur ein Hinweis:
+   Ist die Tabelle breiter als ihr Inhalt braucht, verteilen Browser den
+   Ueberschuss anteilig auf ALLE Spalten - auch auf die schmal gewuenschte.
+   Mit width:auto schrumpft die Tabelle auf ihren Inhalt, es bleibt kein
+   Ueberschuss uebrig und jede Spalte behaelt ihre natuerliche Breite.
+   Zentriert wird ueber das margin:auto aus der Basisformatierung. */
+.xl-sheet table {
+  width: auto !important;
+}
+
+.xl-sheet table th:first-child,
+.xl-sheet table td:first-child {
+  width: 1px !important;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+/* === Tabellen in Admonitions duerfen nicht scrollen ===
+
+   Das Theme wickelt jede Tabelle per JavaScript in
+     div.md-typeset__scrollwrap (overflow-x: auto)
+       div.md-typeset__table    (display: inline-block)
+         table
+   Ein inline-block schrumpft auf die MAX-content-Breite seines Inhalts. Die
+   Tabelle kann sich dadurch nicht auf die Boxbreite zusammenziehen - stattdessen
+   bekommt der Scrollwrap eine Bildlaufleiste. In einer Admonition ist das
+   besonders stoerend, weil dort ohnehin wenig Breite bleibt.
+
+   Mit display:block fuellt der Wrapper die verfuegbare Breite, die Tabelle
+   rechnet ihr width:100% dagegen und der Auto-Layout-Algorithmus staucht die
+   Spalten bis zur min-content-Breite. */
+.md-typeset .admonition .md-typeset__table,
+.md-typeset details .md-typeset__table {
+  display: block;
+  max-width: 100%;
+}
+
+.md-typeset .admonition .md-typeset__scrollwrap,
+.md-typeset details .md-typeset__scrollwrap {
+  margin-left: 0;
+  margin-right: 0;
 }

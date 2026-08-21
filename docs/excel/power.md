@@ -102,15 +102,47 @@ Neben den beschriebenen Abfragen gibt es die Möglichkeit, Daten von **Webseiten
     - :material-microsoft-excel: `07_PQ_Quelle.xlsx` (externe Quelldatei für die Abfrage aus einer anderen Mappe)
     - :material-folder-zip: `07_PQ_Ordner.zip`
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `Rohdaten Umsatz` | Bewusst unsaubere Verkaufsliste: Kopfzeilen, Datum als Text, Kunde und Nummer in einer Spalte, Umsatz mit Einheit |
-    | `1 Erste Abfrage` | Aus Tabelle/Bereich, Editor, angewendete Schritte, Ladeoptionen, Kopie vs. Verweis |
-    | `2 Transformieren` | Spalten teilen, Werte ersetzen, Datentypen, Datum zerlegen, berechnete Spalte |
-    | `3 Zusammenführen` | Zwei Abfragen über ein Schlüsselfeld verbinden - der Ersatz für `SVERWEIS` |
-    | `4 Entpivotieren` | Kreuztabelle in eine auswertbare Liste umwandeln (und zurück) |
-    | `5 Aus Ordner` | Alle Jahresdateien aus `07_PQ_Ordner` in einem Rutsch einlesen |
-    | `6 Kontrollwerte` | Prüfe, ob deine geladenen Daten stimmen |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>Rohdaten Umsatz</code></td>
+            <td style="padding:10px 14px;">Bewusst unsaubere Verkaufsliste: Kopfzeilen, Datum als Text, Kunde und Nummer in einer Spalte, Umsatz mit Einheit</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Erste Abfrage</code></td>
+            <td style="padding:10px 14px;">Aus Tabelle/Bereich, Editor, angewendete Schritte, Ladeoptionen, Kopie vs. Verweis</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Transformieren</code></td>
+            <td style="padding:10px 14px;">Spalten teilen, Werte ersetzen, Datentypen, Datum zerlegen, berechnete Spalte</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Zusammenführen</code></td>
+            <td style="padding:10px 14px;">Zwei Abfragen über ein Schlüsselfeld verbinden - der Ersatz für <code>SVERWEIS</code></td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 Entpivotieren</code></td>
+            <td style="padding:10px 14px;">Kreuztabelle in eine auswertbare Liste umwandeln (und zurück)</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>5 Aus Ordner</code></td>
+            <td style="padding:10px 14px;">Alle Jahresdateien aus <code>07&#95;PQ&#95;Ordner</code> in einem Rutsch einlesen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>6 Kontrollwerte</code></td>
+            <td style="padding:10px 14px;">Prüfe, ob deine geladenen Daten stimmen</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
 ## Power Pivot
 
@@ -216,12 +248,35 @@ Mit *OK* wird der KPI eingefügt und steht in der Pivot-Tabellen-Oberfläche zur
 
     Die Mappe enthält eine **Faktentabelle** (`tab_bestellungen`) und zwei **Dimensionstabellen** (`tab_kunden`, `tab_artikel`) - jeweils als echte Tabellen, damit sie sich direkt ins Datenmodell laden lassen. Die Bestelltabelle enthält bewusst nur die IDs, keine Namen und keine Preise.
 
-    | Arbeitsblatt | Inhalt |
-    |---|---|
-    | `1 Datenmodell` | Tabellen laden, Diagrammansicht, 1:N-Beziehungen herstellen |
-    | `2 Auswerten` | Pivot aus dem Datenmodell, `RELATED`, berechnete Spalten |
-    | `3 Measures+KPI` | Measures anlegen (`SUM`, `SUMX`, `DIVIDE`) und daraus KPIs bauen |
-    | `4 Kontrollwerte` | Prüfe deine Auswertung gegen die erwarteten Zahlen |
+    <div style="text-align:center; max-width:700px; margin:16px auto;">
+    <table role="table" aria-label="Arbeitsblatt / Inhalt"
+           style="width:100%; border-collapse:separate; border-spacing:0; border:1px solid #cfd8e3; border-radius:10px; overflow:hidden; font-family:system-ui,sans-serif;">
+        <thead>
+        <tr style="background:#009485; color:#fff;">
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Arbeitsblatt</th>
+            <th style="text-align:left; padding:12px 14px; font-weight:700;">Inhalt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>1 Datenmodell</code></td>
+            <td style="padding:10px 14px;">Tabellen laden, Diagrammansicht, 1:N-Beziehungen herstellen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>2 Auswerten</code></td>
+            <td style="padding:10px 14px;">Pivot aus dem Datenmodell, <code>RELATED</code>, berechnete Spalten</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>3 Measures+KPI</code></td>
+            <td style="padding:10px 14px;">Measures anlegen (<code>SUM</code>, <code>SUMX</code>, <code>DIVIDE</code>) und daraus KPIs bauen</td>
+        </tr>
+        <tr>
+            <td style="background:#00948511; padding:10px 14px;"><code>4 Kontrollwerte</code></td>
+            <td style="padding:10px 14px;">Prüfe deine Auswertung gegen die erwarteten Zahlen</td>
+        </tr>
+        </tbody>
+    </table>
+    </div>
 
 ## Power BI
 
