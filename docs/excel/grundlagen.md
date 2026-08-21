@@ -301,3 +301,21 @@ Es gibt in Excel eine große Auswahl an fertigen Funktionen. Um die richtige zu 
     Nachdem wir nun die Grundlagen von Excel kennengelernt haben, ist es an der Zeit, das Erlernte zu üben. Bearbeite die Übungsaufgaben aus der Angabe:
 
     - :material-microsoft-excel: `01_Grundlagen.xlsx`
+
+    Die Arbeitsmappe folgt dem Aufbau dieses Kapitels - jedes Arbeitsblatt entspricht einem Abschnitt. Du arbeitest dich einfach von links nach rechts durch die Register:
+
+    | Arbeitsblatt | Inhalt |
+    |---|---|
+    | `1 Oberfläche` | Hierarchie, Benutzeroberfläche, Schnellzugriff, Statusleiste, Speichern |
+    | `2 Markieren` | Zellen, Bereiche, Zeilen, Spalten und Arbeitsblätter selektieren |
+    | `3 Dateneingabe` | Zahlen, Text und Wahrheitswerte eingeben, überschreiben, ergänzen |
+    | `4 Zeilen+Spalten` | Einfügen, löschen, aus- und einblenden, Breite und Höhe anpassen |
+    | `5 Navigation` | Springen mit <kbd>STRG</kbd> + Pfeiltasten, <kbd>POS1</kbd>, <kbd>ENDE</kbd> und Namensfeld |
+    | `6 Rechenoperatoren` | Grundrechenarten, Potenz, Wurzel, Klammern, Formeln anzeigen |
+    | `7 Vergleichsoperat.` | Vergleiche und Wahrheitswerte |
+    | `8 Zellbezüge` | relativ, absolut und gemischt - mit <kbd>F4</kbd> |
+    | `9 Namen` | Zellen und Bereiche benennen und in Formeln verwenden |
+    | `10 Funktionen` | `SUMME`, `MITTELWERT`, `MIN`, `MAX`, `ANZAHL`, `PI` und der Funktionsassistent |
+    | `11 Praxisfall` | Abschlussaufgabe, in der alle Themen zusammenkommen |
+
+    **So funktioniert die Datei:** Gelb hinterlegte Zellen füllst du aus, graue Werte sind vorgegeben. Rechts daneben liegt jeweils eine **Kontrollspalte**, die deine Eingabe automatisch prüft - bei Rechenaufgaben meldet sie dir auch, wenn das Ergebnis zwar stimmt, aber von Hand eingetippt statt als Formel berechnet wurde. Kommst du nicht weiter, findest du im letzten Arbeitsblatt `Lösungen` alle Formeln.

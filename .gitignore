@@ -119,3 +119,5 @@ ENV/
 /.claude
 
 /input/
+
+/files/
