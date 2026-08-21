@@ -219,7 +219,7 @@ Die **Zeilen- und Spaltengröße** kann beliebig angepasst werden. Dabei gibt es
 
 ## Navigation in und zwischen Arbeitsblättern
 
-Bei 17 Milliarden Zellen pro Arbeitsblatt wird schnell klar: Nur mit Scrollen und Klicken kommst du nicht weit. Wer größere Tabellen bearbeitet, springt gezielt - an den Rand eines Datenbereichs, an den Anfang des Blattes oder direkt in die nächste Arbeitsmappe. Genau dafür gibt es eine Handvoll Navigations-Shortcuts, die dir auf Dauer enorm viel Zeit sparen:
+Bei 17 Milliarden Zellen pro Arbeitsblatt wird schnell klar: Nur mit Scrollen und Klicken kommst du nicht weit. Wer größere Tabellen bearbeitet, springt gezielt - an den Rand eines Datenbereichs, an den Anfang des Blattes oder direkt in die nächste Arbeitsmappe. Genau dafür gibt es eine Handvoll **Navigations-Shortcuts**, die dir auf Dauer enorm viel Zeit sparen:
 
 | Aktion | Shortcut |
 |---|---|
@@ -234,16 +234,55 @@ Bei 17 Milliarden Zellen pro Arbeitsblatt wird schnell klar: Nur mit Scrollen un
 
 ## Rechenoperatoren
 
-| Aktion | Operator |
-|---|---|
-| Gleichheitszeichen (Formel einleiten) | `=` |
-| Addition | `+` |
-| Subtraktion | `-` |
-| Multiplikation | `*` |
-| Division | `/` |
-| Exponent | `^` |
-| Wurzel | `^(1/2)` oder `^(0,5)` |
-| Klammern | `( )` |
+Im einfachsten Fall ist Excel ein sehr komfortabler **Taschenrechner**: Du leitest die Eingabe mit einem Gleichheitszeichen ein, tippst die Rechnung wie gewohnt und bestätigst mit <kbd>ENTER</kbd>. Der entscheidende Unterschied zum Taschenrechner ist aber, dass du statt fixer Zahlen auch [**Zellbezüge**](#zellbezuge) verwenden kannst - dann rechnet sich das Ergebnis bei jeder Änderung der Ausgangswerte automatisch neu.
+
+Die folgenden Operatoren stehen dir dafür zur Verfügung:
+
+| Aktion | Operator | Beispiel | Ergebnis |
+|---|---|---|---|
+| Gleichheitszeichen (Formel einleiten) | `=` | `=5` | 5 |
+| Addition | `+` | `=2+6` | 8 |
+| Subtraktion | `-` | `=9-4` | 5 |
+| Multiplikation | `*` | `=5*7` | 35 |
+| Division | `/` | `=18/5` | 3,6 |
+| Exponent | `^` | `=3^3` | 27 |
+| Wurzel | `^(1/2)` oder `^(0,5)` | `=25^(1/2)` | 5 |
+| Prozent | `%` | `=200*15%` | 30 |
+| Klammern | `( )` | `=(2+4)*(3+5)` | 48 |
+
+!!! info "Warum ist `^(0,5)` die Wurzel?"
+    Excel kennt keinen eigenen Operator für die Wurzel - dafür beherrscht es aber Potenzen mit **beliebigen** Exponenten, also auch mit Brüchen. Und genau darüber lässt sich jede Wurzel ausdrücken:
+
+    $$
+    \sqrt[n]{x} = x^{\frac{1}{n}}
+    $$
+
+    Der Grund dafür steckt im Potenzgesetz $(x^a)^b = x^{a \cdot b}$. Setzt man $a=\tfrac{1}{2}$ und $b=2$ ein, erhält man:
+
+    $$
+    \left(x^{\frac{1}{2}}\right)^{2} = x^{\frac{1}{2} \cdot 2} = x^{1} = x
+    $$
+
+    Eine Zahl, die quadriert wieder $x$ ergibt - das ist per Definition die Quadratwurzel. Weil $\tfrac{1}{2} = 0{,}5$ ist, sind `^(1/2)` und `^(0,5)` also nur zwei Schreibweisen für dasselbe.
+
+    Der Vorteil dieser Schreibweise: Sie funktioniert für **jede** Wurzel. Für die Kubikwurzel (dritte Wurzel) schreibst du `^(1/3)`, für die vierte Wurzel `^(1/4)` und so weiter.
+
+    **Die Klammern sind dabei nicht optional!** `^` bindet stärker als `/`. Ohne Klammern rechnet Excel bei `=25^1/2` zuerst $25^1 = 25$ und teilt anschließend durch 2 - das Ergebnis wäre 12,5 statt 5.
+
+    Alternativ gibt es für die Quadratwurzel auch eine eigene **Funktion**:
+
+    ```
+    =WURZEL(Zahl)
+    ```
+
+    `=WURZEL(25)` liefert also ebenfalls 5. Sie ist gut lesbar, kann aber wirklich nur die *Quadrat*wurzel - für alle anderen Wurzeln brauchst du die Potenzschreibweise. Beide Varianten liefern bei negativen Zahlen den Fehler `#ZAHL!`.
+
+Wie in der Mathematik gilt auch in Excel **Punkt- vor Strichrechnung**, und Potenzen werden noch davor ausgewertet. Die Reihenfolge lautet: Klammern → Potenz → Multiplikation/Division → Addition/Subtraktion. Im Zweifel setzt du lieber eine Klammer zu viel als eine zu wenig - das kostet nichts und macht die Formel für alle lesbar, die sie später öffnen.
+
+!!! example "Fun Fact"
+    Bei einer Kleinigkeit weicht Excel von der mathematischen Konvention ab: Das **Minuszeichen vor einer Zahl** bindet stärker als der Potenz-Operator. `=-2^2` liefert in Excel deshalb **4** und nicht -4, weil zuerst $-2$ gebildet und dann quadriert wird. Schreibst du dagegen `=0-2^2`, erhältst du korrekt **-4**.
+
+    In Programmiersprachen wie Python ist es genau umgekehrt (`-2**2` ergibt dort -4). Wer Formeln zwischen beiden Welten überträgt, sollte an dieser Stelle also genau hinsehen - oder einfach klammern: `=-(2^2)`.
 
 ## Vergleichsoperatoren
 
