@@ -1132,7 +1132,7 @@ Um unsere Analyse noch weiter zu verfeinern, können wir auch **mehreren Spalten
 
 ## Gruppen filtern mit `HAVING`
 
-Mit `WHERE` haben wir bis jetzt **einzelne Zeilen** vor der Gruppierung filtern. Was aber, wenn wir **Gruppen nach ihrer Aggregation** filtern möchten?
+Mit `WHERE` haben wir bis jetzt **einzelne Zeilen** vor der Gruppierung gefiltert. Was aber, wenn wir **Gruppen nach ihrer Aggregation** filtern möchten?
 
 Zum Beispiel:
 
