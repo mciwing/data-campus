@@ -1305,29 +1305,9 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
 
     Der Grund: Eine Abfrage wird **nicht in der Reihenfolge ausgeführt, in der wir sie schreiben**. Wir beginnen zwar mit `SELECT`, die Datenbank wertet die Klauseln aber (logisch) in dieser Reihenfolge aus:
 
-    ```mermaid
-    flowchart TB
-        A[1. FROM]:::teal --> B[2. JOIN]:::teal
-        B --> C[3. WHERE]:::teal
-        C --> D[4. GROUP BY]:::teal
-        D --> E[5. HAVING]:::teal
-        E --> F[6. SELECT]:::select
-        F --> G[7. DISTINCT]:::teal
-        G --> H[8. ORDER BY]:::teal
-        H --> I[9. LIMIT / OFFSET]:::teal
+    **Klicke auf die einzelnen Schritte**, um zu sehen, was mit den Daten unserer Tabelle `lieferungen` passiert. Die ausgegrauten Schritte (`JOIN` und `DISTINCT`) kommen in der Beispielabfrage nicht vor.
 
-        classDef teal fill:#009485aa,stroke:#009485,stroke-width:1px;
-        classDef select fill:#009485aa,stroke:#FFB482,stroke-width:3px;
-    ```
-
-    1. **`FROM` / `JOIN`** - Zuerst wird festgelegt, aus welchen Tabellen die Daten kommen (und wie sie verknüpft werden).
-    2. **`WHERE`** - Einzelne Zeilen werden gefiltert.
-    3. **`GROUP BY`** - Die verbleibenden Zeilen werden zu Gruppen zusammengefasst.
-    4. **`HAVING`** - Die Gruppen werden gefiltert.
-    5. **`SELECT`** - Erst jetzt werden die Ausgabespalten berechnet und die **Aliasse vergeben**.
-    6. **`DISTINCT`** - Duplikate werden entfernt.
-    7. **`ORDER BY`** - Das Ergebnis wird sortiert.
-    8. **`LIMIT` / `OFFSET`** - Die Ergebnismenge wird begrenzt.
+    <div class="sql-order"></div>
 
     Zum Zeitpunkt von `HAVING` (Schritt 5) existiert der Alias `durchschnittspreis` also noch gar nicht - er entsteht erst bei `SELECT` (Schritt 6). Deshalb müssen wir die Aggregatfunktion in `HAVING` noch einmal ausschreiben.
 

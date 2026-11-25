@@ -82,6 +82,7 @@ extra_css:
   - stylesheets/colors.css
   - stylesheets/extra.css
   - stylesheets/slideshow.css
+  - stylesheets/sql-order.css
 
 markdown_extensions:
   - meta
@@ -121,6 +122,7 @@ extra_javascript:
   - javascripts/slideshow.js
   - javascripts/no-copy.js
   - javascripts/prompt-blocks.js
+  - javascripts/sql-order.js
 
 plugins:
   - glightbox

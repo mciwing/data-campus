@@ -1,0 +1,316 @@
+/* Interaktive Ausführungsreihenfolge einer SQL-Abfrage (javascripts/sql-order.js) */
+
+.sql-order {
+    --sqlo-teal: #009485;
+    --sqlo-peach: #FFB482;
+    --sqlo-grey: #9e9e9e;
+    --sqlo-red: #e53935;
+    --sqlo-g0: #009485;
+    --sqlo-g1: #FFB482;
+    --sqlo-g2: #7986cb;
+
+    display: grid;
+    grid-template-columns: 9.5em minmax(0, 1fr);
+    gap: 1em 1.4em;
+    align-items: start;
+    margin: 1.2em 0;
+}
+
+.sql-order button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* --- Schritte (Diagramm) -------------------------------------------------- */
+
+.sqlo-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1em;
+}
+
+.sqlo-step {
+    position: relative;
+    padding: .55em .4em;
+    border: 1px solid var(--sqlo-teal);
+    border-radius: .3em;
+    background: #009485aa;
+    font-weight: 700;
+    text-align: center;
+    transition: transform .15s, box-shadow .15s;
+}
+
+.sqlo-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: calc(100% + .25em);
+    width: 0;
+    height: 0;
+    transform: translateX(-50%);
+    border-left: .35em solid transparent;
+    border-right: .35em solid transparent;
+    border-top: .6em solid var(--sqlo-grey);
+}
+
+/* Schritte, die in der Abfrage nicht vorkommen: ausgegraut, nicht anklickbar */
+.sql-order .sqlo-step.is-skip {
+    border: 1px dashed var(--sqlo-grey);
+    background: #9e9e9e33;
+    font-weight: 400;
+    cursor: not-allowed;
+}
+
+.sqlo-step:hover:not(.is-skip) {
+    transform: scale(1.03);
+}
+
+.sqlo-step.is-active {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 3px var(--md-default-fg-color, currentColor);
+}
+
+.sqlo-step:focus-visible,
+.sqlo-btn:focus-visible {
+    outline: 2px solid var(--sqlo-peach);
+    outline-offset: 3px;
+}
+
+/* --- Abfrage -------------------------------------------------------------- */
+
+.sqlo-main {
+    min-width: 0;
+}
+
+.md-typeset pre.sqlo-sql,
+.sqlo-sql {
+    margin: 0 0 .8em;
+    padding: .6em .8em;
+    border-radius: .3em;
+    background: var(--md-code-bg-color, rgba(128, 128, 128, .12));
+    font-family: var(--md-code-font-family, monospace);
+    font-size: .92em;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+}
+
+.sqlo-line {
+    display: block;
+    padding: 0 .3em;
+    border-radius: .2em;
+    transition: opacity .3s, background-color .3s;
+}
+
+.sqlo-line.is-todo {
+    opacity: .6;
+}
+
+.sqlo-line.is-active {
+    background: #00948555;
+}
+
+.sqlo-num {
+    display: inline-block;
+    width: 1.4em;
+    margin-right: .6em;
+    font-weight: 700;
+    text-align: right;
+    color: var(--sqlo-teal);
+}
+
+.sqlo-kw {
+    font-weight: 700;
+}
+
+/* --- Erklärung ------------------------------------------------------------ */
+
+.sqlo-caption {
+    min-height: 4.8em;
+    margin-bottom: .8em;
+    padding: .5em .8em;
+    border-left: .25em solid var(--sqlo-teal);
+    border-radius: .2em;
+    background: #00948518;
+}
+
+.sqlo-caption > strong:first-child {
+    display: block;
+}
+
+/* --- Daten ---------------------------------------------------------------- */
+
+.sqlo-stage {
+    overflow-x: auto;
+    padding: 2px;
+}
+
+.sqlo-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 34em;
+}
+
+.sqlo-row {
+    display: grid;
+    gap: 0 .6em;
+    padding: .25em .5em;
+    border-left: .3em solid transparent;
+    border-radius: .2em;
+    background: rgba(128, 128, 128, .1);
+}
+
+.sqlo-row.sqlo-c5 {
+    grid-template-columns: 6.2em minmax(9.5em, 1.4fr) 8.6em 5.5em 6em;
+}
+
+.sqlo-row.sqlo-c2 {
+    grid-template-columns: 1fr 1fr;
+    max-width: 26em;
+}
+
+.sqlo-row.sqlo-head {
+    background: var(--sqlo-teal);
+    color: #fff;
+    font-weight: 700;
+}
+
+.sqlo-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sqlo-row:not(.sqlo-head) .sqlo-cell.is-hl {
+    font-weight: 700;
+}
+
+.sqlo-head .sqlo-cell.is-hl {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.sqlo-head .sqlo-cell.is-alias {
+    overflow: visible;
+}
+
+.sqlo-alias-tag {
+    margin-left: .6em;
+    padding: .05em .5em;
+    border-radius: 1em;
+    background: var(--sqlo-peach);
+    color: #000;
+    font-size: .85em;
+}
+
+/* Gruppen */
+
+.sqlo-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .2em .8em;
+    margin-top: .4em;
+    padding: .25em .5em;
+    border-left: .3em solid transparent;
+    border-radius: .2em;
+    font-weight: 700;
+}
+
+.sqlo-group-count {
+    font-weight: 400;
+    opacity: .75;
+}
+
+.sqlo-g0 { border-left-color: var(--sqlo-g0); }
+.sqlo-g1 { border-left-color: var(--sqlo-g1); }
+.sqlo-g2 { border-left-color: var(--sqlo-g2); }
+
+.sqlo-row.sqlo-g0, .sqlo-group.sqlo-g0 { background: #00948530; }
+.sqlo-row.sqlo-g1, .sqlo-group.sqlo-g1 { background: #FFB48240; }
+.sqlo-row.sqlo-g2, .sqlo-group.sqlo-g2 { background: #7986cb38; }
+
+.sqlo-badge {
+    margin-left: auto;
+    padding: .05em .6em;
+    border: 1px solid currentColor;
+    border-radius: 1em;
+    font-family: var(--md-code-font-family, monospace);
+    font-size: .9em;
+    font-weight: 400;
+}
+
+.sqlo-badge.is-fail {
+    border-color: var(--sqlo-red);
+    background: #e5393530;
+}
+
+/* Zeilen, die im aktuellen Schritt herausgefiltert werden */
+
+.sqlo-row.is-out,
+.sqlo-group.is-out {
+    border-left-color: var(--sqlo-red);
+    background: #e5393540;
+    text-decoration: line-through;
+    transition: background-color .3s, border-color .3s;
+}
+
+/* --- Steuerung ------------------------------------------------------------ */
+
+.sqlo-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em;
+    margin-top: .9em;
+}
+
+.sqlo-btn {
+    padding: .35em .9em;
+    border: 1px solid var(--sqlo-teal);
+    border-radius: .3em;
+    background: transparent;
+}
+
+.sqlo-btn:hover:not(:disabled) {
+    background: #00948533;
+}
+
+.sqlo-btn:disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+.sqlo-btn-play {
+    margin-left: auto;
+    background: #009485aa;
+    font-weight: 700;
+}
+
+/* --- Schmale Bildschirme: Schritte als Zeile über den Daten --------------- */
+
+@media screen and (max-width: 52em) {
+    .sql-order {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sqlo-steps {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: .5em;
+    }
+
+    .sqlo-step {
+        padding: .4em .7em;
+    }
+
+    .sqlo-step:not(:last-child)::after {
+        display: none;
+    }
+
+    .sqlo-step.is-active {
+        transform: none;
+    }
+}
