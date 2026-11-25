@@ -83,6 +83,7 @@ extra_css:
   - stylesheets/extra.css
   - stylesheets/slideshow.css
   - stylesheets/sql-order.css
+  - stylesheets/sql-where.css
 
 markdown_extensions:
   - meta
@@ -123,6 +124,7 @@ extra_javascript:
   - javascripts/no-copy.js
   - javascripts/prompt-blocks.js
   - javascripts/sql-order.js
+  - javascripts/sql-where.js
 
 plugins:
   - glightbox

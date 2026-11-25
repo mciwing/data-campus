@@ -191,6 +191,11 @@ Mit diesen Vergleichsoperatoren können wir nun Filter-Bedingungen für die Abfr
         (5 rows)
         ```
 
+???+ example "Vergleichsoperatoren selbst ausprobieren"
+    Wähle eine Spalte, einen Vergleichsoperator und ändere den Vergleichswert. Bei Textspalten stehen nur `=` und `!=` zur Auswahl. Darunter siehst du sofort, welche Zeilen der Tabelle `lieferungen` die Bedingung erfüllen und welche herausgefiltert werden.
+
+    <div class="sql-where"></div>
+
 ---
 
 ### Verknüpfte Vergleiche
