@@ -358,6 +358,11 @@ Neben den einfachen Vergleichen können wir mehrere Bedingungen auch zu komplexe
         (4 rows)
         ```
 
+???+ example "Verknüpfte Vergleiche selbst ausprobieren"
+    Wähle einen der Operatoren `AND`, `OR`, `NOT`, `IN` oder `BETWEEN`. Darunter siehst du sofort, welche Zeilen der Tabelle `lieferungen` die Bedingung erfüllen und welche herausgefiltert werden. Bei `IN` kannst du die Werte der Liste und bei `BETWEEN` die beiden Grenzen ändern.
+
+    <div class="sql-logic"></div>
+
 ---
 
 ### Muster mit `LIKE`
@@ -533,6 +538,11 @@ Mit diesen zwei Zeichen und deren Bedeutung können wir bereits komplexere Abfra
     (2 rows)
     ```
 
+???+ example "Mustersuche selbst ausprobieren"
+    Wähle eine Spalte und ändere das Muster - mit den Platzhaltern `%` und `_`. Darunter siehst du sofort, welche Zeilen der Tabelle `lieferungen` zum Muster passen und welche herausgefiltert werden. Mit `LIKE` und `ILIKE` kannst du außerdem den Unterschied bei der Groß- und Kleinschreibung testen.
+
+    <div class="sql-like"></div>
+
 ---
 
 ## Sortieren mit `ORDER BY`
@@ -696,6 +706,11 @@ ORDER BY spalte ASC NULLS FIRST;
 ORDER BY spalte ASC NULLS LAST;
 ```
 
+???+ example "Sortierung selbst ausprobieren"
+    Wähle die Sortierspalte, die Richtung (`ASC` oder `DESC`) und optional eine zweite Sortierspalte. Die Zeilen ordnen sich sofort neu an. Über `NULLS FIRST` und `NULLS LAST` kannst du außerdem steuern, wo die Zeilen mit NULL-Werten landen.
+
+    <div class="sql-sort"></div>
+
 ---
 
 ## Ergebnismenge begrenzen mit `LIMIT`
@@ -791,6 +806,10 @@ LIMIT anzahl OFFSET überspringen;
 ???+ info "Paginierung"
 
     `LIMIT` und `OFFSET` werden häufig für **Paginierung** verwendet - z.B. wenn eine Webseite Ergebnisse seitenweise anzeigt.
+
+    Probiere es aus: Ändere die Anzahl der Ergebnisse pro Seite und blättere durch die Seiten. Die Abfrage darunter zeigt, mit welchen Werten für `LIMIT` und `OFFSET` die jeweilige Seite geladen wird.
+
+    <div class="sql-page"></div>
 
     Bei sehr großen **OFFSET-Werten** (z.B. `OFFSET 10000`) kann die Performance leiden, da die Datenbank alle übersprungenen Zeilen dennoch laden und durchlaufen muss. Für große Datensätze gibt es bessere Ansätze (z.B. Cursor-basierte Paginierung).
 

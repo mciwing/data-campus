@@ -1,6 +1,6 @@
 /* Interaktiver Test der Vergleichsoperatoren (javascripts/sql-where.js) */
 
-.sql-where {
+.sqlw-root {
     --sqlw-teal: #009485;
     --sqlw-peach: #FFB482;
     --sqlw-red: #e53935;
@@ -32,13 +32,13 @@
     color: var(--md-code-hl-keyword-color, inherit);
 }
 
-.sql-where .md-code__button {
+.sqlw-root .md-code__button {
     padding: 0;
     border: 0;
     background: none;
 }
 
-.sql-where .md-code__button:disabled {
+.sqlw-root .md-code__button:disabled {
     opacity: .35;
     cursor: not-allowed;
 }
@@ -51,9 +51,9 @@
     margin-top: .2em;
 }
 
-.sql-where .sqlw-field,
-.sql-where .sqlw-value,
-.sql-where .sqlw-op {
+.sqlw-root .sqlw-field,
+.sqlw-root .sqlw-value,
+.sqlw-root .sqlw-op {
     font: inherit;
     color: inherit;
     border: 1px solid var(--sqlw-teal);
@@ -61,22 +61,22 @@
     line-height: 1.4;
 }
 
-.sql-where .sqlw-field,
-.sql-where .sqlw-value {
+.sqlw-root .sqlw-field,
+.sqlw-root .sqlw-value {
     padding: .25em .5em;
     border-radius: .3em;
 }
 
-.sql-where .sqlw-field {
+.sqlw-root .sqlw-field {
     cursor: pointer;
 }
 
-.sql-where .sqlw-value {
+.sqlw-root .sqlw-value {
     width: 6.5em;
     font-weight: 700;
 }
 
-.sql-where .sqlw-value.is-invalid {
+.sqlw-root .sqlw-value.is-invalid {
     border-color: var(--sqlw-red);
 }
 
@@ -96,11 +96,11 @@
     display: inline;
 }
 
-.sql-where .sqlw-valuebox.is-text .sqlw-value {
+.sqlw-root .sqlw-valuebox.is-text .sqlw-value {
     width: 13em;
 }
 
-.sql-where .sqlw-op:disabled {
+.sqlw-root .sqlw-op:disabled {
     opacity: .35;
     cursor: not-allowed;
 }
@@ -113,7 +113,7 @@
     display: inline-flex;
 }
 
-.sql-where .sqlw-op {
+.sqlw-root .sqlw-op {
     min-width: 2.4em;
     margin-left: -1px;
     padding: .25em .5em;
@@ -121,20 +121,20 @@
     cursor: pointer;
 }
 
-.sql-where .sqlw-op:first-child {
+.sqlw-root .sqlw-op:first-child {
     margin-left: 0;
     border-radius: .3em 0 0 .3em;
 }
 
-.sql-where .sqlw-op:last-child {
+.sqlw-root .sqlw-op:last-child {
     border-radius: 0 .3em .3em 0;
 }
 
-.sql-where .sqlw-op:hover:not(:disabled) {
+.sqlw-root .sqlw-op:hover:not(:disabled) {
     background: #00948533;
 }
 
-.sql-where .sqlw-op.is-active {
+.sqlw-root .sqlw-op.is-active {
     background: var(--sqlw-teal);
     color: #fff;
 }
@@ -231,7 +231,7 @@
     opacity: .6;
 }
 
-.sql-where.is-hiding .sqlw-row.is-out {
+.sqlw-root.is-hiding .sqlw-row.is-out {
     display: none;
 }
 
@@ -243,4 +243,190 @@
     gap: .5em;
     margin-top: .8em;
     cursor: pointer;
+}
+
+/* --- Verknüpfte Vergleiche (sql-logic) ------------------------------------ */
+
+.sqlw-modes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4em .8em;
+    font-family: var(--md-code-font-family, monospace);
+    font-size: .8533333333em;
+}
+
+.sqlw-modes-label,
+.sqlw-chips-label {
+    font-family: var(--md-text-font-family, inherit);
+    font-weight: 700;
+}
+
+.sqlw-root .sqlw-modes .sqlw-op {
+    padding: .25em .8em;
+}
+
+/* Letzter Teil der Bedingung bleibt mit dem Semikolon zusammen */
+.sqlw-end {
+    display: inline-flex;
+    align-items: center;
+}
+
+.sqlw-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4em .5em;
+    margin-top: .7em;
+}
+
+.sqlw-chips[hidden] {
+    display: none;
+}
+
+.sqlw-root .sqlw-chip {
+    padding: .2em .7em;
+    border: 1px solid var(--sqlw-teal);
+    border-radius: 1em;
+    background: var(--md-default-bg-color, transparent);
+    color: inherit;
+    font: inherit;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.sqlw-root .sqlw-chip:hover {
+    background: #00948533;
+}
+
+.sqlw-root .sqlw-chip.is-active {
+    background: var(--sqlw-teal);
+    color: #fff;
+}
+
+.sqlw-chip:focus-visible {
+    outline: 2px solid var(--sqlw-peach);
+    outline-offset: 2px;
+}
+
+/* --- Sortieren mit ORDER BY (sql-sort) ------------------------------------ */
+
+/* Zweite Sortierspalte: unter der ersten eingerückt */
+.sqlw-then {
+    margin-top: .4em;
+    padding-left: 5.4em;
+}
+
+.sqlw-ops[hidden],
+.sqlw-where > span[hidden] {
+    display: none;
+}
+
+.sqlw-rows.is-sort {
+    min-width: 34em;
+}
+
+.sqlw-row.sqlw-sortrow {
+    grid-template-columns: minmax(9.5em, 1.3fr) minmax(10.5em, 1.4fr) 4em 7em;
+}
+
+.sqlw-cell.is-null {
+    font-family: var(--md-code-font-family, monospace);
+    font-size: .9em;
+    font-style: italic;
+    color: var(--sqlw-red);
+}
+
+.sqlw-hint {
+    margin-top: .8em;
+    font-size: .9em;
+}
+
+/* --- Paginierung mit LIMIT und OFFSET (sql-page) --------------------------- */
+
+.sqlw-pagebar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5em 1em;
+    margin-bottom: .7em;
+}
+
+.sqlw-pagesize {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4em .7em;
+}
+
+.sqlw-pagerange {
+    opacity: .8;
+}
+
+.sqlw-rows.is-page {
+    min-width: 31em;
+}
+
+.sqlw-row.sqlw-pagerow {
+    grid-template-columns: 2em minmax(10.5em, 1.4fr) 7em minmax(9.5em, 1.3fr);
+}
+
+.sqlw-pos {
+    opacity: .6;
+}
+
+/* Platzhalter auf einer nicht voll gefüllten letzten Seite */
+.sqlw-row.is-empty {
+    background: transparent;
+    outline: 1px dashed rgba(128, 128, 128, .35);
+    outline-offset: -1px;
+}
+
+.sqlw-pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .4em;
+    margin: .9em 0 .2em;
+}
+
+.sqlw-root .sqlw-pagebtn {
+    min-width: 2.3em;
+    padding: .3em .7em;
+    border: 1px solid var(--sqlw-teal);
+    border-radius: .3em;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.sqlw-root .sqlw-pagebtn:hover:not(:disabled) {
+    background: #00948533;
+}
+
+.sqlw-root .sqlw-pagebtn.is-active {
+    background: var(--sqlw-teal);
+    color: #fff;
+    font-weight: 700;
+}
+
+.sqlw-root .sqlw-pagebtn:disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+.sqlw-pagebtn:focus-visible {
+    outline: 2px solid var(--sqlw-peach);
+    outline-offset: 2px;
+}
+
+/* Werte in der Abfrage, die sich mit der Auswahl ändern */
+.sqlw-numhl {
+    padding: 0 .45em;
+    border-radius: .3em;
+    background: #00948540;
+    font-weight: 700;
 }
