@@ -1287,6 +1287,55 @@ Der Unterschied zwischen  `WHERE` und `HAVING` kann wiefolgt zusammengefasst wer
         **Erklärung:** Kombiniert mehrere HAVING-Bedingungen mit `AND` - nur Lieferanten mit Gesamtmenge > 200 UND durchschnittlichem Preis < 20.
 
 
+???+ info "Logische Ausführungsreihenfolge"
+    Im Beispiel oben haben wir `AVG(preis_pro_einheit)` in der `SELECT`-Klausel mit dem Alias `durchschnittspreis` versehen. Warum schreiben wir dann bei `HAVING` nicht einfach `HAVING durchschnittspreis > 10`?
+
+    ```sql
+    SELECT
+        zielstandort,
+        AVG(preis_pro_einheit) AS durchschnittspreis
+    FROM lieferungen
+    GROUP BY zielstandort
+    HAVING durchschnittspreis > 10;
+    ```
+
+    ```{.cmd .no-copy title="Output"}
+    ERROR:  column "durchschnittspreis" does not exist
+    ```
+
+    Der Grund: Eine Abfrage wird **nicht in der Reihenfolge ausgeführt, in der wir sie schreiben**. Wir beginnen zwar mit `SELECT`, die Datenbank wertet die Klauseln aber (logisch) in dieser Reihenfolge aus:
+
+    ```mermaid
+    flowchart TB
+        A[1. FROM]:::teal --> B[2. JOIN]:::teal
+        B --> C[3. WHERE]:::teal
+        C --> D[4. GROUP BY]:::teal
+        D --> E[5. HAVING]:::teal
+        E --> F[6. SELECT]:::select
+        F --> G[7. DISTINCT]:::teal
+        G --> H[8. ORDER BY]:::teal
+        H --> I[9. LIMIT / OFFSET]:::teal
+
+        classDef teal fill:#009485aa,stroke:#009485,stroke-width:1px;
+        classDef select fill:#009485aa,stroke:#FFB482,stroke-width:3px;
+    ```
+
+    1. **`FROM` / `JOIN`** - Zuerst wird festgelegt, aus welchen Tabellen die Daten kommen (und wie sie verknüpft werden).
+    2. **`WHERE`** - Einzelne Zeilen werden gefiltert.
+    3. **`GROUP BY`** - Die verbleibenden Zeilen werden zu Gruppen zusammengefasst.
+    4. **`HAVING`** - Die Gruppen werden gefiltert.
+    5. **`SELECT`** - Erst jetzt werden die Ausgabespalten berechnet und die **Aliasse vergeben**.
+    6. **`DISTINCT`** - Duplikate werden entfernt.
+    7. **`ORDER BY`** - Das Ergebnis wird sortiert.
+    8. **`LIMIT` / `OFFSET`** - Die Ergebnismenge wird begrenzt.
+
+    Zum Zeitpunkt von `HAVING` (Schritt 5) existiert der Alias `durchschnittspreis` also noch gar nicht - er entsteht erst bei `SELECT` (Schritt 6). Deshalb müssen wir die Aggregatfunktion in `HAVING` noch einmal ausschreiben.
+
+    Daraus ergeben sich auch zwei weitere Regeln, die wir bereits kennengelernt haben:
+
+    - In `WHERE` können **keine Aggregatfunktionen** verwendet werden, da die Gruppen zu diesem Zeitpunkt noch nicht gebildet wurden.
+    - In `ORDER BY` **dürfen** Aliasse verwendet werden (z.B. `ORDER BY anzahl DESC`), da die Sortierung erst nach `SELECT` stattfindet.
+
 ???+ warning "HAVING ohne GROUP BY?"
     Technisch ist `HAVING` ohne `GROUP BY` erlaubt - die gesamte Tabelle wird dann als eine einzige Gruppe behandelt was in den allermeisten Fällen sinnlos ist:
 
